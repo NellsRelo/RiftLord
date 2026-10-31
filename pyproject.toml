@@ -1,7 +1,7 @@
 [project]
 name = "riftlord"
-version = "0.1.0"
-description = "Rift Lord: the Map Editor, the Onslaught Editor and Missions for Orcs Must Die! 3"
+version = "1.0.0"
+description = "Rift Lord: Map and Onslaught Editor for Orcs Must Die! 3"
 readme = "README.md"
 requires-python = ">=3.12"
 # Runtime (requirements.txt pins the versions the release build uses). bpkit is shared

@@ -1,49 +1,127 @@
-# Draft (decision 3): native builds once the repository is on GitHub. Not yet run.
-# The release check and the build comparisons need the game installed, so CI only builds;
-# the gate (tools/gate.py) stays a local step.
+# Every push to main builds Rift Lord on Linux and Windows and publishes it as a GitHub
+# Release under the next version tag. The release check and the build comparisons need the
+# game installed, so CI only builds; the gate (tools/gate.py) stays the local step before
+# merging. bpkit is vendored (vendor/bpkit), so the checkout is all the source there is.
 name: build
 
 on:
-  workflow_dispatch:
   push:
-    tags: ['v*']
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# One release at a time, in push order: a later push waits rather than racing for a tag.
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-24.04]
-    runs-on: ${{ matrix.os }}
-    env:
-      # bpkit is shared with other mods and lives in its own repository (vars.BPKIT_REPOSITORY)
-      RIFTLORD_BPKIT: ${{ github.workspace }}/bpkit-src/bpkit
-      RIFTLORD_BUILD_OUT: ${{ github.workspace }}/build-out
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.next.outputs.tag }}
+      version: ${{ steps.next.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
-          path: RiftLordEditor
+          fetch-depth: 0
+      # The next patch of the newest v* tag; pyproject.toml's version when it is newer
+      # (a minor or major bump is made there by hand).
+      - id: next
+        run: |
+          base=$(python3 -c "import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+          last=$(git tag --list 'v*' --sort=-v:refname | head -n1)
+          next=$(python3 - "$base" "$last" <<'EOF'
+          import sys
+          base = tuple(int(x) for x in sys.argv[1].split('.'))
+          last = sys.argv[2].lstrip('v')
+          if not last:
+              print('.'.join(map(str, base)))
+          else:
+              cur = tuple(int(x) for x in last.split('.'))
+              bumped = (cur[0], cur[1], cur[2] + 1)
+              print('.'.join(map(str, max(bumped, base))))
+          EOF
+          )
+          echo "version=$next" >> "$GITHUB_OUTPUT"
+          echo "tag=v$next" >> "$GITHUB_OUTPUT"
+
+  # Intel's ISPC Texture Compressor: the Linux .so and the Windows .dll (llvm-mingw) both
+  # build on Linux (native/ispctexcomp/build.py).
+  native:
+    runs-on: ubuntu-24.04
+    steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          repository: ${{ vars.BPKIT_REPOSITORY }}
-          path: bpkit-src
+          python-version: '3.14'
+      - run: python native/ispctexcomp/build.py
+      - run: python native/ispctexcomp/build.py --windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ispctc
+          path: ~/.cache/rift-lord/ispctc/out/
+
+  build:
+    needs: [version, native]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            platform: Linux
+          - os: windows-latest
+            platform: Windows
+    runs-on: ${{ matrix.os }}
+    env:
+      RIFTLORD_BUILD_OUT: ${{ github.workspace }}/build-out
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.14'
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: dtolnay/rust-toolchain@stable
       - name: Linux libraries for the window
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev
+      - uses: actions/download-artifact@v4
+        with:
+          name: ispctc
+          path: ~/.cache/rift-lord/ispctc/out/
       - name: Python packages
-        working-directory: RiftLordEditor
         run: python -m pip install -r requirements-build.txt
       - name: Build
-        working-directory: RiftLordEditor
         run: python tools/build.py
+      - name: Zip
+        shell: bash
+        run: |
+          cd dist
+          files=$(ls RiftLord RiftLord.exe RiftLordServer RiftLordServer.exe THIRD-PARTY-NOTICES.txt 2>/dev/null)
+          python -c "import sys,zipfile;z=zipfile.ZipFile(sys.argv[1],'w',zipfile.ZIP_DEFLATED);[z.write(f) for f in sys.argv[2:]]" \
+            "../RiftLord-${{ needs.version.outputs.version }}-${{ matrix.platform }}.zip" $files
       - uses: actions/upload-artifact@v4
         with:
-          name: RiftLord-${{ runner.os }}
-          path: |
-            RiftLordEditor/dist/RiftLord*
+          name: RiftLord-${{ matrix.platform }}
+          path: RiftLord-*.zip
+
+  release:
+    needs: [version, build]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: RiftLord-*
+          merge-multiple: true
+      - name: Tag and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.version.outputs.tag }}
+        run: |
+          gh release create "$TAG" RiftLord-*.zip \
+            --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "Rift Lord $TAG" --generate-notes
