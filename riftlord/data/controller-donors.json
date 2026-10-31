@@ -1,0 +1,3370 @@
+{
+ "ambience": {
+  "AmbBed_ArcaneNight_LP_SC": {
+   "autoActivate": 0,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_10/Scenario_10_Audio",
+    14
+   ],
+   "levels": [
+    "Scenario_10",
+    "Scenario_16",
+    "Scenario_Other_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_ArcaneNight_LP_SC.AmbBed_ArcaneNight_LP_SC"
+  },
+  "AmbBed_Birds_Outdoors_LP_SC": {
+   "autoActivate": 0,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_02/Scenario_02_Audio",
+    9
+   ],
+   "levels": [
+    "Scenario_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Birds_Outdoors_LP_SC.AmbBed_Birds_Outdoors_LP_SC"
+  },
+  "AmbBed_Canyon_LP_SC": {
+   "autoActivate": 0,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_09/Scenario_09_Audio",
+    12
+   ],
+   "levels": [
+    "Scenario_09",
+    "Scenario_12",
+    "Scenario_17",
+    "Scenario_18"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Canyon_LP_SC.AmbBed_Canyon_LP_SC"
+  },
+  "AmbBed_Castle_Courtyard_LP_SC": {
+   "autoActivate": 2,
+   "count": 8,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+    9
+   ],
+   "levels": [
+    "ScenarioDLC_01",
+    "ScenarioDLC_03",
+    "Scenario_02",
+    "Scenario_05",
+    "Scenario_11",
+    "Scenario_13",
+    "Scenario_Sand_04",
+    "Scenario_Sand_05"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Castle_Courtyard_LP_SC.AmbBed_Castle_Courtyard_LP_SC"
+  },
+  "AmbBed_Desert_LP_SC": {
+   "autoActivate": 0,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Audio",
+    9
+   ],
+   "levels": [
+    "Scenario_Sand_01",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Desert_LP_SC.AmbBed_Desert_LP_SC"
+  },
+  "AmbBed_Factory_LP_SC": {
+   "autoActivate": 0,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+    9
+   ],
+   "levels": [
+    "Scenario_03",
+    "Scenario_07",
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Factory_LP_SC.AmbBed_Factory_LP_SC"
+  },
+  "AmbBed_Forest_Marsh_LP_SC": {
+   "autoActivate": 2,
+   "count": 2,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_02/Scenario_02_Audio",
+    12
+   ],
+   "levels": [
+    "Scenario_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Forest_Marsh_LP_SC.AmbBed_Forest_Marsh_LP_SC"
+  },
+  "AmbBed_FrozenCastle_LP_SC": {
+   "autoActivate": 0,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Audio",
+    9
+   ],
+   "levels": [
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_FrozenCastle_LP_SC.AmbBed_FrozenCastle_LP_SC"
+  },
+  "AmbBed_LavaLandscape_LP_SC": {
+   "autoActivate": 1,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Audio",
+    9
+   ],
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_01",
+    "Scenario_06",
+    "Scenario_Other_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_LavaLandscape_LP_SC.AmbBed_LavaLandscape_LP_SC"
+  },
+  "AmbBed_Ocean_LongDist_LP_SC": {
+   "autoActivate": 0,
+   "count": 2,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    10
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Ocean_LongDist_LP_SC.AmbBed_Ocean_LongDist_LP_SC"
+  },
+  "AmbBed_Rain_Stone_Q_LP_SC": {
+   "autoActivate": 6,
+   "count": 6,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_15/Scenario_15_Audio",
+    10
+   ],
+   "levels": [
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Rain_Stone_Q_LP_SC.AmbBed_Rain_Stone_Q_LP_SC"
+  },
+  "AmbBed_ThunderWind_LP_SC": {
+   "autoActivate": 0,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    9
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_08",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_ThunderWind_LP_SC.AmbBed_ThunderWind_LP_SC"
+  },
+  "AmbBed_Thunderstorm_LP_SC": {
+   "autoActivate": 0,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    11
+   ],
+   "levels": [
+    "ScenarioDLC_04"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Thunderstorm_LP_SC.AmbBed_Thunderstorm_LP_SC"
+  },
+  "AmbBed_Tropical_Emitter_LP_SC": {
+   "autoActivate": 5,
+   "count": 5,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+    11
+   ],
+   "levels": [
+    "ScenarioDLC_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Tropical_Emitter_LP_SC.AmbBed_Tropical_Emitter_LP_SC"
+  },
+  "AmbBed_Tropical_LP_SC": {
+   "autoActivate": 1,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    9
+   ],
+   "levels": [
+    "ScenarioDLC_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbBed_Tropical_LP_SC.AmbBed_Tropical_LP_SC"
+  },
+  "AmbEmit_Ocean_Close_Dist_LP_SC": {
+   "autoActivate": 61,
+   "count": 61,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    10
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_04",
+    "Scenario_04",
+    "Scenario_09",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Ocean_Close_Dist_LP_SC.AmbEmit_Ocean_Close_Dist_LP_SC"
+  },
+  "AmbEmit_Ocean_Closer_LP_SC": {
+   "autoActivate": 8,
+   "count": 8,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+    10
+   ],
+   "levels": [
+    "ScenarioDLC_01",
+    "Scenario_02",
+    "Scenario_18"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Ocean_Closer_LP_SC.AmbEmit_Ocean_Closer_LP_SC"
+  },
+  "AmbEmit_Ocean_Med_Dist_LP_SC": {
+   "autoActivate": 45,
+   "count": 45,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    22
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04",
+    "Scenario_15",
+    "Scenario_18",
+    "Scenario_Ice_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Ocean_Med_Dist_LP_SC.AmbEmit_Ocean_Med_Dist_LP_SC"
+  },
+  "AmbEmit_RainHeavy_600_LP": {
+   "autoActivate": 66,
+   "count": 66,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    111
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_08",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_RainHeavy_600_LP.AmbEmit_RainHeavy_600_LP"
+  },
+  "AmbEmit_RainHeavy_LP": {
+   "autoActivate": 27,
+   "count": 27,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Audio",
+    114
+   ],
+   "levels": [
+    "Scenario_04",
+    "Scenario_08",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_RainHeavy_LP.AmbEmit_RainHeavy_LP"
+  },
+  "AmbEmit_Raindrops_Close_Dist_LP_SC": {
+   "autoActivate": 147,
+   "count": 147,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    35
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04",
+    "Scenario_08",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Raindrops_Close_Dist_LP_SC.AmbEmit_Raindrops_Close_Dist_LP_SC"
+  },
+  "AmbEmit_Raindrops_Med_Dist_LP": {
+   "autoActivate": 162,
+   "count": 162,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    25
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04",
+    "Scenario_08",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Raindrops_Med_Dist_LP.AmbEmit_Raindrops_Med_Dist_LP"
+  },
+  "AmbEmit_Raindrops_Wood_Med_Dist_LP": {
+   "autoActivate": 12,
+   "count": 12,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    108
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04",
+    "Scenario_08"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Raindrops_Wood_Med_Dist_LP.AmbEmit_Raindrops_Wood_Med_Dist_LP"
+  },
+  "AmbEmit_River_Strong_LP": {
+   "autoActivate": 1,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    11
+   ],
+   "levels": [
+    "ScenarioDLC_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_River_Strong_LP.AmbEmit_River_Strong_LP"
+  },
+  "AmbEmit_Tropical_st_LP_SC": {
+   "autoActivate": 7,
+   "count": 7,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+    11
+   ],
+   "levels": [
+    "ScenarioDLC_01"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Tropical_st_LP_SC.AmbEmit_Tropical_st_LP_SC"
+  },
+  "AmbEmit_Water_Dripping_LP_SC": {
+   "autoActivate": 20,
+   "count": 20,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_08/Scenario_08_Audio",
+    103
+   ],
+   "levels": [
+    "Scenario_08",
+    "Scenario_15",
+    "Scenario_Ice_03",
+    "Scenario_Other_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Water_Dripping_LP_SC.AmbEmit_Water_Dripping_LP_SC"
+  },
+  "AmbEmit_Waterfall_Massive_LP": {
+   "autoActivate": 5,
+   "count": 5,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    12
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Waterfall_Massive_LP.AmbEmit_Waterfall_Massive_LP"
+  },
+  "AmbEmit_Waterfall_Splashing_LP_SC": {
+   "autoActivate": 4,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_15/Scenario_15_Audio",
+    216
+   ],
+   "levels": [
+    "Scenario_15"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Waterfall_Splashing_LP_SC.AmbEmit_Waterfall_Splashing_LP_SC"
+  },
+  "AmbEmit_Wind_BigPipe_LP_SC": {
+   "autoActivate": 17,
+   "count": 17,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    128
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "ScenarioDLC_05",
+    "Scenario_14",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_BigPipe_LP_SC.AmbEmit_Wind_BigPipe_LP_SC"
+  },
+  "AmbEmit_Wind_BigPipe_No_occ_LP_SC": {
+   "autoActivate": 30,
+   "count": 30,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Audio",
+    10
+   ],
+   "levels": [
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_BigPipe_No_occ_LP_SC.AmbEmit_Wind_BigPipe_No_occ_LP_SC"
+  },
+  "AmbEmit_Wind_Corridor_LP_SC": {
+   "autoActivate": 16,
+   "count": 16,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+    16
+   ],
+   "levels": [
+    "ScenarioDLC_03",
+    "Scenario_Sand_01",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Corridor_LP_SC.AmbEmit_Wind_Corridor_LP_SC"
+  },
+  "AmbEmit_Wind_Gusty_Hi_LP_SC": {
+   "autoActivate": 14,
+   "count": 14,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+    22
+   ],
+   "levels": [
+    "ScenarioDLC_03",
+    "Scenario_Sand_01",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Gusty_Hi_LP_SC.AmbEmit_Wind_Gusty_Hi_LP_SC"
+  },
+  "AmbEmit_Wind_Gusty_LP_SC": {
+   "autoActivate": 78,
+   "count": 78,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Audio",
+    15
+   ],
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_15",
+    "Scenario_18",
+    "Scenario_Other_03",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Gusty_LP_SC.AmbEmit_Wind_Gusty_LP_SC"
+  },
+  "AmbEmit_Wind_Rock_Crevice_Far_LP_SC": {
+   "autoActivate": 31,
+   "count": 31,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Audio",
+    15
+   ],
+   "levels": [
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Rock_Crevice_Far_LP_SC.AmbEmit_Wind_Rock_Crevice_Far_LP_SC"
+  },
+  "AmbEmit_Wind_Rock_Crevice_LP_SC": {
+   "autoActivate": 66,
+   "count": 66,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_08/Scenario_08_Audio",
+    111
+   ],
+   "levels": [
+    "Scenario_08",
+    "Scenario_15",
+    "Scenario_Sand_01",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Rock_Crevice_LP_SC.AmbEmit_Wind_Rock_Crevice_LP_SC"
+  },
+  "AmbEmit_Wind_Storm_Far_LP_SC": {
+   "autoActivate": 9,
+   "count": 9,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Audio",
+    14
+   ],
+   "levels": [
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Storm_Far_LP_SC.AmbEmit_Wind_Storm_Far_LP_SC"
+  },
+  "AmbEmit_Wind_Storm_LP_SC": {
+   "autoActivate": 37,
+   "count": 37,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    135
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wind_Storm_LP_SC.AmbEmit_Wind_Storm_LP_SC"
+  },
+  "AmbEmit_Wood_Beam_Creak_Far_LP_SC": {
+   "autoActivate": 22,
+   "count": 22,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Audio",
+    23
+   ],
+   "levels": [
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wood_Beam_Creak_Far_LP_SC.AmbEmit_Wood_Beam_Creak_Far_LP_SC"
+  },
+  "AmbEmit_Wood_Beam_Creak_LP_SC": {
+   "autoActivate": 46,
+   "count": 46,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+    28
+   ],
+   "levels": [
+    "ScenarioDLC_03",
+    "Scenario_08",
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03",
+    "Scenario_Sand_01",
+    "Scenario_Sand_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmit_Wood_Beam_Creak_LP_SC.AmbEmit_Wood_Beam_Creak_LP_SC"
+  },
+  "AmbEmitter_Birds_LP_SC": {
+   "autoActivate": 20,
+   "count": 20,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_02/Scenario_02_Audio",
+    13
+   ],
+   "levels": [
+    "Scenario_02",
+    "Scenario_09",
+    "Scenario_11",
+    "Scenario_13"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Birds_LP_SC.AmbEmitter_Birds_LP_SC"
+  },
+  "AmbEmitter_GreenGoo_Bubbles_LP_SC": {
+   "autoActivate": 33,
+   "count": 33,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+    10
+   ],
+   "levels": [
+    "Scenario_03",
+    "Scenario_07",
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_GreenGoo_Bubbles_LP_SC.AmbEmitter_GreenGoo_Bubbles_LP_SC"
+  },
+  "AmbEmitter_GreenGoo_Lapping_LP_SC": {
+   "autoActivate": 19,
+   "count": 19,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+    47
+   ],
+   "levels": [
+    "Scenario_03",
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_GreenGoo_Lapping_LP_SC.AmbEmitter_GreenGoo_Lapping_LP_SC"
+  },
+  "AmbEmitter_GreenGoo_Pouring_Close_LP_SC": {
+   "autoActivate": 4,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_07/Scenario_07_Audio",
+    24
+   ],
+   "levels": [
+    "Scenario_07",
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_GreenGoo_Pouring_Close_LP_SC.AmbEmitter_GreenGoo_Pouring_Close_LP_SC"
+  },
+  "AmbEmitter_GreenGoo_Pouring_LP_SC": {
+   "autoActivate": 20,
+   "count": 20,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+    20
+   ],
+   "levels": [
+    "Scenario_03",
+    "Scenario_07",
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_GreenGoo_Pouring_LP_SC.AmbEmitter_GreenGoo_Pouring_LP_SC"
+  },
+  "AmbEmitter_GreenGoo_Pouring_Thick_LP_SC": {
+   "autoActivate": 1,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_14/Scenario_14_Audio",
+    46
+   ],
+   "levels": [
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_GreenGoo_Pouring_Thick_LP_SC.AmbEmitter_GreenGoo_Pouring_Thick_LP_SC"
+  },
+  "AmbEmitter_JungleBirds_LP_SC": {
+   "autoActivate": 21,
+   "count": 21,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    14
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_JungleBirds_LP_SC.AmbEmitter_JungleBirds_LP_SC"
+  },
+  "AmbEmitter_JungleCicadas_LP_SC": {
+   "autoActivate": 14,
+   "count": 14,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    21
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_JungleCicadas_LP_SC.AmbEmitter_JungleCicadas_LP_SC"
+  },
+  "AmbEmitter_JungleFrogs_LP_SC": {
+   "autoActivate": 11,
+   "count": 11,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    26
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_JungleFrogs_LP_SC.AmbEmitter_JungleFrogs_LP_SC"
+  },
+  "AmbEmitter_JungleSounds_LP_SC": {
+   "autoActivate": 20,
+   "count": 20,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+    18
+   ],
+   "levels": [
+    "ScenarioDLC_01",
+    "ScenarioDLC_02",
+    "ScenarioDLC_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_JungleSounds_LP_SC.AmbEmitter_JungleSounds_LP_SC"
+  },
+  "AmbEmitter_Jungle_Stream_LP_SC": {
+   "autoActivate": 15,
+   "count": 15,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+    41
+   ],
+   "levels": [
+    "ScenarioDLC_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Jungle_Stream_LP_SC.AmbEmitter_Jungle_Stream_LP_SC"
+  },
+  "AmbEmitter_Jungle_Waterfall_01_LP_SC": {
+   "autoActivate": 3,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    13
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_03",
+    "ScenarioDLC_04"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Jungle_Waterfall_01_LP_SC.AmbEmitter_Jungle_Waterfall_01_LP_SC"
+  },
+  "AmbEmitter_LavaBubbles_LP_SC": {
+   "autoActivate": 64,
+   "count": 64,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Audio",
+    28
+   ],
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_01",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_Other_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_LavaBubbles_LP_SC.AmbEmitter_LavaBubbles_LP_SC"
+  },
+  "AmbEmitter_LavaBurst_LP_SC": {
+   "autoActivate": 4,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+    15
+   ],
+   "levels": [
+    "Scenario_01"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_LavaBurst_LP_SC.AmbEmitter_LavaBurst_LP_SC"
+  },
+  "AmbEmitter_LavaGrate_LP_SC": {
+   "autoActivate": 1,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+    19
+   ],
+   "levels": [
+    "Scenario_01"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_LavaGrate_LP_SC.AmbEmitter_LavaGrate_LP_SC"
+  },
+  "AmbEmitter_LavaMovement_LP_SC": {
+   "autoActivate": 68,
+   "count": 68,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Audio",
+    38
+   ],
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_01",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_Other_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_LavaMovement_LP_SC.AmbEmitter_LavaMovement_LP_SC"
+  },
+  "AmbEmitter_LavaSteam_LP_SC": {
+   "autoActivate": 73,
+   "count": 73,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Audio",
+    27
+   ],
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_01",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_Other_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_LavaSteam_LP_SC.AmbEmitter_LavaSteam_LP_SC"
+  },
+  "AmbEmitter_LavaWaterfall_LP_SC": {
+   "autoActivate": 4,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+    32
+   ],
+   "levels": [
+    "Scenario_01",
+    "Scenario_06"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_LavaWaterfall_LP_SC.AmbEmitter_LavaWaterfall_LP_SC"
+  },
+  "AmbEmitter_Mystical_Crystals_LP_SC": {
+   "autoActivate": 2,
+   "count": 2,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+    26
+   ],
+   "levels": [
+    "ScenarioDLC_01"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Mystical_Crystals_LP_SC.AmbEmitter_Mystical_Crystals_LP_SC"
+  },
+  "AmbEmitter_Mystical_WaterLapping_LP_SC": {
+   "autoActivate": 75,
+   "count": 75,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+    28
+   ],
+   "levels": [
+    "ScenarioDLC_01",
+    "Scenario_05",
+    "Scenario_10",
+    "Scenario_15",
+    "Scenario_16",
+    "Scenario_Other_02",
+    "Scenario_Sand_04",
+    "Scenario_Sand_05"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Mystical_WaterLapping_LP_SC.AmbEmitter_Mystical_WaterLapping_LP_SC"
+  },
+  "AmbEmitter_Pennant_Light_LP_SC": {
+   "autoActivate": 3,
+   "count": 3,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+    34
+   ],
+   "levels": [
+    "Scenario_01"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Pennant_Light_LP_SC.AmbEmitter_Pennant_Light_LP_SC"
+  },
+  "AmbEmitter_Pipes_LP_SC": {
+   "autoActivate": 59,
+   "count": 59,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+    25
+   ],
+   "levels": [
+    "Scenario_03",
+    "Scenario_07",
+    "Scenario_11",
+    "Scenario_14"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Pipes_LP_SC.AmbEmitter_Pipes_LP_SC"
+  },
+  "AmbEmitter_Seagulls_LP_SC": {
+   "autoActivate": 2,
+   "count": 2,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_02/Scenario_02_Audio",
+    19
+   ],
+   "levels": [
+    "Scenario_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Seagulls_LP_SC.AmbEmitter_Seagulls_LP_SC"
+  },
+  "AmbEmitter_TorchPipe_LP_SC": {
+   "autoActivate": 1,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_07/Scenario_07_Audio",
+    53
+   ],
+   "levels": [
+    "Scenario_07"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_TorchPipe_LP_SC.AmbEmitter_TorchPipe_LP_SC"
+  },
+  "AmbEmitter_TorchWindy_Rain_LP_SC": {
+   "autoActivate": 4,
+   "count": 4,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Audio",
+    145
+   ],
+   "levels": [
+    "Scenario_04"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_TorchWindy_Rain_LP_SC.AmbEmitter_TorchWindy_Rain_LP_SC"
+  },
+  "AmbEmitter_Torch_LP_SC": {
+   "autoActivate": 7,
+   "count": 7,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+    44
+   ],
+   "levels": [
+    "Scenario_03",
+    "Scenario_05",
+    "Scenario_Other_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_Torch_LP_SC.AmbEmitter_Torch_LP_SC"
+  },
+  "AmbEmitter_WaterLapping_LP_SC": {
+   "autoActivate": 30,
+   "count": 30,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+    153
+   ],
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_02",
+    "Scenario_03",
+    "Scenario_04",
+    "Scenario_08",
+    "Scenario_09",
+    "Scenario_Ice_01",
+    "Scenario_Ice_03"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_WaterLapping_LP_SC.AmbEmitter_WaterLapping_LP_SC"
+  },
+  "AmbEmitter_WaterLapping_Moat_LP_SC": {
+   "autoActivate": 28,
+   "count": 28,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+    36
+   ],
+   "levels": [
+    "ScenarioDLC_02",
+    "Scenario_09"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_WaterLapping_Moat_LP_SC.AmbEmitter_WaterLapping_Moat_LP_SC"
+  },
+  "AmbEmitter_WindowDraft_LP_SC": {
+   "autoActivate": 22,
+   "count": 22,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_05/Scenario_05_Audio",
+    26
+   ],
+   "levels": [
+    "Scenario_05",
+    "Scenario_07",
+    "Scenario_15",
+    "Scenario_Other_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_WindowDraft_LP_SC.AmbEmitter_WindowDraft_LP_SC"
+  },
+  "AmbEmitter_WoodDeep_Creak_LP_SC": {
+   "autoActivate": 17,
+   "count": 17,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Audio",
+    158
+   ],
+   "levels": [
+    "Scenario_04",
+    "Scenario_Sand_01",
+    "Scenario_Sand_02"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_WoodDeep_Creak_LP_SC.AmbEmitter_WoodDeep_Creak_LP_SC"
+  },
+  "AmbEmitter_WoodPlank_Creak_LP_SC": {
+   "autoActivate": 19,
+   "count": 19,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+    97
+   ],
+   "levels": [
+    "ScenarioDLC_03",
+    "Scenario_03",
+    "Scenario_04"
+   ],
+   "sound": "/Game/Maps/Audio/AmbEmitter_WoodPlank_Creak_LP_SC.AmbEmitter_WoodPlank_Creak_LP_SC"
+  },
+  "Trinket_ReptilianCarapace_Activate_SC": {
+   "autoActivate": 0,
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+    37
+   ],
+   "levels": [
+    "Scenario_01"
+   ],
+   "sound": "/Game/Trinkets/ReptilianCarapace/Audio/Trinket_ReptilianCarapace_Activate_SC.Trinket_ReptilianCarapace_Activate_SC"
+  }
+ },
+ "envtraps": {
+  "BP_Cauldron_C": [
+   {
+    "RelativeLocation": [
+     1350.0,
+     5400.0,
+     650.0
+    ],
+    "export": 177,
+    "level": "Scenario_06",
+    "name": "BP_Cauldron2_7",
+    "package": "/Game/Maps/Campaign/Scenario_06/Scenario_06",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_450.P_CauldronPour_450",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     2850.0,
+     5400.0,
+     650.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -180.0001,
+     0.0
+    ],
+    "export": 178,
+    "level": "Scenario_06",
+    "name": "BP_Cauldron3",
+    "package": "/Game/Maps/Campaign/Scenario_06/Scenario_06",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_450.P_CauldronPour_450",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     349.9778,
+     0.0001,
+     -1081.0
+    ],
+    "RelativeLocation": [
+     430.0,
+     -4196.0,
+     929.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -180.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     540.5
+    ],
+    "TriggerBox.RelativeLocation": [
+     299.9622,
+     -0.0,
+     -540.5
+    ],
+    "export": 179,
+    "level": "Scenario_06",
+    "name": "BP_Cauldron_2",
+    "package": "/Game/Maps/Campaign/Scenario_06/Scenario_06",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_1050.P_CauldronPour_1050",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -690.0
+    ],
+    "RelativeLocation": [
+     1366.3342,
+     -44.1851,
+     1744.85
+    ],
+    "RelativeRotation": [
+     0.0,
+     270.0002,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     345.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -345.0
+    ],
+    "export": 240,
+    "level": "Scenario_09",
+    "name": "BP_Cauldron4",
+    "package": "/Game/Maps/Campaign/Scenario_09/Scenario_09",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_750.P_CauldronPour_750",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -690.0
+    ],
+    "RelativeLocation": [
+     3390.4243,
+     -44.1851,
+     1744.85
+    ],
+    "RelativeRotation": [
+     0.0,
+     270.0002,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     345.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0001,
+     -345.0
+    ],
+    "export": 241,
+    "level": "Scenario_09",
+    "name": "BP_Cauldron5",
+    "package": "/Game/Maps/Campaign/Scenario_09/Scenario_09",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_750.P_CauldronPour_750",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0001,
+     0.0,
+     -352.0
+    ],
+    "RelativeLocation": [
+     882.0229,
+     -759.5329,
+     352.8277
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     176.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     299.9999,
+     -0.0001,
+     -176.0
+    ],
+    "export": 151,
+    "level": "Scenario_10",
+    "name": "BP_Cauldron2",
+    "package": "/Game/Maps/Campaign/Scenario_10/Scenario_10",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_450.P_CauldronPour_450",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -540.0
+    ],
+    "RelativeLocation": [
+     3743.4456,
+     4366.5645,
+     1192.8425
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0002,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     270.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0001,
+     -270.0
+    ],
+    "export": 152,
+    "level": "Scenario_10",
+    "name": "BP_Cauldron3",
+    "package": "/Game/Maps/Campaign/Scenario_10/Scenario_10",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_550.P_CauldronPour_550",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     -0.0001,
+     -579.0
+    ],
+    "RelativeLocation": [
+     2550.0,
+     -2400.0,
+     1180.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     289.5
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0001,
+     -289.5
+    ],
+    "export": 242,
+    "level": "Scenario_11",
+    "name": "BP_Cauldron2",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0001,
+     -580.0
+    ],
+    "RelativeLocation": [
+     2550.0,
+     -900.0,
+     1180.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     290.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -290.0
+    ],
+    "export": 243,
+    "level": "Scenario_11",
+    "name": "BP_Cauldron3",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     349.9958,
+     -0.0001,
+     -646.0
+    ],
+    "RelativeLocation": [
+     2550.0,
+     300.0,
+     655.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     323.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     299.9968,
+     -0.0001,
+     -323.0
+    ],
+    "export": 244,
+    "level": "Scenario_11",
+    "name": "BP_Cauldron_2",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     -0.0,
+     -424.0
+    ],
+    "RelativeLocation": [
+     -1348.4724,
+     -2536.8955,
+     1020.0848
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     212.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0001,
+     -212.0
+    ],
+    "export": 161,
+    "level": "Scenario_13",
+    "name": "BP_Cauldron2",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_450.P_CauldronPour_450",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     -0.0,
+     -425.0
+    ],
+    "RelativeLocation": [
+     -1348.4724,
+     -764.1025,
+     1020.0848
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     212.5
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0001,
+     -212.5
+    ],
+    "export": 162,
+    "level": "Scenario_13",
+    "name": "BP_Cauldron_2",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_450.P_CauldronPour_450",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -600.0
+    ],
+    "RelativeLocation": [
+     -150.0,
+     3300.0,
+     1350.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     180.0002,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     300.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -300.0
+    ],
+    "export": 199,
+    "level": "Scenario_17",
+    "name": "BP_Cauldron_2",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -600.0
+    ],
+    "RelativeLocation": [
+     -150.0,
+     6900.0,
+     1350.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     180.0002,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     300.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0002,
+     -300.0
+    ],
+    "export": 200,
+    "level": "Scenario_17",
+    "name": "BP_Cauldron_3",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     -0.0002,
+     -600.0
+    ],
+    "RelativeLocation": [
+     -3150.0,
+     6900.0,
+     1350.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     360.0005,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     300.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0002,
+     -300.0
+    ],
+    "export": 201,
+    "level": "Scenario_17",
+    "name": "BP_Cauldron_4",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -600.0
+    ],
+    "RelativeLocation": [
+     -3150.0,
+     3300.0,
+     1350.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     360.0005,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     300.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0,
+     -300.0
+    ],
+    "export": 202,
+    "level": "Scenario_17",
+    "name": "BP_Cauldron_5",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     -0.0,
+     -600.0
+    ],
+    "RelativeLocation": [
+     -1650.0,
+     12450.0,
+     1350.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     300.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -300.0
+    ],
+    "export": 203,
+    "level": "Scenario_17",
+    "name": "BP_Cauldron_6",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0001,
+     -863.0
+    ],
+    "RelativeLocation": [
+     -4050.0,
+     600.0,
+     410.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     431.5
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -431.5
+    ],
+    "export": 303,
+    "level": "Scenario_18",
+    "name": "BP_Cauldron2",
+    "package": "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_1050.P_CauldronPour_1050",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -862.0
+    ],
+    "RelativeLocation": [
+     -4050.0,
+     -900.0,
+     410.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     431.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0001,
+     -431.0
+    ],
+    "export": 304,
+    "level": "Scenario_18",
+    "name": "BP_Cauldron_4",
+    "package": "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_1050.P_CauldronPour_1050",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     -0.0001,
+     -620.0
+    ],
+    "RelativeLocation": [
+     -148.4746,
+     -1056.8955,
+     340.0848
+    ],
+    "RelativeRotation": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     310.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0001,
+     -310.0
+    ],
+    "export": 151,
+    "level": "Scenario_Ice_01",
+    "name": "BP_Cauldron2",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     399.9988,
+     0.0001,
+     -620.0
+    ],
+    "RelativeLocation": [
+     1051.5254,
+     -1056.8955,
+     340.0848
+    ],
+    "RelativeRotation": [
+     0.0,
+     -180.0002,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     310.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     -0.0001,
+     -310.0
+    ],
+    "export": 152,
+    "level": "Scenario_Ice_01",
+    "name": "BP_Cauldron3",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -1050.0
+    ],
+    "RelativeLocation": [
+     -2740.0,
+     -300.0,
+     1050.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     525.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -525.0
+    ],
+    "export": 251,
+    "level": "Scenario_Ice_03",
+    "name": "BP_Cauldron2",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_1050.P_CauldronPour_1050",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -1050.0
+    ],
+    "RelativeLocation": [
+     -2740.0,
+     300.0,
+     1050.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     525.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -525.0
+    ],
+    "export": 252,
+    "level": "Scenario_Ice_03",
+    "name": "BP_Cauldron_5",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_1050.P_CauldronPour_1050",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -620.0
+    ],
+    "RelativeLocation": [
+     -3751.9983,
+     -598.9984,
+     4217.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     310.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -310.0
+    ],
+    "export": 51,
+    "level": "Scenario_Other_03",
+    "name": "BP_Cauldron_2",
+    "package": "/Game/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03",
+    "pour": "/Game/Traps/CauldronTrap/FX/P_CauldronPour_650.P_CauldronPour_650",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     349.9983,
+     -0.0,
+     -550.0
+    ],
+    "RelativeLocation": [
+     150.0,
+     3450.0,
+     560.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     180.0,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     275.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -275.0
+    ],
+    "export": 179,
+    "level": "Scenario_Sand_01",
+    "name": "BP_Cauldron2_7",
+    "package": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     349.9983,
+     -0.0,
+     -550.0
+    ],
+    "RelativeLocation": [
+     150.0,
+     1940.0,
+     560.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     270.0001,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     275.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -275.0
+    ],
+    "export": 180,
+    "level": "Scenario_Sand_01",
+    "name": "BP_Cauldron3",
+    "package": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+    "tag": "persistent"
+   },
+   {
+    "P_CauldronFloor.RelativeLocation": [
+     350.0,
+     0.0,
+     -549.9374
+    ],
+    "RelativeLocation": [
+     150.0,
+     4950.0,
+     560.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     0.0
+    ],
+    "TriggerBox.BoxExtent": [
+     150.0,
+     150.0,
+     275.0
+    ],
+    "TriggerBox.RelativeLocation": [
+     300.0,
+     0.0,
+     -275.0
+    ],
+    "export": 181,
+    "level": "Scenario_Sand_01",
+    "name": "BP_Cauldron_2",
+    "package": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+    "tag": "persistent"
+   }
+  ],
+  "BP_FallingBoomBarrel_C": [
+   {
+    "RelativeLocation": [
+     -3650.0,
+     5250.0,
+     1450.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     0.0
+    ],
+    "export": 130,
+    "level": "ScenarioDLC_02",
+    "name": "BP_FallingBoomBarrel2_7",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3660.0029,
+     9.9941,
+     1450.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     180.0002,
+     0.0
+    ],
+    "export": 131,
+    "level": "ScenarioDLC_02",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2060.002,
+     10.0,
+     1450.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     180.0002,
+     0.0
+    ],
+    "export": 132,
+    "level": "ScenarioDLC_02",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3950.0,
+     4350.0,
+     1450.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     0.0
+    ],
+    "export": 133,
+    "level": "ScenarioDLC_02",
+    "name": "BP_FallingBoomBarrel5",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3950.0,
+     950.0,
+     1450.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     0.0
+    ],
+    "export": 134,
+    "level": "ScenarioDLC_02",
+    "name": "BP_FallingBoomBarrel6",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2200.0,
+     5250.0,
+     1450.0
+    ],
+    "export": 135,
+    "level": "ScenarioDLC_02",
+    "name": "BP_FallingBoomBarrel_2",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3050.0,
+     3760.0,
+     1550.0
+    ],
+    "export": 121,
+    "level": "ScenarioDLC_05",
+    "name": "BP_FallingBoomBarrel5",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -4250.0,
+     3760.0,
+     1550.0
+    ],
+    "export": 122,
+    "level": "ScenarioDLC_05",
+    "name": "BP_FallingBoomBarrel6",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3050.0,
+     1360.0,
+     1550.0
+    ],
+    "export": 123,
+    "level": "ScenarioDLC_05",
+    "name": "BP_FallingBoomBarrel7",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -4260.0,
+     1360.0,
+     1550.0
+    ],
+    "export": 124,
+    "level": "ScenarioDLC_05",
+    "name": "BP_FallingBoomBarrel8",
+    "package": "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     1350.0,
+     3000.0,
+     2595.0
+    ],
+    "export": 138,
+    "level": "Scenario_05",
+    "name": "BP_FallingBoomBarrel2",
+    "package": "/Game/Maps/Campaign/Scenario_05/Scenario_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -750.0,
+     895.0,
+     3980.0
+    ],
+    "export": 139,
+    "level": "Scenario_05",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/Campaign/Scenario_05/Scenario_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     5550.0,
+     895.0,
+     3980.0
+    ],
+    "export": 140,
+    "level": "Scenario_05",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/Campaign/Scenario_05/Scenario_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     3450.0,
+     3000.0,
+     2595.0
+    ],
+    "export": 141,
+    "level": "Scenario_05",
+    "name": "BP_FallingBoomBarrel_2",
+    "package": "/Game/Maps/Campaign/Scenario_05/Scenario_05",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     6450.0,
+     930.0,
+     1110.0
+    ],
+    "export": 218,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel2",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     5430.0,
+     300.0,
+     1110.0
+    ],
+    "export": 219,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     4260.0,
+     -2490.0,
+     660.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     0.0
+    ],
+    "export": 220,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     4200.0,
+     -3450.0,
+     660.0
+    ],
+    "export": 221,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel5",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     4830.0,
+     3220.0,
+     660.0
+    ],
+    "export": 222,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel6",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     6190.0,
+     3220.0,
+     660.0
+    ],
+    "export": 223,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel7",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     2430.0,
+     4210.0,
+     660.0
+    ],
+    "export": 224,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel8",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     430.0,
+     -3150.0,
+     660.0
+    ],
+    "export": 225,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel9",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     6450.0,
+     -330.0,
+     1110.0
+    ],
+    "export": 226,
+    "level": "Scenario_08",
+    "name": "BP_FallingBoomBarrel_2",
+    "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     5700.0,
+     -1050.0,
+     2050.0
+    ],
+    "export": 247,
+    "level": "Scenario_11",
+    "name": "BP_FallingBoomBarrel2",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1500.0,
+     -1650.0,
+     1400.0
+    ],
+    "export": 248,
+    "level": "Scenario_11",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -145.0,
+     -1650.0,
+     1395.0
+    ],
+    "export": 249,
+    "level": "Scenario_11",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     5700.0,
+     -3000.0,
+     2050.0
+    ],
+    "export": 250,
+    "level": "Scenario_11",
+    "name": "BP_FallingBoomBarrel_5",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     150.0,
+     -2660.0,
+     2100.0
+    ],
+    "export": 133,
+    "level": "Scenario_14",
+    "name": "BP_FallingBoomBarrel2",
+    "package": "/Game/Maps/Campaign/Scenario_14/Scenario_14",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     1430.0,
+     -660.0,
+     2100.0
+    ],
+    "export": 134,
+    "level": "Scenario_14",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/Campaign/Scenario_14/Scenario_14",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2850.0,
+     -1640.0,
+     2100.0
+    ],
+    "export": 135,
+    "level": "Scenario_14",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/Campaign/Scenario_14/Scenario_14",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     150.0,
+     -150.0,
+     2100.0
+    ],
+    "export": 136,
+    "level": "Scenario_14",
+    "name": "BP_FallingBoomBarrel_2",
+    "package": "/Game/Maps/Campaign/Scenario_14/Scenario_14",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3150.0,
+     1050.0,
+     2550.0
+    ],
+    "export": 218,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel10",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2550.0,
+     -4350.0,
+     2550.0
+    ],
+    "export": 219,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel11",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2250.0,
+     -5250.0,
+     2550.0
+    ],
+    "export": 220,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel12",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2250.0,
+     -3450.0,
+     2550.0
+    ],
+    "export": 221,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel13",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3450.0,
+     -5250.0,
+     2550.0
+    ],
+    "export": 222,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel14",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3450.0,
+     -3450.0,
+     2550.0
+    ],
+    "export": 223,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel15",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3150.0,
+     -4350.0,
+     2550.0
+    ],
+    "export": 224,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel16",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1050.0,
+     -3750.0,
+     2550.0
+    ],
+    "export": 225,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel2",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1050.0,
+     450.0,
+     2550.0
+    ],
+    "export": 226,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1050.0,
+     -750.0,
+     2550.0
+    ],
+    "export": 227,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2550.0,
+     1050.0,
+     2550.0
+    ],
+    "export": 228,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel5",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2250.0,
+     150.0,
+     2550.0
+    ],
+    "export": 229,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel6",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2250.0,
+     1950.0,
+     2550.0
+    ],
+    "export": 230,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel7",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3450.0,
+     150.0,
+     2550.0
+    ],
+    "export": 231,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel8",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3450.0,
+     1950.0,
+     2550.0
+    ],
+    "export": 232,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel9",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1050.0,
+     -2550.0,
+     2550.0
+    ],
+    "export": 233,
+    "level": "Scenario_16",
+    "name": "BP_FallingBoomBarrel_7",
+    "package": "/Game/Maps/Campaign/Scenario_16/Scenario_16",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3429.2629,
+     295.3896,
+     1703.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -69.283,
+     0.0
+    ],
+    "export": 156,
+    "level": "Scenario_Ice_01",
+    "name": "BP_FallingBoomBarrel3",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3767.2629,
+     295.3896,
+     1494.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -114.283,
+     0.0
+    ],
+    "export": 157,
+    "level": "Scenario_Ice_01",
+    "name": "BP_FallingBoomBarrel4",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01",
+    "tag": "persistent"
+   }
+  ],
+  "BP_GrinderPit_3X_C": [
+   {
+    "RelativeLocation": [
+     1351.0085,
+     4775.001,
+     890.0
+    ],
+    "RelativeRotation": [
+     0.0001,
+     -89.9999,
+     -0.0
+    ],
+    "export": 246,
+    "level": "Scenario_09",
+    "name": "BP_GrinderPit_3X5",
+    "package": "/Game/Maps/Campaign/Scenario_09/Scenario_09",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     3445.0085,
+     4775.001,
+     890.0006
+    ],
+    "RelativeRotation": [
+     0.0001,
+     -89.9999,
+     -0.0
+    ],
+    "export": 247,
+    "level": "Scenario_09",
+    "name": "BP_GrinderPit_3X6",
+    "package": "/Game/Maps/Campaign/Scenario_09/Scenario_09",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     1250.0085,
+     -3599.9988,
+     1050.0006
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     90.0001
+    ],
+    "export": 166,
+    "level": "Scenario_13",
+    "name": "BP_GrinderPit_3X2",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     1249.999,
+     300.0012,
+     1050.0006
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0001,
+     90.0001
+    ],
+    "export": 167,
+    "level": "Scenario_13",
+    "name": "BP_GrinderPit_3X_5",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1650.0007,
+     11250.0,
+     750.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "export": 208,
+    "level": "Scenario_17",
+    "name": "BP_GrinderPit_3X_1",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -150.0,
+     1200.0,
+     -450.0
+    ],
+    "export": 311,
+    "level": "Scenario_18",
+    "name": "BP_GrinderPit_3X_5",
+    "package": "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1050.0,
+     -2840.0,
+     385.0
+    ],
+    "RelativeRotation": [
+     -90.0,
+     84.2417,
+     5.7579
+    ],
+    "export": 258,
+    "level": "Scenario_Ice_03",
+    "name": "BP_GrinderPit_3X2_2",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -7450.0,
+     -1650.0,
+     250.0
+    ],
+    "RelativeRotation": [
+     0.0001,
+     90.0,
+     -89.9999
+    ],
+    "export": 259,
+    "level": "Scenario_Ice_03",
+    "name": "BP_GrinderPit_3X_5",
+    "package": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+    "tag": "persistent"
+   }
+  ],
+  "BP_GrinderPit_4X_C": [
+   {
+    "RelativeLocation": [
+     -1570.0,
+     950.0,
+     500.0
+    ],
+    "RelativeRotation": [
+     -90.0,
+     180.0,
+     90.0001
+    ],
+    "export": 183,
+    "level": "Scenario_06",
+    "name": "BP_GrinderPit_4X_2",
+    "package": "/Game/Maps/Campaign/Scenario_06/Scenario_06",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2550.001,
+     339.9913,
+     1149.9932
+    ],
+    "RelativeRotation": [
+     -0.0,
+     -179.9998,
+     90.0
+    ],
+    "export": 168,
+    "level": "Scenario_13",
+    "name": "BP_GrinderPit_3X3",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -2549.99,
+     -3630.0085,
+     1149.9935
+    ],
+    "RelativeRotation": [
+     0.0001,
+     0.0006,
+     90.0
+    ],
+    "export": 169,
+    "level": "Scenario_13",
+    "name": "BP_GrinderPit_3X4",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     3650.0017,
+     -1650.0009,
+     2149.9978
+    ],
+    "RelativeRotation": [
+     -0.0005,
+     -89.9999,
+     -89.9998
+    ],
+    "export": 170,
+    "level": "Scenario_13",
+    "name": "BP_GrinderPit_3X5",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -3300.001,
+     -1650.0087,
+     1199.9932
+    ],
+    "RelativeRotation": [
+     0.0,
+     -89.9996,
+     90.0
+    ],
+    "export": 171,
+    "level": "Scenario_13",
+    "name": "BP_GrinderPit_3X6_2",
+    "package": "/Game/Maps/Campaign/Scenario_13/Scenario_13",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1650.0,
+     6450.0,
+     750.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "export": 209,
+    "level": "Scenario_17",
+    "name": "BP_GrinderPit_4X_1",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1650.0,
+     7650.0,
+     750.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "export": 210,
+    "level": "Scenario_17",
+    "name": "BP_GrinderPit_4X_2",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1650.0,
+     10350.0,
+     750.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -90.0001,
+     0.0
+    ],
+    "export": 211,
+    "level": "Scenario_17",
+    "name": "BP_GrinderPit_4X_3",
+    "package": "/Game/Maps/Campaign/Scenario_17/Scenario_17",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1274.2891,
+     4045.0,
+     294.2895
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     -44.9998
+    ],
+    "export": 185,
+    "level": "Scenario_Sand_01",
+    "name": "BP_GrinderPit_4X2",
+    "package": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     -1274.2891,
+     2845.0,
+     294.2895
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     -44.9998
+    ],
+    "export": 186,
+    "level": "Scenario_Sand_01",
+    "name": "BP_GrinderPit_4X3",
+    "package": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     1650.0,
+     -3220.7109,
+     -305.7105
+    ],
+    "RelativeRotation": [
+     0.0,
+     0.0,
+     -44.9999
+    ],
+    "export": 187,
+    "level": "Scenario_Sand_01",
+    "name": "BP_GrinderPit_4X_5",
+    "package": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+    "tag": "persistent"
+   }
+  ],
+  "BP_Grinders_3X_C": [
+   {
+    "RelativeLocation": [
+     4150.0,
+     -3925.0,
+     390.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     0.0
+    ],
+    "export": 251,
+    "level": "Scenario_11",
+    "name": "BP_GrinderPit_3X2",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     4720.0,
+     -385.0,
+     390.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -180.0,
+     0.0
+    ],
+    "export": 252,
+    "level": "Scenario_11",
+    "name": "BP_GrinderPit_3X3",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     4225.0,
+     -385.0,
+     390.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     -180.0,
+     0.0
+    ],
+    "export": 253,
+    "level": "Scenario_11",
+    "name": "BP_GrinderPit_3X4",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   },
+   {
+    "RelativeLocation": [
+     3350.0,
+     -3925.0,
+     390.0
+    ],
+    "RelativeRotation": [
+     0.0,
+     90.0,
+     0.0
+    ],
+    "export": 254,
+    "level": "Scenario_11",
+    "name": "BP_GrinderPit_3X_5",
+    "package": "/Game/Maps/Campaign/Scenario_11/Scenario_11",
+    "tag": "persistent"
+   }
+  ]
+ },
+ "lightning": [
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    5.0,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    520.8135,
+    -5474.4941,
+    8657.4512
+   ],
+   "RelativeRotation": [
+    16.7612,
+    10.2115,
+    -31.5088
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 4,
+   "level": "ScenarioDLC_04",
+   "name": "BP_LightningBolt_Scen4_2",
+   "package": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_VFX",
+   "tag": "VFX"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    5.0,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    1139.0635,
+    3683.4023,
+    10532.9512
+   ],
+   "RelativeRotation": [
+    33.7325,
+    -142.1111,
+    5.0127
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 5,
+   "level": "ScenarioDLC_04",
+   "name": "BP_LightningBolt_Scen5",
+   "package": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_VFX",
+   "tag": "VFX"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    5.0,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    -4129.1865,
+    -12191.7441,
+    8657.4512
+   ],
+   "RelativeRotation": [
+    16.7612,
+    -79.7886,
+    -31.5089
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 6,
+   "level": "ScenarioDLC_04",
+   "name": "BP_LightningBolt_Scen6",
+   "package": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_VFX",
+   "tag": "VFX"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    5.0,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    -9598.8467,
+    7092.0156,
+    10532.9512
+   ],
+   "RelativeRotation": [
+    33.7325,
+    117.8887,
+    5.0128
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 7,
+   "level": "ScenarioDLC_04",
+   "name": "BP_LightningBolt_Scen7",
+   "package": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_VFX",
+   "tag": "VFX"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    -2479.1865,
+    2425.5061,
+    10557.4512
+   ],
+   "RelativeRotation": [
+    16.7612,
+    -79.7887,
+    -31.5087
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 4,
+   "level": "Scenario_04",
+   "name": "BP_LightningBolt_Scen4_2",
+   "package": "/Game/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "tag": "Rain"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    6278.7051,
+    1807.2483,
+    10532.9512
+   ],
+   "RelativeRotation": [
+    33.7325,
+    127.8888,
+    5.0127
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 5,
+   "level": "Scenario_04",
+   "name": "BP_LightningBolt_Scen5",
+   "package": "/Game/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "tag": "Rain"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    -2001.7969,
+    -104.2045,
+    9665.9033
+   ],
+   "RelativeRotation": [
+    -17.2367,
+    -111.3777,
+    -35.4679
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 227,
+   "level": "Scenario_08",
+   "name": "BP_LightningBolt_Scen4_2",
+   "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+   "tag": "persistent"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    6278.7051,
+    1807.2483,
+    10532.9512
+   ],
+   "RelativeRotation": [
+    33.7325,
+    127.8888,
+    5.0127
+   ],
+   "RelativeScale3D": [
+    11.1628,
+    11.1628,
+    11.1628
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 228,
+   "level": "Scenario_08",
+   "name": "BP_LightningBolt_Scen5",
+   "package": "/Game/Maps/Campaign/Scenario_08/Scenario_08",
+   "tag": "persistent"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    -1615.9119,
+    -3779.8589,
+    16142.9297
+   ],
+   "RelativeRotation": [
+    12.1412,
+    -20.9003,
+    0.2533
+   ],
+   "RelativeScale3D": [
+    15.0186,
+    15.0186,
+    15.0186
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 242,
+   "level": "Scenario_15",
+   "name": "BP_LightningBolt_Scen4_2",
+   "package": "/Game/Maps/Campaign/Scenario_15/Scenario_15",
+   "tag": "persistent"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    7931.4883,
+    8690.7852,
+    16771.6602
+   ],
+   "RelativeRotation": [
+    3.5475,
+    176.9837,
+    13.4492
+   ],
+   "RelativeScale3D": [
+    15.4905,
+    15.4905,
+    15.4905
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 243,
+   "level": "Scenario_15",
+   "name": "BP_LightningBolt_Scen5",
+   "package": "/Game/Maps/Campaign/Scenario_15/Scenario_15",
+   "tag": "persistent"
+  },
+  {
+   "GlowColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "LightIntensity": 12000.0,
+   "LineColor": [
+    0.5,
+    2.0,
+    1.4384,
+    1.0
+   ],
+   "RelativeLocation": [
+    9595.6348,
+    -3722.3542,
+    21101.6387
+   ],
+   "RelativeRotation": [
+    16.8713,
+    145.7038,
+    0.079
+   ],
+   "RelativeScale3D": [
+    18.3627,
+    18.3627,
+    18.3627
+   ],
+   "RetriggerTime": [
+    5.0,
+    8.0
+   ],
+   "export": 244,
+   "level": "Scenario_15",
+   "name": "BP_LightningBolt_Scen6",
+   "package": "/Game/Maps/Campaign/Scenario_15/Scenario_15",
+   "tag": "persistent"
+  }
+ ],
+ "torches": {
+  "BP_WallTorch_LargeRadius_C": {
+   "bare": 14,
+   "bareDonor": [
+    "/Game/Maps/Campaign/Scenario_08/Scenario_08_Lighting",
+    82
+   ],
+   "plated": 87,
+   "platedDonor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+    296
+   ]
+  },
+  "BP_WallTorch_Normal_C": {
+   "bare": 100,
+   "bareDonor": [
+    "/Game/Maps/Campaign/Scenario_02/Scenario_02_Lighting",
+    81
+   ],
+   "plated": 418,
+   "platedDonor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01",
+    113
+   ]
+  },
+  "BP_WallTorch_Normal_WS_C": {
+   "bare": 27,
+   "bareDonor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Lighting",
+    127
+   ],
+   "plated": 333,
+   "platedDonor": [
+    "/Game/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+    193
+   ]
+  },
+  "BP_WallTorch_Rain_C": {
+   "bare": 2,
+   "bareDonor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Lighting",
+    95
+   ],
+   "plated": 38,
+   "platedDonor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Lighting",
+    140
+   ]
+  },
+  "BP_WallTorch_SmallRadius_C": {
+   "bare": 8,
+   "bareDonor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Lighting",
+    112
+   ],
+   "plated": 79,
+   "platedDonor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Lighting",
+    154
+   ]
+  },
+  "BP_WallTorch_SmallRadius_WS_C": {
+   "bare": 1,
+   "bareDonor": [
+    "/Game/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+    137
+   ],
+   "plated": 23,
+   "platedDonor": [
+    "/Game/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+    124
+   ]
+  }
+ },
+ "version": 1
+}

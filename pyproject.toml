@@ -1,0 +1,26 @@
+[project]
+name = "riftlord"
+version = "0.1.0"
+description = "Rift Lord: the Map Editor, the Onslaught Editor and Missions for Orcs Must Die! 3"
+readme = "README.md"
+requires-python = ">=3.12"
+# Runtime (requirements.txt pins the versions the release build uses). bpkit is shared
+# with other mods and imported from its own folder (riftlord.core.bpkitlink).
+dependencies = ["pillow", "numpy", "PyYAML"]
+
+[project.optional-dependencies]
+baker = ["mitsuba", "drjit", "moderngl", "glcontext"]
+window = ["pywebview"]
+
+[project.scripts]
+riftlord = "riftlord.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["riftlord*"]
+
+[tool.setuptools.package-data]
+"riftlord" = ["data/*.json", "data/riftlord/*.json"]

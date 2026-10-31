@@ -1,0 +1,21 @@
+[package]
+name = "riftlord-launcher"
+version = "0.1.0"
+edition = "2021"
+description = "RiftLord.exe on Windows: carries the app window and the DLLs it needs, so Rift Lord ships as one file"
+publish = false
+
+[[bin]]
+name = "RiftLord"
+path = "src/main.rs"
+
+[dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }
+
+[build-dependencies]
+embed-resource = "3"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

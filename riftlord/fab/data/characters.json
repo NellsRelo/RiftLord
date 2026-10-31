@@ -1,0 +1,1940 @@
+{
+ "generated_by": "scale-tools/characters.py",
+ "characters": [
+  {
+   "class": "BP_Warhero_Knight",
+   "chain": [
+    "BP_Warhero_Knight_C",
+    "BP_Guardian_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "WarHero_Knight_SKM",
+   "mesh_bounds": [
+    [
+     -147.833,
+     -57.067,
+     -0.454
+    ],
+    [
+     146.152,
+     212.496,
+     265.055
+    ]
+   ],
+   "mesh_height": 265.5,
+   "top_above_floor": 265.1,
+   "feet_above_floor": -0.5,
+   "capsule_height": 192.0,
+   "group": "Guardians",
+   "folder": "Warhero_Knight"
+  },
+  {
+   "class": "BP_Warhero_Priestess",
+   "chain": [
+    "BP_Warhero_Priestess_C",
+    "BP_Guardian_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Warhero_Priestess_SKM",
+   "mesh_bounds": [
+    [
+     -80.825,
+     -96.574,
+     0.133
+    ],
+    [
+     71.124,
+     74.749,
+     216.845
+    ]
+   ],
+   "mesh_height": 216.7,
+   "top_above_floor": 216.8,
+   "feet_above_floor": 0.1,
+   "capsule_height": 192.0,
+   "group": "Guardians",
+   "folder": "Warhero_Priestess"
+  },
+  {
+   "class": "BP_Hero_Cygnus",
+   "chain": [
+    "BP_Hero_Cygnus_C",
+    "BP_Hero_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Cygnus_SKM",
+   "mesh_bounds": [
+    [
+     -56.696,
+     -25.079,
+     1.03
+    ],
+    [
+     54.17,
+     23.461,
+     194.762
+    ]
+   ],
+   "mesh_height": 193.7,
+   "top_above_floor": 194.8,
+   "feet_above_floor": 1.0,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Cygnus"
+  },
+  {
+   "class": "BP_Hero_Egan",
+   "chain": [
+    "BP_Hero_Egan_C",
+    "BP_Hero_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Egan_SKM",
+   "mesh_bounds": [
+    [
+     -52.646,
+     -19.677,
+     0.957
+    ],
+    [
+     53.74,
+     23.9,
+     197.506
+    ]
+   ],
+   "mesh_height": 196.5,
+   "top_above_floor": 197.5,
+   "feet_above_floor": 1.0,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Egan"
+  },
+  {
+   "class": "BP_Hero_Gabriella",
+   "chain": [
+    "BP_Hero_Gabriella_C",
+    "BP_Hero_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Gabrielle_SKM",
+   "mesh_bounds": [
+    [
+     -49.095,
+     -21.585,
+     1.237
+    ],
+    [
+     49.095,
+     23.288,
+     192.08
+    ]
+   ],
+   "mesh_height": 190.8,
+   "top_above_floor": 192.1,
+   "feet_above_floor": 1.2,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Gabrielle"
+  },
+  {
+   "class": "BP_Hero_Kelsey",
+   "chain": [
+    "BP_Hero_Kelsey_C",
+    "BP_Hero_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Kelsey_SKM",
+   "mesh_bounds": [
+    [
+     -44.994,
+     -15.007,
+     1.013
+    ],
+    [
+     45.069,
+     24.053,
+     183.692
+    ]
+   ],
+   "mesh_height": 182.7,
+   "top_above_floor": 183.7,
+   "feet_above_floor": 1.0,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Kelsey"
+  },
+  {
+   "class": "BP_Hero_Max",
+   "chain": [
+    "BP_Hero_Max_C",
+    "BP_Hero_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Max_SKM",
+   "mesh_bounds": [
+    [
+     -54.57,
+     -30.436,
+     0.646
+    ],
+    [
+     59.913,
+     24.863,
+     195.437
+    ]
+   ],
+   "mesh_height": 194.8,
+   "top_above_floor": 195.4,
+   "feet_above_floor": 0.6,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Max"
+  },
+  {
+   "class": "BP_Monster_Vorwick",
+   "chain": [
+    "BP_Monster_Vorwick_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": 0.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": null,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Monster_Vorwick"
+  },
+  {
+   "class": "BP_Hero_Vorwick",
+   "chain": [
+    "BP_Hero_Vorwick_C",
+    "BP_Hero_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Vorwick_SKM",
+   "mesh_bounds": [
+    [
+     -56.086,
+     -21.141,
+     0.97
+    ],
+    [
+     56.086,
+     24.154,
+     202.8
+    ]
+   ],
+   "mesh_height": 201.8,
+   "top_above_floor": 202.8,
+   "feet_above_floor": 1.0,
+   "capsule_height": 192.0,
+   "group": "Heroes",
+   "folder": "Vorwick"
+  },
+  {
+   "class": "BP_Cyclops_Heavy",
+   "chain": [
+    "BP_Cyclops_Heavy_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Cyclops_Heavy_SKM",
+   "mesh_bounds": [
+    [
+     -244.242,
+     -103.834,
+     -2.456
+    ],
+    [
+     130.345,
+     130.858,
+     287.054
+    ]
+   ],
+   "mesh_height": 289.5,
+   "top_above_floor": 287.1,
+   "feet_above_floor": -2.5,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Cyclops/Cyclops_Heavy"
+  },
+  {
+   "class": "BP_Cyclops_Mage",
+   "chain": [
+    "BP_Cyclops_Mage_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Cyclops_Mage_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Cyclops_Magic_User_SKM",
+   "mesh_bounds": [
+    [
+     -220.774,
+     -84.815,
+     -2.661
+    ],
+    [
+     143.38,
+     139.886,
+     317.035
+    ]
+   ],
+   "mesh_height": 319.7,
+   "top_above_floor": 317.0,
+   "feet_above_floor": -2.7,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Cyclops/Cyclops_Magic_User"
+  },
+  {
+   "class": "BP_Cyclops_Medium",
+   "chain": [
+    "BP_Cyclops_Medium_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Cyclops_Medium_SKM",
+   "mesh_bounds": [
+    [
+     -211.392,
+     -101.1,
+     -0.388
+    ],
+    [
+     117.315,
+     115.822,
+     255.89
+    ]
+   ],
+   "mesh_height": 256.3,
+   "top_above_floor": 255.9,
+   "feet_above_floor": -0.4,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Cyclops/Cyclops_Medium"
+  },
+  {
+   "class": "BP_Cyclops_Mesmerizer",
+   "chain": [
+    "BP_Cyclops_Mesmerizer_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Cyclops_Mesmerizer_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Cyclops_Mesmerizer_SKM",
+   "mesh_bounds": [
+    [
+     -117.315,
+     -61.829,
+     -50.145
+    ],
+    [
+     117.315,
+     50.912,
+     254.798
+    ]
+   ],
+   "mesh_height": 304.9,
+   "top_above_floor": 254.8,
+   "feet_above_floor": -50.1,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Cyclops/Cyclops_Mesmerizer"
+  },
+  {
+   "class": "BP_Cyclops_Shaman",
+   "chain": [
+    "BP_Cyclops_Shaman_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Cyclops_Shaman_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Cyclops_Shaman_SKM",
+   "mesh_bounds": [
+    [
+     -249.993,
+     -101.093,
+     -0.393
+    ],
+    [
+     143.38,
+     192.705,
+     326.242
+    ]
+   ],
+   "mesh_height": 326.6,
+   "top_above_floor": 326.2,
+   "feet_above_floor": -0.4,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Cyclops/Cyclops_Shaman"
+  },
+  {
+   "class": "BP_Elemental_Earth",
+   "chain": [
+    "BP_Elemental_Earth_C",
+    "BP_Elemental_Base_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -94.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Elemental_Earth_SKM",
+   "mesh_bounds": [
+    [
+     -153.682,
+     -62.998,
+     -23.626
+    ],
+    [
+     154.155,
+     82.421,
+     311.245
+    ]
+   ],
+   "mesh_height": 334.9,
+   "top_above_floor": 313.2,
+   "feet_above_floor": -21.6,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Elementals/Earth/Earth"
+  },
+  {
+   "class": "BP_Elemental_EarthLord",
+   "chain": [
+    "BP_Elemental_EarthLord_C",
+    "BP_Elemental_Base_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Elemental_EarthLord_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Elemental_EarthLord_SKM",
+   "mesh_bounds": [
+    [
+     -219.159,
+     -120.181,
+     -34.856
+    ],
+    [
+     219.159,
+     68.271,
+     448.491
+    ]
+   ],
+   "mesh_height": 483.3,
+   "top_above_floor": 448.5,
+   "feet_above_floor": -34.9,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Elementals/Earth/EarthLord"
+  },
+  {
+   "class": "BP_Elemental_Earthling",
+   "chain": [
+    "BP_Elemental_Earthling_C",
+    "BP_Elemental_Base_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -66.0,
+   "mesh_scale": [
+    1.5,
+    1.5,
+    1.5
+   ],
+   "mesh": "Elemental_Earthling_SKM",
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Elementals/Earth/Earthling"
+  },
+  {
+   "class": "BP_Elemental_Fire",
+   "chain": [
+    "BP_Elemental_Fire_C",
+    "BP_Elemental_Base_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Elemental_Fire_SKM",
+   "mesh_bounds": [
+    [
+     -154.141,
+     -53.223,
+     13.524
+    ],
+    [
+     154.128,
+     72.798,
+     280.763
+    ]
+   ],
+   "mesh_height": 267.2,
+   "top_above_floor": 280.8,
+   "feet_above_floor": 13.5,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Elementals/Fire/Fire"
+  },
+  {
+   "class": "BP_Elemental_FireLord",
+   "chain": [
+    "BP_Elemental_FireLord_C",
+    "BP_Elemental_Base_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Elemental_FireLord_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Elemental_FireLord_SKM",
+   "mesh_bounds": [
+    [
+     -205.548,
+     -65.55,
+     18.313
+    ],
+    [
+     205.529,
+     97.117,
+     433.778
+    ]
+   ],
+   "mesh_height": 415.5,
+   "top_above_floor": 433.8,
+   "feet_above_floor": 18.3,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Elementals/Fire/FireLord"
+  },
+  {
+   "class": "BP_Elemental_Fireling",
+   "chain": [
+    "BP_Elemental_Fireling_C",
+    "BP_Elemental_Base_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Elemental_Fireling_SKM",
+   "mesh_bounds": [
+    [
+     -45.687,
+     -25.369,
+     3.713
+    ],
+    [
+     45.687,
+     35.253,
+     122.605
+    ]
+   ],
+   "mesh_height": 118.9,
+   "top_above_floor": 122.6,
+   "feet_above_floor": 3.7,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Elementals/Fire/Fireling"
+  },
+  {
+   "class": "BP_FireFiend_Heavy",
+   "chain": [
+    "BP_FireFiend_Heavy_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "FireFiend_Heavy_SKM",
+   "mesh_bounds": [
+    [
+     -91.951,
+     -51.885,
+     -0.555
+    ],
+    [
+     91.951,
+     120.141,
+     237.973
+    ]
+   ],
+   "mesh_height": 238.5,
+   "top_above_floor": 238.0,
+   "feet_above_floor": -0.6,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "FireFiends/FireFiend_Heavy"
+  },
+  {
+   "class": "BP_FireFiend_Light",
+   "chain": [
+    "BP_FireFiend_Light_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "FireFiend_Light_SKM",
+   "mesh_bounds": [
+    [
+     -51.937,
+     -21.895,
+     -0.336
+    ],
+    [
+     55.208,
+     42.724,
+     144.63
+    ]
+   ],
+   "mesh_height": 145.0,
+   "top_above_floor": 144.6,
+   "feet_above_floor": -0.3,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "FireFiends/FireFiend_Light"
+  },
+  {
+   "class": "BP_FireFiend_Mage",
+   "chain": [
+    "BP_FireFiend_Mage_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_FireFiend_Mage_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "FireFiend_Mage_SKM",
+   "mesh_bounds": [
+    [
+     -142.067,
+     -52.768,
+     0.455
+    ],
+    [
+     125.338,
+     149.535,
+     275.114
+    ]
+   ],
+   "mesh_height": 274.7,
+   "top_above_floor": 275.1,
+   "feet_above_floor": 0.5,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "FireFiends/FireFiend_Mage"
+  },
+  {
+   "class": "BP_FireFiend_Medium",
+   "chain": [
+    "BP_FireFiend_Medium_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "FireFiend_Medium_SKM",
+   "mesh_bounds": [
+    [
+     -68.864,
+     -29.834,
+     0.28
+    ],
+    [
+     68.864,
+     112.382,
+     189.911
+    ]
+   ],
+   "mesh_height": 189.6,
+   "top_above_floor": 189.9,
+   "feet_above_floor": 0.3,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "FireFiends/FireFiend_Medium"
+  },
+  {
+   "class": "BP_FireFiend_Overlord",
+   "chain": [
+    "BP_FireFiend_Overlord_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_FireFiend_Overlord_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "FireFiend_Overlord_SKM",
+   "mesh_bounds": [
+    [
+     -116.195,
+     -70.353,
+     0.294
+    ],
+    [
+     106.028,
+     59.342,
+     309.22
+    ]
+   ],
+   "mesh_height": 308.9,
+   "top_above_floor": 309.2,
+   "feet_above_floor": 0.3,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "FireFiends/FireFiend_Overlord"
+  },
+  {
+   "class": "BP_FireFiend_Runner",
+   "chain": [
+    "BP_FireFiend_Runner_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "FireFiend_Runner_SKM",
+   "mesh_bounds": [
+    [
+     -46.991,
+     -19.344,
+     -0.361
+    ],
+    [
+     46.991,
+     62.605,
+     115.757
+    ]
+   ],
+   "mesh_height": 116.1,
+   "top_above_floor": 115.8,
+   "feet_above_floor": -0.4,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "FireFiends/FireFiend_Runner"
+  },
+  {
+   "class": "BP_Gnoll_Assassin",
+   "chain": [
+    "BP_Gnoll_Assassin_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Gnoll_Assassin_SKM",
+   "mesh_bounds": [
+    [
+     -106.38,
+     -50.417,
+     -2.426
+    ],
+    [
+     106.452,
+     143.811,
+     268.576
+    ]
+   ],
+   "mesh_height": 271.0,
+   "top_above_floor": 268.6,
+   "feet_above_floor": -2.4,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Gnolls/Gnoll_Assassin"
+  },
+  {
+   "class": "BP_Gnoll_Grenadier",
+   "chain": [
+    "BP_Gnoll_Grenadier_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Gnoll_Grenadier_SKM",
+   "mesh_bounds": [
+    [
+     -100.185,
+     -47.76,
+     -2.383
+    ],
+    [
+     100.185,
+     111.731,
+     268.586
+    ]
+   ],
+   "mesh_height": 271.0,
+   "top_above_floor": 268.6,
+   "feet_above_floor": -2.4,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Gnolls/Gnoll_Grenadier"
+  },
+  {
+   "class": "BP_Hellbat_Acid",
+   "chain": [
+    "BP_Hellbat_Acid_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Acid_SKM",
+   "mesh_bounds": [
+    [
+     -72.938,
+     -64.255,
+     8.544
+    ],
+    [
+     72.938,
+     84.567,
+     293.348
+    ]
+   ],
+   "mesh_height": 284.8,
+   "top_above_floor": 293.3,
+   "feet_above_floor": 8.5,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Acid"
+  },
+  {
+   "class": "BP_Hellbat_Arcane",
+   "chain": [
+    "BP_Hellbat_Arcane_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Arcane_SKM",
+   "mesh_bounds": [
+    [
+     -73.002,
+     -64.619,
+     1.782
+    ],
+    [
+     73.003,
+     85.778,
+     293.24
+    ]
+   ],
+   "mesh_height": 291.5,
+   "top_above_floor": 293.2,
+   "feet_above_floor": 1.8,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Arcane"
+  },
+  {
+   "class": "BP_Hellbat_Baby",
+   "chain": [
+    "BP_Hellbat_Baby_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -42.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Baby_SKM",
+   "mesh_bounds": [
+    [
+     -36.672,
+     -35.43,
+     -4.174
+    ],
+    [
+     36.672,
+     64.548,
+     148.913
+    ]
+   ],
+   "mesh_height": 153.1,
+   "top_above_floor": 202.9,
+   "feet_above_floor": 49.8,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Baby"
+  },
+  {
+   "class": "BP_Hellbat_Boss",
+   "chain": [
+    "BP_Hellbat_Boss_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Hellbat_Boss_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Boss_SKM",
+   "mesh_bounds": [
+    [
+     -127.641,
+     -130.76,
+     16.112
+    ],
+    [
+     127.641,
+     157.057,
+     512.822
+    ]
+   ],
+   "mesh_height": 496.7,
+   "top_above_floor": 596.8,
+   "feet_above_floor": 100.1,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Boss"
+  },
+  {
+   "class": "BP_Hellbat_Fire",
+   "chain": [
+    "BP_Hellbat_Fire_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Fire_SKM",
+   "mesh_bounds": [
+    [
+     -72.938,
+     -79.274,
+     -0.231
+    ],
+    [
+     72.938,
+     88.85,
+     293.356
+    ]
+   ],
+   "mesh_height": 293.6,
+   "top_above_floor": 293.4,
+   "feet_above_floor": -0.2,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Fire"
+  },
+  {
+   "class": "BP_Hellbat_Ice",
+   "chain": [
+    "BP_Hellbat_Ice_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Ice_SKM",
+   "mesh_bounds": [
+    [
+     -72.938,
+     -63.507,
+     17.316
+    ],
+    [
+     72.938,
+     88.84,
+     293.166
+    ]
+   ],
+   "mesh_height": 275.9,
+   "top_above_floor": 293.2,
+   "feet_above_floor": 17.3,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Ice"
+  },
+  {
+   "class": "BP_Hellbat_Lightning",
+   "chain": [
+    "BP_Hellbat_Lightning_C",
+    "BP_Minion_Flyer_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Hellbat_Lightning_SKM",
+   "mesh_bounds": [
+    [
+     -72.938,
+     -64.251,
+     20.612
+    ],
+    [
+     72.938,
+     97.916,
+     293.356
+    ]
+   ],
+   "mesh_height": 272.7,
+   "top_above_floor": 293.4,
+   "feet_above_floor": 20.6,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Hellbats/Hellbat_Lightning"
+  },
+  {
+   "class": "BP_Kobold_Boss",
+   "chain": [
+    "BP_Kobold_Boss_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Kobold_Boss_SKM",
+   "mesh_bounds": [
+    [
+     -81.837,
+     -292.444,
+     -2.936
+    ],
+    [
+     81.837,
+     140.044,
+     210.311
+    ]
+   ],
+   "mesh_height": 213.2,
+   "top_above_floor": 210.3,
+   "feet_above_floor": -2.9,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Kobolds/Kobold_Boss"
+  },
+  {
+   "class": "BP_Kobold_Runner",
+   "chain": [
+    "BP_Kobold_Runner_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 60.0,
+   "capsule_source": "BP_Kobold_Runner_C",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -60.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Kobold_Runner_SKM",
+   "mesh_bounds": [
+    [
+     -52.465,
+     -135.189,
+     -1.709
+    ],
+    [
+     52.465,
+     73.31,
+     118.337
+    ]
+   ],
+   "mesh_height": 120.0,
+   "top_above_floor": 118.3,
+   "feet_above_floor": -1.7,
+   "capsule_height": 120.0,
+   "group": "Minions",
+   "folder": "Kobolds/Kobold_Runner"
+  },
+  {
+   "class": "BP_Kobold_Runner_TNT",
+   "chain": [
+    "BP_Kobold_Runner_TNT_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Kobold_Runner_TNT_SKM",
+   "mesh_bounds": [
+    [
+     -52.465,
+     -135.189,
+     -1.709
+    ],
+    [
+     52.465,
+     73.31,
+     183.901
+    ]
+   ],
+   "mesh_height": 185.6,
+   "top_above_floor": 183.9,
+   "feet_above_floor": -1.7,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Kobolds/Kobold_Runner_TNT"
+  },
+  {
+   "class": "BP_Lizardman_Assassin",
+   "chain": [
+    "BP_Lizardman_Assassin_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Lizardman_Assassin_SKM",
+   "mesh_bounds": [
+    [
+     -109.342,
+     -145.889,
+     -27.712
+    ],
+    [
+     109.342,
+     121.191,
+     250.344
+    ]
+   ],
+   "mesh_height": 278.1,
+   "top_above_floor": 250.3,
+   "feet_above_floor": -27.7,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Lizardman/Lizardman_Assassin"
+  },
+  {
+   "class": "BP_Lizardman_Heavy",
+   "chain": [
+    "BP_Lizardman_Heavy_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Lizardman_Heavy_SKM",
+   "mesh_bounds": [
+    [
+     -141.731,
+     -148.524,
+     -31.751
+    ],
+    [
+     133.065,
+     176.067,
+     258.883
+    ]
+   ],
+   "mesh_height": 290.6,
+   "top_above_floor": 258.9,
+   "feet_above_floor": -31.8,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Lizardman/Lizardman_Heavy"
+  },
+  {
+   "class": "BP_Lizardman_Light",
+   "chain": [
+    "BP_Lizardman_Light_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Lizardman_Light_SKM",
+   "mesh_bounds": [
+    [
+     -90.484,
+     -105.43,
+     -20.465
+    ],
+    [
+     79.437,
+     129.563,
+     180.729
+    ]
+   ],
+   "mesh_height": 201.2,
+   "top_above_floor": 180.7,
+   "feet_above_floor": -20.5,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Lizardman/Lizardman_Light"
+  },
+  {
+   "class": "BP_Lizardman_Ranger",
+   "chain": [
+    "BP_Lizardman_Ranger_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Lizardman_Ranger_SKM",
+   "mesh_bounds": [
+    [
+     -97.769,
+     -129.752,
+     -25.095
+    ],
+    [
+     97.769,
+     110.57,
+     232.298
+    ]
+   ],
+   "mesh_height": 257.4,
+   "top_above_floor": 232.3,
+   "feet_above_floor": -25.1,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Lizardman/Lizardman_Ranger"
+  },
+  {
+   "class": "BP_Ogre_Basher",
+   "chain": [
+    "BP_Ogre_Basher_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Ogre_Basher_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -179.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Ogre_Basher_SKM",
+   "mesh_bounds": [
+    [
+     -232.058,
+     -145.484,
+     -1.036
+    ],
+    [
+     237.898,
+     188.19,
+     400.593
+    ]
+   ],
+   "mesh_height": 401.6,
+   "top_above_floor": 401.6,
+   "feet_above_floor": -0.0,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Ogres/Ogre_Basher"
+  },
+  {
+   "class": "BP_Ogre_Heavy",
+   "chain": [
+    "BP_Ogre_Heavy_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Ogre_Heavy_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Ogre_Heavy_SKM",
+   "mesh_bounds": [
+    [
+     -204.979,
+     -154.844,
+     -2.407
+    ],
+    [
+     218.035,
+     315.299,
+     385.561
+    ]
+   ],
+   "mesh_height": 388.0,
+   "top_above_floor": 385.6,
+   "feet_above_floor": -2.4,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Ogres/Ogre_Heavy"
+  },
+  {
+   "class": "BP_Ogre_Light",
+   "chain": [
+    "BP_Ogre_Light_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Ogre_Light_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -176.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Ogre_Light_SKM",
+   "mesh_bounds": [
+    [
+     -191.99,
+     -101.628,
+     -2.864
+    ],
+    [
+     173.654,
+     216.187,
+     334.381
+    ]
+   ],
+   "mesh_height": 337.2,
+   "top_above_floor": 338.4,
+   "feet_above_floor": 1.1,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Ogres/Ogre_Light"
+  },
+  {
+   "class": "BP_Ogre_Moneybags",
+   "chain": [
+    "BP_Ogre_Moneybags_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Ogre_Moneybags_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "MoneyBags_SKM",
+   "mesh_bounds": [
+    [
+     -204.979,
+     -154.844,
+     -2.407
+    ],
+    [
+     218.035,
+     96.691,
+     385.561
+    ]
+   ],
+   "mesh_height": 388.0,
+   "top_above_floor": 385.6,
+   "feet_above_floor": -2.4,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Ogres/Ogre_Moneybags"
+  },
+  {
+   "class": "BP_Orc_Archer",
+   "chain": [
+    "BP_Orc_Archer_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Orc_Archer_SKM",
+   "mesh_bounds": [
+    [
+     -143.723,
+     -32.984,
+     -36.618
+    ],
+    [
+     74.34,
+     118.013,
+     256.827
+    ]
+   ],
+   "mesh_height": 293.4,
+   "top_above_floor": 256.8,
+   "feet_above_floor": -36.6,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Orcs/Orc_Archer"
+  },
+  {
+   "class": "BP_Orc_Archer_TNT",
+   "chain": [
+    "BP_Orc_Archer_TNT_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Orc_Archer_TNT_SKM",
+   "mesh_bounds": [
+    [
+     -143.723,
+     -49.009,
+     -36.618
+    ],
+    [
+     76.635,
+     118.013,
+     276.406
+    ]
+   ],
+   "mesh_height": 313.0,
+   "top_above_floor": 276.4,
+   "feet_above_floor": -36.6,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Orcs/Orc_Archer_TNT"
+  },
+  {
+   "class": "BP_Orc_Boss",
+   "chain": [
+    "BP_Orc_Boss_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Orc_Boss_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -180.0,
+   "mesh_scale": [
+    1.149999976158142,
+    1.149999976158142,
+    1.149999976158142
+   ],
+   "mesh": "Orc_Boss_SKM",
+   "mesh_bounds": [
+    [
+     -128.238,
+     -100.141,
+     0.099
+    ],
+    [
+     107.917,
+     134.163,
+     326.904
+    ]
+   ],
+   "mesh_height": 375.8,
+   "top_above_floor": 375.9,
+   "feet_above_floor": 0.1,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Orcs/Orc_Boss"
+  },
+  {
+   "class": "BP_Orc_Heavy",
+   "chain": [
+    "BP_Orc_Heavy_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Orc_Heavy_SKM",
+   "mesh_bounds": [
+    [
+     -84.696,
+     -50.202,
+     -0.289
+    ],
+    [
+     130.976,
+     151.196,
+     246.486
+    ]
+   ],
+   "mesh_height": 246.8,
+   "top_above_floor": 246.5,
+   "feet_above_floor": -0.3,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Orcs/Orc_Heavy"
+  },
+  {
+   "class": "BP_Orc_Light",
+   "chain": [
+    "BP_Orc_Light_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.100000023841858,
+    1.100000023841858,
+    1.100000023841858
+   ],
+   "mesh": "Orc_Light_SKM",
+   "mesh_bounds": [
+    [
+     -55.844,
+     -24.189,
+     -0.473
+    ],
+    [
+     77.728,
+     84.792,
+     159.041
+    ]
+   ],
+   "mesh_height": 175.5,
+   "top_above_floor": 174.9,
+   "feet_above_floor": -0.5,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Orcs/Orc_Light"
+  },
+  {
+   "class": "BP_Orc_Medium",
+   "chain": [
+    "BP_Orc_Medium_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.100000023841858,
+    1.100000023841858,
+    1.100000023841858
+   ],
+   "mesh": "Orc_Medium_SKM",
+   "mesh_bounds": [
+    [
+     -66.473,
+     -26.183,
+     -1.291
+    ],
+    [
+     91.872,
+     145.418,
+     202.536
+    ]
+   ],
+   "mesh_height": 224.2,
+   "top_above_floor": 222.8,
+   "feet_above_floor": -1.4,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Orcs/Orc_Medium"
+  },
+  {
+   "class": "BP_Troll_Light",
+   "chain": [
+    "BP_Troll_Light_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Troll_Light_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -182.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Troll_Light_SKM",
+   "mesh_bounds": [
+    [
+     -148.097,
+     -50.36,
+     -1.107
+    ],
+    [
+     140.194,
+     185.311,
+     362.002
+    ]
+   ],
+   "mesh_height": 363.1,
+   "top_above_floor": 360.0,
+   "feet_above_floor": -3.1,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Trolls/Troll"
+  },
+  {
+   "class": "BP_Troll_Mountain",
+   "chain": [
+    "BP_Troll_Mountain_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Troll_Mountain_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -182.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Troll_Boss_SKM",
+   "mesh_bounds": [
+    [
+     -147.967,
+     -44.291,
+     -2.914
+    ],
+    [
+     146.249,
+     223.966,
+     382.907
+    ]
+   ],
+   "mesh_height": 385.8,
+   "top_above_floor": 380.9,
+   "feet_above_floor": -4.9,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Trolls/Troll_Mountain"
+  },
+  {
+   "class": "BP_Wraith_Boss",
+   "chain": [
+    "BP_Wraith_Boss_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 180.0,
+   "capsule_source": "BP_Wraith_Boss_C",
+   "capsule_radius": 80.0,
+   "mesh_offset_z": -160.0,
+   "mesh_scale": [
+    1.25,
+    1.25,
+    1.25
+   ],
+   "mesh": "Wraith_Boss_SKm",
+   "mesh_bounds": [
+    [
+     -96.354,
+     -127.187,
+     -1.364
+    ],
+    [
+     72.542,
+     67.425,
+     266.403
+    ]
+   ],
+   "mesh_height": 334.7,
+   "top_above_floor": 353.0,
+   "feet_above_floor": 18.3,
+   "capsule_height": 360.0,
+   "group": "Minions",
+   "folder": "Wraiths/Wraith_Boss"
+  },
+  {
+   "class": "BP_Wraith_Healer",
+   "chain": [
+    "BP_Wraith_Healer_C",
+    "BP_Minion_Base_C"
+   ],
+   "capsule_half_height": 96.0,
+   "capsule_source": "native (inferred)",
+   "capsule_radius": 42.0,
+   "mesh_offset_z": -96.0,
+   "mesh_scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "mesh": "Wraith_Healer_SKM",
+   "mesh_bounds": [
+    [
+     -76.628,
+     -123.3,
+     0.063
+    ],
+    [
+     71.792,
+     90.001,
+     232.905
+    ]
+   ],
+   "mesh_height": 232.8,
+   "top_above_floor": 232.9,
+   "feet_above_floor": 0.1,
+   "capsule_height": 192.0,
+   "group": "Minions",
+   "folder": "Wraiths/Wraith_Healer"
+  }
+ ]
+}

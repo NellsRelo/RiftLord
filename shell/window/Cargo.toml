@@ -1,0 +1,37 @@
+[package]
+name = "riftlord"
+version = "0.1.0"
+edition = "2021"
+description = "Rift Lord: the application window around the Map Editor, the Onslaught Editor and Missions"
+publish = false
+
+[[bin]]
+name = "RiftLord"
+path = "src/main.rs"
+
+[dependencies]
+wry = { version = "0.54", features = ["devtools"] }
+tao = "0.34"
+serde_json = "1"
+png = "0.17"
+dirs = "6"
+# the Map Editor's music preview (main.rs, music): Ogg Vorbis through lewton, played
+# through cpal (ALSA on Linux, WASAPI on Windows)
+rodio = { version = "0.20", default-features = false, features = ["vorbis"] }
+
+# Native dialogs. On Linux GTK's own file chooser, opened on the window's thread: rfd's
+# GTK backend initialises GTK on a thread of its own and waits on the caller, which
+# deadlocks when the caller is the thread tao already runs GTK on.
+[target.'cfg(target_os = "linux")'.dependencies]
+gtk = "0.18"
+
+[target.'cfg(not(target_os = "linux"))'.dependencies]
+rfd = { version = "0.16", default-features = false }
+
+[build-dependencies]
+embed-resource = "3"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

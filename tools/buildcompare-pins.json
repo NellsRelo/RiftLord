@@ -1,0 +1,12 @@
+{
+  "900_Fixture_Edit_P": {
+    "mode": "pinned",
+    "digest": "8c8a193e0ff92b6f",
+    "what": "the new code's build of 2026-10-30 19:37 (removed or moved geometry empties the persistent level precomputed visibility (popping))"
+  },
+  "900_Fixture_Scratch_P": {
+    "mode": "pinned",
+    "digest": "90ed5085bb905a5e",
+    "what": "the new code's build of 2026-10-30 19:53 (a level from scratch empties the persistent level precomputed visibility (popping))"
+  }
+}

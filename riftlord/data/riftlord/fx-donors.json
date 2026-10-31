@@ -1,0 +1,961 @@
+{
+ "effects": {
+  "FX_ArcaneMotes_Large": {
+   "actorClass": "Emitter",
+   "count": 8,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_05/Scenario_05",
+    "FX_ArcaneMotes3"
+   ],
+   "group": "Fog and dust",
+   "heights": [
+    1340.0,
+    1340.0
+   ],
+   "label": "Arcane Motes Large",
+   "levels": [
+    "Scenario_05",
+    "Scenario_16"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_16/Scenario_16_Environment",
+   "spacing": 3035.0,
+   "template": "FX_ArcaneMotes_Large"
+  },
+  "FX_ArcaneMotes_Med": {
+   "actorClass": "Emitter",
+   "count": 26,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_VFX",
+    "FX_ArcaneMotes_Med8"
+   ],
+   "group": "Fog and dust",
+   "heights": [
+    935.0,
+    1820.0
+   ],
+   "label": "Arcane Motes Med",
+   "levels": [
+    "ScenarioDLC_01",
+    "Scenario_10",
+    "Scenario_Other_02",
+    "Scenario_Sand_05"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_10/Scenario_10",
+   "spacing": 1835.0,
+   "template": "FX_ArcaneMotes_Med"
+  },
+  "FX_ArcaneMotes_Small": {
+   "actorClass": "Emitter",
+   "count": 30,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_10/Scenario_10",
+    "FX_ArcaneMotes_Small2"
+   ],
+   "group": "Fog and dust",
+   "heights": [
+    365.0,
+    2495.0
+   ],
+   "label": "Arcane Motes Small",
+   "levels": [
+    "Scenario_10",
+    "Scenario_16"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_16/Scenario_16_Environment",
+   "spacing": 1236.3,
+   "template": "FX_ArcaneMotes_Small"
+  },
+  "FX_ArcanePool": {
+   "actorClass": "Emitter",
+   "count": 55,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_VFX",
+    "FX_ArcanePool10"
+   ],
+   "group": "Magic",
+   "heights": [
+    -576.9,
+    -576.9
+   ],
+   "label": "Arcane Pool",
+   "levels": [
+    "ScenarioDLC_01",
+    "Scenario_05",
+    "Scenario_10",
+    "Scenario_15",
+    "Scenario_16",
+    "Scenario_Other_02"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_VFX",
+   "spacing": 1252.3,
+   "template": "FX_ArcanePool"
+  },
+  "FX_ArcanePool_Narrow": {
+   "actorClass": "Emitter",
+   "count": 8,
+   "donor": [
+    "/Game/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Environment",
+    "FX_ArcanePool13"
+   ],
+   "group": "Magic",
+   "heights": [
+    1703.5,
+    1703.5
+   ],
+   "label": "Arcane Pool Narrow",
+   "levels": [
+    "Scenario_Other_02",
+    "Scenario_Sand_04",
+    "Scenario_Sand_05"
+   ],
+   "measuredIn": "/Game/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Lighting",
+   "spacing": 2256.0,
+   "template": "FX_ArcanePool_Narrow"
+  },
+  "FX_ArcanePool_NarrowTiny": {
+   "actorClass": "Emitter",
+   "count": 11,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Environment",
+    "FX_ArcanePool_NarrowTiny_2"
+   ],
+   "group": "Magic",
+   "heights": [
+    -529.3,
+    -529.3
+   ],
+   "label": "Arcane Pool Narrow Tiny",
+   "levels": [
+    "Scenario_Ice_01",
+    "Scenario_Other_02",
+    "Scenario_Sand_04",
+    "Scenario_Sand_05"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_05/Scenario_Sand_05_Lighting",
+   "spacing": 1245.3,
+   "template": "FX_ArcanePool_NarrowTiny"
+  },
+  "FX_RedRift_Lvl18": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+    "FX_RedRift_2"
+   ],
+   "group": "Magic",
+   "heights": [
+    1516.9,
+    1516.9
+   ],
+   "label": "Red Rift Lvl18",
+   "levels": [
+    "Scenario_18"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+   "spacing": null,
+   "template": "FX_RedRift_Lvl18"
+  },
+  "NS_Snow_Angle": {
+   "actorClass": "NiagaraActor",
+   "count": 6,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+    "NS_Snow_Angle2"
+   ],
+   "group": "Weather",
+   "heights": [
+    0.0,
+    0.2
+   ],
+   "label": "Snow Angle",
+   "levels": [
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+   "spacing": 4505.8,
+   "template": "NS_Snow_Angle"
+  },
+  "NS_Snow_AngleLarge": {
+   "actorClass": "NiagaraActor",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+    "NS_Snow_Angle3"
+   ],
+   "group": "Weather",
+   "heights": [
+    -602.4,
+    -602.4
+   ],
+   "label": "Snow Angle Large",
+   "levels": [
+    "Scenario_Ice_02"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+   "spacing": null,
+   "template": "NS_Snow_AngleLarge"
+  },
+  "NS_Snow_AngleNarrow": {
+   "actorClass": "NiagaraActor",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_FX",
+    "NS_Snow_Scen03_Windy2"
+   ],
+   "group": "Weather",
+   "heights": [
+    196.7,
+    196.7
+   ],
+   "label": "Snow Angle Narrow",
+   "levels": [
+    "Scenario_Ice_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_FX",
+   "spacing": null,
+   "template": "NS_Snow_AngleNarrow"
+  },
+  "NS_Snow_Down": {
+   "actorClass": "NiagaraActor",
+   "count": 5,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+    "NS_Snow_Down_13"
+   ],
+   "group": "Weather",
+   "heights": [
+    -241.4,
+    595.6
+   ],
+   "label": "Snow Down",
+   "levels": [
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_FX",
+   "spacing": 3271.1,
+   "template": "NS_Snow_Down"
+  },
+  "NS_Snow_DownSmall": {
+   "actorClass": "NiagaraActor",
+   "count": 4,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+    "NS_Snow_DownSmall2_19"
+   ],
+   "group": "Weather",
+   "heights": [
+    -41.8,
+    -39.3
+   ],
+   "label": "Snow Down Small",
+   "levels": [
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+   "spacing": 5350.5,
+   "template": "NS_Snow_DownSmall"
+  },
+  "NS_Snow_DownTiny": {
+   "actorClass": "NiagaraActor",
+   "count": 2,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+    "NS_Snow_DownTiny_16"
+   ],
+   "group": "Weather",
+   "heights": [
+    133.7,
+    133.7
+   ],
+   "label": "Snow Down Tiny",
+   "levels": [
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_02/Scenario_Ice_02_FX",
+   "spacing": null,
+   "template": "NS_Snow_DownTiny"
+  },
+  "NS_Snow_Large_01": {
+   "actorClass": "NiagaraActor",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_FX",
+    "NS_Snow_XLarge_01_8"
+   ],
+   "group": "Weather",
+   "heights": [
+    250.0,
+    250.0
+   ],
+   "label": "Snow Large 01",
+   "levels": [
+    "Scenario_Ice_01"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_FX",
+   "spacing": null,
+   "template": "NS_Snow_Large_01"
+  },
+  "P_Acid_Bubbles": {
+   "actorClass": "Emitter",
+   "count": 16,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Acid",
+    "P_Acid_Bubbles2"
+   ],
+   "group": "Water",
+   "heights": [
+    175.0,
+    1026.2
+   ],
+   "label": "Acid Bubbles",
+   "levels": [
+    "Scenario_03",
+    "Scenario_14"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_14/Scenario_14_Environment",
+   "spacing": 1060.6,
+   "template": "P_Acid_Bubbles"
+  },
+  "P_Acid_Bubbles_LargeRadius": {
+   "actorClass": "Emitter",
+   "count": 3,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Acid",
+    "P_Acid_Bubbles_LargeRadius2"
+   ],
+   "group": "Water",
+   "heights": [
+    -1642.5,
+    -1085.1
+   ],
+   "label": "Acid Bubbles Large Radius",
+   "levels": [
+    "Scenario_03"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_03/Scenario_03_Acid",
+   "spacing": 1749.7,
+   "template": "P_Acid_Bubbles_LargeRadius"
+  },
+  "P_Acid_Bubbles_SmallRadius": {
+   "actorClass": "Emitter",
+   "count": 8,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Acid",
+    "P_Acid_Bubbles_SmallRadius2"
+   ],
+   "group": "Water",
+   "heights": [
+    909.9,
+    909.9
+   ],
+   "label": "Acid Bubbles Small Radius",
+   "levels": [
+    "Scenario_03",
+    "Scenario_07"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_07/Scenario_07_Environment",
+   "spacing": 2088.5,
+   "template": "P_Acid_Bubbles_SmallRadius"
+  },
+  "P_Acid_Bubbles_TinyRadius": {
+   "actorClass": "Emitter",
+   "count": 5,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_07/Scenario_07_Environment",
+    "P_Acid_Bubbles_TinyRadius2"
+   ],
+   "group": "Water",
+   "heights": [
+    -42.6,
+    -42.6
+   ],
+   "label": "Acid Bubbles Tiny Radius",
+   "levels": [
+    "Scenario_07",
+    "Scenario_14"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_07/Scenario_07_Environment",
+   "spacing": 1749.8,
+   "template": "P_Acid_Bubbles_TinyRadius"
+  },
+  "P_Acid_Idle": {
+   "actorClass": "Emitter",
+   "count": 17,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_07/Scenario_07_Environment",
+    "P_Acid_Idle2"
+   ],
+   "group": "Acid",
+   "heights": [
+    195.4,
+    1041.4
+   ],
+   "label": "Acid Idle",
+   "levels": [
+    "Scenario_07",
+    "Scenario_14"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_14/Scenario_14_Lighting",
+   "spacing": 957.5,
+   "template": "P_Acid_Idle"
+  },
+  "P_Acid_Wide_Idle": {
+   "actorClass": "Emitter",
+   "count": 5,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_14/Scenario_14_Lighting",
+    "P_Acid_Idle5_22"
+   ],
+   "group": "Acid",
+   "heights": [
+    1039.1,
+    1039.1
+   ],
+   "label": "Acid Wide Idle",
+   "levels": [
+    "Scenario_14"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_14/Scenario_14_Lighting",
+   "spacing": 820.8,
+   "template": "P_Acid_Wide_Idle"
+  },
+  "P_AshEmbers": {
+   "actorClass": "Emitter",
+   "count": 3,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_VFX",
+    "P_AshEmbers2"
+   ],
+   "group": "Lava and ash",
+   "heights": [
+    90.0,
+    145.0
+   ],
+   "label": "Ash Embers",
+   "levels": [
+    "Scenario_01"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_01/Scenario_01_VFX",
+   "spacing": 3734.9,
+   "template": "P_AshEmbers"
+  },
+  "P_AshEmbers_1": {
+   "actorClass": "Emitter",
+   "count": 31,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_VFX",
+    "P_AshEmbers_1"
+   ],
+   "group": "Lava and ash",
+   "heights": [
+    750.0,
+    1540.0
+   ],
+   "label": "Ash Embers 1",
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_01",
+    "Scenario_06",
+    "Scenario_12"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_06/Scenario_06",
+   "spacing": 2313.8,
+   "template": "P_AshEmbers_1"
+  },
+  "P_Brazier_Fire_Cine": {
+   "actorClass": "Emitter",
+   "count": 12,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Environment",
+    "P_Brazier_Fire_Cine16"
+   ],
+   "group": "Fire and smoke",
+   "heights": [
+    -724.0,
+    191.9
+   ],
+   "label": "Brazier Fire Cine",
+   "levels": [
+    "Scenario_Ice_01"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Ice/Scenario_Ice_01/Scenario_Ice_01_Environment",
+   "spacing": 2084.3,
+   "template": "P_Brazier_Fire_Cine"
+  },
+  "P_Floating_rocks": {
+   "actorClass": "Emitter",
+   "count": 13,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+    "P_Floating_rocks10"
+   ],
+   "group": "Other",
+   "heights": [
+    782.1,
+    1125.9
+   ],
+   "label": "Floating rocks",
+   "levels": [
+    "Scenario_18"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+   "spacing": 228.5,
+   "template": "P_Floating_rocks"
+  },
+  "P_LavaEmbers_Long_1": {
+   "actorClass": "Emitter",
+   "count": 69,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_VFX",
+    "P_LavaEmbers11"
+   ],
+   "group": "Lava and ash",
+   "heights": [
+    -765.0,
+    -140.7
+   ],
+   "label": "Lava Embers Long 1",
+   "levels": [
+    "ScenarioDLC_05",
+    "Scenario_01",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_Other_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_VFX",
+   "spacing": 1299.2,
+   "template": "P_LavaEmbers_Long_1"
+  },
+  "P_LavaWallFire": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+    "P_LavaWallFire13"
+   ],
+   "group": "Lava and ash",
+   "heights": [
+    -565.4,
+    -565.4
+   ],
+   "label": "Lava Wall Fire",
+   "levels": [
+    "Scenario_01"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+   "spacing": null,
+   "template": "P_LavaWallFire"
+  },
+  "P_Scenario_06DoorSmoke": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_01/Scenario_01",
+    "P_Scenario_06DoorSmoke_2"
+   ],
+   "group": "Fire and smoke",
+   "heights": [
+    -236.2,
+    -236.2
+   ],
+   "label": "Scenario 06Door Smoke",
+   "levels": [
+    "Scenario_01"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_01/Scenario_01",
+   "spacing": null,
+   "template": "P_Scenario_06DoorSmoke"
+  },
+  "P_SkyLightningStrike_End": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+    "P_SkyLightningStrike_End_41"
+   ],
+   "group": "Weather",
+   "heights": [
+    1435.0,
+    1435.0
+   ],
+   "label": "Sky Lightning Strike End",
+   "levels": [
+    "Scenario_18"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_18/Scenario_18",
+   "spacing": null,
+   "template": "P_SkyLightningStrike_End"
+  },
+  "P_Smoke_Large_Fire_Cine": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Environment",
+    "P_Smoke_Large_Fire_Cine5"
+   ],
+   "group": "Fire and smoke",
+   "heights": [
+    -1646.4,
+    -1646.4
+   ],
+   "label": "Smoke Large Fire Cine",
+   "levels": [
+    "Scenario_Sand_01"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Environment",
+   "spacing": null,
+   "template": "P_Smoke_Large_Fire_Cine"
+  },
+  "P_Torch_Fire": {
+   "actorClass": "Emitter",
+   "count": 2,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_03/Scenario_03_Environment",
+    "P_Torch_Fire2"
+   ],
+   "group": "Fire and smoke",
+   "heights": [
+    2271.0,
+    2784.0
+   ],
+   "label": "Torch Fire",
+   "levels": [
+    "Scenario_03"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_03/Scenario_03_Environment",
+   "spacing": 6912.3,
+   "template": "P_Torch_Fire"
+  },
+  "Rain_Storm": {
+   "actorClass": "Emitter",
+   "count": 27,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_VFX",
+    "Rain_Particle10"
+   ],
+   "group": "Weather",
+   "heights": [
+    52.6,
+    782.6
+   ],
+   "label": "Rain Storm",
+   "levels": [
+    "ScenarioDLC_04",
+    "Scenario_04",
+    "Scenario_15"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_VFX",
+   "spacing": 1877.5,
+   "template": "Rain_Storm"
+  },
+  "Rain_Storm_Blue": {
+   "actorClass": "Emitter",
+   "count": 12,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_08/Scenario_08_Rain",
+    "Rain_Storm10"
+   ],
+   "group": "Weather",
+   "heights": [
+    325.9,
+    897.6
+   ],
+   "label": "Rain Storm Blue",
+   "levels": [
+    "Scenario_08"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_08/Scenario_08_Rain",
+   "spacing": 1729.3,
+   "template": "Rain_Storm_Blue"
+  },
+  "Rain_Storm_Scne12_Large": {
+   "actorClass": "Emitter",
+   "count": 40,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_15/Scenario_15_Rain",
+    "Rain_Storm_Scne08_Large10"
+   ],
+   "group": "Weather",
+   "heights": [
+    -319.6,
+    3013.1
+   ],
+   "label": "Rain Storm Scne12 Large",
+   "levels": [
+    "Scenario_15"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_15/Scenario_15_Rain",
+   "spacing": 1397.6,
+   "template": "Rain_Storm_Scne12_Large"
+  },
+  "Rain_Storm_SmBalcony": {
+   "actorClass": "Emitter",
+   "count": 2,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04",
+    "Rain_Storm_SmBalcony2"
+   ],
+   "group": "Weather",
+   "heights": [
+    600.0,
+    600.0
+   ],
+   "label": "Rain Storm Sm Balcony",
+   "levels": [
+    "Scenario_04"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_04/Scenario_04",
+   "spacing": 3300.0,
+   "template": "Rain_Storm_SmBalcony"
+  },
+  "Rain_Storm_SmRadius": {
+   "actorClass": "Emitter",
+   "count": 6,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+    "Rain_Particle10"
+   ],
+   "group": "Weather",
+   "heights": [
+    392.5,
+    392.6
+   ],
+   "label": "Rain Storm Sm Radius",
+   "levels": [
+    "Scenario_04"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "spacing": 1298.7,
+   "template": "Rain_Storm_SmRadius"
+  },
+  "Splashes_Particle": {
+   "actorClass": "Emitter",
+   "count": 21,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+    "Splashes_Particle10"
+   ],
+   "group": "Water",
+   "heights": [
+    -300.0,
+    -1.6
+   ],
+   "label": "Splashes Particle",
+   "levels": [
+    "Scenario_04",
+    "Scenario_08",
+    "Scenario_15"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "spacing": 1827.0,
+   "template": "Splashes_Particle"
+  },
+  "Water_Splash_Calm": {
+   "actorClass": "Emitter",
+   "count": 11,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+    "Water_Splash_0"
+   ],
+   "group": "Water",
+   "heights": [
+    -557.6,
+    -429.9
+   ],
+   "label": "Water Splash Calm",
+   "levels": [
+    "Scenario_02"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "spacing": 702.7,
+   "template": "Water_Splash_Calm"
+  },
+  "Water_Splash_Stormy": {
+   "actorClass": "Emitter",
+   "count": 15,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_04/Scenario_04_Environment",
+    "Water_Splash_Stormy10"
+   ],
+   "group": "Water",
+   "heights": [
+    -895.8,
+    -700.2
+   ],
+   "label": "Water Splash Stormy",
+   "levels": [
+    "Scenario_04",
+    "Scenario_15"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_04/Scenario_04_Environment",
+   "spacing": 5103.0,
+   "template": "Water_Splash_Stormy"
+  },
+  "Water_Splash_Stormy2": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/Campaign/Scenario_15/Scenario_15_Environment",
+    "Water_Splash_Stormy3_9"
+   ],
+   "group": "Water",
+   "heights": [
+    -451.0,
+    -451.0
+   ],
+   "label": "Water Splash Stormy2",
+   "levels": [
+    "Scenario_15"
+   ],
+   "measuredIn": "/Game/Maps/Campaign/Scenario_15/Scenario_15_Environment",
+   "spacing": null,
+   "template": "Water_Splash_Stormy2"
+  },
+  "Waterfall_Mist1": {
+   "actorClass": "Emitter",
+   "count": 5,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Environment",
+    "Waterfall_Mist1_2"
+   ],
+   "group": "Water",
+   "heights": [
+    2112.8,
+    2401.4
+   ],
+   "label": "Waterfall Mist1",
+   "levels": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Environment",
+   "spacing": 269.7,
+   "template": "Waterfall_Mist1"
+  },
+  "Waterfall_Mist1Far": {
+   "actorClass": "Emitter",
+   "count": 4,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+    "Waterfall_Mist1_2"
+   ],
+   "group": "Water",
+   "heights": [
+    1466.2,
+    9126.2
+   ],
+   "label": "Waterfall Mist1Far",
+   "levels": [
+    "ScenarioDLC_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+   "spacing": 5456.0,
+   "template": "Waterfall_Mist1Far"
+  },
+  "Waterfall_Mist2_Blue": {
+   "actorClass": "Emitter",
+   "count": 2,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Environment",
+    "Waterfall_Mist1_2"
+   ],
+   "group": "Water",
+   "heights": [
+    1397.3,
+    1560.7
+   ],
+   "label": "Waterfall Mist2 Blue",
+   "levels": [
+    "ScenarioDLC_04"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Environment",
+   "spacing": 197.3,
+   "template": "Waterfall_Mist2_Blue"
+  },
+  "Waterfall_Splash1": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_VFX",
+    "Waterfall_Splash1_2"
+   ],
+   "group": "Water",
+   "heights": [
+    -96.8,
+    -96.8
+   ],
+   "label": "Waterfall Splash1",
+   "levels": [
+    "ScenarioDLC_02"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_VFX",
+   "spacing": null,
+   "template": "Waterfall_Splash1"
+  },
+  "Waterfall_Splash2_Blue": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Lighting",
+    "Waterfall_Splash1_2"
+   ],
+   "group": "Water",
+   "heights": [
+    -467.9,
+    -467.9
+   ],
+   "label": "Waterfall Splash2 Blue",
+   "levels": [
+    "ScenarioDLC_04"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Lighting",
+   "spacing": null,
+   "template": "Waterfall_Splash2_Blue"
+  },
+  "Waterfall_Splash3_River": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+    "Waterfall_Splash1_2"
+   ],
+   "group": "Water",
+   "heights": [
+    -1508.1,
+    -1508.1
+   ],
+   "label": "Waterfall Splash3 River",
+   "levels": [
+    "ScenarioDLC_03"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+   "spacing": null,
+   "template": "Waterfall_Splash3_River"
+  },
+  "Waterfall_TopSplash": {
+   "actorClass": "Emitter",
+   "count": 1,
+   "donor": [
+    "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Environment",
+    "Water_Splash_Calm_5"
+   ],
+   "group": "Water",
+   "heights": [
+    -610.9,
+    -610.9
+   ],
+   "label": "Waterfall Top Splash",
+   "levels": [
+    "ScenarioDLC_02"
+   ],
+   "measuredIn": "/Game/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Environment",
+   "spacing": null,
+   "template": "Waterfall_TopSplash"
+  }
+ },
+ "version": 1
+}

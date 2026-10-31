@@ -1,0 +1,787 @@
+{
+ "map": {
+  "art/Act2/Archs/OpenArch.vmesh": {
+   "family": "Archway",
+   "note": "reviewer: just use an arch -- no 1:1 map, OMD3 archways are not segmented the way OMD2 segments them",
+   "role": "arch",
+   "select": "shape+size"
+  },
+  "art/Act2/Archs/OpenArchTop.vmesh": {
+   "action": "drop",
+   "family": "Archway",
+   "note": "reviewer: not necessary, just use the archways",
+   "role": "arch"
+  },
+  "art/Act2/Archs/OpenArchWall.vmesh": {
+   "also": [
+    "ColumnTrim_CastStone_150W",
+    "Column_Sec_1_4_RB"
+   ],
+   "confidence": "measured",
+   "family": null,
+   "member": "Column_Sec_1_4_RB",
+   "note": "reviewer: Archway_Wall_SM, or a column next to an archway, and they recommended measuring the shipped maps. Measured: an OMD3 archway is the arch piece PLUS side columns PLUS metal trim -- ColumnTrim_CastStone_150W x387 within 700uu, Metal_Trim_Join_Small_Rivet x279, Column_Sec_1_4_RB x166, Metal_PostBase_B x161, Torch x156, ColumnTrim_CastStone_900W x143. Archways also stack 600uu above one another. | orientation-matched 2026-10-03: 400x400x1200 upright; Column_Sec_1_4_RB is 316x318x1201 -- the height matches to 1uu and it is square in plan like the source. Archway_Wall_SM is a 619x114x320 panel that LAY DOWN 224 times where the source stands up. It also carries a trap grid.",
+   "role": "arch",
+   "select": "shape+size",
+   "was": "Archway_Wall_SM"
+  },
+  "art/Act2/Archs/wallarch_arch.vmesh": {
+   "also": [
+    "Archway_1x1x4_Short_RB"
+   ],
+   "confidence": "measured",
+   "family": null,
+   "member": "Wall_1_1",
+   "note": "see wallarch_blocks -- only two archway meshes are ever shipped, chosen by width | author-driven 2026-10-03, size-matched against the OMD2 mesh and verified by fidelity.py: 116x340x544 arch panel; Archway_Wall_SM is 114x320x619 (err 0.21). It was an Archway_1x1x3_Short_RB, a whole archway, inventing 2,004 cells against 1,053 covered. | orientation-matched 2026-10-03: 116x340x544 upright arch span; Wall_1_1 is 300x100x570 -- 570 tall against 544 and 100 thick against 116. Archway_Wall_SM (320 tall, long on X) lay down 176 times.",
+   "role": "arch",
+   "select": "shape+size",
+   "was": "Archway_Wall_SM"
+  },
+  "art/Act2/Archs/wallarch_base.vmesh": {
+   "confidence": "measured",
+   "family": "ColumnTrim_CastStone",
+   "member": "ColumnTrim_CastStone_150W",
+   "note": "The reviewer delegated this one -- \"look at OMD3 maps for patterns of collections of tiles used with archways\". Measured across 9 shipped levels: the commonest mesh within 700uu of an archway is ColumnTrim_CastStone_150W (387 instances), the short column trim at the foot of an archway. That is what wallarch_base is.",
+   "role": "arch"
+  },
+  "art/Act2/Archs/wallarch_blocks.vmesh": {
+   "also": [
+    "Archway_1x1x4_Short_RB"
+   ],
+   "confidence": "measured",
+   "family": "Archway",
+   "member": "ColumnTrim_CastStone_300W",
+   "note": "reviewer: entirely contextual, match on shape and size. Measured instead: of the 17 Archway* meshes in the catalogue, 9 shipped levels place exactly TWO -- Archway_1x1x3_Short_RB (288) and Archway_1x1x4_Short_RB (225). The choice is between two pieces by opening width, not among seventeen. | author-driven 2026-10-03: an OMD2 arch is built from STONES and this is one 112x114x321 voussoir, not an archway. Mapping it to Archway_1x1x3_Short_RB (900x316x300) invented 7,504 grid cells against 1,380 covered -- 28% of all the invented geometry in the level. ColumnTrim_CastStone_300W is 104x103x300, a cast stone block of the right size.",
+   "role": "arch",
+   "select": "shape+size",
+   "was": "Archway_1x1x3_Short_RB"
+  },
+  "art/Act2/Archs/wallarch_keystone.vmesh": {
+   "action": "drop",
+   "confidence": "measured",
+   "family": null,
+   "member": "Column_Pointed_Half_B_SM",
+   "note": "Dropped for the same reason as wallarch_topblock: an OMD3 archway is ONE mesh that already includes its keystone. Shipped levels place only two archway meshes ever, and no separate keystone piece sits beside them. | author-driven 2026-10-03, size-matched against the OMD2 mesh and verified by fidelity.py: 157x158x223 keystone, previously UNMAPPED; Column_Pointed_Half_B_SM is 160x160x242 (err 0.12).",
+   "role": "arch",
+   "was": "family None"
+  },
+  "art/Act2/Archs/wallarch_topblock.vmesh": {
+   "action": "drop",
+   "family": null,
+   "member": "Wall_TrimOuterCorner_Bottom_1",
+   "note": "reviewer: likely not needed -- an OMD3 archway is one or two meshes, not an assembly of blocks | author-driven 2026-10-03, size-matched against the OMD2 mesh and verified by fidelity.py: 134x144x68 cap, previously UNMAPPED; Wall_TrimOuterCorner_Bottom_1 is 150x150x70 (err 0.19).",
+   "role": "arch",
+   "was": "family None"
+  },
+  "art/Act2/Brazier/Brazier.vmesh": {
+   "family": "Brazier",
+   "member": "Brazier",
+   "role": "light"
+  },
+  "art/Act2/Buttresses/buttressbase.vmesh": {
+   "also": [
+    "ColumnBlock_1_2"
+   ],
+   "confidence": "provisional",
+   "family": "Column_Sec",
+   "member": "ColumnBlock_Bottom_1_FB",
+   "note": "PROVISIONAL, same family as buttressmiddle -- the base of the same buttress.",
+   "role": "column"
+  },
+  "art/Act2/Buttresses/buttressbottom.vmesh": {
+   "also": [
+    "Column_Pointed_Half_SM",
+    "ColumnBlock_1_2"
+   ],
+   "confidence": "provisional",
+   "family": "Column_Sec",
+   "member": "ColumnBlock_Bottom_1_FB",
+   "note": "PROVISIONAL. A buttress is a wall support, and Column_Sec_1_4_RB is one of the measured archway companions, so the Column_Sec family is the right neighbourhood. Which member is a look call nobody has made.",
+   "role": "column"
+  },
+  "art/Act2/Buttresses/buttressmiddle.vmesh": {
+   "also": [
+    "Column_Pointed_Half_SM",
+    "ColumnBlock_1_2"
+   ],
+   "confidence": "provisional",
+   "family": "Column_Sec",
+   "member": "Column_Sec_1_2_RB",
+   "note": "PROVISIONAL. A buttress is a wall support, and Column_Sec_1_4_RB is one of the measured archway companions, so the Column_Sec family is the right neighbourhood. Which member is a look call nobody has made.",
+   "role": "column"
+  },
+  "art/Act2/Buttresses/buttresstop.vmesh": {
+   "also": [
+    "Column_Pointed_Half_SM",
+    "ColumnBlock_1_2"
+   ],
+   "confidence": "provisional",
+   "family": "Column_Sec",
+   "member": "ColumnBlock_Top_1_RB",
+   "note": "PROVISIONAL. A buttress is a wall support, and Column_Sec_1_4_RB is one of the measured archway companions, so the Column_Sec family is the right neighbourhood. Which member is a look call nobody has made.",
+   "role": "column"
+  },
+  "art/Act2/Ceilings/ceiling.vmesh": {
+   "decoration": [
+    "SM_MERGED_Ceiling_Beams_A",
+    "SM_MERGED_Ceiling_Beams_B",
+    "SM_MERGED_Metal_Grating_Ceiling",
+    "SM_MERGED_WoodBoxCeiling",
+    "SM_MERGED_Ceiling_Metal_With_Spikes"
+   ],
+   "family": "Ceiling",
+   "note": "see Ceiling4x4 -- base plus optional overlay",
+   "role": "ceiling"
+  },
+  "art/Act2/Columns/2storycolumn.vmesh": {
+   "family": "ColumnA_CastStone",
+   "member": "ColumnA_CastStone_1Story",
+   "note": "reviewer: definitely not Icicles -- ColumnA_CastStone_1Story fits best",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneFlat.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "family-by-folder",
+   "family": "ColumnTrim_CastStone",
+   "note": "Not a guess: the reviewer chose ColumnTrim_CastStone for CornerStoneOut AND again for CornerStoneIn, and every mesh in art/Act2/Cornerstones shares the one cornerstones_df texture. So the family is settled for the folder and only the member (height/cut) varies per variant.",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneIn.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "low",
+   "family": "ColumnTrim_CastStone",
+   "note": "reviewer: none quite fit, but ColumnTrim_CastStone_300W, ColumnA_CastStone_1Story and Column_Pointed_1Story_SM could work",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneIn_45.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "family-by-folder",
+   "family": "ColumnTrim_CastStone",
+   "note": "Not a guess: the reviewer chose ColumnTrim_CastStone for CornerStoneOut AND again for CornerStoneIn, and every mesh in art/Act2/Cornerstones shares the one cornerstones_df texture. So the family is settled for the folder and only the member (height/cut) varies per variant.",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneIn_half.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "family-by-folder",
+   "family": "ColumnTrim_CastStone",
+   "note": "Not a guess: the reviewer chose ColumnTrim_CastStone for CornerStoneOut AND again for CornerStoneIn, and every mesh in art/Act2/Cornerstones shares the one cornerstones_df texture. So the family is settled for the folder and only the member (height/cut) varies per variant.",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneOut.vmesh": {
+   "family": "ColumnTrim_CastStone",
+   "note": "reviewer: all candidates offered were acceptable",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneOut_45.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "family-by-folder",
+   "family": "ColumnTrim_CastStone",
+   "note": "Not a guess: the reviewer chose ColumnTrim_CastStone for CornerStoneOut AND again for CornerStoneIn, and every mesh in art/Act2/Cornerstones shares the one cornerstones_df texture. So the family is settled for the folder and only the member (height/cut) varies per variant.",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneOut_half.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "family-by-folder",
+   "family": "ColumnTrim_CastStone",
+   "note": "Not a guess: the reviewer chose ColumnTrim_CastStone for CornerStoneOut AND again for CornerStoneIn, and every mesh in art/Act2/Cornerstones shares the one cornerstones_df texture. So the family is settled for the folder and only the member (height/cut) varies per variant.",
+   "role": "column"
+  },
+  "art/Act2/Cornerstones/CornerStoneflat.vmesh": {
+   "also": [
+    "ColumnA_CastStone_1Story",
+    "Column_Pointed_1Story_SM"
+   ],
+   "confidence": "family-by-folder",
+   "family": "ColumnTrim_CastStone",
+   "note": "Not a guess: the reviewer chose ColumnTrim_CastStone for CornerStoneOut AND again for CornerStoneIn, and every mesh in art/Act2/Cornerstones shares the one cornerstones_df texture. So the family is settled for the folder and only the member (height/cut) varies per variant.",
+   "role": "column"
+  },
+  "art/Act2/Lighting/WallCandle01.vmesh": {
+   "also": [
+    "Lighting_WallCrystal_SM"
+   ],
+   "family": null,
+   "member": "Torch02",
+   "note": "reviewer: the sibling proposal (a Wall family) was WRONG and its dimensions are way off -- this is a DECORATION, not a wall. A wall-prefixed name is not a wall.",
+   "role": "light"
+  },
+  "art/Act2/Lighting/WallCandle02.vmesh": {
+   "also": [
+    "Lighting_WallCrystal_SM"
+   ],
+   "confidence": "decided",
+   "family": null,
+   "member": "Torch02",
+   "note": "Same answer as WallCandle01, which the reviewer ruled on: a decoration, not a wall -- Torch02 or Lighting_WallCrystal_SM.",
+   "role": "light"
+  },
+  "art/Act2/Portcullis/portcullis.vmesh": {
+   "confidence": "provisional",
+   "family": "Portcullis",
+   "member": "Portcullis_Solid_2W_SM",
+   "note": "PROVISIONAL. OMD3 ships Portcullis_Solid_2W_SM, Portcullis_4W_SM and the Portcullis_Wood_* set; the member follows from the opening width.",
+   "role": "door"
+  },
+  "art/Act2/Portcullis/portcullisbent3wide.vmesh": {
+   "confidence": "provisional",
+   "family": "Portcullis",
+   "member": "Portcullis_4W_SM",
+   "note": "PROVISIONAL. \"3wide\" is 3 OMD2 tiles = 1200uu = 4 OMD3 cells, which is Portcullis_4W_SM exactly. \"Bent\" has no OMD3 equivalent, so it converts as a straight one.",
+   "role": "door"
+  },
+  "art/Act2/Railing/RailingA2.vmesh": {
+   "confidence": "contextual",
+   "family": "Railing",
+   "note": "RailingA for END pieces, RailingB for MID pieces -- needs the piece's place in the run",
+   "role": "railing"
+  },
+  "art/Act2/Railing/RailingEndCap.vmesh": {
+   "family": "Railing",
+   "member": "RailingEndCap_Tall",
+   "role": "railing"
+  },
+  "art/Act2/Railing/RailingEndCap2.vmesh": {
+   "family": "Railing",
+   "member": "EndCap",
+   "role": "railing"
+  },
+  "art/Act2/Stairs/1widestairs.vmesh": {
+   "confidence": "measured",
+   "family": "Stairs",
+   "member": "Stairs_1x_4_SB",
+   "note": "OMD2 1widestairs is 402 wide x 1183 deep x 600 rise. No Stairs_1x_4_SB exists, so use Stairs_3x_4_SB scaled on width or two 2x pieces.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/2widesidewalls.vmesh": {
+   "confidence": "measured",
+   "directional": true,
+   "family": "Wall_StairsSide",
+   "member": "Wall_StairsSide_2_RB",
+   "note": "OMD3 ships dedicated stair side walls, placed in Scenario_16 (x4 of the 2, x8 of the 4) and Scenario_01/17 -- so a staircase is stairs + side wall + RailingStairs*, not a bare ramp. | author 2026-10-03: marked DIRECTIONAL. A stair side panel is the flank of a staircase, so it ascends with it; box-fitting turned 560 of them to yaw 90 and they read in game as \"trappable walls rotated 90 degrees near the centre\".",
+   "role": "wall"
+  },
+  "art/Act2/Stairs/2widestairs.vmesh": {
+   "confidence": "measured",
+   "family": "Stairs",
+   "member": "Stairs_3x_4_SB",
+   "note": "OMD2 2widestairs is 803 wide x 1202 deep x 600 rise; Stairs_3x_4_SB is 900 x 1211 x 606, so 0.89 on width and exact in depth and rise.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/3widesidewalls.vmesh": {
+   "confidence": "measured",
+   "directional": true,
+   "family": "Wall_StairsSide",
+   "member": "Wall_StairsSide_4_RB",
+   "note": "see 2widesidewalls | author 2026-10-03: marked DIRECTIONAL. A stair side panel is the flank of a staircase, so it ascends with it; box-fitting turned 560 of them to yaw 90 and they read in game as \"trappable walls rotated 90 degrees near the centre\".",
+   "role": "wall"
+  },
+  "art/Act2/Stairs/3widestairs.vmesh": {
+   "confidence": "measured",
+   "family": "Stairs",
+   "member": "Stairs_4x_4_SB",
+   "note": "OMD2 3widestairs is 1200 wide x 1202 deep x 600 rise; Stairs_4x_4_SB is 1200 x 1211 x 607. **Scale 1.0 on every axis** -- the one exact staircase match.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/MiniStep1A.vmesh": {
+   "also": [
+    "Stairs_2x_05_SB"
+   ],
+   "confidence": "measured",
+   "family": "Stairs",
+   "member": "Stairs_1x_05_SB",
+   "note": "reviewer was unsure anything fits 1:1 and pointed at The Basement = Scenario_16, which places Stairs_1x_05_SB x6, Stairs_3x_05_SB, Stairs_4x_05_SB and Stairs_CornerOutside_05_SB x8 -- the `_05_` suffix is the SHALLOW rise. Measured: MiniStep1A is 400 wide x 197.5 deep x 100 rise; Stairs_1x_05_SB is 300 x 162 x 93. Rise and depth agree; only the 400/300 width differs, which is the usual lattice fit.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/MiniStep2A.vmesh": {
+   "confidence": "provisional",
+   "family": "Stairs",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from ministep2b (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/MiniStep2b.vmesh": {
+   "confidence": "measured",
+   "family": "Stairs",
+   "member": "Stairs_3x_05_SB",
+   "note": "MiniStep2b is 800 wide x 197.5 deep x 100 rise; Stairs_3x_05_SB is 900 x 162 x 93, so 0.89 on width. Same shallow-rise family as MiniStep1A.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/MiniStepInCornerA.vmesh": {
+   "confidence": "provisional",
+   "family": "Stairs",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from ministepoutcornera (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/MiniStepOutCornerA.vmesh": {
+   "also": [
+    "Stairs_CornerOutside_SB",
+    "ORC_GlyphStairs"
+   ],
+   "confidence": "measured",
+   "family": "Stairs",
+   "member": "Stairs_CornerOutside_05_SB",
+   "note": "reviewer suggested Stairs_CornerOutside_SB or ORC_GlyphStairs. Measuring picks the _05_ variant: MiniStepOutCornerA is 197 x 200 x 100 and Stairs_CornerOutside_05_SB is 154 x 155 x 93, against 305 x 305 x 161 for the full-rise one -- which would be twice the step height.",
+   "role": "stair"
+  },
+  "art/Act2/Stairs/stairrailleft.vmesh": {
+   "also": [
+    "RailingStairsB",
+    "RailingStairsD"
+   ],
+   "confidence": "measured",
+   "directional": true,
+   "family": "RailingStairs",
+   "member": "RailingStairsC",
+   "note": "OMD2 stairrailleft is 1074 long x 604 tall. RailingStairsA-D are 1, 2, 3 and 4 cells long; C (900) and D (1200) bracket it. Scenario_16 pairs them with RailingStairsEndA/B at the ends and RailingStairsTile along the run, which is the same end-vs-middle rule the reviewer gave for RailingA2. | author 2026-10-03: marked DIRECTIONAL. A stair side panel is the flank of a staircase, so it ascends with it; box-fitting turned 560 of them to yaw 90 and they read in game as \"trappable walls rotated 90 degrees near the centre\".",
+   "role": "railing"
+  },
+  "art/Act2/Stairs/stairrailright.vmesh": {
+   "also": [
+    "RailingStairsB",
+    "RailingStairsD"
+   ],
+   "confidence": "measured",
+   "directional": true,
+   "family": "RailingStairs",
+   "member": "RailingStairsC",
+   "note": "OMD2 stairrailleft is 1074 long x 604 tall. RailingStairsA-D are 1, 2, 3 and 4 cells long; C (900) and D (1200) bracket it. Scenario_16 pairs them with RailingStairsEndA/B at the ends and RailingStairsTile along the run, which is the same end-vs-middle rule the reviewer gave for RailingA2. | author 2026-10-03: marked DIRECTIONAL. A stair side panel is the flank of a staircase, so it ascends with it; box-fitting turned 560 of them to yaw 90 and they read in game as \"trappable walls rotated 90 degrees near the centre\".",
+   "role": "railing"
+  },
+  "art/Act2/Wall/Thickness1.vmesh": {
+   "confidence": "provisional",
+   "family": "WallTrim_Top",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from thickness2 (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry. Role is TRIM, not wall: it is a decorative band along a wall top, so it is laid as a LINE along the run and keeps its own cross-section rather than being tiled in two directions. | author-driven 2026-10-03, size-matched against the OMD2 mesh and verified by fidelity.py: 105x400x105 trim bar. WallTrim_Top overreached (811 invented against 466 covered); ColumnTrim_CastStone is 104x103 in section with 300/600/900/1200 lengths, so a run tiles exactly. | REVERTED 2026-10-03: I had size-matched these to ColumnTrim_CastStone, but that match SORTED the dimensions and so ignored orientation -- ColumnTrim is a VERTICAL column trim and Thickness is a HORIZONTAL bar, and a quarter turn cannot lay a vertical piece down (that is a roll, not a yaw). It placed 149 pieces standing up, 104x103x900, as posts sticking out of walls. Occupancy improved while the map got worse, which is why fidelity.py alone is not enough.",
+   "role": "trim",
+   "was": "family WallTrim_Top"
+  },
+  "art/Act2/Wall/Thickness2.vmesh": {
+   "also": [
+    "WallTrim_Bottom",
+    "Cren"
+   ],
+   "confidence": "contextual",
+   "family": "WallTrim_Top",
+   "note": "reviewer: Cren/Crenellations or WallTrims, depending where it is used Role is TRIM, not wall: it is a decorative band along a wall top, so it is laid as a LINE along the run and keeps its own cross-section rather than being tiled in two directions. | author-driven 2026-10-03, size-matched against the OMD2 mesh and verified by fidelity.py: 105x800x105 trim bar; see thickness1. Was 2,506 invented against 1,909 covered. | REVERTED 2026-10-03: I had size-matched these to ColumnTrim_CastStone, but that match SORTED the dimensions and so ignored orientation -- ColumnTrim is a VERTICAL column trim and Thickness is a HORIZONTAL bar, and a quarter turn cannot lay a vertical piece down (that is a roll, not a yaw). It placed 149 pieces standing up, 104x103x900, as posts sticking out of walls. Occupancy improved while the map got worse, which is why fidelity.py alone is not enough.",
+   "role": "trim",
+   "was": "family WallTrim_Top"
+  },
+  "art/Act2/Wall/Thickness3.vmesh": {
+   "confidence": "provisional",
+   "family": "WallTrim_Top",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from thickness2 (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry. Role is TRIM, not wall: it is a decorative band along a wall top, so it is laid as a LINE along the run and keeps its own cross-section rather than being tiled in two directions. | author-driven 2026-10-03, size-matched against the OMD2 mesh and verified by fidelity.py: 105x1200x105 trim bar; ColumnTrim_CastStone_1200W is 104x103x1200, err 0.03. | REVERTED 2026-10-03: I had size-matched these to ColumnTrim_CastStone, but that match SORTED the dimensions and so ignored orientation -- ColumnTrim is a VERTICAL column trim and Thickness is a HORIZONTAL bar, and a quarter turn cannot lay a vertical piece down (that is a roll, not a yaw). It placed 149 pieces standing up, 104x103x900, as posts sticking out of walls. Occupancy improved while the map got worse, which is why fidelity.py alone is not enough.",
+   "role": "trim",
+   "was": "family WallTrim_Top"
+  },
+  "art/Act2/Wall/ThicknessCorner.vmesh": {
+   "confidence": "unresolved",
+   "family": null,
+   "note": "reviewer: no idea without knowing what the piece is for in context Role is TRIM, not wall: it is a decorative band along a wall top, so it is laid as a LINE along the run and keeps its own cross-section rather than being tiled in two directions.",
+   "role": "trim"
+  },
+  "art/Act2/Wall/Wall1_1.vmesh": {
+   "also": [
+    "Wall_FB"
+   ],
+   "family": "Wall_Sec_V2_RB",
+   "note": "reviewer: Wall_Sec_2_3_V2_RB or Wall_2_3_FB fit best of those offered",
+   "role": "wall"
+  },
+  "art/Act2/Wall/Wall1_1Angled.vmesh": {
+   "confidence": "provisional",
+   "family": "WallAngled",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from wall1_2angled (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "wall"
+  },
+  "art/Act2/Wall/Wall1_2.vmesh": {
+   "family": "Wall_FB",
+   "member": "Wall_1_2_FB",
+   "role": "wall"
+  },
+  "art/Act2/Wall/Wall1_2Angled.vmesh": {
+   "confidence": "exact",
+   "family": "WallAngled",
+   "member": "WallAngled_1_2",
+   "note": "reviewer: an EXACT map, and they were surprised the proposal was Wall_FB. The sibling proposal keyed on the Wall1_2 stem and ignored the Angled modifier, which names a different OMD3 family.",
+   "role": "wall"
+  },
+  "art/Act2/Wall/Wall1half_1.vmesh": {
+   "confidence": "low",
+   "family": "Wall_FB",
+   "note": "reviewer: nothing offered is a 1:1 match; Wall_1_2_FB maybe",
+   "role": "wall"
+  },
+  "art/Act2/Wall/Wall45_1.vmesh": {
+   "confidence": "provisional",
+   "family": "Wall_Sec_V2_RB",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from wall1_1 (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "wall"
+  },
+  "art/Act2/Wall/WallBase1.vmesh": {
+   "confidence": "provisional",
+   "family": "Wall_Sec_V2_RB",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from wallbase4_6 (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "wall"
+  },
+  "art/Act2/Windows/archedwall.vmesh": {
+   "confidence": "unresolved",
+   "family": null,
+   "note": "reviewer: none of the options offered really fit",
+   "role": "window"
+  },
+  "art/Act2/Windows/archedwindow.vmesh": {
+   "also": [
+    "Window_Pointed_1xB"
+   ],
+   "family": "Window_Pointed",
+   "member": "Window_Pointed_1x",
+   "role": "window"
+  },
+  "art/Act2/Windows/archedwindow_inner.vmesh": {
+   "action": "drop-if-paired",
+   "family": "Window_Pointed",
+   "member": "Window_Pointed_3xB",
+   "note": "reviewer: not necessary if paired with archedwindow; Window_Pointed_3xB if it stands alone",
+   "pairs_with": "art/Act2/Windows/archedwindow.vmesh",
+   "role": "window"
+  },
+  "art/Act2/Windows/largearchwindow.vmesh": {
+   "confidence": "decided",
+   "family": "Window_Pointed",
+   "member": "Window_Pointed_3xB",
+   "note": "The reviewer gave Window_Pointed_3xB for the tall inner arched window; this is the large one, so it takes the same piece.",
+   "role": "window"
+  },
+  "art/Act2/floors/FloorMain1.vmesh": {
+   "family": "Floor_Squarebrick",
+   "role": "floor"
+  },
+  "art/Act2/floors/FloorMainDesign01.vmesh": {
+   "confidence": "delegated",
+   "family": null,
+   "member": "Floor_Arabic_2x2_SM",
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 21 instances in TheCrunch.",
+   "role": "floor"
+  },
+  "art/Act2/floors/FloorMainDesign02.vmesh": {
+   "confidence": "delegated",
+   "family": null,
+   "member": "Floor_Squarebrick_2x2",
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 13 instances in TheCrunch. | author 2026-10-02: substituted for TRAPPABILITY. The previous choice has no single-mesh trap-grid Blueprint, so floors made of it could never take a trap (measured in game: trap locations appeared only where a grid-bearing Blueprint was placed). All seven OMD2 floor designs are 400x400 square tiles and this is 600x600, like the other design mappings. The reviewer delegated the pattern (\"any of these should likely work\") and then chose Floor_Squarebrick_2x2 when the constraint was put to them. This one was also plain wrong on its own terms: a 400x400 floor tile had been mapped to a 106x601 metal TRIM BAND.",
+   "role": "floor",
+   "was": "Trim_Floor_MetalBand_2a_RB"
+  },
+  "art/Act2/floors/FloorMainDesign03.vmesh": {
+   "action": "drop",
+   "confidence": "delegated",
+   "family": null,
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 6 instances in TheCrunch. | author 2026-10-03: dropped. Its only trap-grid blueprint was Floor_4x4_Ice, and without it the mesh reads as a checkerboard patch that does not belong; the author asked for it removed.",
+   "role": "floor",
+   "was": "Floor_4x4_MeshPaint"
+  },
+  "art/Act2/floors/FloorMainDesign04.vmesh": {
+   "confidence": "delegated",
+   "family": null,
+   "member": "Floor_Squarebrick_2x2",
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 132 instances in TheCrunch. | author 2026-10-02: substituted for TRAPPABILITY. The previous choice has no single-mesh trap-grid Blueprint, so floors made of it could never take a trap (measured in game: trap locations appeared only where a grid-bearing Blueprint was placed). All seven OMD2 floor designs are 400x400 square tiles and this is 600x600, like the other design mappings. The reviewer delegated the pattern (\"any of these should likely work\") and then chose Floor_Squarebrick_2x2 when the constraint was put to them.",
+   "role": "floor",
+   "was": "Floor_Herringbone_2x2_SM"
+  },
+  "art/Act2/floors/FloorMainDesign05.vmesh": {
+   "confidence": "delegated",
+   "family": null,
+   "member": "Floor_FanLarge_2x2_SM",
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 18 instances in TheCrunch.",
+   "role": "floor"
+  },
+  "art/Act2/floors/FloorMainDesign06.vmesh": {
+   "confidence": "delegated",
+   "family": null,
+   "member": "Floor_Squarebrick_2x2",
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 92 instances in TheCrunch. | author 2026-10-02: substituted for TRAPPABILITY. The previous choice has no single-mesh trap-grid Blueprint, so floors made of it could never take a trap (measured in game: trap locations appeared only where a grid-bearing Blueprint was placed). All seven OMD2 floor designs are 400x400 square tiles and this is 600x600, like the other design mappings. The reviewer delegated the pattern (\"any of these should likely work\") and then chose Floor_Squarebrick_2x2 when the constraint was put to them.",
+   "role": "floor",
+   "was": "Floor_Mediterranean_2x2_SM"
+  },
+  "art/Act2/floors/FloorMainDesign07.vmesh": {
+   "confidence": "delegated",
+   "family": null,
+   "member": "Floor_Squarebrick_2x2",
+   "note": "reviewer: \"any of these should likely work\", so the pattern was chosen freely. The seven OMD2 design variants are spread across OMD3's patterned tiles rather than collapsed onto one, so the floor stays as varied as OMD2 drew it. 16 instances in TheCrunch.",
+   "role": "floor"
+  },
+  "art/Building/Rift/Rift/RiftBase.vmesh": {
+   "confidence": "provisional",
+   "family": "RiftBase",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from the \"RiftBase\" in its name (modifier). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": null
+  },
+  "art/building/rift/rift/riftbase.vmesh": {
+   "action": "gameplay-actor",
+   "confidence": "measured",
+   "family": null,
+   "note": "A rift is a gameplay actor in OMD3 with its own art, which is why the reviewer marked PortalFrame.prefab as the rift rather than scenery. Emits no mesh; the rift actor is placed instead.",
+   "role": "rift"
+  },
+  "art/building/rift/rift/riftcrystal.vmesh": {
+   "action": "gameplay-actor",
+   "confidence": "measured",
+   "family": null,
+   "note": "A rift is a gameplay actor in OMD3 with its own art, which is why the reviewer marked PortalFrame.prefab as the rift rather than scenery. Emits no mesh; the rift actor is placed instead.",
+   "role": "rift"
+  },
+  "art/building/rift/rift/riftspire.vmesh": {
+   "action": "gameplay-actor",
+   "confidence": "measured",
+   "family": null,
+   "note": "A rift is a gameplay actor in OMD3 with its own art, which is why the reviewer marked PortalFrame.prefab as the rift rather than scenery. Emits no mesh; the rift actor is placed instead.",
+   "role": "rift"
+  },
+  "art/building/rift/rift/riftstep.vmesh": {
+   "action": "gameplay-actor",
+   "confidence": "measured",
+   "family": null,
+   "note": "A rift is a gameplay actor in OMD3 with its own art, which is why the reviewer marked PortalFrame.prefab as the rift rather than scenery. Emits no mesh; the rift actor is placed instead.",
+   "role": "rift"
+  },
+  "art/castle/Ceiling/Ceiling4x4.vmesh": {
+   "decoration": [
+    "SM_MERGED_Ceiling_Beams_A",
+    "SM_MERGED_Ceiling_Beams_B",
+    "SM_MERGED_Metal_Grating_Ceiling",
+    "SM_MERGED_WoodBoxCeiling",
+    "SM_MERGED_Ceiling_Metal_With_Spikes"
+   ],
+   "family": "Ceiling",
+   "note": "reviewer: Ceiling is the BASE; the SM_MERGED_* ceilings are decoration laid ON TOP of it, not alternatives",
+   "role": "ceiling"
+  },
+  "art/castle/Floor/Ground4x4.vmesh": {
+   "family": "Floor_Squarebrick",
+   "role": "floor"
+  },
+  "art/castle/OnslaughtDoor/OD_DebriProp.vmesh": {
+   "confidence": "unresolved",
+   "family": null,
+   "note": "reviewer: none of the options offered really fit",
+   "role": "door"
+  },
+  "art/castle/PitAcid/PitAcid.vmesh": {
+   "action": "liquid-plane",
+   "also": [
+    "Scenario_14_Acid_Surface_LowerPool",
+    "Scenario_14_Acid_Surface_Tunnel",
+    "Scenario_14_Acid_Surface_UpperPool"
+   ],
+   "confidence": "measured",
+   "family": null,
+   "member": "Scenario_07_Acid_Surface_Small",
+   "note": "reviewer: OMD3 has a liquid plane for this and the material does the work; example in Sludge Shelves = Scenario_14. Measured: every liquid surface is a FLAT plane of z size 0, authored per level per pool (Scenario_14_Acid_Surface_LowerPool 2441x5622x0, _Tunnel 628x1821x0, Scenario_07_Acid_Surface_Small 1987x1891x0). Being flat and textured by a flowing material, a liquid plane is the ONE case where scaling to any footprint is free. Scenario_14 also places AcidFall_02/03 for falls.",
+   "role": "hazard"
+  },
+  "art/castle/PitAcid/PitAcid6x6Kill.vmesh": {
+   "action": "kill-volume",
+   "confidence": "measured",
+   "family": null,
+   "liquid": "acid",
+   "note": "\"Kill\" is the volume that kills whatever enters it, not art. OMD3 does this with a gameplay actor, so this emits no mesh; it pairs with the acid plane from the matching *Top mesh.",
+   "role": "hazard"
+  },
+  "art/castle/PitAcid/PitAcid6x6Top.vmesh": {
+   "action": "liquid-plane",
+   "confidence": "measured",
+   "family": null,
+   "liquid": "acid",
+   "note": "\"Top\" is the liquid SURFACE, so it becomes a flat liquid plane like PitAcid. OMD3 ships acid surfaces as flat z=0 planes (Scenario_06_Lava_Surface_*, Scenario_14_Acid_Surface_*).",
+   "role": "hazard"
+  },
+  "art/castle/PitLava/PitLava6x6Kill.vmesh": {
+   "action": "kill-volume",
+   "confidence": "measured",
+   "family": null,
+   "liquid": "lava",
+   "note": "\"Kill\" is the volume that kills whatever enters it, not art. OMD3 does this with a gameplay actor, so this emits no mesh; it pairs with the lava plane from the matching *Top mesh.",
+   "role": "hazard"
+  },
+  "art/castle/PitLava/PitLava6x6Top.vmesh": {
+   "action": "liquid-plane",
+   "confidence": "measured",
+   "family": null,
+   "liquid": "lava",
+   "note": "\"Top\" is the liquid SURFACE, so it becomes a flat liquid plane like PitAcid. OMD3 ships lava surfaces as flat z=0 planes (Scenario_06_Lava_Surface_*, Scenario_14_Acid_Surface_*).",
+   "role": "hazard"
+  },
+  "art/castle/Stairs/3wideStairs.vmesh": {
+   "confidence": "provisional",
+   "family": "Stairs",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from 3widestairs (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "stair"
+  },
+  "art/castle/Walls/WallBase4_6.vmesh": {
+   "family": "Wall_Sec_V2_RB",
+   "note": "equates to TWO of the 2x3 wall pieces -- a merge, not a 1:1 swap",
+   "role": "wall"
+  },
+  "art/decor/OrderStatues/SorcOrderStatue.vmesh": {
+   "also": [
+    "Statue_Raven_Base_SM",
+    "Statue_Orcs"
+   ],
+   "confidence": "provisional",
+   "family": "Statue",
+   "member": "Statue_Warhero_Priestess_A",
+   "note": "PROVISIONAL. These are the Order's own statues -- a war mage, a sorceress, a wizard -- and OMD3 ships Statue_Raven_* (the Order's raven) and Statue_Orcs. A figure-for-figure match does not exist, so this is a look call nobody has made. | author 2026-10-03: the raven statue was 388x295x391 against an OMD2 statue around 90x80x210 -- 39x the volume, and it has no mount, so it hung in mid-air. The warhero statues are the right size AND carry their own base. 86x67x198 -> 112x106x215",
+   "role": "statue",
+   "was": "Statue_Raven_Brass_SM"
+  },
+  "art/decor/OrderStatues/WarMageStatue.vmesh": {
+   "also": [
+    "Statue_Raven_Base_SM",
+    "Statue_Orcs"
+   ],
+   "confidence": "provisional",
+   "family": "Statue",
+   "member": "Statue_Warhero_Knight_A",
+   "note": "PROVISIONAL. These are the Order's own statues -- a war mage, a sorceress, a wizard -- and OMD3 ships Statue_Raven_* (the Order's raven) and Statue_Orcs. A figure-for-figure match does not exist, so this is a look call nobody has made. | author 2026-10-03: the raven statue was 388x295x391 against an OMD2 statue around 90x80x210 -- 39x the volume, and it has no mount, so it hung in mid-air. The warhero statues are the right size AND carry their own base. 98x100x255 -> 163x150x282",
+   "role": "statue",
+   "was": "Statue_Raven_Brass_SM"
+  },
+  "art/decor/OrderStatues/WizardStatue.vmesh": {
+   "also": [
+    "Statue_Raven_Base_SM",
+    "Statue_Orcs"
+   ],
+   "confidence": "provisional",
+   "family": "Statue",
+   "member": "Statue_Warhero_Priestess_A",
+   "note": "PROVISIONAL. These are the Order's own statues -- a war mage, a sorceress, a wizard -- and OMD3 ships Statue_Raven_* (the Order's raven) and Statue_Orcs. A figure-for-figure match does not exist, so this is a look call nobody has made. | author 2026-10-03: the raven statue was 388x295x391 against an OMD2 statue around 90x80x210 -- 39x the volume, and it has no mount, so it hung in mid-air. The warhero statues are the right size AND carry their own base. 84x78x209 -> 112x106x215",
+   "role": "statue",
+   "was": "Statue_Raven_Brass_SM"
+  },
+  "art/decor/banners/HangingBannerA.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM",
+    "Lizardman_Banner_Hanging"
+   ],
+   "confidence": "provisional",
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "note": "PROVISIONAL. These share the HangingBannerA_db texture and hang from above rather than from a pole, so they are not the PoleBanner case the reviewer ruled on. Banner_Raven is the castle faction's banner; Lizardman_Banner_Hanging is literally a hanging banner but belongs to another faction's art.",
+   "role": "banner"
+  },
+  "art/decor/banners/HangingBannerB.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM",
+    "Lizardman_Banner_Hanging"
+   ],
+   "confidence": "provisional",
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "note": "PROVISIONAL. These share the HangingBannerA_db texture and hang from above rather than from a pole, so they are not the PoleBanner case the reviewer ruled on. Banner_Raven is the castle faction's banner; Lizardman_Banner_Hanging is literally a hanging banner but belongs to another faction's art.",
+   "role": "banner"
+  },
+  "art/decor/banners/HangingBannerc.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM",
+    "Lizardman_Banner_Hanging"
+   ],
+   "confidence": "provisional",
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "note": "PROVISIONAL. These share the HangingBannerA_db texture and hang from above rather than from a pole, so they are not the PoleBanner case the reviewer ruled on. Banner_Raven is the castle faction's banner; Lizardman_Banner_Hanging is literally a hanging banner but belongs to another faction's art.",
+   "role": "banner"
+  },
+  "art/decor/banners/LongBanner.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM",
+    "Lizardman_Banner_Hanging"
+   ],
+   "confidence": "provisional",
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "note": "PROVISIONAL. These share the HangingBannerA_db texture and hang from above rather than from a pole, so they are not the PoleBanner case the reviewer ruled on. Banner_Raven is the castle faction's banner; Lizardman_Banner_Hanging is literally a hanging banner but belongs to another faction's art.",
+   "role": "banner"
+  },
+  "art/decor/banners/LongBannerBlue.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM",
+    "Lizardman_Banner_Hanging"
+   ],
+   "confidence": "provisional",
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "note": "PROVISIONAL. These share the HangingBannerA_db texture and hang from above rather than from a pole, so they are not the PoleBanner case the reviewer ruled on. Banner_Raven is the castle faction's banner; Lizardman_Banner_Hanging is literally a hanging banner but belongs to another faction's art.",
+   "role": "banner"
+  },
+  "art/decor/banners/PoleBannerA.vmesh": {
+   "confidence": "provisional",
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from polebannerbluea (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry. A prop needs a named mesh, not just a family: a prop is placed once at its own size and there is no run to pick a member by.",
+   "role": "banner"
+  },
+  "art/decor/banners/PoleBannerBlueA.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM"
+   ],
+   "family": "Banner_Raven",
+   "member": "Banner_Raven_A_SM",
+   "role": "banner"
+  },
+  "art/decor/banners/PoleBannerb.vmesh": {
+   "also": [
+    "Banner_Raven_B_SM"
+   ],
+   "members": [
+    "BannerWoodBeam",
+    "Banner_Raven_A_SM"
+   ],
+   "note": "reviewer: banners and poles are SEPARATE meshes in OMD3, so one OMD2 mesh becomes TWO -- BannerWoodBeam for the pole and a Banner_Raven for the cloth",
+   "role": "banner"
+  },
+  "art/traps/RollingLog/WallRamp.vmesh": {
+   "confidence": "provisional",
+   "family": "Wall_Sec_V2_RB",
+   "note": "PROVISIONAL, not reviewed by a human: proposed from wall1_1 (sibling). Emission uses it so the pipeline can be tested end to end; appearance may be wrong and correcting it changes only this entry.",
+   "role": "wall"
+  },
+  "art/traps/barricade/BarricadeProp.vmesh": {
+   "action": "drop",
+   "confidence": "measured",
+   "family": null,
+   "note": "OMD3 barricades are PLAYER-PLACED traps (BP_Barricade, one of only two trap blueprints that carve the navmesh), so a level must not ship one as scenery. Dropped rather than swapped.",
+   "role": "trap"
+  }
+ },
+ "notes": [
+  "OMD2 mesh -> OMD3 FAMILY, not a single mesh. The numbers in an OMD3 mesh name are",
+  "GRID CELLS (Floor_Squarebrick_4x4 measures 4.03 x 4.02 cells), so the family is the",
+  "decision and the member is picked at emit time from the cell size actually needed.",
+  "Recorded from a visual review on 2026-10-02; 'unresolved' means the reviewer saw no",
+  "right answer among the candidates offered.",
+  "LAYERING: a ceiling is a BASE mesh plus optional decoration meshes over it (SM_MERGED_Ceiling_Beams_*, _Metal_Grating_, _WoodBoxCeiling, _Metal_With_Spikes). Overlapping meshes are normal in OMD3 and this is one of the places it is expected.",
+  "Orc_WoodCeilingLog_B is the mesh for OMD2's LOG TRAP, which OMD3 has no equivalent for. Not a conversion mapping -- a note for whoever builds that trap as a new actor.",
+  "SECOND REVIEW PASS, 2026-10-02. One OMD2 mesh can become TWO OMD3 meshes: OMD2 models a banner and its pole as one mesh, OMD3 ships them separately, so `members` (a list placed together) joins `member` (one choice) and `family` (pick by size).",
+  "A sibling proposal is NOT safe when the name carries a modifier: `Wall1_2Angled` proposed the `Wall_FB` family from `Wall1_2` and the right answer is `WallAngled_1_2` exactly; `WallCandle01` proposed a wall family and is a decoration. A modifier word (Angled, Candle) names a different family, so it must beat the stem match.",
+  "Six entries are deliberately UNRESOLVED rather than guessed: archedwall, ThicknessCorner, OD_DebriProp (nothing offered fits) and MiniStep1A/2b (no 1:1 stairs). PitAcid wants a liquid plane, not a mesh. Levels to study: Scenario_14 (Sludge Shelves, acid), Scenario_16 (The Basement, small stairs), and any map with archways for how tiles are grouped around them.",
+  "MEASURED FROM SHIPPED LEVELS, 2026-10-02 (9 levels, 23,182 pieces). Archways: of the 17 Archway* meshes in the catalogue the shipped levels place only TWO -- Archway_1x1x3_Short_RB (288) and Archway_1x1x4_Short_RB (225). What surrounds them is the pattern the reviewer meant: ColumnTrim_CastStone_150W (387 within 700uu), Metal_Trim_Join_Small_Rivet (279), Column_Sec_1_4_RB (166), Metal_PostBase_B (161), Torch (156), ColumnTrim_CastStone_900W (143). So an OMD3 archway is an arch piece plus side columns plus metal trim, and archways also stack 600uu above each other.",
+  "STAIR SLOPE AGREES BETWEEN THE GAMES. OMD2 stairs rise 600uu over ~1200uu of depth (26.5 degrees) and OMD3 Stairs_*_4_SB rise 606 over 1211 -- the same. So stairs convert without reshaping, and 3widestairs -> Stairs_4x_4_SB is 1200 wide on both sides at scale 1.0. OMD3 naming is Stairs_<width in cells>x_<rise>_SB, where _05_ is a shallow single step and a missing rise is the default.",
+  "PROVISIONAL entries carry confidence \"provisional\" and were never seen by the reviewer. They exist so emission can be exercised; silence on a review sheet is NOT agreement -- the reviewer rejected 2 of the 19 proposals outright, so the rate is about 1 in 10.",
+  "FloorMainDesign01-07: the reviewer delegated the pattern (\"any of these should likely work\"). They are 400x400 decorative inserts (03 is 800x800) and OMD3's patterned tiles are all 2x2 = 600x600, so there is no size range to pick a member from -- one named mesh each, and the run fitting does the scaling."
+ ]
+}

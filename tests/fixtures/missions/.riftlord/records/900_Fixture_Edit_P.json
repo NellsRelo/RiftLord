@@ -1,0 +1,564 @@
+{
+ "created": 1793000000.0,
+ "details": {
+  "author": "Rift Lord tests",
+  "description": "A test mission (tests/fixtures).",
+  "version": "1"
+ },
+ "endless": true,
+ "guids": {
+  "RiftLordFixtureEdit_Endless01": "f1e0d1000000000000000000000000e2",
+  "RiftLordFixtureEdit_Mission01": "f1e0d1000000000000000000000000e1"
+ },
+ "id": "900_Fixture_Edit_P",
+ "kind": "map",
+ "level": "Scenario_01",
+ "map": "RiftLordFixtureEdit_Map01",
+ "mod": "RiftLordFixtureEdit",
+ "placement": "CustomMaps",
+ "plan": {
+  "added": [
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -4200.0,
+     -1500.0,
+     30.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     -1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -4200.0,
+     1100.0,
+     30.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "fx": "LavaBurst",
+    "kind": "fx",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -3600.0,
+     -900.0,
+     60.0,
+     1.0
+    ],
+    "name": "LavaBurst"
+   },
+   {
+    "anchor": true,
+    "compound": "column_a",
+    "group": 1,
+    "kind": "mesh",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -3300.0,
+     -1500.0,
+     30.0,
+     1.0
+    ],
+    "name": "ColumnTileA_CastStone_Base"
+   },
+   {
+    "group": 1,
+    "kind": "mesh",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -3300.0,
+     -1500.0,
+     330.0,
+     1.0
+    ],
+    "name": "ColumnTileA_CastStone_Mid"
+   },
+   {
+    "group": 1,
+    "kind": "mesh",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -3300.0,
+     -1500.0,
+     629.9,
+     1.0
+    ],
+    "name": "ColumnTileA_CastStone_Mid"
+   },
+   {
+    "group": 1,
+    "kind": "mesh",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -3300.0,
+     -1500.0,
+     929.7,
+     1.0
+    ],
+    "name": "ColumnTileA_CastStone_Top"
+   }
+  ],
+  "doors": [
+   {
+    "at": [
+     718.14,
+     -2646.92,
+     -299.05
+    ],
+    "cls": "BP_Door_Forcefield_C",
+    "health": 0.0,
+    "id": 1,
+    "rotation": 80.0,
+    "scaleX": 10.0,
+    "scaleY": 25.0,
+    "scaleZ": 1.0,
+    "slotSpacing": 0.0
+   },
+   {
+    "at": [
+     718.14,
+     -2246.92,
+     -299.05
+    ],
+    "cls": "BP_Door_Forcefield_C",
+    "health": 0.0,
+    "id": 20,
+    "rotation": 80.0,
+    "scaleX": 10.0,
+    "scaleY": 25.0,
+    "scaleZ": 1.0,
+    "slotSpacing": 0.0
+   },
+   {
+    "at": [
+     718.14,
+     -1846.92,
+     -299.05
+    ],
+    "cls": "BP_Door_Forcefield_C",
+    "health": 0.0,
+    "id": 21,
+    "rotation": 80.0,
+    "scaleX": 10.0,
+    "scaleY": 25.0,
+    "scaleZ": 1.0,
+    "slotSpacing": 0.0
+   },
+   {
+    "at": [
+     718.14,
+     -1446.92,
+     -299.05
+    ],
+    "cls": "BP_Door_Forcefield_C",
+    "health": 0.0,
+    "id": 22,
+    "rotation": 80.0,
+    "scaleX": 10.0,
+    "scaleY": 25.0,
+    "scaleZ": 1.0,
+    "slotSpacing": 0.0
+   },
+   {
+    "at": [
+     718.14,
+     -1046.92,
+     -299.05
+    ],
+    "cls": "BP_Door_Forcefield_C",
+    "health": 0.0,
+    "id": 23,
+    "rotation": 80.0,
+    "scaleX": 10.0,
+    "scaleY": 25.0,
+    "scaleZ": 1.0,
+    "slotSpacing": 0.0
+   }
+  ],
+  "edits": [
+   {
+    "id": 1203,
+    "matrix": [
+     2.1999,
+     1.147,
+     -0.1089,
+     0.0,
+     -1.1481,
+     2.202,
+     -0.0,
+     0.0,
+     0.1129,
+     0.0589,
+     2.9026,
+     0.0,
+     1391.5847,
+     -9252.4805,
+     -1053.5016,
+     1.0
+    ],
+    "mesh": "Big_Stone_03_A"
+   }
+  ],
+  "level": "Scenario_01",
+  "look": {
+   "sky": "Stormy_Sky_INST"
+  },
+  "minimap": {
+   "mode": "cut"
+  },
+  "mission": {},
+  "playerStarts": [],
+  "points": [
+   {
+    "at": [
+     1958.0,
+     -2432.45,
+     -328.21
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": true,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 3,
+    "next": [
+     {
+      "to": 4,
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     -235.73,
+     -2674.33,
+     -281.31
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": true,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 4,
+    "next": [
+     {
+      "to": 5,
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     -630.93,
+     -951.0,
+     333.28
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": true,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 5,
+    "next": [
+     {
+      "to": 6,
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     -793.96,
+     2521.0,
+     365.0
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": true,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 6,
+    "next": [
+     {
+      "to": 7,
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     -1852.0,
+     3592.0,
+     511.27
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": true,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 7,
+    "next": [
+     {
+      "to": 8,
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     -3193.0,
+     3489.0,
+     318.48
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": true,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 8,
+    "next": [],
+    "reachRadius": 300.0
+   }
+  ],
+  "region": null,
+  "removed": [
+   452,
+   692,
+   1153
+  ],
+  "removedFx": [
+   "Audio|11",
+   "Lighting|45",
+   "VFX|4"
+  ],
+  "rifts": [],
+  "spawners": [
+   {
+    "at": [
+     3196.0,
+     -2451.92,
+     69.0
+    ],
+    "door": 1,
+    "flyerStart": 3,
+    "id": 2,
+    "index": 2,
+    "kind": "flyer",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": null
+   },
+   {
+    "at": [
+     3196.0,
+     -2051.92,
+     69.0
+    ],
+    "door": 20,
+    "flyerStart": 3,
+    "id": 30,
+    "index": 3,
+    "kind": "flyer",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": null
+   },
+   {
+    "at": [
+     3196.0,
+     -1651.92,
+     69.0
+    ],
+    "door": 21,
+    "flyerStart": 3,
+    "id": 31,
+    "index": 4,
+    "kind": "flyer",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": null
+   },
+   {
+    "at": [
+     3196.0,
+     -1251.92,
+     69.0
+    ],
+    "door": 22,
+    "flyerStart": 3,
+    "id": 32,
+    "index": 5,
+    "kind": "flyer",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": null
+   },
+   {
+    "at": [
+     3196.0,
+     -851.92,
+     69.0
+    ],
+    "door": 23,
+    "flyerStart": 3,
+    "id": 33,
+    "index": 6,
+    "kind": "flyer",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": null
+   }
+  ],
+  "version": 2,
+  "waves": [],
+  "wiring": [],
+  "world": {
+   "intro": "remove",
+   "storyDialog": "remove"
+  }
+ },
+ "resetDoors": false,
+ "spec": {
+  "bundle": true,
+  "details": {
+   "author": "Rift Lord tests",
+   "description": "Fixture",
+   "version": "1"
+  },
+  "endless": true,
+  "events": [],
+  "intoCampaign": "CustomMaps",
+  "map": "RiftLordFixtureEdit_Map01",
+  "par": 600,
+  "title": "Fixture Edit",
+  "war": false,
+  "waves": [
+   {
+    "actions": [],
+    "breakKind": "wave",
+    "breakSeconds": 10,
+    "coin": 1000,
+    "id": 1,
+    "spawns": {
+     "1": [
+      {
+       "addCount": null,
+       "after": null,
+       "before": null,
+       "count": 2,
+       "difficulty": 5,
+       "id": 11,
+       "promote": 0.5,
+       "unit": "OrcLight"
+      }
+     ],
+     "2": [
+      {
+       "addCount": null,
+       "after": null,
+       "before": null,
+       "count": 1,
+       "difficulty": 5,
+       "id": 12,
+       "promote": 0.5,
+       "unit": "HellbatBaby"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "title": "Fixture Edit",
+ "tools": [
+  "onslaught",
+  "riftlord"
+ ],
+ "updated": 1793000000.0
+}

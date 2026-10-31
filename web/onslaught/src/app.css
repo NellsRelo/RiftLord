@@ -1,0 +1,129 @@
+/* Rift Lord's palette: the Map Editor's slate and purple, in a dark and a light set.
+   `--accent` fills (buttons, chips) and carries white text; `--accent-ink` is the same
+   hue as text on the page. Gold is kept only as `--marker`, for the map's door plates
+   and routes, which match the game's HUD. */
+:root {
+  --accent: #9450b4;
+  --on-accent: #ffffff;
+  --accent-ink: #c48ade;
+  --accent-soft: #4a2b52;
+  --hot: #dc50c8;
+  --marker: #d9b21c;
+  --go: #2f8f4e;              /* adding something */
+  --rift: #2f7fd6;            /* the player's rift */
+  --rift-red: #d6357a;        /* an unstable rift: Order Temple's red rifts */
+  --spawner: #ff5fb0;         /* a plain spawner with no door of its own */
+  --bad: #e05252;
+  --warn: #c98a26;
+  --ok: #3f9f5a;
+  color-scheme: dark;
+
+  --bg: #10131a;
+  --panel: #1b1f27;
+  --panel-2: #222731;
+  --raised: #2a313f;
+  --edge: #2c323d;
+  --text: #e6eaf2;
+  --text-dim: #8e97a6;
+  --map-bg: #0d1016;
+  /* the minimap's surround: dark in both themes, because the art is drawn for dark */
+  --map-well: #0d1016;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f2f7;
+  --panel: #ffffff;
+  --panel-2: #efecf3;
+  --raised: #e6e1ec;
+  --edge: #d5cedd;
+  --text: #1d1a24;
+  --text-dim: #615a6d;
+  --map-bg: #e9e6ee;
+  --map-well: #262a33;
+  --accent: #8b46ad;
+  --accent-ink: #7a3a99;
+  --accent-soft: #efe2f6;
+  --hot: #b52f9e;
+  --bad: #c03a3a;
+  --warn: #8a5a09;
+  --ok: #2c7a43;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 'Segoe UI', Inter, system-ui, sans-serif;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--raised);
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  padding: 5px 11px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--text-dim); }
+button:disabled { opacity: 0.45; cursor: default; }
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+}
+
+/* a button that adds something */
+button.go {
+  background: var(--go);
+  border-color: var(--go);
+  color: #fff;
+  font-weight: 700;
+}
+button.go:hover:not(:disabled) { filter: brightness(1.1); }
+
+/* the same yellow the map's doors use, and always bold so it reads */
+.accent-text { color: var(--accent-ink); font-weight: 700; }
+/* a disabled primary still has to be readable, so it dims less than the rest */
+button.primary:disabled { opacity: 0.6; }
+button.primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+button.ghost { background: none; border-color: transparent; color: var(--text-dim); }
+button.ghost:hover:not(:disabled) { color: var(--text); background: var(--raised); }
+
+select, input {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  padding: 4px 7px;
+  min-width: 0;
+}
+select:focus, input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+input[type='number'] { text-align: right; }
+/* A field that can be left empty reads from its placeholder, and a placeholder
+   is prose: it belongs at the left edge like every other label on the page.
+   Right alignment is for a column of bare numbers. */
+input[placeholder] { text-align: left; }
+
+/* A field the author has to fix, marked where the value is rather than in a
+   list somewhere else. */
+input.bad, select.bad { border-color: var(--bad); }
+input.warn, select.warn { border-color: var(--warn); }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--edge);
+  border-radius: 6px;
+  border: 2px solid var(--bg);
+}

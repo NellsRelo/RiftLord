@@ -1,0 +1,690 @@
+{
+ "created": 1793000000.0,
+ "details": {
+  "author": "Rift Lord tests",
+  "description": "A test mission (tests/fixtures).",
+  "version": "1"
+ },
+ "endless": false,
+ "guids": {
+  "RiftLordFixtureScratch_Mission01": "f1e0d2000000000000000000000000e1"
+ },
+ "id": "900_Fixture_Scratch_P",
+ "kind": "map",
+ "level": "Scenario_01",
+ "map": "RiftLordFixtureScratch_Map01",
+ "mod": "RiftLordFixtureScratch",
+ "placement": "custom:900_FixtureCampaign_Campaign_P.pak:FixtureCampaign_Campaign",
+ "plan": {
+  "added": [
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     1000.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     1200.0,
+     1000.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     2400.0,
+     1000.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     3600.0,
+     1000.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     4800.0,
+     1000.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "kind": "kit",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     6000.0,
+     1000.0,
+     1.0
+    ],
+    "name": "Floor_RB_Trim_v1_4x4_C"
+   },
+   {
+    "grids": [
+     "G00"
+    ],
+    "kind": "fab",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     600.0,
+     -20.0,
+     1000.0,
+     1.0
+    ],
+    "name": "fab/RiftLordFixtureKit/Beee08ff7/Meshes/FixtureWall",
+    "object": "/Game/Mods/Fab/RiftLordFixtureKit/Beee08ff7/Meshes/FixtureWall.FixtureWall",
+    "pack": "RiftLordFixtureKit",
+    "role": "wall",
+    "source": "RiftLordFixtureKit/FixtureWall"
+   },
+   {
+    "grids": [
+     "G00"
+    ],
+    "kind": "fab",
+    "matrix": [
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     1.0,
+     -0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     1220.0,
+     2400.0,
+     1000.0,
+     1.0
+    ],
+    "name": "fab/RiftLordFixtureKit/Beee08ff7/Meshes/FixtureWall",
+    "object": "/Game/Mods/Fab/RiftLordFixtureKit/Beee08ff7/Meshes/FixtureWall.FixtureWall",
+    "pack": "RiftLordFixtureKit",
+    "role": "wall",
+    "source": "RiftLordFixtureKit/FixtureWall"
+   },
+   {
+    "grids": [
+     "G00"
+    ],
+    "kind": "fab",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     1800.0,
+     600.0,
+     960.0,
+     1.0
+    ],
+    "name": "fab/RiftLordFixtureKit/Beee08ff7/Meshes/FixtureSlab",
+    "object": "/Game/Mods/Fab/RiftLordFixtureKit/Beee08ff7/Meshes/FixtureSlab.FixtureSlab",
+    "pack": "RiftLordFixtureKit",
+    "role": "floor",
+    "source": "RiftLordFixtureKit/FixtureSlab"
+   },
+   {
+    "grids": [
+     "G00"
+    ],
+    "kind": "fab",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -1200.0,
+     1200.0,
+     1000.0,
+     1.0
+    ],
+    "name": "fab/Terrain_Scenario_09/B5aeba93a/Meshes/Dirt_Ground_4x4",
+    "object": "/Game/Mods/Fab/Terrain_Scenario_09/B5aeba93a/Meshes/Dirt_Ground_4x4.Dirt_Ground_4x4",
+    "pack": "Terrain_Scenario_09",
+    "role": "floor",
+    "source": "Scenario_09/Scenario_09_Terrain/1516/flat/-1575_16425"
+   },
+   {
+    "crystal": {
+     "bobHeight": 40.0,
+     "bobSeconds": 6.0,
+     "difficultyHealth": [
+      800.0,
+      1500.0,
+      2500.0,
+      3000.0
+     ],
+     "groups": [
+      {
+       "difficulty": 5,
+       "minions": [
+        {
+         "addCount": 0,
+         "count": 2,
+         "unit": "OrcLight"
+        }
+       ],
+       "name": "Fixture Group",
+       "players": 0,
+       "rifts": [
+        {
+         "difficulty": 5,
+         "players": 0,
+         "spawner": 7
+        },
+        {
+         "difficulty": 5,
+         "players": 0,
+         "spawner": 8
+        }
+       ],
+       "triggers": [
+        {
+         "alive": 0.0,
+         "at": 75.0,
+         "both": false,
+         "launchAfter": 0.0,
+         "launchAlive": 0.0,
+         "open": 1,
+         "wave": null
+        }
+       ]
+      }
+     ],
+     "riftGap": 3.0
+    },
+    "kind": "crystal",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     600.0,
+     900.0,
+     1150.0,
+     1.0
+    ],
+    "name": "BP_Crystal_C"
+   }
+  ],
+  "doors": [
+   {
+    "at": [
+     600.0,
+     6000.0,
+     1260.0
+    ],
+    "cls": "BP_Door_Exterior_3W_C",
+    "health": 0.0,
+    "id": 3,
+    "rotation": 0.0,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "scaleZ": 1.0,
+    "slotSpacing": 0.0
+   }
+  ],
+  "edits": [],
+  "level": "Scenario_01",
+  "look": {},
+  "minimap": {
+   "cutAtDoors": true,
+   "mode": "regenerate"
+  },
+  "mission": {},
+  "playerStarts": [],
+  "points": [
+   {
+    "at": [
+     600.0,
+     6500.0,
+     1070.0
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": false,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 2,
+    "next": [
+     {
+      "to": 4,
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     600.0,
+     3600.0,
+     1070.0
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": false,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 4,
+    "next": [
+     {
+      "to": "OMDPathPoint6",
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   },
+   {
+    "at": [
+     600.0,
+     2600.0,
+     1070.0
+    ],
+    "flightHeight": 0.0,
+    "flyersOnly": false,
+    "formationSize": 3,
+    "formationSpacing": 0.0,
+    "groundOnly": false,
+    "id": 9,
+    "next": [
+     {
+      "to": "OMDPathPoint6",
+      "weight": 1.0
+     }
+    ],
+    "reachRadius": 300.0
+   }
+  ],
+  "region": null,
+  "removed": [],
+  "rifts": [],
+  "scratch": {
+   "base": "Scenario_01",
+   "name": "Fixture Scratch",
+   "version": 1
+  },
+  "spawners": [
+   {
+    "at": [
+     600.0,
+     6900.0,
+     1220.0
+    ],
+    "door": 3,
+    "flyerStart": null,
+    "id": 1,
+    "index": 1,
+    "kind": "ground",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": 2
+   },
+   {
+    "at": [
+     300.0,
+     3000.0,
+     1220.0
+    ],
+    "door": null,
+    "flyerStart": null,
+    "id": 7,
+    "index": 0,
+    "kind": "ground",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": 9,
+    "unstable": true
+   },
+   {
+    "at": [
+     900.0,
+     3000.0,
+     1220.0
+    ],
+    "door": null,
+    "flyerStart": null,
+    "id": 8,
+    "index": 0,
+    "kind": "ground",
+    "maxSpawnPerRow": 0,
+    "rotation": 0.0,
+    "start": 9,
+    "unstable": true
+   }
+  ],
+  "version": 2,
+  "volumes": [
+   {
+    "added": true,
+    "blocks": "players",
+    "matrix": [
+     2.0,
+     0.0,
+     0.0,
+     0.0,
+     -0.0,
+     2.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     2.0,
+     0.0,
+     -600.0,
+     4200.0,
+     1200.0,
+     1.0
+    ],
+    "name": "RiftLordVolume1"
+   }
+  ],
+  "waves": [],
+  "wiring": [
+   {
+    "at": [
+     600.0,
+     300.0,
+     1410.0
+    ],
+    "gone": false,
+    "kind": "rift",
+    "name": "BP_OMDRift_2",
+    "rotation": 0.0
+   },
+   {
+    "at": [
+     600.0,
+     450.0,
+     1045.0
+    ],
+    "gone": false,
+    "kind": "point",
+    "name": "OMDPathPoint6"
+   },
+   {
+    "at": [
+     400.0,
+     1800.0,
+     1060.0
+    ],
+    "gone": false,
+    "kind": "playerStart",
+    "name": "PlayerStartDuringGOBreaks",
+    "rotation": 90.0
+   },
+   {
+    "at": [
+     800.0,
+     1800.0,
+     1060.0
+    ],
+    "gone": false,
+    "kind": "playerStart",
+    "name": "PlayerStartDuringGOBreaks2",
+    "rotation": 90.0
+   },
+   {
+    "at": [
+     600.0,
+     1500.0,
+     1060.0
+    ],
+    "gone": false,
+    "kind": "playerStart",
+    "name": "PlayerStartDuringWaves",
+    "rotation": 90.0
+   },
+   {
+    "gone": true,
+    "kind": "spawner",
+    "name": "BP_OMDAISpawner_2"
+   },
+   {
+    "gone": true,
+    "kind": "door",
+    "name": "Door01"
+   },
+   {
+    "gone": true,
+    "kind": "point",
+    "name": "OMDPathPoint0"
+   },
+   {
+    "gone": true,
+    "kind": "point",
+    "name": "OMDPathPoint1"
+   },
+   {
+    "gone": true,
+    "kind": "point",
+    "name": "OMDPathPoint2"
+   },
+   {
+    "gone": true,
+    "kind": "point",
+    "name": "OMDPathPoint3"
+   },
+   {
+    "gone": true,
+    "kind": "point",
+    "name": "OMDPathPoint4"
+   },
+   {
+    "gone": true,
+    "kind": "point",
+    "name": "OMDPathPoint5"
+   }
+  ],
+  "world": {
+   "intro": "remove",
+   "storyDialog": "remove"
+  }
+ },
+ "resetDoors": false,
+ "scramble": {
+  "rows": {
+   "Tier_01-Start": {
+    "weight": 50.0
+   }
+  },
+  "tiers": [
+   "Tier_01-Start",
+   "Tier_30"
+  ]
+ },
+ "spec": {
+  "bundle": true,
+  "details": {
+   "author": "Rift Lord tests",
+   "description": "Fixture",
+   "version": "1"
+  },
+  "endless": false,
+  "events": [],
+  "intoCampaign": "custom:900_FixtureCampaign_Campaign_P.pak:FixtureCampaign_Campaign",
+  "map": "RiftLordFixtureScratch_Map01",
+  "par": 600,
+  "scramble": {
+   "rows": {
+    "Tier_01-Start": {
+     "weight": 50.0
+    }
+   },
+   "tiers": [
+    "Tier_01-Start",
+    "Tier_30"
+   ]
+  },
+  "title": "Fixture Scratch",
+  "war": false,
+  "waves": [
+   {
+    "actions": [],
+    "breakKind": "wave",
+    "breakSeconds": 10,
+    "coin": 1000,
+    "id": 1,
+    "spawns": {
+     "1": [
+      {
+       "addCount": null,
+       "after": null,
+       "before": null,
+       "count": 2,
+       "difficulty": 5,
+       "id": 11,
+       "promote": 0.5,
+       "unit": "OrcLight"
+      },
+      {
+       "addCount": null,
+       "after": null,
+       "before": null,
+       "count": 2,
+       "difficulty": 5,
+       "guid": "6669787475726547727568744d696e31",
+       "id": 12,
+       "promote": 0.5,
+       "unit": "FixtureMinions_Grunt"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "title": "Fixture Scratch",
+ "tools": [
+  "onslaught",
+  "riftlord"
+ ],
+ "updated": 1793000000.0
+}

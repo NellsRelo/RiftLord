@@ -1,0 +1,70 @@
+/* Rift Lord's palette: the Map Editor's slate and purple, shared with the Onslaught
+   Editor so the shell and the editor in it read as one app. */
+:root {
+  --accent: #9450b4;
+  --on-accent: #ffffff;
+  --accent-ink: #c48ade;
+  --accent-soft: #4a2b52;
+  --hot: #dc50c8;
+  --bad: #e05252;
+  --warn: #c98a26;
+  --ok: #3f9f5a;
+  color-scheme: dark;
+
+  --bg: #10131a;
+  --panel: #1b1f27;
+  --panel-2: #222731;
+  --raised: #2a313f;
+  --edge: #2c323d;
+  --text: #e6eaf2;
+  --text-dim: #8e97a6;
+  --rail: #0c0e13;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f2f7;
+  --panel: #ffffff;
+  --panel-2: #efecf3;
+  --raised: #e6e1ec;
+  --edge: #d5cedd;
+  --text: #1d1a24;
+  --text-dim: #615a6d;
+  --rail: #e7e2ee;
+  --accent: #8b46ad;
+  --accent-ink: #7a3a99;
+  --accent-soft: #efe2f6;
+  --hot: #b52f9e;
+  --bad: #c03a3a;
+  --warn: #8a5a09;
+  --ok: #2c7a43;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 'Segoe UI', Inter, system-ui, sans-serif;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--raised);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  padding: 5px 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+button:hover:not(:disabled) { border-color: var(--text-dim); }
+button:disabled { opacity: 0.45; cursor: default; }
+button.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
+button.ghost { background: none; border-color: transparent; }
+button.ghost:hover:not(:disabled) { background: var(--raised); border-color: var(--edge); }
+button.danger:hover:not(:disabled) { border-color: var(--bad); color: var(--bad); }
+
+input[type='checkbox'] { width: 15px; height: 15px; accent-color: var(--accent); margin: 0; }

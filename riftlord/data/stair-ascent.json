@@ -1,0 +1,184 @@
+{
+ "ascent": {
+  "Cren_Stepped_Group_Five_CS": {
+   "degrees": 90.0,
+   "rise": 154.5
+  },
+  "Cren_Stepped_Group_Three_CS": {
+   "degrees": 90.0,
+   "rise": 154.5
+  },
+  "Cren_Stepped_Short_Five_CS": {
+   "degrees": 0.0,
+   "rise": 50.5
+  },
+  "Cren_Stepped_Square_CS": {
+   "degrees": 90.0,
+   "rise": 153.7
+  },
+  "Cren_Stepped_Square_Group_CS": {
+   "degrees": 90.0,
+   "rise": 154.5
+  },
+  "Cren_Stepped_Square_Short_CS": {
+   "degrees": 180.0,
+   "rise": 58.3
+  },
+  "ORC_GlyphStairs": {
+   "degrees": 180.0,
+   "rise": 55.2
+  },
+  "ORC_StairsB_3x": {
+   "degrees": 270.0,
+   "rise": 122.4
+  },
+  "RailingStairsA": {
+   "degrees": 180.0,
+   "rise": 80.6
+  },
+  "RailingStairsA_Rails": {
+   "degrees": 180.0,
+   "rise": 188.2
+  },
+  "RailingStairsB": {
+   "degrees": 180.0,
+   "rise": 230.4
+  },
+  "RailingStairsB_Rails": {
+   "degrees": 180.0,
+   "rise": 293.5
+  },
+  "RailingStairsBase_1": {
+   "degrees": 180.0,
+   "rise": 188.2
+  },
+  "RailingStairsBase_2": {
+   "degrees": 180.0,
+   "rise": 305.0
+  },
+  "RailingStairsC": {
+   "degrees": 180.0,
+   "rise": 379.6
+  },
+  "RailingStairsC_Rails": {
+   "degrees": 180.0,
+   "rise": 426.2
+  },
+  "RailingStairsD": {
+   "degrees": 180.0,
+   "rise": 527.3
+  },
+  "RailingStairsD_Rails": {
+   "degrees": 180.0,
+   "rise": 513.1
+  },
+  "RailingStairsEndA": {
+   "degrees": 180.0,
+   "rise": 189.1
+  },
+  "RailingStairsTile": {
+   "degrees": 180.0,
+   "rise": 142.6
+  },
+  "SM_MERGED_WoodStairs_3x_4": {
+   "degrees": 270.0,
+   "rise": 505.6
+  },
+  "Scenario_06_Bridge_Stairs": {
+   "degrees": 270.0,
+   "rise": 248.8
+  },
+  "Stairs_1x_05_SB": {
+   "degrees": 270.0,
+   "rise": 62.7
+  },
+  "Stairs_1x_SB": {
+   "degrees": 270.0,
+   "rise": 135.3
+  },
+  "Stairs_2x_05_SB": {
+   "degrees": 270.0,
+   "rise": 62.7
+  },
+  "Stairs_2x_SB": {
+   "degrees": 270.0,
+   "rise": 135.3
+  },
+  "Stairs_3x_05_SB": {
+   "degrees": 270.0,
+   "rise": 62.7
+  },
+  "Stairs_3x_2_SB": {
+   "degrees": 270.0,
+   "rise": 283.7
+  },
+  "Stairs_3x_4_SB": {
+   "degrees": 270.0,
+   "rise": 518.6
+  },
+  "Stairs_3x_SB": {
+   "degrees": 270.0,
+   "rise": 135.3
+  },
+  "Stairs_4x_05_SB": {
+   "degrees": 270.0,
+   "rise": 62.7
+  },
+  "Stairs_4x_2_SB": {
+   "degrees": 270.0,
+   "rise": 283.7
+  },
+  "Stairs_4x_4_SB": {
+   "degrees": 270.0,
+   "rise": 522.5
+  },
+  "Stairs_4x_SB": {
+   "degrees": 270.0,
+   "rise": 135.3
+  },
+  "Stairs_CornerInside_SB": {
+   "degrees": 0.0,
+   "rise": 80.0
+  },
+  "Stairs_CornerOutside_05_SB": {
+   "degrees": 270.0,
+   "rise": 61.2
+  },
+  "Stairs_CornerOutside_SB": {
+   "degrees": 180.0,
+   "rise": 78.2
+  },
+  "Stairs_Stone_3WideHalf": {
+   "degrees": 270.0,
+   "rise": 51.5
+  },
+  "Stairs_Stone_CornerHalf": {
+   "degrees": 270.0,
+   "rise": 51.0
+  },
+  "Wall_StairsSide_2_RB": {
+   "degrees": 180.0,
+   "rise": 94.1
+  },
+  "Wall_StairsSide_4_RB": {
+   "degrees": 180.0,
+   "rise": 350.1
+  }
+ },
+ "flat": [
+  "Cren_Stepped_Group_Angled",
+  "Cren_Stepped_Short_CS",
+  "Cren_Stepped_Short_Group_CS",
+  "Cren_Stepped_Short_Group_CS_2",
+  "Cren_Stepped_Short_Three_CS",
+  "EndCapCornerStairsA",
+  "RailingStairsEndB",
+  "SM_MERGED_Cren_Stepped_Octogon",
+  "SM_MERGED_Cren_Stepped_Square_Short_Octogon",
+  "StairsSideCap_01",
+  "Stairs_05x3",
+  "Stairs_3x_Round",
+  "Stairs_CornerInside_05_SB",
+  "Stairs_Stone_Round360"
+ ]
+}

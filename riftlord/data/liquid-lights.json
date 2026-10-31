@@ -1,0 +1,580 @@
+{
+ "kinds": {
+  "acid": {
+   "PointLight": {
+    "colour": [
+     0.302,
+     0.8863,
+     0.0
+    ],
+    "count": 88,
+    "intensity": 10.0
+   },
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0471
+    ],
+    "count": 81,
+    "intensity": 300.0
+   }
+  },
+  "arcane": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 141,
+    "intensity": 300.0
+   }
+  },
+  "lava": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0
+    ],
+    "count": 170,
+    "intensity": 10.0
+   },
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 164,
+    "intensity": 300.0
+   }
+  },
+  "water": {
+   "RectLight": {
+    "colour": [
+     0.1804,
+     0.4392,
+     0.5333
+    ],
+    "count": 20,
+    "intensity": 500.0
+   }
+  }
+ },
+ "levels": {
+  "ScenarioDLC_01": {
+   "lights": 41,
+   "planes": 2
+  },
+  "ScenarioDLC_02": {
+   "lights": 0,
+   "planes": 0
+  },
+  "ScenarioDLC_03": {
+   "lights": 0,
+   "planes": 0
+  },
+  "ScenarioDLC_04": {
+   "lights": 0,
+   "planes": 0
+  },
+  "ScenarioDLC_05": {
+   "lights": 92,
+   "planes": 5
+  },
+  "Scenario_01": {
+   "lights": 40,
+   "planes": 4
+  },
+  "Scenario_02": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_03": {
+   "lights": 80,
+   "planes": 10
+  },
+  "Scenario_04": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_05": {
+   "lights": 16,
+   "planes": 1
+  },
+  "Scenario_06": {
+   "lights": 88,
+   "planes": 5
+  },
+  "Scenario_07": {
+   "lights": 42,
+   "planes": 8
+  },
+  "Scenario_08": {
+   "lights": 4,
+   "planes": 2
+  },
+  "Scenario_09": {
+   "lights": 19,
+   "planes": 1
+  },
+  "Scenario_10": {
+   "lights": 23,
+   "planes": 2
+  },
+  "Scenario_11": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_12": {
+   "lights": 89,
+   "planes": 3
+  },
+  "Scenario_13": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_14": {
+   "lights": 47,
+   "planes": 10
+  },
+  "Scenario_15": {
+   "lights": 8,
+   "planes": 6
+  },
+  "Scenario_16": {
+   "lights": 25,
+   "planes": 3
+  },
+  "Scenario_17": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_18": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Ice_01": {
+   "lights": 2,
+   "planes": 2
+  },
+  "Scenario_Ice_02": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Ice_03": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Other_02": {
+   "lights": 23,
+   "planes": 1
+  },
+  "Scenario_Other_03": {
+   "lights": 25,
+   "planes": 2
+  },
+  "Scenario_Sand_01": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Sand_02": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Sand_03": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Sand_04": {
+   "lights": 0,
+   "planes": 0
+  },
+  "Scenario_Sand_05": {
+   "lights": 0,
+   "planes": 0
+  }
+ },
+ "materials": {
+  "AcidFall_02": {
+   "PointLight": {
+    "colour": [
+     0.0,
+     0.7412,
+     0.4431
+    ],
+    "count": 1,
+    "intensity": 0.5
+   }
+  },
+  "AcidFall_04": {
+   "PointLight": {
+    "colour": [
+     0.302,
+     0.8863,
+     0.0
+    ],
+    "count": 1,
+    "intensity": 50.0
+   }
+  },
+  "Acid_Stream_Inst": {
+   "PointLight": {
+    "colour": [
+     0.0,
+     0.7412,
+     0.2
+    ],
+    "count": 1,
+    "intensity": 3.0
+   },
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0471
+    ],
+    "count": 5,
+    "intensity": 500.0
+   }
+  },
+  "Acid_Stream_Small_Inst": {
+   "PointLight": {
+    "colour": [
+     0.302,
+     0.8863,
+     0.0
+    ],
+    "count": 3,
+    "intensity": 20.0
+   }
+  },
+  "Acid_Surface_Inst": {
+   "PointLight": {
+    "colour": [
+     0.0,
+     0.6392,
+     0.0
+    ],
+    "count": 26,
+    "intensity": 1.0
+   },
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0471
+    ],
+    "count": 17,
+    "intensity": 300.0
+   }
+  },
+  "Acid_Surface_LargeWaves_Inst": {
+   "PointLight": {
+    "colour": [
+     0.0,
+     0.7412,
+     0.4431
+    ],
+    "count": 30,
+    "intensity": 1.0
+   },
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0471
+    ],
+    "count": 29,
+    "intensity": 500.0
+   }
+  },
+  "ArcaneWater_Surface_Calm_INST": {
+   "RectLight": {
+    "colour": [
+     0.2196,
+     0.3804,
+     0.7176
+    ],
+    "count": 4,
+    "intensity": 100.0
+   }
+  },
+  "Arcane_Surface_Calm_INST": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 23,
+    "intensity": 300.0
+   }
+  },
+  "Arcane_Surface_INST": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 16,
+    "intensity": 300.0
+   }
+  },
+  "IceWater_Surface_Calm_INST": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 1,
+    "intensity": 400.0
+   }
+  },
+  "Lava_01_Inst": {
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 25,
+    "intensity": 300.0
+   }
+  },
+  "Lava_01_ScenDLC01_Inst": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0
+    ],
+    "count": 89,
+    "intensity": 10.0
+   }
+  },
+  "Lava_02Temp_Inst": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0
+    ],
+    "count": 1,
+    "intensity": 10.0
+   }
+  },
+  "Lava_Fallss_01_Inst1": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0
+    ],
+    "count": 5,
+    "intensity": 10.0
+   }
+  },
+  "Lava_Scen_06_Close_INST": {
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 11,
+    "intensity": 300.0
+   }
+  },
+  "Lava_Scen_06_Far_INST": {
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 77,
+    "intensity": 300.0
+   }
+  },
+  "Scenario_01_Lava": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0
+    ],
+    "count": 36,
+    "intensity": 10.0
+   },
+   "RectLight": {
+    "colour": [
+     0.8431,
+     0.4745,
+     0.1216
+    ],
+    "count": 1,
+    "intensity": 400.0
+   }
+  },
+  "Scenario_07_Acid_Surface_Small": {
+   "PointLight": {
+    "colour": [
+     0.151,
+     0.8137,
+     0.2215
+    ],
+    "count": 12,
+    "intensity": 12.75
+   },
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0471
+    ],
+    "count": 12,
+    "intensity": 500.0
+   }
+  },
+  "Scenario_07_Acid_Surface_ThinPools": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0824
+    ],
+    "count": 5,
+    "intensity": 300.0
+   }
+  },
+  "Scenario_07_Acid_Surface_UShape": {
+   "PointLight": {
+    "colour": [
+     0.302,
+     0.8863,
+     0.0
+    ],
+    "count": 14,
+    "intensity": 10.0
+   },
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.5373,
+     0.0824
+    ],
+    "count": 13,
+    "intensity": 300.0
+   }
+  },
+  "Scenario_16_Arcane_Surface": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 23,
+    "intensity": 350.0
+   }
+  },
+  "Scenario_16_Arcane_Surface_Small": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 11,
+    "intensity": 500.0
+   }
+  },
+  "Scenario_Other_02_Arcane_Surface": {
+   "RectLight": {
+    "colour": [
+     0.0,
+     0.502,
+     1.0
+    ],
+    "count": 64,
+    "intensity": 300.0
+   }
+  },
+  "Surface_12_LavaSurface_01": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0471
+    ],
+    "count": 23,
+    "intensity": 4.0
+   },
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 28,
+    "intensity": 400.0
+   }
+  },
+  "Surface_12_LavaSurface_02": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0471
+    ],
+    "count": 14,
+    "intensity": 4.0
+   },
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 19,
+    "intensity": 400.0
+   }
+  },
+  "Surface_12_LavaSurface_03": {
+   "PointLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0471
+    ],
+    "count": 2,
+    "intensity": 4.0
+   },
+   "RectLight": {
+    "colour": [
+     1.0,
+     0.549,
+     0.0667
+    ],
+    "count": 3,
+    "intensity": 400.0
+   }
+  },
+  "Water_Scen9_INST": {
+   "RectLight": {
+    "colour": [
+     0.1804,
+     0.4392,
+     0.5333
+    ],
+    "count": 19,
+    "intensity": 500.0
+   }
+  }
+ }
+}

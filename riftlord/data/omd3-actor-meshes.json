@@ -1,0 +1,2644 @@
+{
+ "actor_meshes": {
+  "ArchwayGate_1x1x3-5_RB_C": [
+   "Archway_1x1x4_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim_B",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x3-5_SAND_C": [
+   "Arch_1x4_FoundationBlock",
+   "Column_Sec_1_2_FB",
+   "Metal_DoorTrim_B",
+   "Trim_SAND_Square_SM",
+   "Metal_Base_PlateB",
+   "Cren_Shelf_1x1",
+   "Metal_1x1_Plate_B",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x3_Angled_SAND_C": [
+   "Arch_1x4_FoundationBlock",
+   "Column_Sec_1_2_FB",
+   "Metal_DoorTrim_B",
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "Metal_Base_PlateB",
+   "Metal_1x1_Plate_B",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x3_RB_C": [
+   "Archway_1x1x3_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_2W"
+  ],
+  "ArchwayGate_1x1x3_RB_NoRight_C": [
+   "Archway_1x1x3_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_2W"
+  ],
+  "ArchwayGate_1x1x3_RB_NoTG_C": [
+   "Archway_1x1x3_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike"
+  ],
+  "ArchwayGate_1x1x3_SAND_C": [
+   "Arch_1x3_FoundationBlock",
+   "Column_Sec_1_2_FB",
+   "Metal_DoorTrim",
+   "Trim_SAND_Square_SM",
+   "Metal_Base_PlateB",
+   "Cren_Shelf_1x1",
+   "Metal_1x1_Plate_B",
+   "Portcullis_Sill_2W"
+  ],
+  "ArchwayGate_1x1x4_Angled_SAND_C": [
+   "Arch_1x4_FoundationBlock",
+   "Column_Sec_1_2_FB",
+   "Metal_DoorTrim_B",
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "Metal_Base_PlateB",
+   "Metal_1x1_Plate_B",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x4_Dry_RB_C": [
+   "Archway_1x1x4_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim_B",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x4_RB_C": [
+   "Archway_1x1x4_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim_B",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x4_RB_NoColumn_C": [
+   "Archway_1x1x4_Short_RB",
+   "Metal_DoorTrim_B",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_3W"
+  ],
+  "ArchwayGate_1x1x4_RB_wide_C": [
+   "Archway_1x1x4_Short_RB",
+   "Column_Sec_1_2_RB",
+   "Metal_DoorTrim_B",
+   "Column_Sec_1_2_Half_RB",
+   "Metal_1x1_Plate_B",
+   "Bracket1_spike",
+   "Portcullis_Sill_3W"
+  ],
+  "Archway_1x2_C": [
+   "Archway_Inner_SM",
+   "Archway_SM",
+   "Archway_Wall_SM",
+   "Archway_Wall_Base_SM",
+   "Archway_Wall_Top_SM",
+   "ColumnTrim_CastStone_300W"
+  ],
+  "Awning_Stadium_Angled_C": [
+   "Scenario_17_Awning_Angled",
+   "SM_MERGED_Awning_Stadium_Support",
+   "Scenario_17_Awning_Rings_Angled"
+  ],
+  "Awning_Stadium_Straight_C": [
+   "Scenario_17_Awning_Straight",
+   "SM_MERGED_Awning_Stadium_Support",
+   "Scenario_17_Awning_Rings_Straight"
+  ],
+  "BP_Brazier_Hanging_BrightSpot_C": [
+   "Lighting_Brazier_Large_Bowl_Hanging_SM",
+   "Brazier_Logs",
+   "FlagePoleFinial",
+   "WallTorch_Log"
+  ],
+  "BP_Brazier_Hanging_C": [
+   "Lighting_Brazier_Large_Bowl_Hanging_SM",
+   "Brazier_Logs",
+   "FlagePoleFinial",
+   "WallTorch_Log"
+  ],
+  "BP_Brazier_Hanging_NoDirectional_C": [
+   "Lighting_Brazier_Large_Bowl_Hanging_SM",
+   "Brazier_Logs",
+   "FlagePoleFinial",
+   "WallTorch_Log"
+  ],
+  "BP_Brazier_Large_C": [
+   "Brazier_Logs",
+   "Lighting_Brazier_Large_Stand_SM",
+   "Lighting_Brazier_Large_Bowl_SM"
+  ],
+  "BP_Brazier_NoStand_2X_C": [
+   "Brazier_Logs",
+   "Lighting_Brazier_Large_Bowl_SM"
+  ],
+  "BP_Brazier_NoStand_C": [
+   "Brazier_Logs",
+   "Lighting_Brazier_Large_Bowl_SM"
+  ],
+  "BP_Brazier_Normal_4WS_C": [
+   "Brazier"
+  ],
+  "BP_Brazier_Normal_C": [
+   "Brazier"
+  ],
+  "BP_Brazier_Normal_Ruins_C": [
+   "Brazier"
+  ],
+  "BP_Brazier_Rain_C": [
+   "Brazier"
+  ],
+  "BP_Brazier_Wall_Half_Bright_C": [
+   "Brazier_Logs",
+   "Lighting_Brazier_Large_Bowl_Half_SM",
+   "MetalBandCenter",
+   "MetalBand1"
+  ],
+  "BP_Brazier_Wall_Half_C": [
+   "Brazier_Logs",
+   "Lighting_Brazier_Large_Bowl_Half_SM",
+   "MetalBandCenter",
+   "MetalBand1"
+  ],
+  "BP_Cauldron_C": [
+   "Firepit_Ornate"
+  ],
+  "BP_Chandelier_LargeRadiusCeiling_4WS_C": [
+   "Chandelier"
+  ],
+  "BP_Chandelier_LargeRadiusCeiling_C": [
+   "Chandelier"
+  ],
+  "BP_Chandelier_LargeRadius_Rain_C": [
+   "Chandelier"
+  ],
+  "BP_Chandelier_Normal_C": [
+   "Chandelier"
+  ],
+  "BP_Door_Exterior_3W_C": [
+   "Portcullis_Solid_3W"
+  ],
+  "BP_Door_Exterior_3W_SAND_C": [
+   "Portcullis_Solid_3W_SAND"
+  ],
+  "BP_Door_Forcefield_C": [
+   "Plane"
+  ],
+  "BP_Door_Interior_4W_C": [
+   "Portcullis_4W_SM"
+  ],
+  "BP_Drawbridge_C": [
+   "Drawbridge_SM"
+  ],
+  "BP_Exterior_Portcullis_Solid_3Wide_C": [
+   "Plane"
+  ],
+  "BP_Lighting_WallCrystal_C": [
+   "Lighting_WallCrystal_SM"
+  ],
+  "BP_OMDTeleportRift_C": [
+   "PortalFXtest2"
+  ],
+  "BP_OMDTrapGrid_RiftPlatform_4x4_RB_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Stairs_3x_05_SB",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Stairs_CornerOutside_05_SB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "BP_OMDTrapGrid_RiftPlatform_RB_C": [
+   "Floor_3wide_4x",
+   "Wall_Sec_2_3_V2_RB",
+   "Stairs_4x_05_SB",
+   "Stairs_3x_05_SB",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Stairs_CornerOutside_05_SB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "BP_OrcTorchTall_LargeRadius_C": [
+   "OrcTorchB"
+  ],
+  "BP_OrcTorch_LargeRadius_C": [
+   "OrcTorch"
+  ],
+  "BP_Scen04_Bridge_UnderSides2_C": [
+   "Dome_3x_Tunnel_RB",
+   "Archway_1x1x4_Short_RB",
+   "Wall_Sec_2_4_V2_RB"
+  ],
+  "BP_Scen04_Tunnel2_C": [
+   "ColumnBlock_Bottom_1_RB",
+   "Wall_Sec_4_4_V2_RB",
+   "Archway_1x1x4_Short_RB",
+   "Wall_Sec_4_2_V2_RB",
+   "Column_Sec_1_2_RB"
+  ],
+  "BP_Scenario_06_Battlefield2_C": [
+   "Scenario_06_Battlefield_Ver2"
+  ],
+  "BP_Scenario_06_Bridge_C": [
+   "Scenario_06_Bridge_Wall_Outside",
+   "Scenario_06_Bridge_Stairs",
+   "Scenario_06_Bridge_Wall_Indside",
+   "Wall_Sec_4_4_V2_RB",
+   "Archway_1x1x3_Short_RB",
+   "Column_Sec_1_2_RB",
+   "SM_MERGED_Roof_Tiled_x3_Base2_34",
+   "ColumnTrim_CastStone_1800W",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_900W",
+   "Cren_1_Half_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_150W",
+   "Metal_Thin_4_Trim",
+   "OrderShield",
+   "Spike_Metal_Gothic_Base",
+   "Metal_Trim_Diamond_2x"
+  ],
+  "BP_Scenario_06_CornerFloor_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Wall_Sec_2_2_45CutLeft_RB",
+   "Crenellation_1_RB",
+   "Cren_1_Half_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_150W"
+  ],
+  "BP_Scenario_18_Ground_A_C": [
+   "Scenario_18_Ground_A"
+  ],
+  "BP_Scenario_18_Ground_B_C": [
+   "Scenario_18_Ground_B"
+  ],
+  "BP_Scenario_18_Ground_C_C": [
+   "Scenario_18_Ground_C"
+  ],
+  "BP_Scenario_DLC_Ice_01_IceFloor_C": [
+   "Scenario_Ice_01_IceFloor_SM"
+  ],
+  "BP_Scenario_DLC_Sand_03_TrapGrid_C": [
+   "Scenario_Sand_03_Ground"
+  ],
+  "BP_Sky_Sphere_C": [
+   "SM_SkySphere"
+  ],
+  "BP_WallTorchCorner_LargeRadius_C": [
+   "Torch_CornerBase"
+  ],
+  "BP_WallTorchCorner_LargeRadius_Rain_C": [
+   "Torch_CornerBase"
+  ],
+  "BP_WallTorchCorner_Normal_C": [
+   "Torch_CornerBase"
+  ],
+  "BP_WallTorchCorner_Normal_WS_C": [
+   "Torch_CornerBase"
+  ],
+  "BP_WallTorchCorner_Rain_C": [
+   "Torch_CornerBase"
+  ],
+  "BP_WallTorchCorner_SmallRadius_C": [
+   "Torch_CornerBase"
+  ],
+  "BP_WallTorch_LargeRadiusNoBlock_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_LargeRadius_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_LargeRadius_WS_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_NormalLargeRadius_C": [
+   "Torch"
+  ],
+  "BP_WallTorch_Normal_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_Normal_WS_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_Rain_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_SAND_A_Dim_C": [
+   "Lighting_WallCrystal_Holder_SM",
+   "Metal_PostBase_B",
+   "WallTorch_Log",
+   "Lighting_Torch_Cage",
+   "Lighting_Torch_WoodHandle"
+  ],
+  "BP_WallTorch_SAND_A_Normal_C": [
+   "Lighting_WallCrystal_Holder_SM",
+   "Metal_PostBase_B",
+   "WallTorch_Log",
+   "Lighting_Torch_Cage",
+   "Lighting_Torch_WoodHandle"
+  ],
+  "BP_WallTorch_SmallRadius_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_SmallRadius_WS_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_Small_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch02",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_Small_WS_C": [
+   "ColumnTrim_CastStone_150W",
+   "Torch02",
+   "Metal_PostBase_B"
+  ],
+  "BP_WallTorch_Vert_Normal_C": [
+   "Torch_Vertical"
+  ],
+  "BP_WallTorch_Vert_Normal_WS_C": [
+   "Torch_Vertical"
+  ],
+  "BP_WallTorch_Vert_Rain_C": [
+   "Torch_Vertical"
+  ],
+  "Balcony_Corner_RB_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Wall_Sec_2_2_45CutRight_RB",
+   "Wall_Sec_2_2_45CutLeft_RB",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_900W",
+   "Cren_1_Half_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_150W"
+  ],
+  "Balcony_Square_TG_C": [
+   "Wall_1_2_FB",
+   "SM_MERGED_Column_BaseC_CastStone_4x",
+   "Floor_Mediterranean_2x2_SM",
+   "RailingCornerA",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_300W",
+   "RailingC",
+   "TowerTop_Pointed_Trim_4x_SM",
+   "Column_Pointed_Deco_C_SM"
+  ],
+  "BannerLong_Arcane_BP_C": [
+   "FlagPoleB",
+   "BannerLong_VariantA",
+   "BannerLongA"
+  ],
+  "BannerLong_BP_C": [
+   "FlagPoleB",
+   "Rope",
+   "BannerLongA"
+  ],
+  "BannerLong_BP_Wind_C": [
+   "FlagPoleB",
+   "Rope"
+  ],
+  "BannerLong_Far_Arcane_BP_C": [
+   "FlagPoleB",
+   "BannerLong_VariantB",
+   "BannerLongB"
+  ],
+  "BannerLong_Far_BP_C": [
+   "FlagPoleB",
+   "Rope",
+   "BannerLongB"
+  ],
+  "BannerLong_Wood_Arcane_Simple_BP_C": [
+   "BannerLongA"
+  ],
+  "BannerLong_Wood_BP_C": [
+   "BannerWoodBeam",
+   "Rope",
+   "BannerLongA"
+  ],
+  "BannerLong_Wood_BP_Wind_C": [
+   "BannerWoodBeam",
+   "Rope"
+  ],
+  "BannerLong_Wood_Far_BP_C": [
+   "BannerWoodBeam",
+   "Rope",
+   "BannerLongB"
+  ],
+  "Banner_Arcane_BP_C": [
+   "FlagPoleB",
+   "BannerLargeA"
+  ],
+  "Banner_BP_C": [
+   "FlagPoleB",
+   "BannerLargeA"
+  ],
+  "Banner_BP_Wind_C": [
+   "FlagPoleB"
+  ],
+  "Banner_Far_BP_C": [
+   "FlagPoleB",
+   "BannerLargeB"
+  ],
+  "Banner_Far_BP_Wind_C": [
+   "FlagPoleB"
+  ],
+  "Banner_Raven_A2_BP_C": [
+   "Banner_Raven_A2_SM",
+   "Banner_Raven_Bar_2x_SM"
+  ],
+  "Banner_Raven_A_BP_C": [
+   "Banner_Raven_A_SM",
+   "Banner_Raven_Bar_2x_SM"
+  ],
+  "Banner_Raven_B_BP_C": [
+   "Banner_Raven_B_SM",
+   "Banner_Raven_Bar_1x_SM"
+  ],
+  "CastleTower_2_C": [
+   "Castle_2x2_Short_Tower",
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Cren_Top_Octogon",
+   "SM_MERGED_Cren_Stepped_Square_Short_Octogon",
+   "Window_CastStone_Arch350",
+   "Window_CastStone_Tile350",
+   "ColumnTileB_CastStone_Top",
+   "ColumnTileB_CastStone_Mid",
+   "Roof_Tiled_x1_Base",
+   "Lionhead_SM",
+   "Window_Wood_Closed"
+  ],
+  "CastleTower_C": [
+   "Castle_2x2_Short_Tower",
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Cren_Top_Octogon",
+   "SM_MERGED_Cren_Stepped_Square_Short_Octogon",
+   "Window_CastStone_Arch350",
+   "Window_CastStone_Tile350",
+   "ColumnTileB_CastStone_Top",
+   "ColumnTileB_CastStone_Mid",
+   "Roof_Tiled_x1_Base",
+   "Lionhead_SM",
+   "Window_Wood_Closed"
+  ],
+  "Castle_2x2_Short_Tower_RBFB_C": [
+   "Castle_2x2_Short_Tower",
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB"
+  ],
+  "Castle_2x2_Tower_FB_4x_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "Statue_Raven_Brass_SM",
+   "Cren_Top_Octogon_Flat",
+   "Archway_Pointed_Cap_SM",
+   "Archway_Pointed_LF_Support_SM",
+   "Crenellation_Pointed_Merlon_SM",
+   "Column_Pointed_Deco_A_SM"
+  ],
+  "Castle_2x2_Tower_FB_4x_SAND_C": [
+   "TowerTop_Pointed_SM",
+   "ColumnBlock_BottomTile_1_FB",
+   "Window_Pointed_TowerTop"
+  ],
+  "Castle_2x2_Tower_FB_Tall_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "Cren_Top_Octogon"
+  ],
+  "Castle_2x2_Tower_FB_Tall_noTG_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "Cren_Top_Octogon"
+  ],
+  "Castle_2x2_Tower_RBFB_C": [
+   "Castle_2x2_Short_Tower",
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB"
+  ],
+  "Castle_2x2_Tower_RBFB_NoTG_C": [
+   "Castle_2x2_Short_Tower",
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB"
+  ],
+  "Castle_2x2_Tower_RB_C": [
+   "ColumnBlock_TopTile_1_2_RB"
+  ],
+  "Castle_2x2_Wide_Tower_RBFB_C": [
+   "ColumnBlock_TopTile_1_2_Half_RB",
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Castle_2x3_Tower_RB_C": [
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_1x2"
+  ],
+  "Castle_ExteriorWallAngle_CrenB_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "Wall_Sec_1_4_V2_RB",
+   "Crenellation_Double_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Cren_Stepped_Short_Group_CS"
+  ],
+  "Castle_ExteriorWallAngle_CrenB_NoTG_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "Wall_Sec_1_4_V2_RB",
+   "Crenellation_Double_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Cren_Stepped_Short_Group_CS"
+  ],
+  "Castle_ExteriorWallAngle_Cren_C": [
+   "Wall_Sec_1_4_V2_RB",
+   "Crenellation_Double_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Cren_Stepped_Short_Group_CS"
+  ],
+  "Castle_ExteriorWall_Cren_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "Wall_Sec_1_4_V2_RB",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Cren_Stepped_Short_Group_CS"
+  ],
+  "Castle_ExteriorWall_Cren_NoTG_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "Wall_Sec_1_4_V2_RB",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Cren_Stepped_Short_Group_CS"
+  ],
+  "Castle_ExteriorWall_Cren_NoTG_NoCol_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "Wall_Sec_1_4_V2_RB",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Cren_Stepped_Short_Group_CS"
+  ],
+  "Castle_Large_Tower_End_02_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Crenellation_1_RB",
+   "Cren_1_Half_RB",
+   "Roof_Tiled_x2_Base",
+   "Roof_Tiled_x1_Base"
+  ],
+  "Castle_Large_Tower_End_02_noTG_NoCol_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Crenellation_1_RB",
+   "Cren_1_Half_RB",
+   "Roof_Tiled_x2_Base",
+   "Roof_Tiled_x1_Base"
+  ],
+  "Castle_Large_Tower_End_03_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "Crenellation_Pointed_Square_SM",
+   "Crenellation_Pointed_SM",
+   "Crenellation_Pointed_Corbel_Square_SM",
+   "ColumnTrim_CastStone_600W",
+   "Crenellation_Pointed_Corbel_SM",
+   "ColumnTrim_CastStone_300W"
+  ],
+  "Castle_Large_Tower_End_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Crenellation_1_RB",
+   "Cren_1_Half_RB",
+   "Roof_Tiled_x2_Base",
+   "Roof_Tiled_x1_Base"
+  ],
+  "Castle_Large_Tower_End_NoCol_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Crenellation_1_RB",
+   "Cren_1_Half_RB",
+   "Roof_Tiled_x2_Base",
+   "Roof_Tiled_x1_Base"
+  ],
+  "Ceiling_1x3_C": [
+   "Ceiling_1x3"
+  ],
+  "Ceiling_1x4_C": [
+   "Ceiling_1x4"
+  ],
+  "Ceiling_2x6_Dry_RB_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Ceiling_2x6_RB_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Ceiling_3x3_WoodGrate_C": [
+   "SM_MERGED_WoodBoxCeiling",
+   "SM_MERGED_Metal_Grating_Ceiling",
+   "Metal_Base_Plate",
+   "Metal_Trim_Diamond_2x",
+   "Spike_Metal_Gothic"
+  ],
+  "Ceiling_4x4_RB_C": [
+   "Wall_Sec_4_4_V2_RB"
+  ],
+  "Ceiling_4x5_Wood_C": [
+   "Ceiling_4x5_Wood"
+  ],
+  "Ceiling_Column_1_4_RB_C": [
+   "Column_Sec_1_4_RB"
+  ],
+  "Ceiling_Column_RB_v2_1x4_C": [
+   "Column_Sec_1_4_RB"
+  ],
+  "Ceiling_Column_RB_v2_Dry_1x2_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "Ceiling_Column_RB_v2_Dry_1x4_C": [
+   "Column_Sec_1_4_RB"
+  ],
+  "Ceiling_MT_V2_3x3_C": [
+   "Ceiling_3x3",
+   "ColumnTrim_CastStone_900W",
+   "ColumnTrim_CastStone_600W",
+   "Metal_Base_Plate",
+   "Metal_Thin_3xTrim",
+   "Metal_PostBase"
+  ],
+  "Ceiling_MT_v1_3x1_C": [
+   "Ceiling_1x3",
+   "Metal_1x1_Plate_B",
+   "Spike"
+  ],
+  "Ceiling_MT_v1_4x1_C": [
+   "Ceiling_1x4",
+   "SM_MERGED_Ceiling_1x4_Metal_With_Spikes"
+  ],
+  "Ceiling_Platform_1x1_B_C": [
+   "ColumnTileA_CastStone_Top",
+   "Column_BaseD_CastStone",
+   "MetalBand1"
+  ],
+  "Ceiling_Platform_1x1_C": [
+   "ColumnTileA_CastStone_Top",
+   "Column_BaseD_CastStone",
+   "MetalBand1",
+   "Spike"
+  ],
+  "Ceiling_Platform_1x1_C_C": [
+   "Column_BaseD_CastStone",
+   "Column_Pointed_Deco_B_SM"
+  ],
+  "Ceiling_Platform_2x1_B_C": [
+   "Column_Sec_1_Half_FB",
+   "Column_BaseD_CastStone",
+   "Column_Pointed_Deco_B_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Ceiling_Platform_2x1_C": [
+   "Floor_Squarebrick_2x2",
+   "Archway_Wall_Base_SM",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "MetalCap1",
+   "Metal_Trim_Straight_Rivet",
+   "Metal_Thin_Trim",
+   "Metal_PostBase"
+  ],
+  "Ceiling_Platform_Wood_1x1_C": [
+   "SM_MERGED_WoodTowerTop"
+  ],
+  "Ceiling_Platform_Wood_1x2_C": [
+   "SM_MERGED_Platform_300x600"
+  ],
+  "Ceiling_RB_1x3_C": [
+   "Wall_Sec_1_3_V2_RB"
+  ],
+  "Ceiling_RB_1x4_C": [
+   "Wall_Sec_1_4_V2_RB"
+  ],
+  "Ceiling_RB_2x2_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Ceiling_RB_2x4_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Ceiling_RB_3x3_C": [
+   "WallSec_3_3_V2_RB"
+  ],
+  "Ceiling_RB_4x2_C": [
+   "Wall_Sec_2_4_V2_RB"
+  ],
+  "Ceiling_RB_4x3_C": [
+   "Wall_Sec_4_3_V2_RB"
+  ],
+  "Ceiling_RB_4x4_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Ceiling_RB_Dry_1x3_C": [
+   "Wall_Sec_1_3_V2_RB"
+  ],
+  "Ceiling_RB_Dry_2x2_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Ceiling_RB_Dry_4x2_C": [
+   "Wall_Sec_2_4_V2_RB"
+  ],
+  "Ceiling_RB_MT_v1_2x4_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_RB_MT_v1_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_RB_MT_v1_4x3_C": [
+   "Wall_Sec_4_3_V2_RB",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_RB_MT_v1_4x4_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_RB_WD_v1_1x2_C": [
+   "Wall_Sec_1_2_V2_RB",
+   "Metal_Trim_Join_Small_Rivet",
+   "WoodPlank1"
+  ],
+  "Ceiling_RB_WD_v1_1x4_C": [
+   "Wall_Sec_1_4_V2_RB",
+   "SM_MERGED_Ceiling_1x4_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_2x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_Ceiling_2x4_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "SM_MERGED_Ceiling_3x3_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_4x3_C": [
+   "Wall_Sec_4_3_V2_RB",
+   "SM_MERGED_Ceiling_4x3_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_4x4_C": [
+   "Wall_Sec_4_4_V2_RB",
+   "SM_MERGED_Ceiling_4x4_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_Dry_1x2_C": [
+   "Wall_Sec_1_2_V2_RB",
+   "Metal_Trim_Join_Small_Rivet",
+   "WoodPlank1"
+  ],
+  "Ceiling_RB_WD_v1_Dry_2x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_Ceiling_2x4_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_Dry_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "SM_MERGED_Ceiling_3x3_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_RB_WD_v1_Dry_4x3_C": [
+   "Wall_Sec_4_3_V2_RB",
+   "SM_MERGED_Ceiling_4x3_Beams_A",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_SB_2x1_C": [
+   "Floor_Squarebrick_1x2"
+  ],
+  "Ceiling_SB_2x2_C": [
+   "Floor_Squarebrick_2x2"
+  ],
+  "Ceiling_SB_2x4_C": [
+   "Floor_Squarebrick_2x2"
+  ],
+  "Ceiling_SB_3x1_C": [
+   "Floor_Squarebrick_1x3"
+  ],
+  "Ceiling_SB_3x3_C": [
+   "Floor_Squarebrick_3x3"
+  ],
+  "Ceiling_SB_3x4_C": [
+   "Floor_Squarebrick_3x3",
+   "Floor_Squarebrick_1x3"
+  ],
+  "Ceiling_SB_4x1_C": [
+   "Floor_Squarebrick_1x4"
+  ],
+  "Ceiling_SB_4x2_C": [
+   "Floor_Squarebrick_2x2"
+  ],
+  "Ceiling_SB_4x3_C": [
+   "Floor_Squarebrick_4x3"
+  ],
+  "Ceiling_SB_4x4_C": [
+   "Floor_Squarebrick_2x4"
+  ],
+  "Ceiling_SB_MT_3x4_C": [
+   "Floor_Squarebrick_3x3",
+   "Floor_Squarebrick_1x3",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_SB_MT_v1_2x4_C": [
+   "Floor_Squarebrick_2x4",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_SB_MT_v1_4x4_C": [
+   "Floor_Squarebrick_4x4",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Ceiling_SB_WD_v1_2x4_C": [
+   "SM_MERGED_Ceiling_2x4_Beams_B",
+   "Floor_Squarebrick_2x4",
+   "Metal_Trim_Join_Long_Rivet",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_SB_WD_v1_3x3_C": [
+   "SM_MERGED_Ceiling_3x3_Beams_B",
+   "Floor_Squarebrick_3x3",
+   "Metal_Trim_Join_Long_Rivet",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_SB_WD_v1_4x3_C": [
+   "SM_MERGED_Ceiling_4x3_Beams_B",
+   "Floor_Squarebrick_4x3",
+   "Metal_Trim_Join_Long_Rivet",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_SB_WD_v1_4x4_C": [
+   "SM_MERGED_Ceiling_4x4_Beams_B",
+   "Floor_Squarebrick_4x4",
+   "Metal_Trim_Join_Long_Rivet",
+   "Metal_Trim_Join_Small_Rivet"
+  ],
+  "Ceiling_SB_WD_v2_3x3_C": [
+   "Ceiling_3x3",
+   "WoodPlank_3x3_Floor",
+   "Woodbeam1",
+   "WoodBeam7"
+  ],
+  "Ceiling_SB_WD_v2_4x3_C": [
+   "Ceiling_3x4",
+   "WoodPlank_3x4_Floor",
+   "Woodbeam1",
+   "WoodBeam7"
+  ],
+  "Ceiling_SB_WD_v2_4x4_C": [
+   "Ceiling_4x4",
+   "WoodPlank_4x4_Floor",
+   "Woodbeam1",
+   "WoodBeam7"
+  ],
+  "Ceiling_SB_WD_v2_4x5_C": [
+   "Ceiling_4x4",
+   "WoodPlank_4x4_Floor",
+   "Woodbeam1",
+   "WoodBeam7"
+  ],
+  "Ceiling_SB_WD_v3_4x3_C": [
+   "Ceiling_3x4",
+   "WoodPlank_3x4_Floor",
+   "Woodbeam1",
+   "WoodBeam7",
+   "Bracket1"
+  ],
+  "Ceiling_Sewer_3x3_C": [
+   "Archway_1x1x3_Short_RB",
+   "ColumnTrim_CastStone_900W",
+   "ColumnTrim_CastStone_150W"
+  ],
+  "Ceiling_WD_Plank_v1_1x2_C": [
+   "SM_MERGED_Platform_300x600"
+  ],
+  "Ceiling_WD_Plank_v1_1x3_C": [
+   "SM_MERGED_Platform_300x600"
+  ],
+  "Ceiling_WD_Plank_v1_2x3_C": [
+   "SM_MERGED_Platform_300x600"
+  ],
+  "Ceiling_WD_Plank_v1_3x3_C": [
+   "SM_MERGED_Platform_300x600"
+  ],
+  "Ceiling_WD_Plank_v1_4x4_C": [
+   "SM_MERGED_Platform_300x600"
+  ],
+  "Ceiling_WD_v2_1x3_C": [
+   "Ceiling_1x3",
+   "SM_MERGED_Ceiling_1x4_Beams_A",
+   "Wall_Sec_1_3_V2_RB"
+  ],
+  "ColumnBlock_1_1_FB_C": [
+   "Column_Sec_1_2_FB"
+  ],
+  "ColumnBlock_1_1_FB_SAND_C": [
+   "Column_Sec_1_2_FB",
+   "Trim_SAND_Square_SM",
+   "Cren_Shelf_1x1"
+  ],
+  "ColumnBlock_1_1_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "ColumnBlock_1_1_RB_Gold_SAND_C": [
+   "Column_Sec_1_2_RB",
+   "TowerTop_Pointed_Trim_Square_SM",
+   "Cren_Shelf_1x1"
+  ],
+  "ColumnBlock_1_1_Top_FB_C": [
+   "ColumnBlock_Bottom_1_FB",
+   "Column_Sec_1_2_FB",
+   "Cren_Shelf_1x1"
+  ],
+  "ColumnBlock_1_1_Top_RB_C": [
+   "ColumnBlock_Top_1_RB",
+   "Column_Sec_1_2_RB"
+  ],
+  "ColumnBlock_1_2_Dry_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "ColumnBlock_1_2_Half_RB_C": [
+   "ColumnBlockEdge_1_2",
+   "Column_Sec_1_2_Half_RB"
+  ],
+  "ColumnBlock_1_2_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "ColumnBlock_1_4_FB_SAND_C": [
+   "Column_Sec_1_4_FB",
+   "Trim_SAND_Square_SM",
+   "Cren_Shelf_1x1"
+  ],
+  "ColumnBlock_2_2_RB_C": [
+   "ColumnBlock_1x2"
+  ],
+  "ColumnBlock_2_4_Dry_RB_C": [
+   "ColumnBlock_1x2"
+  ],
+  "ColumnBlock_2_4_RB_C": [
+   "ColumnBlock_1x2"
+  ],
+  "ColumnBlock_2_4_V2_RB_C": [
+   "Column_Sec_1_2_Half_RB"
+  ],
+  "ColumnBlock_2_4_V3_RB_C": [
+   "ColumnBlock_1x2",
+   "Metal_Trim_Diamond_2x"
+  ],
+  "ColumnTileB_CastStone_Gold_SAND_C": [
+   "ColumnTileB_CastStone_Base",
+   "ColumnTileB_CastStone_Top",
+   "ColumnTileB_CastStone_Mid",
+   "Trim_OrnateGrpb_SM"
+  ],
+  "ColumnTileB_CastStone_SAND_C": [
+   "ColumnTileB_CastStone_Base",
+   "ColumnTileB_CastStone_Top",
+   "ColumnTileB_CastStone_Mid",
+   "Trim_OrnateGrpa_SM"
+  ],
+  "ColumnTileC_CastStone_Gold_SAND_C": [
+   "ColumnTileB_CastStone_Base",
+   "ColumnTileB_CastStone_Top",
+   "Trim_OrnateGrpb_SM"
+  ],
+  "Column_2x2x1_FB_C": [
+   "ColumnBlock_BottomTile_1_FB"
+  ],
+  "Column_2x2x1_RB_C": [
+   "ColumnBlock_TopTile_1_2_RB"
+  ],
+  "Column_Sec_05_2_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "Column_Sec_1_1_FB_C": [
+   "Column_Sec_1_2_FB",
+   "ColumnTrim_CastStone_600W"
+  ],
+  "Column_Sec_1_2_Dry_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "Column_Sec_1_2_FB_C": [
+   "Column_Sec_1_2_FB"
+  ],
+  "Column_Sec_1_2_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "Column_Sec_1_4_Dry_RB_C": [
+   "Column_Sec_1_4_RB"
+  ],
+  "Column_Sec_1_4_FB_C": [
+   "Column_Sec_1_4_FB"
+  ],
+  "Column_Sec_1_4_RB_C": [
+   "Column_Sec_1_4_RB"
+  ],
+  "Column_Sec_1_4_TrimBlock_C": [
+   "ColumnTrim_CastStone_900W"
+  ],
+  "Column_Sec_1_8_RB_C": [
+   "Column_Sec_1_4_RB"
+  ],
+  "Column_Sec_Half_1_2_RB_C": [
+   "Column_Sec_1_2_RB"
+  ],
+  "Column_Sec_Half_2_Dry_RB_C": [
+   "Column_Sec_1_2_Half_RB"
+  ],
+  "Column_Sec_Half_2_RB_C": [
+   "Column_Sec_1_2_Half_RB"
+  ],
+  "Column_Tall_1_RBFB_C": [
+   "ColumnBlock_Bottom_1_FB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_Top_1_RB",
+   "Column_Sec_1_2_RB",
+   "Cren_Top_Octogon",
+   "SM_MERGED_Cren_Stepped_Square_Short_Octogon"
+  ],
+  "Column_Tall_NoBase_2_RBFB_C": [
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_Top_1_RB",
+   "Column_Sec_1_2_RB",
+   "Cren_Top_Octogon",
+   "SM_MERGED_Cren_Stepped_Square_Short_Octogon"
+  ],
+  "Column_Tall_NoBase_3_RBFB_C": [
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_Top_1_RB",
+   "Cren_Top_Octogon",
+   "SM_MERGED_Cren_Stepped_Square_Short_Octogon"
+  ],
+  "Column_Tall_NoBase_RBFB_C": [
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_Top_1_RB",
+   "Column_Sec_1_2_RB"
+  ],
+  "Column_Tall_NoBase_RBFB_NoTG_C": [
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_Top_1_RB",
+   "Column_Sec_1_2_RB"
+  ],
+  "Column_Tall_Short_RBFB_C": [
+   "ColumnBlock_TopTile_1_2_RB",
+   "ColumnBlock_Top_1_RB"
+  ],
+  "Flag_Arcane_BP_C": [
+   "BannerWoodBeam",
+   "FlagA"
+  ],
+  "Flag_Arcane_Far_BP_C": [
+   "BannerWoodBeam",
+   "FlagB"
+  ],
+  "Flag_BP_C": [
+   "BannerWoodBeam",
+   "FlagA"
+  ],
+  "Flag_BP_Wind_C": [
+   "BannerWoodBeam"
+  ],
+  "Flag_Far_BP_C": [
+   "BannerWoodBeam",
+   "FlagB"
+  ],
+  "Floor_1x3_WoodPlank_C": [
+   "SM_MERGED_Platform_300x900"
+  ],
+  "Floor_2x2_RB_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Floor_3x1_RB_C": [
+   "Floor_3x1",
+   "Wall_05_3_RB",
+   "Metal_Thin_Trim"
+  ],
+  "Floor_3x6_Trim_FS_C": [
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Floor_2_2_FS",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_4x4_C": [
+   "Floor_4x4"
+  ],
+  "Floor_4x4_Ice_C": [
+   "Floor_4x4_MeshPaint"
+  ],
+  "Floor_5x4_FS_C": [
+   "Floor_4_4_FS",
+   "Floor_2_1_FS"
+  ],
+  "Floor_6x3_Trim_RB_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_8x4_Wood_C": [
+   "Floor_8x4_Wood"
+  ],
+  "Floor_Arabic_2x2_C": [
+   "Floor_Arabic_2x2_SM"
+  ],
+  "Floor_Arabic_Blue_2x3_C": [
+   "Floor_Arabic_2x2_SM"
+  ],
+  "Floor_FS_2x1_C": [
+   "Floor_2_1_FS"
+  ],
+  "Floor_FS_2x2_C": [
+   "Floor_2_2_FS"
+  ],
+  "Floor_FS_2x4_C": [
+   "Floor_4_2_FS"
+  ],
+  "Floor_FS_3x1_C": [
+   "Floor_3_1_FS"
+  ],
+  "Floor_FS_3x3_C": [
+   "Floor_3_3_FS"
+  ],
+  "Floor_FS_3x4_C": [
+   "Floor_3_4_FS"
+  ],
+  "Floor_FS_4x1_C": [
+   "Floor_2_1_FS"
+  ],
+  "Floor_FS_4x2_C": [
+   "Floor_2_2_FS"
+  ],
+  "Floor_FS_4x3_C": [
+   "Floor_3_4_FS"
+  ],
+  "Floor_FS_4x4_C": [
+   "Floor_4_4_FS"
+  ],
+  "Floor_FS_Dry_2x1_C": [
+   "Floor_2_1_FS"
+  ],
+  "Floor_FS_Trim_v1_2x2_C": [
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Floor_2_2_FS"
+  ],
+  "Floor_FS_Trim_v1_3x2_C": [
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Floor_2_3_FS",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_FS_Trim_v1_3x3_C": [
+   "SM_MERGED_3x3_Trim_MetalBand",
+   "Floor_3_3_FS"
+  ],
+  "Floor_FS_Trim_v1_4x2_C": [
+   "Floor_4_2_FS",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB"
+  ],
+  "Floor_FS_Trim_v1_4x3_C": [
+   "Floor_3_4_FS",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_FS_Trim_v1_4x4_C": [
+   "Floor_4_4_FS",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_FS_Trim_v1_Dry_3x3_C": [
+   "SM_MERGED_3x3_Trim_MetalBand",
+   "Floor_3_3_FS"
+  ],
+  "Floor_FS_Trim_v1_Dry_4x3_C": [
+   "Floor_3_4_FS",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_Fanlarge_Trim_3x2_C": [
+   "Floor_FanLarge_2x2_SM",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_Fanlarge_Trim_3x3_C": [
+   "SM_MERGED_3x3_Trim_MetalBand",
+   "Floor_FanLarge_2x2_SM"
+  ],
+  "Floor_Fanlarge_Trim_4x3_C": [
+   "Floor_FanLarge_2x2_SM",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_Fanlarge_Trim_5x3_C": [
+   "Floor_FanLarge_2x2_SM",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_RB_1x3_C": [
+   "Wall_Sec_1_3_V2_RB"
+  ],
+  "Floor_RB_1x4_C": [
+   "Wall_Sec_1_4_V2_RB"
+  ],
+  "Floor_RB_2x2_Angled_C": [
+   "Wall_Sec_2_2_45CutRight_RB"
+  ],
+  "Floor_RB_2x2_Angled_v2_C": [
+   "Wall_Sec_2_2_45CutLeft_RB"
+  ],
+  "Floor_RB_2x2_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Floor_RB_2x4_C": [
+   "Wall_Sec_2_4_V2_RB"
+  ],
+  "Floor_RB_3x3_C": [
+   "WallSec_3_3_V2_RB"
+  ],
+  "Floor_RB_4x2_C": [
+   "Wall_Sec_4_2_V2_RB"
+  ],
+  "Floor_RB_4x3_C": [
+   "Wall_Sec_4_3_V2_RB"
+  ],
+  "Floor_RB_4x4_C": [
+   "Wall_Sec_4_4_V2_RB"
+  ],
+  "Floor_RB_MT_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "Metal_Thin_Trim"
+  ],
+  "Floor_RB_MT_4x3_C": [
+   "Wall_Sec_4_3_V2_RB",
+   "Metal_Thin_Trim"
+  ],
+  "Floor_RB_MT_v2_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "Metal_Thin_3xTrim",
+   "Metal_Thin_Trim"
+  ],
+  "Floor_RB_Trim_v1_2x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB"
+  ],
+  "Floor_RB_Trim_v1_2x3_C": [
+   "WallSec_3_2_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_RB_Trim_v1_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "SM_MERGED_3x3_Trim_MetalBand"
+  ],
+  "Floor_RB_Trim_v1_4x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_RB_Trim_v1_4x3_C": [
+   "Wall_Sec_4_3_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_RB_Trim_v1_4x4_C": [
+   "Wall_Sec_4_4_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_RB_Trim_v1_Dry_2x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB"
+  ],
+  "Floor_RB_Trim_v1_Dry_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "SM_MERGED_3x3_Trim_MetalBand"
+  ],
+  "Floor_RB_Trim_v1_Dry_4x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_RB_Trim_v1_Dry_4x4_C": [
+   "Wall_Sec_4_4_V2_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_SB_1x3_C": [
+   "Floor_Squarebrick_1x3"
+  ],
+  "Floor_SB_2x1_C": [
+   "Floor_Squarebrick_1x2"
+  ],
+  "Floor_SB_2x2_C": [
+   "Floor_Squarebrick_2x2"
+  ],
+  "Floor_SB_2x4_C": [
+   "Floor_Squarebrick_2x4"
+  ],
+  "Floor_SB_3x1_C": [
+   "Floor_Squarebrick_1x3"
+  ],
+  "Floor_SB_3x3_C": [
+   "Floor_Squarebrick_3x3"
+  ],
+  "Floor_SB_4x1_C": [
+   "Floor_Squarebrick_1x4"
+  ],
+  "Floor_SB_4x2_C": [
+   "Floor_Squarebrick_2x2"
+  ],
+  "Floor_SB_4x3_C": [
+   "Floor_Squarebrick_4x3"
+  ],
+  "Floor_SB_4x4_C": [
+   "Floor_Squarebrick_4x4"
+  ],
+  "Floor_SB_Dry_1x3_C": [
+   "Floor_Squarebrick_1x3"
+  ],
+  "Floor_SB_Dry_2x2_C": [
+   "Floor_Squarebrick_2x2"
+  ],
+  "Floor_SB_Dry_2x4_C": [
+   "Floor_Squarebrick_2x4"
+  ],
+  "Floor_SB_Dry_3x1_C": [
+   "Floor_Squarebrick_1x3"
+  ],
+  "Floor_SB_Dry_3x3_C": [
+   "Floor_Squarebrick_3x3"
+  ],
+  "Floor_SB_Dry_4x1_C": [
+   "Floor_Squarebrick_1x4"
+  ],
+  "Floor_SB_Dry_4x4_C": [
+   "Floor_Squarebrick_4x4"
+  ],
+  "Floor_SB_Trim_v1_2x2_C": [
+   "Floor_Squarebrick_2x2",
+   "Trim_Floor_MetalBand_Corner_1a_RB"
+  ],
+  "Floor_SB_Trim_v1_3x3_C": [
+   "Floor_Squarebrick_3x3",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_SB_Trim_v1_3x6_C": [
+   "Floor_Squarebrick_2x2",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_SB_Trim_v1_4x3_C": [
+   "Floor_Squarebrick_4x3",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_SB_Trim_v1_4x4_C": [
+   "Floor_Squarebrick_4x4",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_SB_Trim_v1_4x6_C": [
+   "Floor_Squarebrick_4x3",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_SB_Trim_v2_3x3_C": [
+   "Floor_Squarebrick_2x2",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB",
+   "Metal_Thin_Trim",
+   "Metal_PostBase_B"
+  ],
+  "Floor_WD_2x1_C": [
+   "Floor_2x1",
+   "WoodPlank_2x1_Floor"
+  ],
+  "Floor_WD_2x2_C": [
+   "WoodFloor_2x2"
+  ],
+  "Floor_WD_2x3_C": [
+   "WoodFloor_2x1"
+  ],
+  "Floor_WD_3x1_C": [
+   "WoodFloor_3x1"
+  ],
+  "Floor_WD_3x3_C": [
+   "WoodFloor_3x1"
+  ],
+  "Floor_WD_4x1_C": [
+   "WoodFloor_2x1"
+  ],
+  "Floor_WD_4x3_2sideTrim_v2_C": [
+   "WoodFloor_3x1",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_WD_4x3_3sideTrim_v2_C": [
+   "WoodFloor_3x1",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_WD_4x3_C": [
+   "WoodFloor_2x1"
+  ],
+  "Floor_WD_4x4_C": [
+   "WoodFloor_2x2"
+  ],
+  "Floor_WD_Trim_v1_3x3_C": [
+   "WoodFloor_3x1",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_WD_Trim_v1_3x5_C": [
+   "WoodFloor_3x1",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_WD_Trim_v1_4x2_C": [
+   "WoodFloor_2x2",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_WD_Trim_v1_4x3_2sideTrim_C": [
+   "WoodFloor_2x1",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "WoodBeam7"
+  ],
+  "Floor_WD_Trim_v1_4x3_3sideTrim_C": [
+   "WoodFloor_2x1",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "WoodBeam7",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_WD_Trim_v1_4x3_C": [
+   "WoodFloor_2x1",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_WD_Trim_v1_4x4_3sideTrim_v1_C": [
+   "WoodFloor_2x2",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB",
+   "Trim_Floor_MetalBand_1b_RB",
+   "Trim_Floor_MetalBand_1a_RB"
+  ],
+  "Floor_WD_Trim_v1_4x4_C": [
+   "WoodFloor_2x2",
+   "Trim_Floor_MetalBand_Corner_1b_RB",
+   "Trim_Floor_MetalBand_Corner_1a_RB",
+   "Trim_Floor_MetalBand_2a_RB",
+   "Trim_Floor_MetalBand_2b_RB"
+  ],
+  "Floor_WD_V2_3x3_C": [
+   "Floor_3x3",
+   "WoodPlank_3x3_Floor"
+  ],
+  "Floor_WD_V2_3x4_C": [
+   "Floor_3x4",
+   "WoodPlank_3x4_Floor"
+  ],
+  "Floor_WD_V2_4x4_C": [
+   "Floor_4x4",
+   "WoodPlank_4x4_Floor"
+  ],
+  "Floor_WoodPlank_3x3_C": [
+   "WoodPlank_3x3_Floor"
+  ],
+  "Lizard_Banner_Vertical_C": [
+   "Lizardman_Banner_Poles",
+   "Lizardman_Banner_Rope",
+   "Lizardman_Banner_Hanging"
+  ],
+  "Lizard_Brazier_C": [
+   "Lizardman_Pyramid",
+   "Lighting_Brazier_Large_Bowl_Hanging_SM",
+   "Brazier_Logs",
+   "FlagePoleFinial",
+   "WallTorch_Log",
+   "Chain_Short"
+  ],
+  "Lizard_TentC_C": [
+   "Lizardman_Horn_D",
+   "Lizardman_Awning_Fabric",
+   "Lizardman_Horn_B",
+   "Lizardman_Horn_A"
+  ],
+  "Lizard_TentD_C": [
+   "Lizardman_Horn_D",
+   "Lizardman_Awning_Fabric",
+   "Lizardman_Horn_B",
+   "Lizardman_Horn_A"
+  ],
+  "Lizard_Tent_C": [
+   "Lizardman_Tent_Poles",
+   "Lizardman_Tent_Fabric"
+  ],
+  "Lizard_WatchTower_Wind_C": [
+   "Lizardman_WatchTower_NoFabric"
+  ],
+  "Pennant2_BP_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA",
+   "PennantA"
+  ],
+  "Pennant2_BP_Wind_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA"
+  ],
+  "Pennant2_Far_BP_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA",
+   "PennantB"
+  ],
+  "Pennant2_Far_BP_Wind_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA"
+  ],
+  "Pennant_BP_Wind_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA"
+  ],
+  "Pennant_Far_BP_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA",
+   "PennantB"
+  ],
+  "Pennant_Far_BP_Wind_C": [
+   "FlagPole",
+   "FlagLoopB",
+   "FlagLoopA"
+  ],
+  "Pennant_NoPole_BP_Wind_C": [
+   "FlagLoopB",
+   "FlagLoopA"
+  ],
+  "RampMesh_05x3_RB_C": [
+   "Wall_Sec_2_3_V2_RB"
+  ],
+  "RampMesh_SB_MT_4x2_C": [
+   "Floor_Squarebrick_1x4",
+   "Metal_Trim_Straight_Rivet_x2",
+   "Metal_Trim_Diamond_2x"
+  ],
+  "RampMesh_SB_MT_v2_1x2_C": [
+   "Floor_Squarebrick_1x2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "RampMesh_SB_MT_v2_4x2_C": [
+   "Floor_Squarebrick_2x2",
+   "Metal_Trim_Diamond_2x"
+  ],
+  "Rift_Dais_SAND_C": [
+   "Archway_Pointed_Ring_SM",
+   "Stairs_3x_Round",
+   "RiftBase_Disc_B"
+  ],
+  "Rift_Platform_RB_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Wall_Sec_2_2_45CutRight_RB",
+   "Wall_Sec_2_2_45CutLeft_RB",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_900W",
+   "Cren_1_Half_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_150W"
+  ],
+  "Scenario_03_Ground1_C": [
+   "DLC3_Groundplane1_SM"
+  ],
+  "Scenario_03_Ground2_C": [
+   "DLC3_Groundplane2_SM"
+  ],
+  "Scenario_03_Ground3_C": [
+   "DLC3_Groundplane3_SM"
+  ],
+  "Scenario_03_Ground4_C": [
+   "DLC3_Groundplane4_SM"
+  ],
+  "Scenario_08_HSection_C": [
+   "Column_Sec_1_4_RB",
+   "Wall_Sec_2_4_V2_RB",
+   "Column_Sec_1_2_RB",
+   "Wall_Sec_2_2_V2_RB",
+   "Cren_Corner_RB",
+   "Floor_Squarebrick_2x4",
+   "SM_MERGED_Roof_Tiled_x3_Base2_34",
+   "Cren_Top_Square",
+   "ColumnTrim_CastStone_1800W",
+   "Crenellation_1_RB",
+   "ColumnTrim_CastStone_1200W",
+   "Floor_Squarebrick_1x4",
+   "Cren_1_Half_RB",
+   "ColumnTrim_CastStone_600W",
+   "Floor_Squarebrick_1x2",
+   "Cren_Shelf_1x1",
+   "ColumnTrim_CastStone_300W"
+  ],
+  "Scenario_09_Ground_C": [
+   "Scenario_09_Terrain"
+  ],
+  "Scenario_12_Ground_C": [
+   "Scenario_12_Ground_BattleField"
+  ],
+  "Scenario_12_Ground_Courtyard_C": [
+   "Scenario_12_Ground_Courtyard"
+  ],
+  "Scenario_13_Ground_C": [
+   "Scenario_13_Ground"
+  ],
+  "Scenario_17_Ground_Extended_C": [
+   "Scenario_17_Ground_Extended"
+  ],
+  "StairGroup_05_3_C": [
+   "Stairs_3x_2_SB",
+   "Wall_05_3_V2_RB",
+   "Wall_StairsSide_2_RB"
+  ],
+  "StairGroup_1x3_RB_C": [
+   "Stairs_3x_4_SB",
+   "Wall_Sec_2_3_V2_RB",
+   "Wall_StairsSide_4_RB"
+  ],
+  "StairGroup_1x3_RB_Dry_C": [
+   "Stairs_3x_4_SB",
+   "Wall_Sec_2_3_V2_RB",
+   "Wall_StairsSide_4_RB"
+  ],
+  "StairGroup_RB_TG_1x3_C": [
+   "Stairs_3x_4_SB",
+   "Wall_Sec_2_3_V2_RB",
+   "Wall_StairsSide_4_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "StairPlatform_Small_C": [
+   "Wall_2_2_FB",
+   "Stairs_1x_05_SB",
+   "Stairs_CornerOutside_05_SB"
+  ],
+  "StairPlatform_Small_Dry_C": [
+   "Wall_2_2_FB",
+   "Stairs_1x_05_SB",
+   "Stairs_CornerOutside_05_SB"
+  ],
+  "Stairs_MultiTiered_B_C": [
+   "ColumnBlock_BottomTile_1_FB",
+   "ColumnBlock_Bottom_1_FB",
+   "Stairs_4x_2_SB",
+   "Dome_3x_Tunnel_RB",
+   "Archway_1x1x4_Short_RB",
+   "Arch_1x4_FoundationBlock",
+   "Wall_Sec_2_2_V2_RB",
+   "RailingStairsB",
+   "Wall_Sec_1_2_V2_RB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_600W",
+   "RailingC_2W",
+   "Wall_StairsSide_2_RB"
+  ],
+  "Stairs_MultiTiered_C": [
+   "ColumnBlock_Bottom_1_RB",
+   "Stairs_4x_2_SB",
+   "Dome_3x_Tunnel_RB",
+   "ColumnBlock_TopTile_1_2_RB",
+   "Wall_4_4_FB",
+   "Archway_1x1x4_Short_RB",
+   "Wall_Sec_2_4_V2_RB",
+   "Wall_Sec_2_2_V2_RB",
+   "RailingStairsB",
+   "Wall_Sec_1_2_V2_RB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_600W",
+   "RailingC_2W",
+   "Wall_StairsSide_2_RB"
+  ],
+  "Trapezoid_Landing_C": [
+   "ColumnBlock_Bottom_1_RB",
+   "Wall_Sec_4_4_V2_RB",
+   "Wall_4_4_FB",
+   "Wall_Sec_4_3_V2_RB",
+   "Wall_Sec_4_2_V2_RB",
+   "Column_Sec_1_2_RB",
+   "Wall_2_3_FB",
+   "Wall_Sec_2_2_V2_RB",
+   "Wall_Sec_2_2_45CutRight_RB",
+   "Wall_Sec_2_2_45CutLeft_RB",
+   "Wall_2_2_FB",
+   "Column_BaseD_CastStone"
+  ],
+  "Trim_Column_WDMT_Dry_v1_C": [
+   "Woodbeam2",
+   "MetalBandCenter",
+   "MetalBand1"
+  ],
+  "Trim_Column_WDMT_v1_C": [
+   "Woodbeam2",
+   "MetalBandCenter",
+   "MetalBand1"
+  ],
+  "WallAngled_05_2_RB_C": [
+   "WallAngled_1_2",
+   "WallAngled_1_2_V2_RB"
+  ],
+  "WallAngled_05_3_RB_C": [
+   "WallAngled_1_3",
+   "WallAngled_1_3_V2_RB"
+  ],
+  "WallAngled_05_4_RB_C": [
+   "WallAngled_1_4",
+   "WallAngled_1_4_V2_RB"
+  ],
+  "WallOuterCornerFull_1_C": [
+   "WallOuterCornerFull_1_1"
+  ],
+  "WallOuterCorner_1_C": [
+   "Wall_OuterCorner_1",
+   "FloorSpacer_05x05",
+   "Wall_TrimOuterCorner_Bottom_1",
+   "Wall_TrimOuterCorner_Top_1"
+  ],
+  "Wall_1_2_C": [
+   "Wall_1_2",
+   "WallTrim_Bottom_1_2",
+   "WallTrim_Top_1_2"
+  ],
+  "Wall_FB_1x2_C": [
+   "Wall_1_2_FB"
+  ],
+  "Wall_FB_1x3_C": [
+   "Wall_1_3_FB"
+  ],
+  "Wall_FB_1x4_C": [
+   "Wall_1_2_FB"
+  ],
+  "Wall_FB_2x2_2x_Window_C": [
+   "Wall_2_2_FB_2x_Window",
+   "Window_Pointed_2x"
+  ],
+  "Wall_FB_2x2_Angle_C": [
+   "Wall_2_2_angle_FB"
+  ],
+  "Wall_FB_2x2_Angle_v2_C": [
+   "Wall_2_2_angle_FB"
+  ],
+  "Wall_FB_2x2_C": [
+   "Wall_2_2_FB"
+  ],
+  "Wall_FB_2x2_Double_Window_C": [
+   "Wall_2_2_FB_Double_Window",
+   "Window_Pointed_2x"
+  ],
+  "Wall_FB_2x3_C": [
+   "Wall_2_3_FB"
+  ],
+  "Wall_FB_2x4_C": [
+   "Wall_2_2_FB"
+  ],
+  "Wall_FB_4x4_C": [
+   "Wall_4_4_FB"
+  ],
+  "Wall_FB_MT_1x2_SAND_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Trim_SAND_2x_SM"
+  ],
+  "Wall_FB_MT_1x2_V2_SAND_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "SupportBlock",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Trim_SAND_2x_SM"
+  ],
+  "Wall_FB_MT_1x2_Window_SAND_C": [
+   "Wall_2_2_FB_2x_Window",
+   "ColumnTrim_CastStone_600W",
+   "Window_Pointed_2x",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Trim_SAND_2x_SM"
+  ],
+  "Wall_FB_MT_1x3_SAND_C": [
+   "Wall_2_3_FB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_900W_CutF",
+   "ColumnTrim_CastStone_900W_CutW",
+   "Trim_SAND_3x_SM"
+  ],
+  "Wall_FB_MT_1x4_SAND_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW",
+   "Trim_SAND_4x_SM"
+  ],
+  "Wall_FB_MT_V3_1x4_SAND_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_600W",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW",
+   "Trim_SAND_4x_SM"
+  ],
+  "Wall_FB_MT_V4_1x4_SAND_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_600W",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW"
+  ],
+  "Wall_FB_MT_V6_1x4_SAND_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_600W",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW"
+  ],
+  "Wall_FB_MT_v1_2x4_C": [
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "Metal_Trim_Diamond"
+  ],
+  "Wall_FB_MT_v2_2x4_C": [
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond"
+  ],
+  "Wall_FB_Trim_v1_1x3_C": [
+   "Wall_1_3_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW"
+  ],
+  "Wall_FB_Trim_v1_2x1_C": [
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_FB_Trim_v1_2x2_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_FB_Trim_v1_2x3_C": [
+   "Wall_2_3_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW"
+  ],
+  "Wall_FB_Trim_v1_2x4_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_FB_Trim_v1_4x2_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_FB_Trim_v1_4x4_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_Half_FB_1Trap_C": [
+   "Column_Sec_1_2_FB",
+   "Column_BaseD_CastStone",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_150W",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "Window_Pointed_Sil_SM",
+   "TowerTop_Pointed_Trim_1x_SM"
+  ],
+  "Wall_Half_FB_2Trap_B_C": [
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_900W",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "SupportBlock"
+  ],
+  "Wall_Half_FB_2Trap_C": [
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "SupportBlock_2",
+   "TowerTop_Pointed_Trim_3x_SM",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Wall_Half_FB_2Trap_C_C": [
+   "Column_Sec_1_Half_FB",
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "SupportBlock_2",
+   "TowerTop_Pointed_Trim_3x_SM",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Wall_Half_FB_3Trap_C": [
+   "Wall_1_3_FB",
+   "Column_Sec_1_Half_FB",
+   "ColumnTrim_CastStone_900W",
+   "SupportBlock_3",
+   "ColumnTrim_CastStone_300W",
+   "TowerTop_Pointed_Trim_4x_SM",
+   "TowerTop_Pointed_Trim_3x_SM",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "TowerTop_Pointed_Trim_2x_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Wall_Half_FB_3Trap_Tall_B_C": [
+   "Wall_2_2_FB",
+   "Column_Sec_1_Half_FB",
+   "ColumnTrim_CastStone_1200W"
+  ],
+  "Wall_Half_FB_3Trap_Tall_C": [
+   "Column_Sec_1_Half_FB",
+   "Wall_1_2_FB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "SupportBlock_2",
+   "TowerTop_Pointed_Trim_3x_SM",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "TowerTop_Pointed_Trim_2x_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Wall_Med_FB_2Trap_C": [
+   "Wall_2_2_FB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "SupportBlock_2",
+   "TowerTop_Pointed_Trim_3x_SM",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Wall_RB_10x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Trim_2_CurbstoneBottom",
+   "Trim_2_CurbstoneDecorative"
+  ],
+  "Wall_RB_1x2_C": [
+   "Wall_Sec_1_2_V2_RB"
+  ],
+  "Wall_RB_1x3_C": [
+   "WallSec_1_3",
+   "Wall_Sec_1_3_V2_RB"
+  ],
+  "Wall_RB_1x4_C": [
+   "Wall_Sec_1_4_V2_RB"
+  ],
+  "Wall_RB_2x2_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Wall_RB_2x3_C": [
+   "Wall_Sec_2_3_V2_RB"
+  ],
+  "Wall_RB_2x4_C": [
+   "Wall_Sec_2_4_V2_RB"
+  ],
+  "Wall_RB_2x6_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Wall_RB_3x1_C": [
+   "WallSec_2_1",
+   "WallSec_3_1_V2_RB"
+  ],
+  "Wall_RB_3x2_C": [
+   "WallSec_3_2",
+   "WallSec_3_2_V2_RB"
+  ],
+  "Wall_RB_3x3_C": [
+   "WallSec_3_3_V2_RB"
+  ],
+  "Wall_RB_4x2_C": [
+   "Wall_Sec_4_2_V2_RB"
+  ],
+  "Wall_RB_4x3_C": [
+   "Wall_Sec_2_3_V2_RB"
+  ],
+  "Wall_RB_4x4_C": [
+   "Wall_Sec_4_4_V2_RB"
+  ],
+  "Wall_RB_4x8_C": [
+   "Wall_Sec_2_3_V2_RB"
+  ],
+  "Wall_RB_Angle_1x1_C": [
+   "Wall_StairsSide_4_RB"
+  ],
+  "Wall_RB_Angle_v2_1x1_C": [
+   "Wall_StairsSide_4_RB"
+  ],
+  "Wall_RB_Dry_1x2_C": [
+   "Wall_Sec_1_2_V2_RB"
+  ],
+  "Wall_RB_Dry_1x3_C": [
+   "WallSec_1_3",
+   "Wall_Sec_1_3_V2_RB"
+  ],
+  "Wall_RB_Dry_1x4_C": [
+   "Wall_Sec_1_4_V2_RB"
+  ],
+  "Wall_RB_Dry_2x2_C": [
+   "Wall_Sec_2_2_V2_RB"
+  ],
+  "Wall_RB_Dry_2x3_C": [
+   "Wall_Sec_2_3_V2_RB"
+  ],
+  "Wall_RB_Dry_2x4_C": [
+   "Wall_Sec_2_4_V2_RB"
+  ],
+  "Wall_RB_Dry_3x1_C": [
+   "WallSec_2_1",
+   "WallSec_3_1_V2_RB"
+  ],
+  "Wall_RB_Dry_3x3_C": [
+   "WallSec_3_3_V2_RB"
+  ],
+  "Wall_RB_Dry_4x2_C": [
+   "Wall_Sec_4_2_V2_RB"
+  ],
+  "Wall_RB_Dry_4x3_C": [
+   "Wall_Sec_2_3_V2_RB"
+  ],
+  "Wall_RB_Dry_4x4_C": [
+   "Wall_Sec_4_4_V2_RB"
+  ],
+  "Wall_RB_MT_1x3_C": [
+   "ColumnTrim_CastStone_900W",
+   "Wall_Sec_1_3_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond_Small",
+   "Metal_Trim_Join_Long_Rivet"
+  ],
+  "Wall_RB_MT_Stadium_1x2_C": [
+   "Archway_1x1x3_Short_RB",
+   "Wall_Sec_2_4_V2_RB",
+   "Walls_1_2_V2_RB",
+   "Stairs_2x_SB",
+   "ColumnTileA_CastStone_Base",
+   "Crenellation_1_5_RB",
+   "ColumnTileA_CastStone_Top",
+   "Floor_1x3",
+   "Cren_Top_Square",
+   "Window_CastStone_Sill_Large",
+   "Floor_Squarebrick_1x4",
+   "Floor_Squarebrick_1x3",
+   "ColumnTileA_CastStone_Mid",
+   "ColumnTrim_CastStone_600W",
+   "RailingStairsBase_1",
+   "Cren_Stepped_Short_Five_CS",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "SM_MERGED_Spike_Metal_Gothic_x2",
+   "Metal_Trim_Straight_Rivet",
+   "Metal_Trim_Diamond_2"
+  ],
+  "Wall_RB_MT_v1_1x1_C": [
+   "WallSec_2_1",
+   "ColumnTrim_CastStone_300W",
+   "Walls_1_1_V2_RB",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_MT_v1_1x2_C": [
+   "Walls_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond_2"
+  ],
+  "Wall_RB_MT_v1_1x3_C": [
+   "Wall_1_3_V2_RB",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_900W_CutF",
+   "ColumnTrim_CastStone_900W_CutW",
+   "SM_MERGED_Metal_Trim_Diamond_1_5"
+  ],
+  "Wall_RB_MT_v1_1x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "ColumnTrim_CastStone_1200W",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW",
+   "Metal_Trim_Diamond_2x"
+  ],
+  "Wall_RB_MT_v1_1x5_C": [
+   "Wall_1_3_V2_RB",
+   "Walls_1_2_V2_RB",
+   "ColumnTrim_CastStone_1800W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond_2x",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_MT_v1_2x1_C": [
+   "WallSec_2_1",
+   "ColumnTrim_CastStone_300W",
+   "Walls_1_1_V2_RB",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_MT_v1_2x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Thin_Trim",
+   "Metal_Trim_Diamond_2"
+  ],
+  "Wall_RB_MT_v1_2x3_C": [
+   "Wall_Sec_2_3_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "Metal_Thin_3xTrim",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_MT_v1_2x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "ColumnTrim_CastStone_1200W",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW",
+   "Metal_Trim_Diamond_2x"
+  ],
+  "Wall_RB_MT_v2_1x2_C": [
+   "Wall_Sec_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond_2"
+  ],
+  "Wall_RB_MT_v2_2x2_C": [
+   "Walls_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "SupportBlock",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2"
+  ],
+  "Wall_RB_MT_v2_2x3_C": [
+   "Wall_1_3_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_MT_v2_2x4_C": [
+   "Walls_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "Metal_Trim_Diamond"
+  ],
+  "Wall_RB_MT_v3_2x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "Metal_Trim_Straight_Rivet_x2",
+   "Metal_ThinRow_Plate",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_MetalTrim_v1_2x2_C": [
+   "Floor_2x2",
+   "WoodPlank_2x2_Floor",
+   "MetalBand1",
+   "Metal_Thin_Trim",
+   "Metal_Trim_Straight",
+   "Metal_3WayJoint"
+  ],
+  "Wall_RB_MetalTrim_v1_4x4_C": [
+   "Floor_4x4",
+   "WoodPlank_4x4_Floor",
+   "Metal_Thin_4_Trim",
+   "MetalBand1",
+   "Metal_Trim_Straight",
+   "Metal_3WayJoint"
+  ],
+  "Wall_RB_Trim_v1_1x2_C": [
+   "Wall_Sec_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_RB_Trim_v1_1x4_C": [
+   "Wall_Sec_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_RB_Trim_v1_2x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW"
+  ],
+  "Wall_RB_Trim_v1_2x3_C": [
+   "Wall_Sec_2_3_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW"
+  ],
+  "Wall_RB_Trim_v1_2x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW"
+  ],
+  "Wall_RB_Trim_v1_3x1_C": [
+   "WallSec_2_1",
+   "WallSec_3_1_V2_RB",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW"
+  ],
+  "Wall_RB_Trim_v1_3x3_C": [
+   "WallSec_3_3_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW"
+  ],
+  "Wall_RB_Trim_v1_3x4_C": [
+   "WallSec_3_4_V2_RB",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW"
+  ],
+  "Wall_RB_Trim_v1_4x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW"
+  ],
+  "Wall_RB_WDMTL_v1_1x2_C": [
+   "Walls_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "Woodbeam3",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBandCenter",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_WDMT_v1_1x1_C": [
+   "WallSec_2_1",
+   "Walls_1_1_V2_RB",
+   "Woodbeam3",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_WDMT_v1_1x3_C": [
+   "Wall_1_3_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond_2x",
+   "Woodbeam4"
+  ],
+  "Wall_RB_WDMT_v1_1x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutW",
+   "Woodbeam3",
+   "MetalBand1",
+   "Metal_Trim_Diamond_2x",
+   "Metal_Trim_Diamond_Small",
+   "Woodbeam4"
+  ],
+  "Wall_RB_WDMT_v1_1x5_C": [
+   "Wall_1_3_V2_RB",
+   "Walls_1_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "ColumnTrim_CastStone_600W_CutW",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "MetalBand1",
+   "Metal_Trim_Diamond_2x",
+   "Woodbeam4"
+  ],
+  "Wall_RB_WDMT_v1_2x1_C": [
+   "WallSec_2_1",
+   "Walls_1_1_V2_RB",
+   "Woodbeam3",
+   "ColumnTrim_CastStone_300W_CutF",
+   "ColumnTrim_CastStone_300W_CutW",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_WDMT_v1_2x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "Woodbeam3",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBandCenter",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_WDMT_v1_2x3_C": [
+   "Wall_Sec_2_3_V2_RB",
+   "SM_MERGED_WoodBeamDouble_B",
+   "ColumnTrim_CastStone_900W_CutF",
+   "ColumnTrim_CastStone_900W_CutW",
+   "SM_MERGED_Metal_Trim_Diamond_1_5"
+  ],
+  "Wall_RB_WDMT_v1_2x4_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Woodbeam2",
+   "ColumnTrim_CastStone_600W_CutF",
+   "Woodbeam3",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBandCenter",
+   "MetalBand1",
+   "Metal_Trim_Diamond",
+   "Metal_Trim_Diamond_2",
+   "Metal_Trim_Diamond_Small"
+  ],
+  "Wall_RB_WDMT_v1_Dry_2x2_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "ColumnTrim_CastStone_600W_CutF",
+   "Woodbeam3",
+   "ColumnTrim_CastStone_600W_CutW",
+   "MetalBandCenter",
+   "Metal_Trim_Diamond"
+  ],
+  "Wall_RB_WDMT_v1_Dry_2x3_C": [
+   "Wall_Sec_2_3_V2_RB",
+   "SM_MERGED_WoodBeamDouble_B",
+   "ColumnTrim_CastStone_900W_CutF",
+   "ColumnTrim_CastStone_900W_CutW",
+   "SM_MERGED_Metal_Trim_Diamond_1_5"
+  ],
+  "Wall_RB_WD_v1_1x2_C": [
+   "Walls_1_2_V2_RB",
+   "SM_MERGED_Wall_Beams_1x2_B",
+   "ColumnTrim_CastStone_600W_CutF",
+   "MetalBand1"
+  ],
+  "Wall_RB_WD_v1_1x2_v2_C": [
+   "Walls_1_2_V2_RB",
+   "SM_MERGED_Wall_Beams_1x2_A",
+   "ColumnTrim_CastStone_600W_CutF",
+   "MetalBand1"
+  ],
+  "Wall_RB_WD_v1_1x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_Wall_Beams_1x4",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "MetalBand1"
+  ],
+  "Wall_RB_WD_v1_Dry_1x2_C": [
+   "Walls_1_2_V2_RB",
+   "SM_MERGED_Wall_Beams_1x2_B",
+   "ColumnTrim_CastStone_600W_CutF",
+   "MetalBand1"
+  ],
+  "Wall_RB_WD_v2_1x2_C": [
+   "Walls_1_2_V2_RB",
+   "SM_MERGED_Wall_Beams_1x2_B",
+   "ColumnTrim_CastStone_600W_CutF",
+   "Bracket2_spike"
+  ],
+  "Wall_RB_WD_v2_1x2_v2_C": [
+   "Walls_1_2_V2_RB",
+   "SM_MERGED_Wall_Beams_1x2_A",
+   "ColumnTrim_CastStone_600W_CutF",
+   "Bracket2_spike"
+  ],
+  "Wall_RB_WD_v2_1x3_C": [
+   "SM_MERGED_Wall_Beams_1x3",
+   "Wall_1_3_V2_RB",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "Bracket2_spike"
+  ],
+  "Wall_RB_WD_v2_1x4_C": [
+   "Wall_Sec_2_4_V2_RB",
+   "SM_MERGED_Wall_Beams_1x4",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "Bracket2_spike"
+  ],
+  "Wall_RB_WD_v3_1x3_C": [
+   "Walls_1_2_V2_RB",
+   "WoodBeamArch2",
+   "Wall_1_05",
+   "ColumnTrim_CastStone_600W",
+   "Woodbeam1",
+   "Woodbeam2",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "Woodbeam3"
+  ],
+  "Wall_RB_WD_v3_1x4_C": [
+   "Wall_1_4",
+   "SM_MERGED_Wall_Beams_1x4",
+   "WoodBeamArch2",
+   "WallBrokenB_SM",
+   "WallBrokenD_SM",
+   "Woodbeam1",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "Woodbeam5",
+   "WallBrokenC_SM"
+  ],
+  "Wall_RB_WD_v4_1x3_C": [
+   "Wall_1_3",
+   "WoodBeamArch2",
+   "ColumnTrim_CastStone_600W",
+   "WallBrokenD_SM",
+   "Woodbeam1",
+   "Woodbeam2",
+   "SM_MERGED_ColumnTrim_CastStone_1200W_CutF",
+   "Woodbeam3",
+   "WallBrokenC_SM"
+  ],
+  "Wall_Sewer_4x4_C": [
+   "Archway_1x1x3_Short_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_150W"
+  ],
+  "Wall_Sewer_Half_4x2_C": [
+   "Archway_1x1x3_Short_RB",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "ColumnTrim_CastStone_150W"
+  ],
+  "Wall_Tall_FB_2Trap_C": [
+   "Wall_1_2_FB",
+   "Floor_Mediterranean_2x2_SM",
+   "ColumnTrim_CastStone_600W",
+   "ColumnTrim_CastStone_300W",
+   "SupportBlock_2",
+   "TowerTop_Pointed_Trim_3x_SM",
+   "SupportBlock",
+   "Column_Pointed_Deco_B_SM",
+   "Window_Pointed_Sil_SM"
+  ],
+  "Window_3x_Tall_RB_C": [
+   "Window_CastStone_Arch350",
+   "Wall_Sec_2_2_V2_RB",
+   "Wall_Sec_Arch",
+   "Wall_Sec_1_4_V2_RB",
+   "Window_CastStone_Tile350",
+   "ColumnTrim_CastStone_1200W",
+   "ColumnTrim_CastStone_900W",
+   "ColumnTrim_CastStone_600W",
+   "Window_CastStone_Sill_Small",
+   "SupportBlock"
+  ],
+  "wall_RB_3x4_C": [
+   "Wall_Sec_2_2_V2_RB",
+   "Wall_Sec_1_2_V2_RB"
+  ]
+ }
+}

@@ -1,0 +1,5002 @@
+{
+ "actors": {
+  "AmbientSound": {
+   "class": "AmbientSound",
+   "export": 26,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 67
+  },
+  "ArchwayGate_1x1x3-5_RB_C": {
+   "class": "ArchwayGate_1x1x3-5_RB_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "ArchwayGate_1x1x3-5_SAND_C": {
+   "class": "ArchwayGate_1x1x3-5_SAND_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 4
+  },
+  "ArchwayGate_1x1x3_Angled_SAND_C": {
+   "class": "ArchwayGate_1x1x3_Angled_SAND_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "ArchwayGate_1x1x3_RB_C": {
+   "class": "ArchwayGate_1x1x3_RB_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 18
+  },
+  "ArchwayGate_1x1x3_RB_NoRight_C": {
+   "class": "ArchwayGate_1x1x3_RB_NoRight_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 1
+  },
+  "ArchwayGate_1x1x3_RB_NoTG_C": {
+   "class": "ArchwayGate_1x1x3_RB_NoTG_C",
+   "export": 1,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 2
+  },
+  "ArchwayGate_1x1x3_SAND_C": {
+   "class": "ArchwayGate_1x1x3_SAND_C",
+   "export": 1,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04_Castle",
+   "levels": 2
+  },
+  "ArchwayGate_1x1x4_Angled_SAND_C": {
+   "class": "ArchwayGate_1x1x4_Angled_SAND_C",
+   "export": 2,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "ArchwayGate_1x1x4_Dry_RB_C": {
+   "class": "ArchwayGate_1x1x4_Dry_RB_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "ArchwayGate_1x1x4_RB_C": {
+   "class": "ArchwayGate_1x1x4_RB_C",
+   "export": 2,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 10
+  },
+  "ArchwayGate_1x1x4_RB_NoColumn_C": {
+   "class": "ArchwayGate_1x1x4_RB_NoColumn_C",
+   "export": 0,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 2
+  },
+  "ArchwayGate_1x1x4_RB_wide_C": {
+   "class": "ArchwayGate_1x1x4_RB_wide_C",
+   "export": 2,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Castle",
+   "levels": 2
+  },
+  "Archway_1x2_C": {
+   "class": "Archway_1x2_C",
+   "export": 0,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 2
+  },
+  "AtmosphericFog": {
+   "class": "AtmosphericFog",
+   "export": 2,
+   "kind": "sky",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 29
+  },
+  "AudioVolume": {
+   "class": "AudioVolume",
+   "export": 58,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Audio",
+   "levels": 1
+  },
+  "Awning_Stadium_Angled_C": {
+   "class": "Awning_Stadium_Angled_C",
+   "export": 4,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 1
+  },
+  "Awning_Stadium_Straight_C": {
+   "class": "Awning_Stadium_Straight_C",
+   "export": 21,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 1
+  },
+  "BP_Brazier_Hanging_BrightSpot_C": {
+   "class": "BP_Brazier_Hanging_BrightSpot_C",
+   "export": 110,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Lighting",
+   "levels": 1
+  },
+  "BP_Brazier_Hanging_C": {
+   "class": "BP_Brazier_Hanging_C",
+   "export": 497,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 2
+  },
+  "BP_Brazier_Hanging_NoDirectional_C": {
+   "class": "BP_Brazier_Hanging_NoDirectional_C",
+   "export": 31,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Lighting",
+   "levels": 1
+  },
+  "BP_Brazier_Large_C": {
+   "class": "BP_Brazier_Large_C",
+   "export": 121,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Lighting",
+   "levels": 2
+  },
+  "BP_Brazier_NoStand_2X_C": {
+   "class": "BP_Brazier_NoStand_2X_C",
+   "export": 499,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 2
+  },
+  "BP_Brazier_NoStand_C": {
+   "class": "BP_Brazier_NoStand_C",
+   "export": 465,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "BP_Brazier_Normal_4WS_C": {
+   "class": "BP_Brazier_Normal_4WS_C",
+   "export": 74,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Lighting",
+   "levels": 6
+  },
+  "BP_Brazier_Normal_C": {
+   "class": "BP_Brazier_Normal_C",
+   "export": 33,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 20
+  },
+  "BP_Brazier_Normal_Ruins_C": {
+   "class": "BP_Brazier_Normal_Ruins_C",
+   "export": 171,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 2
+  },
+  "BP_Brazier_Rain_C": {
+   "class": "BP_Brazier_Rain_C",
+   "export": 63,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Lighting",
+   "levels": 3
+  },
+  "BP_Brazier_Wall_Half_Bright_C": {
+   "class": "BP_Brazier_Wall_Half_Bright_C",
+   "export": 658,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 3
+  },
+  "BP_Brazier_Wall_Half_C": {
+   "class": "BP_Brazier_Wall_Half_C",
+   "export": 35,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Lighting",
+   "levels": 5
+  },
+  "BP_Cauldron_C": {
+   "class": "BP_Cauldron_C",
+   "export": 177,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 11
+  },
+  "BP_Chandelier_LargeRadiusCeiling_4WS_C": {
+   "class": "BP_Chandelier_LargeRadiusCeiling_4WS_C",
+   "export": 108,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 13
+  },
+  "BP_Chandelier_LargeRadiusCeiling_C": {
+   "class": "BP_Chandelier_LargeRadiusCeiling_C",
+   "export": 127,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Lighting",
+   "levels": 12
+  },
+  "BP_Chandelier_LargeRadius_Rain_C": {
+   "class": "BP_Chandelier_LargeRadius_Rain_C",
+   "export": 71,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Lighting",
+   "levels": 1
+  },
+  "BP_Chandelier_Normal_C": {
+   "class": "BP_Chandelier_Normal_C",
+   "export": 40,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 4
+  },
+  "BP_Door_Exterior_2W_C": {
+   "class": "BP_Door_Exterior_2W_C",
+   "export": 78,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 16
+  },
+  "BP_Door_Exterior_3W_C": {
+   "class": "BP_Door_Exterior_3W_C",
+   "export": 217,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08",
+   "levels": 13
+  },
+  "BP_Door_Exterior_3W_SAND_C": {
+   "class": "BP_Door_Exterior_3W_SAND_C",
+   "export": 182,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+   "levels": 4
+  },
+  "BP_Door_Forcefield_C": {
+   "class": "BP_Door_Forcefield_C",
+   "export": 180,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 14
+  },
+  "BP_Door_Interior_3W_C": {
+   "class": "BP_Door_Interior_3W_C",
+   "export": 244,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09",
+   "levels": 2
+  },
+  "BP_Door_Interior_4W_C": {
+   "class": "BP_Door_Interior_4W_C",
+   "export": 181,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 5
+  },
+  "BP_Door_Player_3W_C": {
+   "class": "BP_Door_Player_3W_C",
+   "export": 182,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 1
+  },
+  "BP_Drawbridge_C": {
+   "class": "BP_Drawbridge_C",
+   "export": 472,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "BP_Exterior_Portcullis_Solid_3Wide_C": {
+   "class": "BP_Exterior_Portcullis_Solid_3Wide_C",
+   "export": 109,
+   "kind": "door",
+   "level": "../../../OMD/Content/Maps/CinematicDLC/ScenarioDLC_01_Intro/ScenarioDLC_01_Intro_Castle",
+   "levels": 1
+  },
+  "BP_FallingBoomBarrel_C": {
+   "class": "BP_FallingBoomBarrel_C",
+   "export": 138,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05",
+   "levels": 8
+  },
+  "BP_GrinderPit_3X_C": {
+   "class": "BP_GrinderPit_3X_C",
+   "export": 246,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09",
+   "levels": 5
+  },
+  "BP_GrinderPit_4X_C": {
+   "class": "BP_GrinderPit_4X_C",
+   "export": 183,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 4
+  },
+  "BP_Grinders_3X_C": {
+   "class": "BP_Grinders_3X_C",
+   "export": 251,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11",
+   "levels": 1
+  },
+  "BP_LavaBurst_01_C": {
+   "class": "BP_LavaBurst_01_C",
+   "export": 79,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 7
+  },
+  "BP_LavaBurst_02_C": {
+   "class": "BP_LavaBurst_02_C",
+   "export": 82,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 7
+  },
+  "BP_Lighting_WallCrystal_C": {
+   "class": "BP_Lighting_WallCrystal_C",
+   "export": 3,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Environment",
+   "levels": 2
+  },
+  "BP_LightningBolt_RainLevels_C": {
+   "class": "BP_LightningBolt_RainLevels_C",
+   "export": 4,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "levels": 4
+  },
+  "BP_LightningBolt_RedRift_C": {
+   "class": "BP_LightningBolt_RedRift_C",
+   "export": 312,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18",
+   "levels": 1
+  },
+  "BP_LightningLight_C": {
+   "class": "BP_LightningLight_C",
+   "export": 6,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "levels": 5
+  },
+  "BP_Monster_Vorwick_C": {
+   "class": "BP_Monster_Vorwick_C",
+   "export": 322,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18",
+   "levels": 1
+  },
+  "BP_OMDAISpawner_C": {
+   "class": "BP_OMDAISpawner_C",
+   "export": 83,
+   "kind": "spawner",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "BP_OMDAISpawner_VorwickRift_C": {
+   "class": "BP_OMDAISpawner_VorwickRift_C",
+   "export": 326,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario01_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario01_C",
+   "export": 107,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario02_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario02_C",
+   "export": 139,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario03_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario03_C",
+   "export": 94,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario04_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario04_C",
+   "export": 147,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario05_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario05_C",
+   "export": 134,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Ice_01_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Ice_01_C",
+   "export": 160,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Ice_02_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Ice_02_C",
+   "export": 125,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Ice_03_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Ice_03_C",
+   "export": 264,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_01_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_01_C",
+   "export": 191,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_02_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_02_C",
+   "export": 114,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_03_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_03_C",
+   "export": 277,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_04_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_04_C",
+   "export": 74,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04",
+   "levels": 1
+  },
+  "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_05_C": {
+   "class": "BP_OMDDLCOnslaughtCoordinator_Scenario_Sand_05_C",
+   "export": 102,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_05/Scenario_Sand_05",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario01_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario01_C",
+   "export": 84,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario02_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario02_C",
+   "export": 111,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario03_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario03_C",
+   "export": 128,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario04_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario04_C",
+   "export": 141,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario05_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario05_C",
+   "export": 144,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario06_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario06_C",
+   "export": 197,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario07_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario07_C",
+   "export": 134,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario08_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario08_C",
+   "export": 234,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario09_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario09_C",
+   "export": 250,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario10_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario10_C",
+   "export": 159,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario11_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario11_C",
+   "export": 257,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario12_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario12_C",
+   "export": 315,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario13_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario13_C",
+   "export": 175,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario14_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario14_C",
+   "export": 140,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario15_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario15_C",
+   "export": 250,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario16_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario16_C",
+   "export": 237,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario17_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario17_C",
+   "export": 216,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_Scenario18_C": {
+   "class": "BP_OMDOnslaughtCoordinator_Scenario18_C",
+   "export": 337,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_ScenarioOther02_C": {
+   "class": "BP_OMDOnslaughtCoordinator_ScenarioOther02_C",
+   "export": 195,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02",
+   "levels": 1
+  },
+  "BP_OMDOnslaughtCoordinator_ScenarioOther03_C": {
+   "class": "BP_OMDOnslaughtCoordinator_ScenarioOther03_C",
+   "export": 54,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03",
+   "levels": 1
+  },
+  "BP_OMDRift_C": {
+   "class": "BP_OMDRift_C",
+   "export": 85,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "BP_OMDTeleportRift_C": {
+   "class": "BP_OMDTeleportRift_C",
+   "export": 146,
+   "kind": "teleport",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05",
+   "levels": 13
+  },
+  "BP_OMDTrapGrid_Blank_C": {
+   "class": "BP_OMDTrapGrid_Blank_C",
+   "export": 150,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05",
+   "levels": 4
+  },
+  "BP_OMDTrapGrid_RiftPlatform_4x4_RB_C": {
+   "class": "BP_OMDTrapGrid_RiftPlatform_4x4_RB_C",
+   "export": 261,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11",
+   "levels": 2
+  },
+  "BP_OMDTrapGrid_RiftPlatform_RB_C": {
+   "class": "BP_OMDTrapGrid_RiftPlatform_RB_C",
+   "export": 162,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 3
+  },
+  "BP_OrcTorchTall_LargeRadius_C": {
+   "class": "BP_OrcTorchTall_LargeRadius_C",
+   "export": 93,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+   "levels": 4
+  },
+  "BP_OrcTorch_LargeRadius_C": {
+   "class": "BP_OrcTorch_LargeRadius_C",
+   "export": 84,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+   "levels": 4
+  },
+  "BP_Scen04_Bridge_UnderSides2_C": {
+   "class": "BP_Scen04_Bridge_UnderSides2_C",
+   "export": 161,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 1
+  },
+  "BP_Scen04_Tunnel2_C": {
+   "class": "BP_Scen04_Tunnel2_C",
+   "export": 163,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 1
+  },
+  "BP_Scenario_06_Battlefield2_C": {
+   "class": "BP_Scenario_06_Battlefield2_C",
+   "export": 201,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 2
+  },
+  "BP_Scenario_06_Bridge_C": {
+   "class": "BP_Scenario_06_Bridge_C",
+   "export": 191,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 1
+  },
+  "BP_Scenario_06_CornerFloor_C": {
+   "class": "BP_Scenario_06_CornerFloor_C",
+   "export": 192,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 2
+  },
+  "BP_Scenario_18_Ground_A_C": {
+   "class": "BP_Scenario_18_Ground_A_C",
+   "export": 4,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Environment",
+   "levels": 1
+  },
+  "BP_Scenario_18_Ground_B_C": {
+   "class": "BP_Scenario_18_Ground_B_C",
+   "export": 5,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Environment",
+   "levels": 1
+  },
+  "BP_Scenario_18_Ground_C_C": {
+   "class": "BP_Scenario_18_Ground_C_C",
+   "export": 6,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Environment",
+   "levels": 1
+  },
+  "BP_Scenario_DLC_Ice_01_IceFloor_C": {
+   "class": "BP_Scenario_DLC_Ice_01_IceFloor_C",
+   "export": 152,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 1
+  },
+  "BP_Scenario_DLC_Ice_03_MineFloor_C": {
+   "class": "BP_Scenario_DLC_Ice_03_MineFloor_C",
+   "export": 476,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "BP_Scenario_DLC_Sand_01_Ground_C": {
+   "class": "BP_Scenario_DLC_Sand_01_Ground_C",
+   "export": 193,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+   "levels": 1
+  },
+  "BP_Scenario_DLC_Sand_03_TrapGrid_C": {
+   "class": "BP_Scenario_DLC_Sand_03_TrapGrid_C",
+   "export": 279,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03",
+   "levels": 1
+  },
+  "BP_Scenario_DLC_Sand_04_TrapGrid_C": {
+   "class": "BP_Scenario_DLC_Sand_04_TrapGrid_C",
+   "export": 76,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04",
+   "levels": 1
+  },
+  "BP_Scenario_DLC_Sand_05_TrapGrid_C": {
+   "class": "BP_Scenario_DLC_Sand_05_TrapGrid_C",
+   "export": 104,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_05/Scenario_Sand_05",
+   "levels": 1
+  },
+  "BP_Sky_Sphere_C": {
+   "class": "BP_Sky_Sphere_C",
+   "export": 72,
+   "kind": "sky",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Lighting",
+   "levels": 2
+  },
+  "BP_WallTorchCorner_LargeRadius_C": {
+   "class": "BP_WallTorchCorner_LargeRadius_C",
+   "export": 153,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 5
+  },
+  "BP_WallTorchCorner_LargeRadius_Rain_C": {
+   "class": "BP_WallTorchCorner_LargeRadius_Rain_C",
+   "export": 108,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Lighting",
+   "levels": 3
+  },
+  "BP_WallTorchCorner_Normal_C": {
+   "class": "BP_WallTorchCorner_Normal_C",
+   "export": 93,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Lighting",
+   "levels": 16
+  },
+  "BP_WallTorchCorner_Normal_WS_C": {
+   "class": "BP_WallTorchCorner_Normal_WS_C",
+   "export": 156,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+   "levels": 5
+  },
+  "BP_WallTorchCorner_Rain_C": {
+   "class": "BP_WallTorchCorner_Rain_C",
+   "export": 138,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Lighting",
+   "levels": 2
+  },
+  "BP_WallTorchCorner_SmallRadius_C": {
+   "class": "BP_WallTorchCorner_SmallRadius_C",
+   "export": 89,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Lighting",
+   "levels": 1
+  },
+  "BP_WallTorch_LargeRadiusNoBlock_C": {
+   "class": "BP_WallTorch_LargeRadiusNoBlock_C",
+   "export": 164,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01",
+   "levels": 3
+  },
+  "BP_WallTorch_LargeRadius_C": {
+   "class": "BP_WallTorch_LargeRadius_C",
+   "export": 77,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Lighting",
+   "levels": 10
+  },
+  "BP_WallTorch_LargeRadius_WS_C": {
+   "class": "BP_WallTorch_LargeRadius_WS_C",
+   "export": 490,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 6
+  },
+  "BP_WallTorch_NormalLargeRadius_C": {
+   "class": "BP_WallTorch_NormalLargeRadius_C",
+   "export": 18,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Lighting",
+   "levels": 2
+  },
+  "BP_WallTorch_Normal_C": {
+   "class": "BP_WallTorch_Normal_C",
+   "export": 44,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 22
+  },
+  "BP_WallTorch_Normal_WS_C": {
+   "class": "BP_WallTorch_Normal_WS_C",
+   "export": 193,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 9
+  },
+  "BP_WallTorch_Rain_C": {
+   "class": "BP_WallTorch_Rain_C",
+   "export": 86,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Lighting",
+   "levels": 2
+  },
+  "BP_WallTorch_SAND_A_Dim_C": {
+   "class": "BP_WallTorch_SAND_A_Dim_C",
+   "export": 152,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Lighting",
+   "levels": 6
+  },
+  "BP_WallTorch_SAND_A_Normal_C": {
+   "class": "BP_WallTorch_SAND_A_Normal_C",
+   "export": 44,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Lighting",
+   "levels": 5
+  },
+  "BP_WallTorch_SmallRadius_C": {
+   "class": "BP_WallTorch_SmallRadius_C",
+   "export": 82,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Lighting",
+   "levels": 7
+  },
+  "BP_WallTorch_SmallRadius_WS_C": {
+   "class": "BP_WallTorch_SmallRadius_WS_C",
+   "export": 124,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+   "levels": 3
+  },
+  "BP_WallTorch_Small_C": {
+   "class": "BP_WallTorch_Small_C",
+   "export": 143,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Lighting",
+   "levels": 2
+  },
+  "BP_WallTorch_Small_WS_C": {
+   "class": "BP_WallTorch_Small_WS_C",
+   "export": 440,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Lighting",
+   "levels": 2
+  },
+  "BP_WallTorch_Vert_Normal_C": {
+   "class": "BP_WallTorch_Vert_Normal_C",
+   "export": 109,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Lighting",
+   "levels": 15
+  },
+  "BP_WallTorch_Vert_Normal_WS_C": {
+   "class": "BP_WallTorch_Vert_Normal_WS_C",
+   "export": 138,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+   "levels": 6
+  },
+  "BP_WallTorch_Vert_Rain_C": {
+   "class": "BP_WallTorch_Vert_Rain_C",
+   "export": 122,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Lighting",
+   "levels": 3
+  },
+  "Balcony_Corner_RB_C": {
+   "class": "Balcony_Corner_RB_C",
+   "export": 2,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Balcony_Square_TG_C": {
+   "class": "Balcony_Square_TG_C",
+   "export": 34,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "BannerLong_Arcane_BP_C": {
+   "class": "BannerLong_Arcane_BP_C",
+   "export": 4,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Environment",
+   "levels": 4
+  },
+  "BannerLong_BP_C": {
+   "class": "BannerLong_BP_C",
+   "export": 7,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+   "levels": 15
+  },
+  "BannerLong_BP_Wind_C": {
+   "class": "BannerLong_BP_Wind_C",
+   "export": 40,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "BannerLong_Far_Arcane_BP_C": {
+   "class": "BannerLong_Far_Arcane_BP_C",
+   "export": 14,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Environment",
+   "levels": 1
+  },
+  "BannerLong_Far_BP_C": {
+   "class": "BannerLong_Far_BP_C",
+   "export": 12,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Environment",
+   "levels": 8
+  },
+  "BannerLong_Wood_Arcane_Simple_BP_C": {
+   "class": "BannerLong_Wood_Arcane_Simple_BP_C",
+   "export": 2,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Castle",
+   "levels": 1
+  },
+  "BannerLong_Wood_BP_C": {
+   "class": "BannerLong_Wood_BP_C",
+   "export": 6,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 8
+  },
+  "BannerLong_Wood_BP_Wind_C": {
+   "class": "BannerLong_Wood_BP_Wind_C",
+   "export": 56,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "BannerLong_Wood_Far_BP_C": {
+   "class": "BannerLong_Wood_Far_BP_C",
+   "export": 11,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 3
+  },
+  "Banner_Arcane_BP_C": {
+   "class": "Banner_Arcane_BP_C",
+   "export": 0,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Environment",
+   "levels": 5
+  },
+  "Banner_BP_C": {
+   "class": "Banner_BP_C",
+   "export": 2,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+   "levels": 20
+  },
+  "Banner_BP_Wind_C": {
+   "class": "Banner_BP_Wind_C",
+   "export": 11,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 2
+  },
+  "Banner_Far_BP_C": {
+   "class": "Banner_Far_BP_C",
+   "export": 5,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 10
+  },
+  "Banner_Far_BP_Wind_C": {
+   "class": "Banner_Far_BP_Wind_C",
+   "export": 19,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "Banner_Raven_A2_BP_C": {
+   "class": "Banner_Raven_A2_BP_C",
+   "export": 8,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 3
+  },
+  "Banner_Raven_A_BP_C": {
+   "class": "Banner_Raven_A_BP_C",
+   "export": 3,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04_Castle",
+   "levels": 1
+  },
+  "Banner_Raven_B_BP_C": {
+   "class": "Banner_Raven_B_BP_C",
+   "export": 23,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 3
+  },
+  "BlockingVolume": {
+   "class": "BlockingVolume",
+   "export": 29,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 14
+  },
+  "BookMark": {
+   "class": "BookMark",
+   "export": 73,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 10
+  },
+  "BoxReflectionCapture": {
+   "class": "BoxReflectionCapture",
+   "export": 181,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Lighting",
+   "levels": 1
+  },
+  "CastleTower_2_C": {
+   "class": "CastleTower_2_C",
+   "export": 300,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 2
+  },
+  "CastleTower_C": {
+   "class": "CastleTower_C",
+   "export": 164,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Castle",
+   "levels": 5
+  },
+  "Castle_2x2_Short_Tower_RBFB_C": {
+   "class": "Castle_2x2_Short_Tower_RBFB_C",
+   "export": 165,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 3
+  },
+  "Castle_2x2_Tower_FB_4x_C": {
+   "class": "Castle_2x2_Tower_FB_4x_C",
+   "export": 163,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 7
+  },
+  "Castle_2x2_Tower_FB_4x_SAND_C": {
+   "class": "Castle_2x2_Tower_FB_4x_SAND_C",
+   "export": 475,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Castle_2x2_Tower_FB_Tall_C": {
+   "class": "Castle_2x2_Tower_FB_Tall_C",
+   "export": 164,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 2
+  },
+  "Castle_2x2_Tower_FB_Tall_noTG_C": {
+   "class": "Castle_2x2_Tower_FB_Tall_noTG_C",
+   "export": 484,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Castle_2x2_Tower_RBFB_C": {
+   "class": "Castle_2x2_Tower_RBFB_C",
+   "export": 99,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 8
+  },
+  "Castle_2x2_Tower_RBFB_NoTG_C": {
+   "class": "Castle_2x2_Tower_RBFB_NoTG_C",
+   "export": 117,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 5
+  },
+  "Castle_2x2_Tower_RB_C": {
+   "class": "Castle_2x2_Tower_RB_C",
+   "export": 483,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Castle_2x2_Wide_Tower_RBFB_C": {
+   "class": "Castle_2x2_Wide_Tower_RBFB_C",
+   "export": 175,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 4
+  },
+  "Castle_2x3_Tower_RB_C": {
+   "class": "Castle_2x3_Tower_RB_C",
+   "export": 502,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Castle_ExteriorWallAngle_CrenB_C": {
+   "class": "Castle_ExteriorWallAngle_CrenB_C",
+   "export": 168,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 4
+  },
+  "Castle_ExteriorWallAngle_CrenB_NoTG_C": {
+   "class": "Castle_ExteriorWallAngle_CrenB_NoTG_C",
+   "export": 523,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 3
+  },
+  "Castle_ExteriorWallAngle_Cren_C": {
+   "class": "Castle_ExteriorWallAngle_Cren_C",
+   "export": 517,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Castle_ExteriorWall_Cren_C": {
+   "class": "Castle_ExteriorWall_Cren_C",
+   "export": 167,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 2
+  },
+  "Castle_ExteriorWall_Cren_NoTG_C": {
+   "class": "Castle_ExteriorWall_Cren_NoTG_C",
+   "export": 514,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Castle_ExteriorWall_Cren_NoTG_NoCol_C": {
+   "class": "Castle_ExteriorWall_Cren_NoTG_NoCol_C",
+   "export": 506,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Castle_Large_Tower_End_02_C": {
+   "class": "Castle_Large_Tower_End_02_C",
+   "export": 205,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Castle_Large_Tower_End_02_noTG_NoCol_C": {
+   "class": "Castle_Large_Tower_End_02_noTG_NoCol_C",
+   "export": 522,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Castle_Large_Tower_End_03_C": {
+   "class": "Castle_Large_Tower_End_03_C",
+   "export": 476,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "Castle_Large_Tower_End_C": {
+   "class": "Castle_Large_Tower_End_C",
+   "export": 207,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Castle_Large_Tower_End_NoCol_C": {
+   "class": "Castle_Large_Tower_End_NoCol_C",
+   "export": 529,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Ceiling_1x3_C": {
+   "class": "Ceiling_1x3_C",
+   "export": 209,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Ceiling_1x4_C": {
+   "class": "Ceiling_1x4_C",
+   "export": 158,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 2
+  },
+  "Ceiling_2x6_Dry_RB_C": {
+   "class": "Ceiling_2x6_Dry_RB_C",
+   "export": 510,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_2x6_RB_C": {
+   "class": "Ceiling_2x6_RB_C",
+   "export": 177,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 1
+  },
+  "Ceiling_3x3_WoodGrate_C": {
+   "class": "Ceiling_3x3_WoodGrate_C",
+   "export": 286,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 1
+  },
+  "Ceiling_4x4_RB_C": {
+   "class": "Ceiling_4x4_RB_C",
+   "export": 123,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 3
+  },
+  "Ceiling_4x5_Wood_C": {
+   "class": "Ceiling_4x5_Wood_C",
+   "export": 179,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 1
+  },
+  "Ceiling_Column_1_4_RB_C": {
+   "class": "Ceiling_Column_1_4_RB_C",
+   "export": 140,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 4
+  },
+  "Ceiling_Column_RB_v2_1x4_C": {
+   "class": "Ceiling_Column_RB_v2_1x4_C",
+   "export": 372,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 1
+  },
+  "Ceiling_Column_RB_v2_Dry_1x2_C": {
+   "class": "Ceiling_Column_RB_v2_Dry_1x2_C",
+   "export": 512,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_Column_RB_v2_Dry_1x4_C": {
+   "class": "Ceiling_Column_RB_v2_Dry_1x4_C",
+   "export": 514,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_MT_V2_3x3_C": {
+   "class": "Ceiling_MT_V2_3x3_C",
+   "export": 176,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 1
+  },
+  "Ceiling_MT_v1_3x1_C": {
+   "class": "Ceiling_MT_v1_3x1_C",
+   "export": 103,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 4
+  },
+  "Ceiling_MT_v1_4x1_C": {
+   "class": "Ceiling_MT_v1_4x1_C",
+   "export": 109,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 4
+  },
+  "Ceiling_Platform_1x1_B_C": {
+   "class": "Ceiling_Platform_1x1_B_C",
+   "export": 543,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 2
+  },
+  "Ceiling_Platform_1x1_C": {
+   "class": "Ceiling_Platform_1x1_C",
+   "export": 168,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 1
+  },
+  "Ceiling_Platform_1x1_C_C": {
+   "class": "Ceiling_Platform_1x1_C_C",
+   "export": 712,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 3
+  },
+  "Ceiling_Platform_2x1_B_C": {
+   "class": "Ceiling_Platform_2x1_B_C",
+   "export": 300,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_05/Scenario_Sand_05_Castle",
+   "levels": 1
+  },
+  "Ceiling_Platform_2x1_C": {
+   "class": "Ceiling_Platform_2x1_C",
+   "export": 545,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Ceiling_Platform_Wood_1x1_C": {
+   "class": "Ceiling_Platform_Wood_1x1_C",
+   "export": 546,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Ceiling_Platform_Wood_1x2_C": {
+   "class": "Ceiling_Platform_Wood_1x2_C",
+   "export": 158,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_1x3_C": {
+   "class": "Ceiling_RB_1x3_C",
+   "export": 555,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_1x4_C": {
+   "class": "Ceiling_RB_1x4_C",
+   "export": 226,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_2x2_C": {
+   "class": "Ceiling_RB_2x2_C",
+   "export": 111,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_2x4_C": {
+   "class": "Ceiling_RB_2x4_C",
+   "export": 115,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 4
+  },
+  "Ceiling_RB_3x3_C": {
+   "class": "Ceiling_RB_3x3_C",
+   "export": 197,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_4x2_C": {
+   "class": "Ceiling_RB_4x2_C",
+   "export": 183,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 3
+  },
+  "Ceiling_RB_4x3_C": {
+   "class": "Ceiling_RB_4x3_C",
+   "export": 144,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_4x4_C": {
+   "class": "Ceiling_RB_4x4_C",
+   "export": 150,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 4
+  },
+  "Ceiling_RB_Dry_1x3_C": {
+   "class": "Ceiling_RB_Dry_1x3_C",
+   "export": 516,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_Dry_2x2_C": {
+   "class": "Ceiling_RB_Dry_2x2_C",
+   "export": 536,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_Dry_4x2_C": {
+   "class": "Ceiling_RB_Dry_4x2_C",
+   "export": 550,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_MT_v1_2x4_C": {
+   "class": "Ceiling_RB_MT_v1_2x4_C",
+   "export": 522,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_MT_v1_3x3_C": {
+   "class": "Ceiling_RB_MT_v1_3x3_C",
+   "export": 184,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 3
+  },
+  "Ceiling_RB_MT_v1_4x3_C": {
+   "class": "Ceiling_RB_MT_v1_4x3_C",
+   "export": 187,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 5
+  },
+  "Ceiling_RB_MT_v1_4x4_C": {
+   "class": "Ceiling_RB_MT_v1_4x4_C",
+   "export": 530,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_WD_v1_1x2_C": {
+   "class": "Ceiling_RB_WD_v1_1x2_C",
+   "export": 562,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_WD_v1_1x4_C": {
+   "class": "Ceiling_RB_WD_v1_1x4_C",
+   "export": 151,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 4
+  },
+  "Ceiling_RB_WD_v1_2x4_C": {
+   "class": "Ceiling_RB_WD_v1_2x4_C",
+   "export": 121,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 3
+  },
+  "Ceiling_RB_WD_v1_3x3_C": {
+   "class": "Ceiling_RB_WD_v1_3x3_C",
+   "export": 127,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 6
+  },
+  "Ceiling_RB_WD_v1_4x3_C": {
+   "class": "Ceiling_RB_WD_v1_4x3_C",
+   "export": 129,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 10
+  },
+  "Ceiling_RB_WD_v1_4x4_C": {
+   "class": "Ceiling_RB_WD_v1_4x4_C",
+   "export": 185,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_WD_v1_Dry_1x2_C": {
+   "class": "Ceiling_RB_WD_v1_Dry_1x2_C",
+   "export": 564,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Ceiling_RB_WD_v1_Dry_2x4_C": {
+   "class": "Ceiling_RB_WD_v1_Dry_2x4_C",
+   "export": 566,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_WD_v1_Dry_3x3_C": {
+   "class": "Ceiling_RB_WD_v1_Dry_3x3_C",
+   "export": 582,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_RB_WD_v1_Dry_4x3_C": {
+   "class": "Ceiling_RB_WD_v1_Dry_4x3_C",
+   "export": 618,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Ceiling_SB_2x1_C": {
+   "class": "Ceiling_SB_2x1_C",
+   "export": 554,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "Ceiling_SB_2x2_C": {
+   "class": "Ceiling_SB_2x2_C",
+   "export": 172,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 3
+  },
+  "Ceiling_SB_2x4_C": {
+   "class": "Ceiling_SB_2x4_C",
+   "export": 180,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 6
+  },
+  "Ceiling_SB_3x1_C": {
+   "class": "Ceiling_SB_3x1_C",
+   "export": 194,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 12
+  },
+  "Ceiling_SB_3x3_C": {
+   "class": "Ceiling_SB_3x3_C",
+   "export": 130,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 12
+  },
+  "Ceiling_SB_3x4_C": {
+   "class": "Ceiling_SB_3x4_C",
+   "export": 539,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 5
+  },
+  "Ceiling_SB_4x1_C": {
+   "class": "Ceiling_SB_4x1_C",
+   "export": 212,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 12
+  },
+  "Ceiling_SB_4x2_C": {
+   "class": "Ceiling_SB_4x2_C",
+   "export": 275,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 12
+  },
+  "Ceiling_SB_4x3_C": {
+   "class": "Ceiling_SB_4x3_C",
+   "export": 199,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 15
+  },
+  "Ceiling_SB_4x4_C": {
+   "class": "Ceiling_SB_4x4_C",
+   "export": 213,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 15
+  },
+  "Ceiling_SB_MT_3x4_C": {
+   "class": "Ceiling_SB_MT_3x4_C",
+   "export": 285,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 2
+  },
+  "Ceiling_SB_MT_v1_2x4_C": {
+   "class": "Ceiling_SB_MT_v1_2x4_C",
+   "export": 326,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Castle",
+   "levels": 1
+  },
+  "Ceiling_SB_MT_v1_4x4_C": {
+   "class": "Ceiling_SB_MT_v1_4x4_C",
+   "export": 330,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Castle",
+   "levels": 1
+  },
+  "Ceiling_SB_WD_v1_2x4_C": {
+   "class": "Ceiling_SB_WD_v1_2x4_C",
+   "export": 260,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Castle",
+   "levels": 4
+  },
+  "Ceiling_SB_WD_v1_3x3_C": {
+   "class": "Ceiling_SB_WD_v1_3x3_C",
+   "export": 290,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 8
+  },
+  "Ceiling_SB_WD_v1_4x3_C": {
+   "class": "Ceiling_SB_WD_v1_4x3_C",
+   "export": 296,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 9
+  },
+  "Ceiling_SB_WD_v1_4x4_C": {
+   "class": "Ceiling_SB_WD_v1_4x4_C",
+   "export": 582,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 3
+  },
+  "Ceiling_SB_WD_v2_3x3_C": {
+   "class": "Ceiling_SB_WD_v2_3x3_C",
+   "export": 226,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 4
+  },
+  "Ceiling_SB_WD_v2_4x3_C": {
+   "class": "Ceiling_SB_WD_v2_4x3_C",
+   "export": 742,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 2
+  },
+  "Ceiling_SB_WD_v2_4x4_C": {
+   "class": "Ceiling_SB_WD_v2_4x4_C",
+   "export": 231,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 2
+  },
+  "Ceiling_SB_WD_v2_4x5_C": {
+   "class": "Ceiling_SB_WD_v2_4x5_C",
+   "export": 487,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "Ceiling_SB_WD_v3_4x3_C": {
+   "class": "Ceiling_SB_WD_v3_4x3_C",
+   "export": 240,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Ceiling_Sewer_3x3_C": {
+   "class": "Ceiling_Sewer_3x3_C",
+   "export": 188,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 2
+  },
+  "Ceiling_WD_Plank_v1_1x2_C": {
+   "class": "Ceiling_WD_Plank_v1_1x2_C",
+   "export": 488,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 2
+  },
+  "Ceiling_WD_Plank_v1_1x3_C": {
+   "class": "Ceiling_WD_Plank_v1_1x3_C",
+   "export": 199,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 6
+  },
+  "Ceiling_WD_Plank_v1_2x3_C": {
+   "class": "Ceiling_WD_Plank_v1_2x3_C",
+   "export": 268,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Castle",
+   "levels": 3
+  },
+  "Ceiling_WD_Plank_v1_3x3_C": {
+   "class": "Ceiling_WD_Plank_v1_3x3_C",
+   "export": 132,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 3
+  },
+  "Ceiling_WD_Plank_v1_4x4_C": {
+   "class": "Ceiling_WD_Plank_v1_4x4_C",
+   "export": 170,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 2
+  },
+  "Ceiling_WD_v2_1x3_C": {
+   "class": "Ceiling_WD_v2_1x3_C",
+   "export": 244,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "ColumnBlock_1_1_FB_C": {
+   "class": "ColumnBlock_1_1_FB_C",
+   "export": 713,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "ColumnBlock_1_1_FB_SAND_C": {
+   "class": "ColumnBlock_1_1_FB_SAND_C",
+   "export": 588,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 4
+  },
+  "ColumnBlock_1_1_RB_C": {
+   "class": "ColumnBlock_1_1_RB_C",
+   "export": 144,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 18
+  },
+  "ColumnBlock_1_1_RB_Gold_SAND_C": {
+   "class": "ColumnBlock_1_1_RB_Gold_SAND_C",
+   "export": 594,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 2
+  },
+  "ColumnBlock_1_1_Top_FB_C": {
+   "class": "ColumnBlock_1_1_Top_FB_C",
+   "export": 595,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "ColumnBlock_1_1_Top_RB_C": {
+   "class": "ColumnBlock_1_1_Top_RB_C",
+   "export": 196,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 2
+  },
+  "ColumnBlock_1_2_Dry_RB_C": {
+   "class": "ColumnBlock_1_2_Dry_RB_C",
+   "export": 754,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "ColumnBlock_1_2_Half_RB_C": {
+   "class": "ColumnBlock_1_2_Half_RB_C",
+   "export": 283,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Castle",
+   "levels": 1
+  },
+  "ColumnBlock_1_2_RB_C": {
+   "class": "ColumnBlock_1_2_RB_C",
+   "export": 156,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 16
+  },
+  "ColumnBlock_1_4_FB_SAND_C": {
+   "class": "ColumnBlock_1_4_FB_SAND_C",
+   "export": 602,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "ColumnBlock_2_2_RB_C": {
+   "class": "ColumnBlock_2_2_RB_C",
+   "export": 259,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 18
+  },
+  "ColumnBlock_2_4_Dry_RB_C": {
+   "class": "ColumnBlock_2_4_Dry_RB_C",
+   "export": 760,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "ColumnBlock_2_4_RB_C": {
+   "class": "ColumnBlock_2_4_RB_C",
+   "export": 156,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 17
+  },
+  "ColumnBlock_2_4_V2_RB_C": {
+   "class": "ColumnBlock_2_4_V2_RB_C",
+   "export": 514,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Castle",
+   "levels": 1
+  },
+  "ColumnBlock_2_4_V3_RB_C": {
+   "class": "ColumnBlock_2_4_V3_RB_C",
+   "export": 279,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 1
+  },
+  "ColumnTileB_CastStone_Gold_SAND_C": {
+   "class": "ColumnTileB_CastStone_Gold_SAND_C",
+   "export": 606,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "ColumnTileB_CastStone_SAND_C": {
+   "class": "ColumnTileB_CastStone_SAND_C",
+   "export": 891,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 3
+  },
+  "ColumnTileC_CastStone_Gold_SAND_C": {
+   "class": "ColumnTileC_CastStone_Gold_SAND_C",
+   "export": 735,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 2
+  },
+  "Column_2x2x1_FB_C": {
+   "class": "Column_2x2x1_FB_C",
+   "export": 500,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 4
+  },
+  "Column_2x2x1_RB_C": {
+   "class": "Column_2x2x1_RB_C",
+   "export": 593,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 4
+  },
+  "Column_Sec_05_2_RB_C": {
+   "class": "Column_Sec_05_2_RB_C",
+   "export": 262,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Castle",
+   "levels": 1
+  },
+  "Column_Sec_1_1_FB_C": {
+   "class": "Column_Sec_1_1_FB_C",
+   "export": 645,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 2
+  },
+  "Column_Sec_1_2_Dry_RB_C": {
+   "class": "Column_Sec_1_2_Dry_RB_C",
+   "export": 608,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 4
+  },
+  "Column_Sec_1_2_FB_C": {
+   "class": "Column_Sec_1_2_FB_C",
+   "export": 509,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Column_Sec_1_2_RB_C": {
+   "class": "Column_Sec_1_2_RB_C",
+   "export": 131,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 23
+  },
+  "Column_Sec_1_4_Dry_RB_C": {
+   "class": "Column_Sec_1_4_Dry_RB_C",
+   "export": 305,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 5
+  },
+  "Column_Sec_1_4_FB_C": {
+   "class": "Column_Sec_1_4_FB_C",
+   "export": 548,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Column_Sec_1_4_RB_C": {
+   "class": "Column_Sec_1_4_RB_C",
+   "export": 132,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 27
+  },
+  "Column_Sec_1_4_TrimBlock_C": {
+   "class": "Column_Sec_1_4_TrimBlock_C",
+   "export": 326,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Column_Sec_1_8_RB_C": {
+   "class": "Column_Sec_1_8_RB_C",
+   "export": 462,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 3
+  },
+  "Column_Sec_Half_1_2_RB_C": {
+   "class": "Column_Sec_Half_1_2_RB_C",
+   "export": 183,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Castle",
+   "levels": 1
+  },
+  "Column_Sec_Half_2_Dry_RB_C": {
+   "class": "Column_Sec_Half_2_Dry_RB_C",
+   "export": 702,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 4
+  },
+  "Column_Sec_Half_2_RB_C": {
+   "class": "Column_Sec_Half_2_RB_C",
+   "export": 371,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 6
+  },
+  "Column_Tall_1_RBFB_C": {
+   "class": "Column_Tall_1_RBFB_C",
+   "export": 141,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 2
+  },
+  "Column_Tall_NoBase_2_RBFB_C": {
+   "class": "Column_Tall_NoBase_2_RBFB_C",
+   "export": 248,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 2
+  },
+  "Column_Tall_NoBase_3_RBFB_C": {
+   "class": "Column_Tall_NoBase_3_RBFB_C",
+   "export": 249,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Column_Tall_NoBase_RBFB_C": {
+   "class": "Column_Tall_NoBase_RBFB_C",
+   "export": 250,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Column_Tall_NoBase_RBFB_NoTG_C": {
+   "class": "Column_Tall_NoBase_RBFB_NoTG_C",
+   "export": 152,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 1
+  },
+  "Column_Tall_Short_RBFB_C": {
+   "class": "Column_Tall_Short_RBFB_C",
+   "export": 563,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 1
+  },
+  "CullDistanceVolume": {
+   "class": "CullDistanceVolume",
+   "export": 123,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 20
+  },
+  "CurveFloat": {
+   "class": "CurveFloat",
+   "export": 77,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+   "levels": 33
+  },
+  "DecalActor": {
+   "class": "DecalActor",
+   "export": 9,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CinematicDLC/ScenarioDLC_01_Intro/ScenarioDLC_01_Intro",
+   "levels": 1
+  },
+  "DefaultLevelSequenceInstanceData": {
+   "class": "DefaultLevelSequenceInstanceData",
+   "export": 318,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 5
+  },
+  "DirectionalLight": {
+   "class": "DirectionalLight",
+   "export": 62,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 34
+  },
+  "Emitter": {
+   "class": "Emitter",
+   "export": 124,
+   "kind": "emitter",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 45
+  },
+  "ExponentialHeightFog": {
+   "class": "ExponentialHeightFog",
+   "export": 106,
+   "kind": "sky",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 35
+  },
+  "Flag_Arcane_BP_C": {
+   "class": "Flag_Arcane_BP_C",
+   "export": 63,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Environment",
+   "levels": 2
+  },
+  "Flag_Arcane_Far_BP_C": {
+   "class": "Flag_Arcane_Far_BP_C",
+   "export": 75,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Environment",
+   "levels": 1
+  },
+  "Flag_BP_C": {
+   "class": "Flag_BP_C",
+   "export": 32,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 10
+  },
+  "Flag_BP_Wind_C": {
+   "class": "Flag_BP_Wind_C",
+   "export": 360,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "Flag_Far_BP_C": {
+   "class": "Flag_Far_BP_C",
+   "export": 46,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Environment",
+   "levels": 4
+  },
+  "Floor_1x3_WoodPlank_C": {
+   "class": "Floor_1x3_WoodPlank_C",
+   "export": 327,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Castle",
+   "levels": 1
+  },
+  "Floor_2x2_RB_C": {
+   "class": "Floor_2x2_RB_C",
+   "export": 264,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 1
+  },
+  "Floor_3x1_RB_C": {
+   "class": "Floor_3x1_RB_C",
+   "export": 416,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 1
+  },
+  "Floor_3x6_Trim_FS_C": {
+   "class": "Floor_3x6_Trim_FS_C",
+   "export": 157,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 4
+  },
+  "Floor_4x4_C": {
+   "class": "Floor_4x4_C",
+   "export": 417,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 3
+  },
+  "Floor_4x4_Ice_C": {
+   "class": "Floor_4x4_Ice_C",
+   "export": 8,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Environment",
+   "levels": 1
+  },
+  "Floor_5x4_FS_C": {
+   "class": "Floor_5x4_FS_C",
+   "export": 271,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 1
+  },
+  "Floor_6x3_Trim_RB_C": {
+   "class": "Floor_6x3_Trim_RB_C",
+   "export": 251,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 1
+  },
+  "Floor_8x4_Wood_C": {
+   "class": "Floor_8x4_Wood_C",
+   "export": 233,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 1
+  },
+  "Floor_Arabic_2x2_C": {
+   "class": "Floor_Arabic_2x2_C",
+   "export": 618,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 2
+  },
+  "Floor_Arabic_Blue_2x3_C": {
+   "class": "Floor_Arabic_Blue_2x3_C",
+   "export": 911,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 2
+  },
+  "Floor_FS_2x1_C": {
+   "class": "Floor_FS_2x1_C",
+   "export": 362,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "Floor_FS_2x2_C": {
+   "class": "Floor_FS_2x2_C",
+   "export": 275,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Floor_FS_2x4_C": {
+   "class": "Floor_FS_2x4_C",
+   "export": 276,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 4
+  },
+  "Floor_FS_3x1_C": {
+   "class": "Floor_FS_3x1_C",
+   "export": 582,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 4
+  },
+  "Floor_FS_3x3_C": {
+   "class": "Floor_FS_3x3_C",
+   "export": 544,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 2
+  },
+  "Floor_FS_3x4_C": {
+   "class": "Floor_FS_3x4_C",
+   "export": 519,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 1
+  },
+  "Floor_FS_4x1_C": {
+   "class": "Floor_FS_4x1_C",
+   "export": 279,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 2
+  },
+  "Floor_FS_4x2_C": {
+   "class": "Floor_FS_4x2_C",
+   "export": 280,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 5
+  },
+  "Floor_FS_4x3_C": {
+   "class": "Floor_FS_4x3_C",
+   "export": 288,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Floor_FS_4x4_C": {
+   "class": "Floor_FS_4x4_C",
+   "export": 290,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 7
+  },
+  "Floor_FS_Dry_2x1_C": {
+   "class": "Floor_FS_Dry_2x1_C",
+   "export": 931,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Floor_FS_Trim_v1_2x2_C": {
+   "class": "Floor_FS_Trim_v1_2x2_C",
+   "export": 275,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03_Castle",
+   "levels": 1
+  },
+  "Floor_FS_Trim_v1_3x2_C": {
+   "class": "Floor_FS_Trim_v1_3x2_C",
+   "export": 584,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 4
+  },
+  "Floor_FS_Trim_v1_3x3_C": {
+   "class": "Floor_FS_Trim_v1_3x3_C",
+   "export": 158,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 6
+  },
+  "Floor_FS_Trim_v1_4x2_C": {
+   "class": "Floor_FS_Trim_v1_4x2_C",
+   "export": 745,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Floor_FS_Trim_v1_4x3_C": {
+   "class": "Floor_FS_Trim_v1_4x3_C",
+   "export": 162,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 8
+  },
+  "Floor_FS_Trim_v1_4x4_C": {
+   "class": "Floor_FS_Trim_v1_4x4_C",
+   "export": 164,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 7
+  },
+  "Floor_FS_Trim_v1_Dry_3x3_C": {
+   "class": "Floor_FS_Trim_v1_Dry_3x3_C",
+   "export": 935,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Floor_FS_Trim_v1_Dry_4x3_C": {
+   "class": "Floor_FS_Trim_v1_Dry_4x3_C",
+   "export": 938,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Floor_Fanlarge_Trim_3x2_C": {
+   "class": "Floor_Fanlarge_Trim_3x2_C",
+   "export": 937,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 1
+  },
+  "Floor_Fanlarge_Trim_3x3_C": {
+   "class": "Floor_Fanlarge_Trim_3x3_C",
+   "export": 938,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 1
+  },
+  "Floor_Fanlarge_Trim_4x3_C": {
+   "class": "Floor_Fanlarge_Trim_4x3_C",
+   "export": 957,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 1
+  },
+  "Floor_Fanlarge_Trim_5x3_C": {
+   "class": "Floor_Fanlarge_Trim_5x3_C",
+   "export": 958,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 1
+  },
+  "Floor_RB_1x3_C": {
+   "class": "Floor_RB_1x3_C",
+   "export": 423,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 6
+  },
+  "Floor_RB_1x4_C": {
+   "class": "Floor_RB_1x4_C",
+   "export": 576,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 2
+  },
+  "Floor_RB_2x2_Angled_C": {
+   "class": "Floor_RB_2x2_Angled_C",
+   "export": 764,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Floor_RB_2x2_Angled_v2_C": {
+   "class": "Floor_RB_2x2_Angled_v2_C",
+   "export": 766,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 2
+  },
+  "Floor_RB_2x2_C": {
+   "class": "Floor_RB_2x2_C",
+   "export": 427,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 5
+  },
+  "Floor_RB_2x4_C": {
+   "class": "Floor_RB_2x4_C",
+   "export": 285,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 3
+  },
+  "Floor_RB_3x3_C": {
+   "class": "Floor_RB_3x3_C",
+   "export": 286,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 5
+  },
+  "Floor_RB_4x2_C": {
+   "class": "Floor_RB_4x2_C",
+   "export": 238,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 4
+  },
+  "Floor_RB_4x3_C": {
+   "class": "Floor_RB_4x3_C",
+   "export": 258,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 5
+  },
+  "Floor_RB_4x4_C": {
+   "class": "Floor_RB_4x4_C",
+   "export": 290,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 9
+  },
+  "Floor_RB_MT_3x3_C": {
+   "class": "Floor_RB_MT_3x3_C",
+   "export": 469,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 1
+  },
+  "Floor_RB_MT_4x3_C": {
+   "class": "Floor_RB_MT_4x3_C",
+   "export": 477,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 2
+  },
+  "Floor_RB_MT_v2_3x3_C": {
+   "class": "Floor_RB_MT_v2_3x3_C",
+   "export": 480,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 1
+  },
+  "Floor_RB_Trim_v1_2x2_C": {
+   "class": "Floor_RB_Trim_v1_2x2_C",
+   "export": 306,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 8
+  },
+  "Floor_RB_Trim_v1_2x3_C": {
+   "class": "Floor_RB_Trim_v1_2x3_C",
+   "export": 255,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 10
+  },
+  "Floor_RB_Trim_v1_3x3_C": {
+   "class": "Floor_RB_Trim_v1_3x3_C",
+   "export": 298,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 11
+  },
+  "Floor_RB_Trim_v1_4x2_C": {
+   "class": "Floor_RB_Trim_v1_4x2_C",
+   "export": 307,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 4
+  },
+  "Floor_RB_Trim_v1_4x3_C": {
+   "class": "Floor_RB_Trim_v1_4x3_C",
+   "export": 269,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 8
+  },
+  "Floor_RB_Trim_v1_4x4_C": {
+   "class": "Floor_RB_Trim_v1_4x4_C",
+   "export": 797,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 6
+  },
+  "Floor_RB_Trim_v1_Dry_2x2_C": {
+   "class": "Floor_RB_Trim_v1_Dry_2x2_C",
+   "export": 956,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Floor_RB_Trim_v1_Dry_3x3_C": {
+   "class": "Floor_RB_Trim_v1_Dry_3x3_C",
+   "export": 960,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Floor_RB_Trim_v1_Dry_4x2_C": {
+   "class": "Floor_RB_Trim_v1_Dry_4x2_C",
+   "export": 982,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Floor_RB_Trim_v1_Dry_4x4_C": {
+   "class": "Floor_RB_Trim_v1_Dry_4x4_C",
+   "export": 442,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15",
+   "levels": 3
+  },
+  "Floor_SB_1x3_C": {
+   "class": "Floor_SB_1x3_C",
+   "export": 165,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 15
+  },
+  "Floor_SB_2x1_C": {
+   "class": "Floor_SB_2x1_C",
+   "export": 260,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 7
+  },
+  "Floor_SB_2x2_C": {
+   "class": "Floor_SB_2x2_C",
+   "export": 279,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 9
+  },
+  "Floor_SB_2x4_C": {
+   "class": "Floor_SB_2x4_C",
+   "export": 273,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 5
+  },
+  "Floor_SB_3x1_C": {
+   "class": "Floor_SB_3x1_C",
+   "export": 309,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 15
+  },
+  "Floor_SB_3x3_C": {
+   "class": "Floor_SB_3x3_C",
+   "export": 222,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 8
+  },
+  "Floor_SB_4x1_C": {
+   "class": "Floor_SB_4x1_C",
+   "export": 171,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 18
+  },
+  "Floor_SB_4x2_C": {
+   "class": "Floor_SB_4x2_C",
+   "export": 176,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 14
+  },
+  "Floor_SB_4x3_C": {
+   "class": "Floor_SB_4x3_C",
+   "export": 281,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 10
+  },
+  "Floor_SB_4x4_C": {
+   "class": "Floor_SB_4x4_C",
+   "export": 284,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 16
+  },
+  "Floor_SB_Dry_1x3_C": {
+   "class": "Floor_SB_Dry_1x3_C",
+   "export": 1021,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Dry_2x2_C": {
+   "class": "Floor_SB_Dry_2x2_C",
+   "export": 1029,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Floor_SB_Dry_2x4_C": {
+   "class": "Floor_SB_Dry_2x4_C",
+   "export": 1081,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Dry_3x1_C": {
+   "class": "Floor_SB_Dry_3x1_C",
+   "export": 1083,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Floor_SB_Dry_3x3_C": {
+   "class": "Floor_SB_Dry_3x3_C",
+   "export": 1091,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Dry_4x1_C": {
+   "class": "Floor_SB_Dry_4x1_C",
+   "export": 1095,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Floor_SB_Dry_4x4_C": {
+   "class": "Floor_SB_Dry_4x4_C",
+   "export": 1100,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Floor_SB_Trim_v1_2x2_C": {
+   "class": "Floor_SB_Trim_v1_2x2_C",
+   "export": 335,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Trim_v1_3x3_C": {
+   "class": "Floor_SB_Trim_v1_3x3_C",
+   "export": 286,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 3
+  },
+  "Floor_SB_Trim_v1_3x6_C": {
+   "class": "Floor_SB_Trim_v1_3x6_C",
+   "export": 355,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Trim_v1_4x3_C": {
+   "class": "Floor_SB_Trim_v1_4x3_C",
+   "export": 311,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 5
+  },
+  "Floor_SB_Trim_v1_4x4_C": {
+   "class": "Floor_SB_Trim_v1_4x4_C",
+   "export": 357,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Trim_v1_4x6_C": {
+   "class": "Floor_SB_Trim_v1_4x6_C",
+   "export": 364,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_SB_Trim_v2_3x3_C": {
+   "class": "Floor_SB_Trim_v2_3x3_C",
+   "export": 365,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_WD_2x1_C": {
+   "class": "Floor_WD_2x1_C",
+   "export": 173,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 4
+  },
+  "Floor_WD_2x2_C": {
+   "class": "Floor_WD_2x2_C",
+   "export": 175,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 5
+  },
+  "Floor_WD_2x3_C": {
+   "class": "Floor_WD_2x3_C",
+   "export": 587,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 1
+  },
+  "Floor_WD_3x1_C": {
+   "class": "Floor_WD_3x1_C",
+   "export": 391,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Castle",
+   "levels": 4
+  },
+  "Floor_WD_3x3_C": {
+   "class": "Floor_WD_3x3_C",
+   "export": 393,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Castle",
+   "levels": 6
+  },
+  "Floor_WD_4x1_C": {
+   "class": "Floor_WD_4x1_C",
+   "export": 177,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 5
+  },
+  "Floor_WD_4x3_2sideTrim_v2_C": {
+   "class": "Floor_WD_4x3_2sideTrim_v2_C",
+   "export": 919,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Floor_WD_4x3_3sideTrim_v2_C": {
+   "class": "Floor_WD_4x3_3sideTrim_v2_C",
+   "export": 922,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Floor_WD_4x3_C": {
+   "class": "Floor_WD_4x3_C",
+   "export": 186,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 7
+  },
+  "Floor_WD_4x4_C": {
+   "class": "Floor_WD_4x4_C",
+   "export": 190,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 6
+  },
+  "Floor_WD_Trim_v1_3x3_C": {
+   "class": "Floor_WD_Trim_v1_3x3_C",
+   "export": 415,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 1
+  },
+  "Floor_WD_Trim_v1_3x5_C": {
+   "class": "Floor_WD_Trim_v1_3x5_C",
+   "export": 359,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Castle",
+   "levels": 1
+  },
+  "Floor_WD_Trim_v1_4x2_C": {
+   "class": "Floor_WD_Trim_v1_4x2_C",
+   "export": 927,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Floor_WD_Trim_v1_4x3_2sideTrim_C": {
+   "class": "Floor_WD_Trim_v1_4x3_2sideTrim_C",
+   "export": 419,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 1
+  },
+  "Floor_WD_Trim_v1_4x3_3sideTrim_C": {
+   "class": "Floor_WD_Trim_v1_4x3_3sideTrim_C",
+   "export": 423,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 2
+  },
+  "Floor_WD_Trim_v1_4x3_C": {
+   "class": "Floor_WD_Trim_v1_4x3_C",
+   "export": 427,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 2
+  },
+  "Floor_WD_Trim_v1_4x4_3sideTrim_v1_C": {
+   "class": "Floor_WD_Trim_v1_4x4_3sideTrim_v1_C",
+   "export": 930,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Floor_WD_Trim_v1_4x4_C": {
+   "class": "Floor_WD_Trim_v1_4x4_C",
+   "export": 428,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 2
+  },
+  "Floor_WD_V2_3x3_C": {
+   "class": "Floor_WD_V2_3x3_C",
+   "export": 368,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_WD_V2_3x4_C": {
+   "class": "Floor_WD_V2_3x4_C",
+   "export": 370,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_WD_V2_4x4_C": {
+   "class": "Floor_WD_V2_4x4_C",
+   "export": 373,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Floor_WoodPlank_3x3_C": {
+   "class": "Floor_WoodPlank_3x3_C",
+   "export": 641,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "KillZVolume": {
+   "class": "KillZVolume",
+   "export": 230,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04",
+   "levels": 2
+  },
+  "Landscape": {
+   "class": "Landscape",
+   "export": 20,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Environment",
+   "levels": 10
+  },
+  "LandscapeGizmoActiveActor": {
+   "class": "LandscapeGizmoActiveActor",
+   "export": 347,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08",
+   "levels": 10
+  },
+  "LandscapeLODStreamingProxy": {
+   "class": "LandscapeLODStreamingProxy",
+   "export": 149,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Environment",
+   "levels": 10
+  },
+  "LandscapeMaterialInstanceConstant": {
+   "class": "LandscapeMaterialInstanceConstant",
+   "export": 213,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Environment",
+   "levels": 10
+  },
+  "LevelSequenceActor": {
+   "class": "LevelSequenceActor",
+   "export": 353,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 5
+  },
+  "LevelSequenceBurnInOptions": {
+   "class": "LevelSequenceBurnInOptions",
+   "export": 355,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 5
+  },
+  "LevelStreamingAlwaysLoaded": {
+   "class": "LevelStreamingAlwaysLoaded",
+   "export": 136,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 35
+  },
+  "LevelStreamingDynamic": {
+   "class": "LevelStreamingDynamic",
+   "export": 362,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 2
+  },
+  "LightmassImportanceVolume": {
+   "class": "LightmassImportanceVolume",
+   "export": 109,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 34
+  },
+  "Lizard_Banner_Vertical_C": {
+   "class": "Lizard_Banner_Vertical_C",
+   "export": 4121,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Environment",
+   "levels": 1
+  },
+  "Lizard_Brazier_C": {
+   "class": "Lizard_Brazier_C",
+   "export": 4125,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Environment",
+   "levels": 2
+  },
+  "Lizard_TentC_C": {
+   "class": "Lizard_TentC_C",
+   "export": 4149,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Environment",
+   "levels": 1
+  },
+  "Lizard_TentD_C": {
+   "class": "Lizard_TentD_C",
+   "export": 4157,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Environment",
+   "levels": 1
+  },
+  "Lizard_Tent_C": {
+   "class": "Lizard_Tent_C",
+   "export": 4126,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Environment",
+   "levels": 2
+  },
+  "Lizard_WatchTower_Wind_C": {
+   "class": "Lizard_WatchTower_Wind_C",
+   "export": 4158,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Environment",
+   "levels": 1
+  },
+  "MaterialInstanceDynamic": {
+   "class": "MaterialInstanceDynamic",
+   "export": 32,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "levels": 7
+  },
+  "MovieSceneBindingOverrides": {
+   "class": "MovieSceneBindingOverrides",
+   "export": 476,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 5
+  },
+  "NavMeshBoundsVolume": {
+   "class": "NavMeshBoundsVolume",
+   "export": 178,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "NavModifierVolume": {
+   "class": "NavModifierVolume",
+   "export": 543,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02",
+   "levels": 1
+  },
+  "NavPowerExclusionVolume": {
+   "class": "NavPowerExclusionVolume",
+   "export": 179,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 37
+  },
+  "NavPowerFlightVolume": {
+   "class": "NavPowerFlightVolume",
+   "export": 264,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01",
+   "levels": 10
+  },
+  "NavPowerNavigationData": {
+   "class": "NavPowerNavigationData",
+   "export": 183,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "NavigationSystemConfig": {
+   "class": "NavigationSystemConfig",
+   "export": 13,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Foliage",
+   "levels": 3
+  },
+  "NiagaraActor": {
+   "class": "NiagaraActor",
+   "export": 3,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_FX",
+   "levels": 3
+  },
+  "OMDAIPath": {
+   "class": "OMDAIPath",
+   "export": 186,
+   "kind": "path",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "OMDCameraBlockingVolume": {
+   "class": "OMDCameraBlockingVolume",
+   "export": 187,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 17
+  },
+  "OMDCharacterKillVolume": {
+   "class": "OMDCharacterKillVolume",
+   "export": 188,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 25
+  },
+  "OMDMapVolume": {
+   "class": "OMDMapVolume",
+   "export": 195,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "OMDPathPoint": {
+   "class": "OMDPathPoint",
+   "export": 196,
+   "kind": "path",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "OMDPlayerBlockingVolume": {
+   "class": "OMDPlayerBlockingVolume",
+   "export": 203,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 43
+  },
+  "OMDPlayerOutdoorAudioVolume": {
+   "class": "OMDPlayerOutdoorAudioVolume",
+   "export": 84,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+   "levels": 24
+  },
+  "OMDPlayerStart": {
+   "class": "OMDPlayerStart",
+   "export": 211,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "OMDTrapBlockingVolume": {
+   "class": "OMDTrapBlockingVolume",
+   "export": 315,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02",
+   "levels": 37
+  },
+  "PainCausingVolume": {
+   "class": "PainCausingVolume",
+   "export": 517,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04",
+   "levels": 1
+  },
+  "Pennant2_BP_C": {
+   "class": "Pennant2_BP_C",
+   "export": 2250,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Pennant2_BP_Wind_C": {
+   "class": "Pennant2_BP_Wind_C",
+   "export": 4,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Banners",
+   "levels": 7
+  },
+  "Pennant2_Far_BP_C": {
+   "class": "Pennant2_Far_BP_C",
+   "export": 3108,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+   "levels": 2
+  },
+  "Pennant2_Far_BP_Wind_C": {
+   "class": "Pennant2_Far_BP_Wind_C",
+   "export": 10,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Environment",
+   "levels": 15
+  },
+  "Pennant_BP_Wind_C": {
+   "class": "Pennant_BP_Wind_C",
+   "export": 51,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 9
+  },
+  "Pennant_Far_BP_C": {
+   "class": "Pennant_Far_BP_C",
+   "export": 26,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Environment",
+   "levels": 1
+  },
+  "Pennant_Far_BP_Wind_C": {
+   "class": "Pennant_Far_BP_Wind_C",
+   "export": 57,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 8
+  },
+  "Pennant_NoPole_BP_Wind_C": {
+   "class": "Pennant_NoPole_BP_Wind_C",
+   "export": 1740,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "PointLight": {
+   "class": "PointLight",
+   "export": 29,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+   "levels": 56
+  },
+  "PostProcessVolume": {
+   "class": "PostProcessVolume",
+   "export": 343,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 35
+  },
+  "PrecomputedVisibilityVolume": {
+   "class": "PrecomputedVisibilityVolume",
+   "export": 232,
+   "kind": "volume",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 33
+  },
+  "RampMesh_05x3_RB_C": {
+   "class": "RampMesh_05x3_RB_C",
+   "export": 941,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 1
+  },
+  "RampMesh_SB_MT_4x2_C": {
+   "class": "RampMesh_SB_MT_4x2_C",
+   "export": 2043,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 1
+  },
+  "RampMesh_SB_MT_v2_1x2_C": {
+   "class": "RampMesh_SB_MT_v2_1x2_C",
+   "export": 2681,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "RampMesh_SB_MT_v2_4x2_C": {
+   "class": "RampMesh_SB_MT_v2_4x2_C",
+   "export": 2683,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "RectLight": {
+   "class": "RectLight",
+   "export": 53,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+   "levels": 21
+  },
+  "Rift_Dais_SAND_C": {
+   "class": "Rift_Dais_SAND_C",
+   "export": 1772,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Rift_Platform_RB_C": {
+   "class": "Rift_Platform_RB_C",
+   "export": 1007,
+   "kind": "rift",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "ScenarioDLC_01_Audio_C": {
+   "class": "ScenarioDLC_01_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01_Audio",
+   "levels": 1
+  },
+  "ScenarioDLC_01_C": {
+   "class": "ScenarioDLC_01_C",
+   "export": 12,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01",
+   "levels": 1
+  },
+  "ScenarioDLC_01_Intro_C": {
+   "class": "ScenarioDLC_01_Intro_C",
+   "export": 3,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CinematicDLC/ScenarioDLC_01_Intro/ScenarioDLC_01_Intro",
+   "levels": 1
+  },
+  "ScenarioDLC_02_Audio_C": {
+   "class": "ScenarioDLC_02_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02_Audio",
+   "levels": 1
+  },
+  "ScenarioDLC_02_C": {
+   "class": "ScenarioDLC_02_C",
+   "export": 14,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_02/ScenarioDLC_02",
+   "levels": 1
+  },
+  "ScenarioDLC_03_Audio_C": {
+   "class": "ScenarioDLC_03_Audio_C",
+   "export": 9,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Audio",
+   "levels": 1
+  },
+  "ScenarioDLC_03_C": {
+   "class": "ScenarioDLC_03_C",
+   "export": 8,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03",
+   "levels": 1
+  },
+  "ScenarioDLC_04_Audio_C": {
+   "class": "ScenarioDLC_04_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Audio",
+   "levels": 1
+  },
+  "ScenarioDLC_04_C": {
+   "class": "ScenarioDLC_04_C",
+   "export": 17,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04",
+   "levels": 1
+  },
+  "ScenarioDLC_05_Audio_C": {
+   "class": "ScenarioDLC_05_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Audio",
+   "levels": 1
+  },
+  "ScenarioDLC_05_C": {
+   "class": "ScenarioDLC_05_C",
+   "export": 16,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05",
+   "levels": 1
+  },
+  "ScenarioDLC_05_EndGame_C": {
+   "class": "ScenarioDLC_05_EndGame_C",
+   "export": 3,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CinematicDLC/ScenarioDLC_05_EndGame/ScenarioDLC_05_EndGame",
+   "levels": 1
+  },
+  "ScenarioDLC_05_EndGame_DanceFloor_C": {
+   "class": "ScenarioDLC_05_EndGame_DanceFloor_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CinematicDLC/ScenarioDLC_05_EndGame/ScenarioDLC_05_EndGame_DanceFloor",
+   "levels": 1
+  },
+  "Scenario_01_Audio_C": {
+   "class": "Scenario_01_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+   "levels": 1
+  },
+  "Scenario_01_C": {
+   "class": "Scenario_01_C",
+   "export": 24,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 1
+  },
+  "Scenario_01_Environment_C": {
+   "class": "Scenario_01_Environment_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Environment",
+   "levels": 1
+  },
+  "Scenario_01_Lighting_C": {
+   "class": "Scenario_01_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 1
+  },
+  "Scenario_01_VFX_C": {
+   "class": "Scenario_01_VFX_C",
+   "export": 1,
+   "kind": "emitter",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_VFX",
+   "levels": 1
+  },
+  "Scenario_02_Audio_C": {
+   "class": "Scenario_02_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Audio",
+   "levels": 1
+  },
+  "Scenario_02_C": {
+   "class": "Scenario_02_C",
+   "export": 15,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02",
+   "levels": 1
+  },
+  "Scenario_02_Environment_C": {
+   "class": "Scenario_02_Environment_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Environment",
+   "levels": 1
+  },
+  "Scenario_02_Lighting_C": {
+   "class": "Scenario_02_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Lighting",
+   "levels": 1
+  },
+  "Scenario_03_Audio_C": {
+   "class": "Scenario_03_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Audio",
+   "levels": 1
+  },
+  "Scenario_03_C": {
+   "class": "Scenario_03_C",
+   "export": 19,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03",
+   "levels": 1
+  },
+  "Scenario_03_Environment_C": {
+   "class": "Scenario_03_Environment_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Environment",
+   "levels": 1
+  },
+  "Scenario_03_Ground1_C": {
+   "class": "Scenario_03_Ground1_C",
+   "export": 144,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+   "levels": 1
+  },
+  "Scenario_03_Ground2_C": {
+   "class": "Scenario_03_Ground2_C",
+   "export": 145,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+   "levels": 1
+  },
+  "Scenario_03_Ground3_C": {
+   "class": "Scenario_03_Ground3_C",
+   "export": 146,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+   "levels": 1
+  },
+  "Scenario_03_Ground4_C": {
+   "class": "Scenario_03_Ground4_C",
+   "export": 147,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Environment",
+   "levels": 1
+  },
+  "Scenario_03_Lighting_C": {
+   "class": "Scenario_03_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Lighting",
+   "levels": 1
+  },
+  "Scenario_04_Audio_C": {
+   "class": "Scenario_04_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Audio",
+   "levels": 1
+  },
+  "Scenario_04_C": {
+   "class": "Scenario_04_C",
+   "export": 19,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04",
+   "levels": 1
+  },
+  "Scenario_04_Environment_C": {
+   "class": "Scenario_04_Environment_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Environment",
+   "levels": 1
+  },
+  "Scenario_04_Lighting_C": {
+   "class": "Scenario_04_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Lighting",
+   "levels": 1
+  },
+  "Scenario_04_Rain_C": {
+   "class": "Scenario_04_Rain_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Rain",
+   "levels": 1
+  },
+  "Scenario_05_Audio_C": {
+   "class": "Scenario_05_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Audio",
+   "levels": 1
+  },
+  "Scenario_05_C": {
+   "class": "Scenario_05_C",
+   "export": 18,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05",
+   "levels": 1
+  },
+  "Scenario_05_Lighting_C": {
+   "class": "Scenario_05_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Lighting",
+   "levels": 1
+  },
+  "Scenario_06_Audio_C": {
+   "class": "Scenario_06_Audio_C",
+   "export": 11,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Audio",
+   "levels": 1
+  },
+  "Scenario_06_C": {
+   "class": "Scenario_06_C",
+   "export": 18,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06",
+   "levels": 1
+  },
+  "Scenario_06_Lighting_C": {
+   "class": "Scenario_06_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Lighting",
+   "levels": 1
+  },
+  "Scenario_07_Audio_C": {
+   "class": "Scenario_07_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Audio",
+   "levels": 1
+  },
+  "Scenario_07_C": {
+   "class": "Scenario_07_C",
+   "export": 21,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07",
+   "levels": 1
+  },
+  "Scenario_07_Environment_C": {
+   "class": "Scenario_07_Environment_C",
+   "export": 1,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Environment",
+   "levels": 1
+  },
+  "Scenario_07_Lighting_C": {
+   "class": "Scenario_07_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Lighting",
+   "levels": 1
+  },
+  "Scenario_08_Audio_C": {
+   "class": "Scenario_08_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Audio",
+   "levels": 1
+  },
+  "Scenario_08_C": {
+   "class": "Scenario_08_C",
+   "export": 24,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08",
+   "levels": 1
+  },
+  "Scenario_08_HSection_C": {
+   "class": "Scenario_08_HSection_C",
+   "export": 730,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Castle",
+   "levels": 1
+  },
+  "Scenario_08_Lighting_C": {
+   "class": "Scenario_08_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Lighting",
+   "levels": 1
+  },
+  "Scenario_09_Audio_C": {
+   "class": "Scenario_09_Audio_C",
+   "export": 11,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Audio",
+   "levels": 1
+  },
+  "Scenario_09_C": {
+   "class": "Scenario_09_C",
+   "export": 20,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09",
+   "levels": 1
+  },
+  "Scenario_09_Ground_C": {
+   "class": "Scenario_09_Ground_C",
+   "export": 144,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Environment",
+   "levels": 1
+  },
+  "Scenario_09_Lighting_C": {
+   "class": "Scenario_09_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Lighting",
+   "levels": 1
+  },
+  "Scenario_10_Audio_C": {
+   "class": "Scenario_10_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Audio",
+   "levels": 1
+  },
+  "Scenario_10_C": {
+   "class": "Scenario_10_C",
+   "export": 23,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10",
+   "levels": 1
+  },
+  "Scenario_10_Lighting_C": {
+   "class": "Scenario_10_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Lighting",
+   "levels": 1
+  },
+  "Scenario_11_Audio_C": {
+   "class": "Scenario_11_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Audio",
+   "levels": 1
+  },
+  "Scenario_11_C": {
+   "class": "Scenario_11_C",
+   "export": 20,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11",
+   "levels": 1
+  },
+  "Scenario_11_Lighting_C": {
+   "class": "Scenario_11_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Lighting",
+   "levels": 1
+  },
+  "Scenario_12_Audio_C": {
+   "class": "Scenario_12_Audio_C",
+   "export": 9,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Audio",
+   "levels": 1
+  },
+  "Scenario_12_C": {
+   "class": "Scenario_12_C",
+   "export": 23,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12",
+   "levels": 1
+  },
+  "Scenario_12_Ground_C": {
+   "class": "Scenario_12_Ground_C",
+   "export": 2251,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 1
+  },
+  "Scenario_12_Ground_Courtyard_C": {
+   "class": "Scenario_12_Ground_Courtyard_C",
+   "export": 2252,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 1
+  },
+  "Scenario_12_Lighting_C": {
+   "class": "Scenario_12_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Lighting",
+   "levels": 1
+  },
+  "Scenario_13_Audio_C": {
+   "class": "Scenario_13_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Audio",
+   "levels": 1
+  },
+  "Scenario_13_C": {
+   "class": "Scenario_13_C",
+   "export": 23,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13",
+   "levels": 1
+  },
+  "Scenario_13_Ground_C": {
+   "class": "Scenario_13_Ground_C",
+   "export": 79,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Environment",
+   "levels": 1
+  },
+  "Scenario_13_Lighting_C": {
+   "class": "Scenario_13_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Lighting",
+   "levels": 1
+  },
+  "Scenario_14_Audio_C": {
+   "class": "Scenario_14_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Audio",
+   "levels": 1
+  },
+  "Scenario_14_C": {
+   "class": "Scenario_14_C",
+   "export": 22,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14",
+   "levels": 1
+  },
+  "Scenario_14_Lighting_C": {
+   "class": "Scenario_14_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Lighting",
+   "levels": 1
+  },
+  "Scenario_15_Audio_C": {
+   "class": "Scenario_15_Audio_C",
+   "export": 9,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Audio",
+   "levels": 1
+  },
+  "Scenario_15_C": {
+   "class": "Scenario_15_C",
+   "export": 21,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15",
+   "levels": 1
+  },
+  "Scenario_15_Lighting_C": {
+   "class": "Scenario_15_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Lighting",
+   "levels": 1
+  },
+  "Scenario_16_Audio_C": {
+   "class": "Scenario_16_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Audio",
+   "levels": 1
+  },
+  "Scenario_16_C": {
+   "class": "Scenario_16_C",
+   "export": 18,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16",
+   "levels": 1
+  },
+  "Scenario_16_Lighting_C": {
+   "class": "Scenario_16_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Lighting",
+   "levels": 1
+  },
+  "Scenario_17_Audio_C": {
+   "class": "Scenario_17_Audio_C",
+   "export": 13,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Audio",
+   "levels": 1
+  },
+  "Scenario_17_C": {
+   "class": "Scenario_17_C",
+   "export": 21,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17",
+   "levels": 1
+  },
+  "Scenario_17_Ground_Extended_C": {
+   "class": "Scenario_17_Ground_Extended_C",
+   "export": 59,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Environment",
+   "levels": 1
+  },
+  "Scenario_17_Lighting_C": {
+   "class": "Scenario_17_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Lighting",
+   "levels": 1
+  },
+  "Scenario_18_Audio_C": {
+   "class": "Scenario_18_Audio_C",
+   "export": 9,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Audio",
+   "levels": 1
+  },
+  "Scenario_18_C": {
+   "class": "Scenario_18_C",
+   "export": 27,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18",
+   "levels": 1
+  },
+  "Scenario_18_Lighting_C": {
+   "class": "Scenario_18_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Lighting",
+   "levels": 1
+  },
+  "Scenario_Ice_01_Audio_C": {
+   "class": "Scenario_Ice_01_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Audio",
+   "levels": 1
+  },
+  "Scenario_Ice_01_C": {
+   "class": "Scenario_Ice_01_C",
+   "export": 6,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01",
+   "levels": 1
+  },
+  "Scenario_Ice_02_Audio_C": {
+   "class": "Scenario_Ice_02_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Audio",
+   "levels": 1
+  },
+  "Scenario_Ice_02_C": {
+   "class": "Scenario_Ice_02_C",
+   "export": 9,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02",
+   "levels": 1
+  },
+  "Scenario_Ice_03_Audio_C": {
+   "class": "Scenario_Ice_03_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Audio",
+   "levels": 1
+  },
+  "Scenario_Ice_03_C": {
+   "class": "Scenario_Ice_03_C",
+   "export": 11,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03",
+   "levels": 1
+  },
+  "Scenario_Ice_03_Castle_C": {
+   "class": "Scenario_Ice_03_Castle_C",
+   "export": 3,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "Scenario_Other_02_Audio_C": {
+   "class": "Scenario_Other_02_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Audio",
+   "levels": 1
+  },
+  "Scenario_Other_02_C": {
+   "class": "Scenario_Other_02_C",
+   "export": 11,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02",
+   "levels": 1
+  },
+  "Scenario_Other_02_Lighting_C": {
+   "class": "Scenario_Other_02_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_02/Scenario_Other_02_Lighting",
+   "levels": 1
+  },
+  "Scenario_Other_03_Audio_C": {
+   "class": "Scenario_Other_03_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03_Audio",
+   "levels": 1
+  },
+  "Scenario_Other_03_C": {
+   "class": "Scenario_Other_03_C",
+   "export": 5,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03",
+   "levels": 1
+  },
+  "Scenario_Other_03_Lighting_C": {
+   "class": "Scenario_Other_03_Lighting_C",
+   "export": 1,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03_Lighting",
+   "levels": 1
+  },
+  "Scenario_Sand_01_Audio_C": {
+   "class": "Scenario_Sand_01_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Audio",
+   "levels": 1
+  },
+  "Scenario_Sand_01_C": {
+   "class": "Scenario_Sand_01_C",
+   "export": 12,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01",
+   "levels": 1
+  },
+  "Scenario_Sand_02_Audio_C": {
+   "class": "Scenario_Sand_02_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Audio",
+   "levels": 1
+  },
+  "Scenario_Sand_02_C": {
+   "class": "Scenario_Sand_02_C",
+   "export": 12,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02",
+   "levels": 1
+  },
+  "Scenario_Sand_03_Audio_C": {
+   "class": "Scenario_Sand_03_Audio_C",
+   "export": 9,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Audio",
+   "levels": 1
+  },
+  "Scenario_Sand_03_C": {
+   "class": "Scenario_Sand_03_C",
+   "export": 12,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03",
+   "levels": 1
+  },
+  "Scenario_Sand_04_Audio_C": {
+   "class": "Scenario_Sand_04_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04_Audio",
+   "levels": 1
+  },
+  "Scenario_Sand_04_C": {
+   "class": "Scenario_Sand_04_C",
+   "export": 12,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04",
+   "levels": 1
+  },
+  "Scenario_Sand_05_Audio_C": {
+   "class": "Scenario_Sand_05_Audio_C",
+   "export": 8,
+   "kind": "sound",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_05/Scenario_Sand_05_Audio",
+   "levels": 1
+  },
+  "Scenario_Sand_05_C": {
+   "class": "Scenario_Sand_05_C",
+   "export": 8,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_05/Scenario_Sand_05",
+   "levels": 1
+  },
+  "SkeletalMeshActor": {
+   "class": "SkeletalMeshActor",
+   "export": 256,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 5
+  },
+  "SkeletalMeshComponentBudgeted": {
+   "class": "SkeletalMeshComponentBudgeted",
+   "export": 477,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05",
+   "levels": 17
+  },
+  "SkyLight": {
+   "class": "SkyLight",
+   "export": 380,
+   "kind": "sky",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 35
+  },
+  "SphereReflectionCapture": {
+   "class": "SphereReflectionCapture",
+   "export": 382,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Lighting",
+   "levels": 45
+  },
+  "SpotLight": {
+   "class": "SpotLight",
+   "export": 771,
+   "kind": "light",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Lighting",
+   "levels": 18
+  },
+  "StairGroup_05_3_C": {
+   "class": "StairGroup_05_3_C",
+   "export": 1065,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 4
+  },
+  "StairGroup_1x3_RB_C": {
+   "class": "StairGroup_1x3_RB_C",
+   "export": 1293,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 3
+  },
+  "StairGroup_1x3_RB_Dry_C": {
+   "class": "StairGroup_1x3_RB_Dry_C",
+   "export": 3630,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "StairGroup_RB_TG_1x3_C": {
+   "class": "StairGroup_RB_TG_1x3_C",
+   "export": 1641,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 1
+  },
+  "StairPlatform_Small_C": {
+   "class": "StairPlatform_Small_C",
+   "export": 1040,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 11
+  },
+  "StairPlatform_Small_Dry_C": {
+   "class": "StairPlatform_Small_Dry_C",
+   "export": 3634,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Stairs_MultiTiered_B_C": {
+   "class": "Stairs_MultiTiered_B_C",
+   "export": 3133,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 1
+  },
+  "Stairs_MultiTiered_C": {
+   "class": "Stairs_MultiTiered_C",
+   "export": 3384,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "StaticMeshActor": {
+   "class": "StaticMeshActor",
+   "export": 263,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01",
+   "levels": 145
+  },
+  "TargetPoint": {
+   "class": "TargetPoint",
+   "export": 466,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_01/ScenarioDLC_01",
+   "levels": 1
+  },
+  "Texture2D": {
+   "class": "Texture2D",
+   "export": 921,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_08/Scenario_08_Environment",
+   "levels": 10
+  },
+  "TimelineTemplate": {
+   "class": "TimelineTemplate",
+   "export": 90,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Audio",
+   "levels": 33
+  },
+  "Trapezoid_Landing_C": {
+   "class": "Trapezoid_Landing_C",
+   "export": 10585,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Trim_Column_WDMT_Dry_v1_C": {
+   "class": "Trim_Column_WDMT_Dry_v1_C",
+   "export": 9953,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Trim_Column_WDMT_v1_C": {
+   "class": "Trim_Column_WDMT_v1_C",
+   "export": 9857,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 1
+  },
+  "WallAngled_05_2_RB_C": {
+   "class": "WallAngled_05_2_RB_C",
+   "export": 5376,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 4
+  },
+  "WallAngled_05_3_RB_C": {
+   "class": "WallAngled_05_3_RB_C",
+   "export": 3923,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "WallAngled_05_4_RB_C": {
+   "class": "WallAngled_05_4_RB_C",
+   "export": 3227,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 5
+  },
+  "WallOuterCornerFull_1_C": {
+   "class": "WallOuterCornerFull_1_C",
+   "export": 10220,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 1
+  },
+  "WallOuterCorner_1_C": {
+   "class": "WallOuterCorner_1_C",
+   "export": 10798,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Wall_1_2_C": {
+   "class": "Wall_1_2_C",
+   "export": 4401,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Castle",
+   "levels": 1
+  },
+  "Wall_FB_1x2_C": {
+   "class": "Wall_FB_1x2_C",
+   "export": 2487,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 11
+  },
+  "Wall_FB_1x3_C": {
+   "class": "Wall_FB_1x3_C",
+   "export": 8505,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 6
+  },
+  "Wall_FB_1x4_C": {
+   "class": "Wall_FB_1x4_C",
+   "export": 9863,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 8
+  },
+  "Wall_FB_2x2_2x_Window_C": {
+   "class": "Wall_FB_2x2_2x_Window_C",
+   "export": 12836,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Wall_FB_2x2_Angle_C": {
+   "class": "Wall_FB_2x2_Angle_C",
+   "export": 4419,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_13/Scenario_13_Castle",
+   "levels": 4
+  },
+  "Wall_FB_2x2_Angle_v2_C": {
+   "class": "Wall_FB_2x2_Angle_v2_C",
+   "export": 6036,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_01//Scenario_Ice_01_Castle",
+   "levels": 2
+  },
+  "Wall_FB_2x2_C": {
+   "class": "Wall_FB_2x2_C",
+   "export": 2490,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 20
+  },
+  "Wall_FB_2x2_Double_Window_C": {
+   "class": "Wall_FB_2x2_Double_Window_C",
+   "export": 12968,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Wall_FB_2x3_C": {
+   "class": "Wall_FB_2x3_C",
+   "export": 5174,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 7
+  },
+  "Wall_FB_2x4_C": {
+   "class": "Wall_FB_2x4_C",
+   "export": 2491,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 13
+  },
+  "Wall_FB_4x4_C": {
+   "class": "Wall_FB_4x4_C",
+   "export": 2496,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 18
+  },
+  "Wall_FB_MT_1x2_SAND_C": {
+   "class": "Wall_FB_MT_1x2_SAND_C",
+   "export": 12993,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "Wall_FB_MT_1x2_V2_SAND_C": {
+   "class": "Wall_FB_MT_1x2_V2_SAND_C",
+   "export": 13005,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 2
+  },
+  "Wall_FB_MT_1x2_Window_SAND_C": {
+   "class": "Wall_FB_MT_1x2_Window_SAND_C",
+   "export": 13011,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 5
+  },
+  "Wall_FB_MT_1x3_SAND_C": {
+   "class": "Wall_FB_MT_1x3_SAND_C",
+   "export": 13013,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "Wall_FB_MT_1x4_SAND_C": {
+   "class": "Wall_FB_MT_1x4_SAND_C",
+   "export": 12615,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 2
+  },
+  "Wall_FB_MT_V3_1x4_SAND_C": {
+   "class": "Wall_FB_MT_V3_1x4_SAND_C",
+   "export": 5191,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_04/Scenario_Sand_04_Castle",
+   "levels": 1
+  },
+  "Wall_FB_MT_V4_1x4_SAND_C": {
+   "class": "Wall_FB_MT_V4_1x4_SAND_C",
+   "export": 13017,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 2
+  },
+  "Wall_FB_MT_V6_1x4_SAND_C": {
+   "class": "Wall_FB_MT_V6_1x4_SAND_C",
+   "export": 14684,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 2
+  },
+  "Wall_FB_MT_v1_2x4_C": {
+   "class": "Wall_FB_MT_v1_2x4_C",
+   "export": 4099,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03_Castle",
+   "levels": 1
+  },
+  "Wall_FB_MT_v2_2x4_C": {
+   "class": "Wall_FB_MT_v2_2x4_C",
+   "export": 4117,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/OtherScenarios/Scenario_Other_03/Scenario_Other_03_Castle",
+   "levels": 1
+  },
+  "Wall_FB_Trim_v1_1x3_C": {
+   "class": "Wall_FB_Trim_v1_1x3_C",
+   "export": 12623,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_02/Scenario_Sand_02_Castle",
+   "levels": 3
+  },
+  "Wall_FB_Trim_v1_2x1_C": {
+   "class": "Wall_FB_Trim_v1_2x1_C",
+   "export": 13018,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 3
+  },
+  "Wall_FB_Trim_v1_2x2_C": {
+   "class": "Wall_FB_Trim_v1_2x2_C",
+   "export": 4402,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Castle",
+   "levels": 8
+  },
+  "Wall_FB_Trim_v1_2x3_C": {
+   "class": "Wall_FB_Trim_v1_2x3_C",
+   "export": 3835,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 4
+  },
+  "Wall_FB_Trim_v1_2x4_C": {
+   "class": "Wall_FB_Trim_v1_2x4_C",
+   "export": 5272,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 7
+  },
+  "Wall_FB_Trim_v1_4x2_C": {
+   "class": "Wall_FB_Trim_v1_4x2_C",
+   "export": 8599,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 4
+  },
+  "Wall_FB_Trim_v1_4x4_C": {
+   "class": "Wall_FB_Trim_v1_4x4_C",
+   "export": 8601,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "Wall_Half_FB_1Trap_C": {
+   "class": "Wall_Half_FB_1Trap_C",
+   "export": 13033,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 2
+  },
+  "Wall_Half_FB_2Trap_B_C": {
+   "class": "Wall_Half_FB_2Trap_B_C",
+   "export": 14747,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "Wall_Half_FB_2Trap_C": {
+   "class": "Wall_Half_FB_2Trap_C",
+   "export": 13038,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "Wall_Half_FB_2Trap_C_C": {
+   "class": "Wall_Half_FB_2Trap_C_C",
+   "export": 13044,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "Wall_Half_FB_3Trap_C": {
+   "class": "Wall_Half_FB_3Trap_C",
+   "export": 13045,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "Wall_Half_FB_3Trap_Tall_B_C": {
+   "class": "Wall_Half_FB_3Trap_Tall_B_C",
+   "export": 14755,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "Wall_Half_FB_3Trap_Tall_C": {
+   "class": "Wall_Half_FB_3Trap_Tall_C",
+   "export": 14758,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_03/Scenario_Sand_03_Castle",
+   "levels": 1
+  },
+  "Wall_Med_FB_2Trap_C": {
+   "class": "Wall_Med_FB_2Trap_C",
+   "export": 13048,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "Wall_RB_10x2_C": {
+   "class": "Wall_RB_10x2_C",
+   "export": 3173,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 4
+  },
+  "Wall_RB_1x2_C": {
+   "class": "Wall_RB_1x2_C",
+   "export": 3174,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 22
+  },
+  "Wall_RB_1x3_C": {
+   "class": "Wall_RB_1x3_C",
+   "export": 3177,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 17
+  },
+  "Wall_RB_1x4_C": {
+   "class": "Wall_RB_1x4_C",
+   "export": 3178,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 23
+  },
+  "Wall_RB_2x2_C": {
+   "class": "Wall_RB_2x2_C",
+   "export": 5308,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 25
+  },
+  "Wall_RB_2x3_C": {
+   "class": "Wall_RB_2x3_C",
+   "export": 5311,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 19
+  },
+  "Wall_RB_2x4_C": {
+   "class": "Wall_RB_2x4_C",
+   "export": 2500,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 25
+  },
+  "Wall_RB_2x6_C": {
+   "class": "Wall_RB_2x6_C",
+   "export": 3185,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 8
+  },
+  "Wall_RB_3x1_C": {
+   "class": "Wall_RB_3x1_C",
+   "export": 10013,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 5
+  },
+  "Wall_RB_3x2_C": {
+   "class": "Wall_RB_3x2_C",
+   "export": 10021,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 6
+  },
+  "Wall_RB_3x3_C": {
+   "class": "Wall_RB_3x3_C",
+   "export": 3189,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 17
+  },
+  "Wall_RB_4x2_C": {
+   "class": "Wall_RB_4x2_C",
+   "export": 2509,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 21
+  },
+  "Wall_RB_4x3_C": {
+   "class": "Wall_RB_4x3_C",
+   "export": 5279,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_09/Scenario_09_Castle",
+   "levels": 10
+  },
+  "Wall_RB_4x4_C": {
+   "class": "Wall_RB_4x4_C",
+   "export": 2511,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 23
+  },
+  "Wall_RB_4x8_C": {
+   "class": "Wall_RB_4x8_C",
+   "export": 7365,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 1
+  },
+  "Wall_RB_Angle_1x1_C": {
+   "class": "Wall_RB_Angle_1x1_C",
+   "export": 3853,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 3
+  },
+  "Wall_RB_Angle_v2_1x1_C": {
+   "class": "Wall_RB_Angle_v2_1x1_C",
+   "export": 3854,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 2
+  },
+  "Wall_RB_Dry_1x2_C": {
+   "class": "Wall_RB_Dry_1x2_C",
+   "export": 10074,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Wall_RB_Dry_1x3_C": {
+   "class": "Wall_RB_Dry_1x3_C",
+   "export": 10078,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Wall_RB_Dry_1x4_C": {
+   "class": "Wall_RB_Dry_1x4_C",
+   "export": 10092,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 4
+  },
+  "Wall_RB_Dry_2x2_C": {
+   "class": "Wall_RB_Dry_2x2_C",
+   "export": 10102,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 7
+  },
+  "Wall_RB_Dry_2x3_C": {
+   "class": "Wall_RB_Dry_2x3_C",
+   "export": 10112,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 5
+  },
+  "Wall_RB_Dry_2x4_C": {
+   "class": "Wall_RB_Dry_2x4_C",
+   "export": 10120,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 5
+  },
+  "Wall_RB_Dry_3x1_C": {
+   "class": "Wall_RB_Dry_3x1_C",
+   "export": 10109,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 4
+  },
+  "Wall_RB_Dry_3x3_C": {
+   "class": "Wall_RB_Dry_3x3_C",
+   "export": 10136,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 6
+  },
+  "Wall_RB_Dry_4x2_C": {
+   "class": "Wall_RB_Dry_4x2_C",
+   "export": 10142,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 2
+  },
+  "Wall_RB_Dry_4x3_C": {
+   "class": "Wall_RB_Dry_4x3_C",
+   "export": 10152,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Wall_RB_Dry_4x4_C": {
+   "class": "Wall_RB_Dry_4x4_C",
+   "export": 10168,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 6
+  },
+  "Wall_RB_MT_1x3_C": {
+   "class": "Wall_RB_MT_1x3_C",
+   "export": 10176,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MT_Stadium_1x2_C": {
+   "class": "Wall_RB_MT_Stadium_1x2_C",
+   "export": 6823,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MT_v1_1x1_C": {
+   "class": "Wall_RB_MT_v1_1x1_C",
+   "export": 3893,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 10
+  },
+  "Wall_RB_MT_v1_1x2_C": {
+   "class": "Wall_RB_MT_v1_1x2_C",
+   "export": 5351,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 12
+  },
+  "Wall_RB_MT_v1_1x3_C": {
+   "class": "Wall_RB_MT_v1_1x3_C",
+   "export": 5353,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 17
+  },
+  "Wall_RB_MT_v1_1x4_C": {
+   "class": "Wall_RB_MT_v1_1x4_C",
+   "export": 5361,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 17
+  },
+  "Wall_RB_MT_v1_1x5_C": {
+   "class": "Wall_RB_MT_v1_1x5_C",
+   "export": 5362,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 8
+  },
+  "Wall_RB_MT_v1_2x1_C": {
+   "class": "Wall_RB_MT_v1_2x1_C",
+   "export": 10184,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 3
+  },
+  "Wall_RB_MT_v1_2x2_C": {
+   "class": "Wall_RB_MT_v1_2x2_C",
+   "export": 5363,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MT_v1_2x3_C": {
+   "class": "Wall_RB_MT_v1_2x3_C",
+   "export": 3909,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 3
+  },
+  "Wall_RB_MT_v1_2x4_C": {
+   "class": "Wall_RB_MT_v1_2x4_C",
+   "export": 5367,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 3
+  },
+  "Wall_RB_MT_v2_1x2_C": {
+   "class": "Wall_RB_MT_v2_1x2_C",
+   "export": 4214,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_07/Scenario_07_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MT_v2_2x2_C": {
+   "class": "Wall_RB_MT_v2_2x2_C",
+   "export": 3915,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 8
+  },
+  "Wall_RB_MT_v2_2x3_C": {
+   "class": "Wall_RB_MT_v2_2x3_C",
+   "export": 6858,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_17/Scenario_17_Castle",
+   "levels": 6
+  },
+  "Wall_RB_MT_v2_2x4_C": {
+   "class": "Wall_RB_MT_v2_2x4_C",
+   "export": 5413,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Castle",
+   "levels": 6
+  },
+  "Wall_RB_MT_v3_1x4_Angle_C": {
+   "class": "Wall_RB_MT_v3_1x4_Angle_C",
+   "export": 5567,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MT_v3_2x4_C": {
+   "class": "Wall_RB_MT_v3_2x4_C",
+   "export": 5575,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_14/Scenario_14_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MetalTrim_v1_2x2_C": {
+   "class": "Wall_RB_MetalTrim_v1_2x2_C",
+   "export": 8800,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Wall_RB_MetalTrim_v1_4x4_C": {
+   "class": "Wall_RB_MetalTrim_v1_4x4_C",
+   "export": 8806,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Wall_RB_Trim_v1_1x2_C": {
+   "class": "Wall_RB_Trim_v1_1x2_C",
+   "export": 3197,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 6
+  },
+  "Wall_RB_Trim_v1_1x4_C": {
+   "class": "Wall_RB_Trim_v1_1x4_C",
+   "export": 3199,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 5
+  },
+  "Wall_RB_Trim_v1_2x2_C": {
+   "class": "Wall_RB_Trim_v1_2x2_C",
+   "export": 2526,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 15
+  },
+  "Wall_RB_Trim_v1_2x3_C": {
+   "class": "Wall_RB_Trim_v1_2x3_C",
+   "export": 3210,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 14
+  },
+  "Wall_RB_Trim_v1_2x4_C": {
+   "class": "Wall_RB_Trim_v1_2x4_C",
+   "export": 2527,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 15
+  },
+  "Wall_RB_Trim_v1_3x1_C": {
+   "class": "Wall_RB_Trim_v1_3x1_C",
+   "export": 7385,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 2
+  },
+  "Wall_RB_Trim_v1_3x3_C": {
+   "class": "Wall_RB_Trim_v1_3x3_C",
+   "export": 8652,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 3
+  },
+  "Wall_RB_Trim_v1_3x4_C": {
+   "class": "Wall_RB_Trim_v1_3x4_C",
+   "export": 8655,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 1
+  },
+  "Wall_RB_Trim_v1_4x4_C": {
+   "class": "Wall_RB_Trim_v1_4x4_C",
+   "export": 8656,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_04/ScenarioDLC_04_Castle",
+   "levels": 4
+  },
+  "Wall_RB_WDMTL_v1_1x2_C": {
+   "class": "Wall_RB_WDMTL_v1_1x2_C",
+   "export": 3871,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 6
+  },
+  "Wall_RB_WDMT_v1_1x1_C": {
+   "class": "Wall_RB_WDMT_v1_1x1_C",
+   "export": 3221,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_04/Scenario_04_Castle",
+   "levels": 3
+  },
+  "Wall_RB_WDMT_v1_1x3_C": {
+   "class": "Wall_RB_WDMT_v1_1x3_C",
+   "export": 2528,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 9
+  },
+  "Wall_RB_WDMT_v1_1x4_C": {
+   "class": "Wall_RB_WDMT_v1_1x4_C",
+   "export": 2532,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_01/Scenario_01_Castle",
+   "levels": 8
+  },
+  "Wall_RB_WDMT_v1_1x5_C": {
+   "class": "Wall_RB_WDMT_v1_1x5_C",
+   "export": 4514,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_10/Scenario_10_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WDMT_v1_2x1_C": {
+   "class": "Wall_RB_WDMT_v1_2x1_C",
+   "export": 7406,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_03/ScenarioDLC_03_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WDMT_v1_2x2_C": {
+   "class": "Wall_RB_WDMT_v1_2x2_C",
+   "export": 3867,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WDMT_v1_2x3_C": {
+   "class": "Wall_RB_WDMT_v1_2x3_C",
+   "export": 10214,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_12/Scenario_12_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WDMT_v1_2x4_C": {
+   "class": "Wall_RB_WDMT_v1_2x4_C",
+   "export": 3869,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_05/Scenario_05_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WDMT_v1_Dry_2x2_C": {
+   "class": "Wall_RB_WDMT_v1_Dry_2x2_C",
+   "export": 10196,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WDMT_v1_Dry_2x3_C": {
+   "class": "Wall_RB_WDMT_v1_Dry_2x3_C",
+   "export": 10206,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WD_v1_1x2_C": {
+   "class": "Wall_RB_WD_v1_1x2_C",
+   "export": 10789,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WD_v1_1x2_v2_C": {
+   "class": "Wall_RB_WD_v1_1x2_v2_C",
+   "export": 10791,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_18/Scenario_18_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WD_v1_1x4_C": {
+   "class": "Wall_RB_WD_v1_1x4_C",
+   "export": 5435,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_11/Scenario_11_Castle",
+   "levels": 4
+  },
+  "Wall_RB_WD_v1_Dry_1x2_C": {
+   "class": "Wall_RB_WD_v1_Dry_1x2_C",
+   "export": 10192,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_15/Scenario_15_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WD_v2_1x2_C": {
+   "class": "Wall_RB_WD_v2_1x2_C",
+   "export": 3214,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WD_v2_1x2_v2_C": {
+   "class": "Wall_RB_WD_v2_1x2_v2_C",
+   "export": 3218,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WD_v2_1x3_C": {
+   "class": "Wall_RB_WD_v2_1x3_C",
+   "export": 6632,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_16/Scenario_16_Castle",
+   "levels": 3
+  },
+  "Wall_RB_WD_v2_1x4_C": {
+   "class": "Wall_RB_WD_v2_1x4_C",
+   "export": 3224,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02_Castle",
+   "levels": 3
+  },
+  "Wall_RB_WD_v3_1x3_C": {
+   "class": "Wall_RB_WD_v3_1x3_C",
+   "export": 8822,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 2
+  },
+  "Wall_RB_WD_v3_1x4_C": {
+   "class": "Wall_RB_WD_v3_1x4_C",
+   "export": 8825,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 1
+  },
+  "Wall_RB_WD_v4_1x3_C": {
+   "class": "Wall_RB_WD_v4_1x3_C",
+   "export": 8829,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_02//Scenario_Ice_02_Castle",
+   "levels": 2
+  },
+  "Wall_Sewer_4x4_C": {
+   "class": "Wall_Sewer_4x4_C",
+   "export": 5374,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_03/Scenario_03_Castle",
+   "levels": 6
+  },
+  "Wall_Sewer_Half_4x2_C": {
+   "class": "Wall_Sewer_Half_4x2_C",
+   "export": 8106,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC/ScenarioDLC_05/ScenarioDLC_05_Castle",
+   "levels": 1
+  },
+  "Wall_Tall_FB_2Trap_C": {
+   "class": "Wall_Tall_FB_2Trap_C",
+   "export": 13065,
+   "kind": "trap",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Sand/Scenario_Sand_01/Scenario_Sand_01_Castle",
+   "levels": 1
+  },
+  "WindDirectionalSource": {
+   "class": "WindDirectionalSource",
+   "export": 404,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_02/Scenario_02",
+   "levels": 18
+  },
+  "Window_3x_Tall_RB_C": {
+   "class": "Window_3x_Tall_RB_C",
+   "export": 13457,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/CampaignDLC_Ice/Scenario_Ice_03/Scenario_Ice_03_Castle",
+   "levels": 1
+  },
+  "wall_RB_3x4_C": {
+   "class": "wall_RB_3x4_C",
+   "export": 3877,
+   "kind": "other",
+   "level": "../../../OMD/Content/Maps/Campaign/Scenario_06/Scenario_06_Castle",
+   "levels": 15
+  }
+ }
+}

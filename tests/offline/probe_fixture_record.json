@@ -1,0 +1,19 @@
+{
+ "id": "900_Fixture_Probe_P",
+ "created": 1792800000.0,
+ "updated": 1792800000.0,
+ "tools": ["riftlord"],
+ "kind": "map",
+ "level": "Scenario_01",
+ "plan": {"level": "Scenario_01", "version": 2, "events": []},
+ "title": "Fixture Probe",
+ "mod": "RiftLordFixtureProbe",
+ "map": "RiftLordFixtureProbe_Map01",
+ "guids": {"RiftLordFixtureProbe_Mission01": "0123456789abcdef0123456789abcdef"},
+ "details": {},
+ "endless": false,
+ "resetDoors": false,
+ "placement": "CustomMaps",
+ "spec": {"map": "RiftLordFixtureProbe_Map01", "title": "Fixture Probe", "par": 600,
+          "waves": [], "events": []}
+}

@@ -1,0 +1,981 @@
+{
+ "Asian_Village": {
+  "checks": {
+   "0.75": {
+    "door_height": 207.0,
+    "grid_fit": {
+     "fit": 58,
+     "share": 0.349,
+     "tested": 166
+    }
+   },
+   "1.0": {
+    "door_height": 276.0,
+    "grid_fit": {
+     "fit": 7,
+     "share": 0.04,
+     "tested": 173
+    }
+   },
+   "1.223": {
+    "door_height": 337.5,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.034,
+     "tested": 179
+    }
+   },
+   "1.5": {
+    "door_height": 414.0,
+    "grid_fit": {
+     "fit": 58,
+     "share": 0.315,
+     "tested": 184
+    }
+   },
+   "2.0": {
+    "door_height": 552.0,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.032,
+     "tested": 190
+    }
+   },
+   "3.0": {
+    "door_height": 828.0,
+    "grid_fit": {
+     "fit": 19,
+     "share": 0.098,
+     "tested": 193
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 480.0,
+    "median": 276.0,
+    "min": 260.0,
+    "n": 10,
+    "p25": 267.0,
+    "p75": 276.0
+   },
+   "riser": {
+    "max": 27.4,
+    "median": 20.0,
+    "min": 14.8,
+    "n": 13,
+    "p25": 15.8,
+    "p75": 25.3
+   }
+  },
+  "s_char": 1.223
+ },
+ "City_of_Brass_Enviroment": {
+  "checks": {
+   "0.75": {
+    "door_height": 304.8,
+    "grid_fit": {
+     "fit": 53,
+     "share": 0.214,
+     "tested": 248
+    }
+   },
+   "0.968": {
+    "door_height": 393.4,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.023,
+     "tested": 256
+    }
+   },
+   "1.0": {
+    "door_height": 406.4,
+    "grid_fit": {
+     "fit": 9,
+     "share": 0.035,
+     "tested": 258
+    }
+   },
+   "1.5": {
+    "door_height": 609.6,
+    "grid_fit": {
+     "fit": 22,
+     "share": 0.081,
+     "tested": 271
+    }
+   },
+   "2.0": {
+    "door_height": 812.8,
+    "grid_fit": {
+     "fit": 12,
+     "share": 0.044,
+     "tested": 273
+    }
+   },
+   "3.0": {
+    "door_height": 1219.2,
+    "grid_fit": {
+     "fit": 9,
+     "share": 0.033,
+     "tested": 273
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 468.0,
+    "median": 406.4,
+    "min": 406.4,
+    "n": 12,
+    "p25": 406.4,
+    "p75": 408.5
+   },
+   "riser": {
+    "max": 24.5,
+    "median": 21.7,
+    "min": 18.1,
+    "n": 9,
+    "p25": 18.4,
+    "p75": 23.5
+   }
+  },
+  "s_char": 0.968
+ },
+ "City_of_Brass_Props": {
+  "checks": {
+   "0.75": {
+    "grid_fit": {
+     "fit": 3,
+     "share": 0.167,
+     "tested": 18
+    }
+   },
+   "1.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 18
+    }
+   },
+   "1.5": {
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.105,
+     "tested": 19
+    }
+   },
+   "2.0": {
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.053,
+     "tested": 19
+    }
+   },
+   "3.0": {
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.105,
+     "tested": 19
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": null,
+   "riser": null
+  },
+  "s_char": null
+ },
+ "Desert_Castle": {
+  "checks": {
+   "0.75": {
+    "door_height": 161.5,
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.038,
+     "tested": 52
+    }
+   },
+   "1.0": {
+    "door_height": 215.3,
+    "grid_fit": {
+     "fit": 10,
+     "share": 0.149,
+     "tested": 67
+    }
+   },
+   "1.233": {
+    "door_height": 265.5,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.015,
+     "tested": 67
+    }
+   },
+   "1.5": {
+    "door_height": 323.0,
+    "grid_fit": {
+     "fit": 12,
+     "share": 0.174,
+     "tested": 69
+    }
+   },
+   "2.0": {
+    "door_height": 430.6,
+    "grid_fit": {
+     "fit": 14,
+     "share": 0.2,
+     "tested": 70
+    }
+   },
+   "3.0": {
+    "door_height": 645.9,
+    "grid_fit": {
+     "fit": 23,
+     "share": 0.329,
+     "tested": 70
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 625.0,
+    "median": 215.3,
+    "min": 200.0,
+    "n": 7,
+    "p25": 204.0,
+    "p75": 215.3
+   },
+   "riser": {
+    "max": 25.3,
+    "median": 25.2,
+    "min": 14.4,
+    "n": 4,
+    "p25": 25.2,
+    "p75": 25.3
+   }
+  },
+  "s_char": 1.233
+ },
+ "Medieval_Dock": {
+  "checks": {
+   "0.75": {
+    "door_height": 156.4,
+    "grid_fit": {
+     "fit": 25,
+     "share": 0.446,
+     "tested": 56
+    }
+   },
+   "1.0": {
+    "door_height": 208.6,
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.032,
+     "tested": 62
+    }
+   },
+   "1.5": {
+    "door_height": 312.9,
+    "grid_fit": {
+     "fit": 30,
+     "share": 0.448,
+     "tested": 67
+    }
+   },
+   "1.583": {
+    "door_height": 330.2,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.015,
+     "tested": 67
+    }
+   },
+   "2.0": {
+    "door_height": 417.2,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.015,
+     "tested": 67
+    }
+   },
+   "3.0": {
+    "door_height": 625.8,
+    "grid_fit": {
+     "fit": 29,
+     "share": 0.426,
+     "tested": 68
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 212.0,
+    "median": 208.6,
+    "min": 208.0,
+    "n": 3,
+    "p25": 208.0,
+    "p75": 212.0
+   },
+   "riser": {
+    "max": 15.8,
+    "median": 15.8,
+    "min": 15.8,
+    "n": 1,
+    "p25": 15.8,
+    "p75": 15.8
+   }
+  },
+  "s_char": 1.583
+ },
+ "Medieval_Village": {
+  "checks": {
+   "0.75": {
+    "door_height": 207.0,
+    "grid_fit": {
+     "fit": 50,
+     "share": 0.376,
+     "tested": 133
+    }
+   },
+   "1.0": {
+    "door_height": 276.0,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.043,
+     "tested": 139
+    }
+   },
+   "1.403": {
+    "door_height": 387.2,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.043,
+     "tested": 140
+    }
+   },
+   "1.5": {
+    "door_height": 414.0,
+    "grid_fit": {
+     "fit": 26,
+     "share": 0.184,
+     "tested": 141
+    }
+   },
+   "2.0": {
+    "door_height": 552.0,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.042,
+     "tested": 144
+    }
+   },
+   "3.0": {
+    "door_height": 828.0,
+    "grid_fit": {
+     "fit": 20,
+     "share": 0.137,
+     "tested": 146
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 372.4,
+    "median": 276.0,
+    "min": 260.0,
+    "n": 12,
+    "p25": 268.0,
+    "p75": 276.0
+   },
+   "riser": {
+    "max": 28.5,
+    "median": 15.2,
+    "min": 13.9,
+    "n": 4,
+    "p25": 15.1,
+    "p75": 15.3
+   }
+  },
+  "s_char": 1.403
+ },
+ "Orasot_Bundle": {
+  "checks": {
+   "0.75": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 3
+    }
+   },
+   "1.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 3
+    }
+   },
+   "1.5": {
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.333,
+     "tested": 3
+    }
+   },
+   "2.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 3
+    }
+   },
+   "3.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 3
+    }
+   }
+  },
+  "decided": 1.0,
+  "features": {
+   "door_height": null,
+   "riser": null
+  },
+  "s_char": null
+ },
+ "Sky_Dungeon": {
+  "checks": {
+   "0.75": {
+    "door_height": 325.6,
+    "grid_fit": {
+     "fit": 32,
+     "share": 0.352,
+     "tested": 91
+    }
+   },
+   "0.95": {
+    "door_height": 412.5,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.009,
+     "tested": 114
+    }
+   },
+   "1.0": {
+    "door_height": 434.2,
+    "grid_fit": {
+     "fit": 5,
+     "share": 0.043,
+     "tested": 115
+    }
+   },
+   "1.5": {
+    "door_height": 651.3,
+    "grid_fit": {
+     "fit": 30,
+     "share": 0.25,
+     "tested": 120
+    }
+   },
+   "2.0": {
+    "door_height": 868.4,
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.017,
+     "tested": 120
+    }
+   },
+   "3.0": {
+    "door_height": 1302.6,
+    "grid_fit": {
+     "fit": 15,
+     "share": 0.125,
+     "tested": 120
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 560.0,
+    "median": 434.2,
+    "min": 323.9,
+    "n": 5,
+    "p25": 432.0,
+    "p75": 560.0
+   },
+   "riser": {
+    "max": 21.1,
+    "median": 21.1,
+    "min": 21.1,
+    "n": 1,
+    "p25": 21.1,
+    "p75": 21.1
+   }
+  },
+  "s_char": 0.95
+ },
+ "Stylised_Dungeon_Pack": {
+  "checks": {
+   "0.75": {
+    "door_height": 159.2,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 22
+    }
+   },
+   "1.0": {
+    "door_height": 212.2,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 29
+    }
+   },
+   "1.454": {
+    "door_height": 308.6,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 29
+    }
+   },
+   "1.5": {
+    "door_height": 318.4,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.034,
+     "tested": 29
+    }
+   },
+   "2.0": {
+    "door_height": 424.5,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 33
+    }
+   },
+   "3.0": {
+    "door_height": 636.8,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 33
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 369.5,
+    "median": 212.2,
+    "min": 65.6,
+    "n": 12,
+    "p25": 65.6,
+    "p75": 216.0
+   },
+   "riser": {
+    "max": 18.4,
+    "median": 18.4,
+    "min": 18.4,
+    "n": 1,
+    "p25": 18.4,
+    "p75": 18.4
+   }
+  },
+  "s_char": 1.454
+ },
+ "StylizedWinterCity": {
+  "checks": {
+   "0.75": {
+    "door_height": 215.9,
+    "grid_fit": {
+     "fit": 50,
+     "share": 0.35,
+     "tested": 143
+    }
+   },
+   "1.0": {
+    "door_height": 287.9,
+    "grid_fit": {
+     "fit": 9,
+     "share": 0.061,
+     "tested": 147
+    }
+   },
+   "1.103": {
+    "door_height": 317.6,
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.014,
+     "tested": 148
+    }
+   },
+   "1.5": {
+    "door_height": 431.8,
+    "grid_fit": {
+     "fit": 44,
+     "share": 0.286,
+     "tested": 154
+    }
+   },
+   "2.0": {
+    "door_height": 575.8,
+    "grid_fit": {
+     "fit": 7,
+     "share": 0.045,
+     "tested": 155
+    }
+   },
+   "3.0": {
+    "door_height": 863.7,
+    "grid_fit": {
+     "fit": 45,
+     "share": 0.283,
+     "tested": 159
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 387.3,
+    "median": 287.9,
+    "min": 219.3,
+    "n": 9,
+    "p25": 251.4,
+    "p75": 387.3
+   },
+   "riser": {
+    "max": 28.6,
+    "median": 23.6,
+    "min": 18.6,
+    "n": 4,
+    "p25": 18.6,
+    "p75": 28.6
+   }
+  },
+  "s_char": 1.103
+ },
+ "Stylized_Egypt": {
+  "checks": {
+   "0.75": {
+    "door_height": 201.0,
+    "grid_fit": {
+     "fit": 26,
+     "share": 0.342,
+     "tested": 76
+    }
+   },
+   "1.0": {
+    "door_height": 268.0,
+    "grid_fit": {
+     "fit": 3,
+     "share": 0.035,
+     "tested": 85
+    }
+   },
+   "1.5": {
+    "door_height": 402.0,
+    "grid_fit": {
+     "fit": 32,
+     "share": 0.356,
+     "tested": 90
+    }
+   },
+   "1.756": {
+    "door_height": 470.6,
+    "grid_fit": {
+     "fit": 5,
+     "share": 0.054,
+     "tested": 92
+    }
+   },
+   "2.0": {
+    "door_height": 536.0,
+    "grid_fit": {
+     "fit": 6,
+     "share": 0.064,
+     "tested": 94
+    }
+   },
+   "3.0": {
+    "door_height": 804.0,
+    "grid_fit": {
+     "fit": 19,
+     "share": 0.2,
+     "tested": 95
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": {
+    "max": 332.0,
+    "median": 268.0,
+    "min": 220.0,
+    "n": 7,
+    "p25": 253.5,
+    "p75": 276.1
+   },
+   "riser": {
+    "max": 10.0,
+    "median": 10.0,
+    "min": 10.0,
+    "n": 2,
+    "p25": 10.0,
+    "p75": 10.0
+   }
+  },
+  "s_char": 1.756
+ },
+ "TheSapphire": {
+  "checks": {
+   "0.75": {
+    "door_height": 67.8,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.091,
+     "tested": 11
+    }
+   },
+   "1.0": {
+    "door_height": 90.4,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 14
+    }
+   },
+   "1.5": {
+    "door_height": 135.7,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.059,
+     "tested": 17
+    }
+   },
+   "2.0": {
+    "door_height": 180.9,
+    "grid_fit": {
+     "fit": 4,
+     "share": 0.222,
+     "tested": 18
+    }
+   },
+   "3.0": {
+    "door_height": 271.3,
+    "grid_fit": {
+     "fit": 3,
+     "share": 0.143,
+     "tested": 21
+    }
+   },
+   "3.582": {
+    "door_height": 324.0,
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.045,
+     "tested": 22
+    }
+   }
+  },
+  "decided": 3.0,
+  "features": {
+   "door_height": {
+    "max": 94.6,
+    "median": 90.4,
+    "min": 86.3,
+    "n": 2,
+    "p25": 86.3,
+    "p75": 94.6
+   },
+   "riser": null
+  },
+  "s_char": 3.582
+ },
+ "snowy_landscape": {
+  "checks": {
+   "0.75": {
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.222,
+     "tested": 9
+    }
+   },
+   "1.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 10
+    }
+   },
+   "1.133": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 10
+    }
+   },
+   "1.5": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 10
+    }
+   },
+   "2.0": {
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.091,
+     "tested": 11
+    }
+   },
+   "3.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 11
+    }
+   }
+  },
+  "decided": 1.0,
+  "features": {
+   "door_height": null,
+   "riser": {
+    "max": 22.5,
+    "median": 22.5,
+    "min": 22.5,
+    "n": 1,
+    "p25": 22.5,
+    "p75": 22.5
+   }
+  },
+  "s_char": 1.133
+ },
+ "stylized_castle": {
+  "checks": {
+   "0.75": {
+    "door_height": 219.8,
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 70
+    }
+   },
+   "1.0": {
+    "door_height": 293.1,
+    "grid_fit": {
+     "fit": 25,
+     "share": 0.333,
+     "tested": 75
+    }
+   },
+   "1.5": {
+    "door_height": 439.7,
+    "grid_fit": {
+     "fit": 2,
+     "share": 0.026,
+     "tested": 76
+    }
+   },
+   "1.679": {
+    "door_height": 492.1,
+    "grid_fit": {
+     "fit": 9,
+     "share": 0.114,
+     "tested": 79
+    }
+   },
+   "2.0": {
+    "door_height": 586.2,
+    "grid_fit": {
+     "fit": 31,
+     "share": 0.388,
+     "tested": 80
+    }
+   },
+   "3.0": {
+    "door_height": 879.3,
+    "grid_fit": {
+     "fit": 13,
+     "share": 0.153,
+     "tested": 85
+    }
+   }
+  },
+  "decided": 2.0,
+  "features": {
+   "door_height": {
+    "max": 528.0,
+    "median": 293.1,
+    "min": 228.0,
+    "n": 10,
+    "p25": 235.3,
+    "p75": 380.0
+   },
+   "riser": {
+    "max": 10.0,
+    "median": 10.0,
+    "min": 10.0,
+    "n": 1,
+    "p25": 10.0,
+    "p75": 10.0
+   }
+  },
+  "s_char": 1.679
+ },
+ "stylized_desert": {
+  "checks": {
+   "0.75": {
+    "grid_fit": {
+     "fit": 1,
+     "share": 0.25,
+     "tested": 4
+    }
+   },
+   "1.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 6
+    }
+   },
+   "1.5": {
+    "grid_fit": {
+     "fit": 3,
+     "share": 0.333,
+     "tested": 9
+    }
+   },
+   "2.0": {
+    "grid_fit": {
+     "fit": 0,
+     "share": 0.0,
+     "tested": 13
+    }
+   },
+   "3.0": {
+    "grid_fit": {
+     "fit": 3,
+     "share": 0.231,
+     "tested": 13
+    }
+   }
+  },
+  "decided": 1.5,
+  "features": {
+   "door_height": null,
+   "riser": null
+  },
+  "s_char": null
+ }
+}

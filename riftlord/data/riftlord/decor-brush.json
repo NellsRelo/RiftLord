@@ -1,0 +1,853 @@
+{
+ "source": "workshop/research/LEVEL-CONTROLLERS-AND-PATTERNS.md 3.3-3.4 (q3_summary.json, q5_brushdata.py)",
+ "foliage": {
+  "Grass_Clumped_1": {
+   "instances": 9631,
+   "levels": 5,
+   "spacing": [
+    16.1,
+    40.1
+   ],
+   "scale": [
+    0.71,
+    0.9
+   ],
+   "freeTilt": 0.63,
+   "clump": [
+    2.0,
+    11.0
+   ],
+   "wall": 0.04
+  },
+  "Grass_Clumped_Dead_5": {
+   "instances": 5406,
+   "levels": 6,
+   "spacing": [
+    21.0,
+    42.7
+   ],
+   "scale": [
+    0.74,
+    1.28
+   ],
+   "freeTilt": 0.75,
+   "clump": [
+    1.0,
+    8.0
+   ],
+   "wall": 0.05
+  },
+  "SM_TropicalPlant_14": {
+   "instances": 4415,
+   "levels": 6,
+   "spacing": [
+    80.8,
+    182.0
+   ],
+   "scale": [
+    1.24,
+    2.36
+   ],
+   "freeTilt": 0.95,
+   "clump": [
+    2.0,
+    9.0
+   ],
+   "wall": 0.03
+  },
+  "Grass_Clumped_2": {
+   "instances": 3673,
+   "levels": 2,
+   "spacing": [
+    15.2,
+    29.4
+   ],
+   "scale": [
+    0.44,
+    1.46
+   ],
+   "freeTilt": 0.22,
+   "clump": [
+    2.0,
+    9.0
+   ],
+   "wall": 0.21
+  },
+  "SM_TropicalTree_10": {
+   "instances": 3259,
+   "levels": 5,
+   "spacing": [
+    0.0,
+    277.6
+   ],
+   "scale": [
+    0.66,
+    1.48
+   ],
+   "freeTilt": 0.1,
+   "clump": [
+    3.0,
+    16.0
+   ],
+   "wall": 0.01
+  },
+  "Pennyplant_Group_1": {
+   "instances": 2779,
+   "levels": 3,
+   "spacing": [
+    65.2,
+    101.4
+   ],
+   "scale": [
+    0.74,
+    1.09
+   ],
+   "freeTilt": 0.24,
+   "clump": [
+    2.0,
+    24.5
+   ],
+   "wall": 0.13
+  },
+  "SM_TropicalPlant_15": {
+   "instances": 2623,
+   "levels": 7,
+   "spacing": [
+    53.1,
+    126.8
+   ],
+   "scale": [
+    1.0,
+    3.18
+   ],
+   "freeTilt": 0.94,
+   "clump": [
+    2.0,
+    6.0
+   ],
+   "wall": 0.02
+  },
+  "Grass_Spreading_1": {
+   "instances": 2334,
+   "levels": 1,
+   "spacing": [
+    8.5,
+    21.0
+   ],
+   "scale": [
+    0.6,
+    0.9
+   ],
+   "freeTilt": 0.0,
+   "clump": [
+    2.0,
+    6.0
+   ],
+   "wall": 0.08
+  },
+  "SM_TropicalTree_9": {
+   "instances": 2174,
+   "levels": 3,
+   "spacing": [
+    0.0,
+    176.5
+   ],
+   "scale": [
+    0.7,
+    1.05
+   ],
+   "freeTilt": 0.96,
+   "clump": [
+    2.0,
+    8.0
+   ],
+   "wall": 0.01
+  },
+  "Stone_Pebble_1": {
+   "instances": 1600,
+   "levels": 6,
+   "spacing": [
+    52.7,
+    99.3
+   ],
+   "scale": [
+    1.08,
+    3.81
+   ],
+   "freeTilt": 0.37,
+   "clump": [
+    2.0,
+    6.0
+   ],
+   "wall": 0.05
+  },
+  "Var5_LOD0": {
+   "instances": 1236,
+   "levels": 5,
+   "spacing": [
+    57.5,
+    142.9
+   ],
+   "scale": [
+    0.84,
+    1.45
+   ],
+   "freeTilt": 0.91,
+   "clump": [
+    2.0,
+    5.0
+   ],
+   "wall": 0.02
+  },
+  "Grass_Spreading_Group_1": {
+   "instances": 1124,
+   "levels": 5,
+   "spacing": [
+    118.2,
+    218.1
+   ],
+   "scale": [
+    0.52,
+    0.94
+   ],
+   "freeTilt": 0.5,
+   "clump": [
+    2.0,
+    8.0
+   ],
+   "wall": 0.02
+  },
+  "SM_TropicalTree_15": {
+   "instances": 1098,
+   "levels": 4,
+   "spacing": [
+    41.4,
+    138.1
+   ],
+   "scale": [
+    0.66,
+    1.32
+   ],
+   "freeTilt": 0.96,
+   "clump": [
+    2.0,
+    7.0
+   ],
+   "wall": 0.01
+  },
+  "Small_stone_01C_A": {
+   "instances": 971,
+   "levels": 4,
+   "spacing": [
+    37.6,
+    88.9
+   ],
+   "scale": [
+    0.56,
+    2.87
+   ],
+   "freeTilt": 0.0,
+   "clump": [
+    2.0,
+    8.0
+   ],
+   "wall": 0.01
+  },
+  "Crystal_Single_3": {
+   "instances": 761,
+   "levels": 7,
+   "spacing": [
+    50.3,
+    117.0
+   ],
+   "scale": [
+    0.74,
+    3.14
+   ],
+   "freeTilt": 0.94,
+   "clump": [
+    2.0,
+    3.0
+   ],
+   "wall": 0.19
+  },
+  "Crystal_Single_1": {
+   "instances": 676,
+   "levels": 7,
+   "spacing": [
+    43.8,
+    121.5
+   ],
+   "scale": [
+    0.47,
+    2.22
+   ],
+   "freeTilt": 0.95,
+   "clump": [
+    2.0,
+    5.0
+   ],
+   "wall": 0.13
+  },
+  "Mushroom_1": {
+   "instances": 671,
+   "levels": 2,
+   "spacing": [
+    18.7,
+    29.3
+   ],
+   "scale": [
+    0.42,
+    0.98
+   ],
+   "freeTilt": 0.68,
+   "clump": [
+    3.0,
+    5.0
+   ],
+   "wall": 0.2
+  },
+  "Small_stone_01A_A": {
+   "instances": 591,
+   "levels": 5,
+   "spacing": [
+    51.0,
+    161.8
+   ],
+   "scale": [
+    0.64,
+    4.82
+   ],
+   "freeTilt": 0.09,
+   "clump": [
+    2.0,
+    7.0
+   ],
+   "wall": 0.03
+  },
+  "Fern_5": {
+   "instances": 588,
+   "levels": 1,
+   "spacing": [
+    58.9,
+    122.3
+   ],
+   "scale": [
+    0.83,
+    1.41
+   ],
+   "freeTilt": 0.94,
+   "clump": [
+    1.0,
+    4.0
+   ],
+   "wall": 0.03
+  },
+  "Var2_LOD0_2": {
+   "instances": 559,
+   "levels": 3,
+   "spacing": [
+    37.6,
+    112.9
+   ],
+   "scale": [
+    0.96,
+    1.24
+   ],
+   "freeTilt": 0.98,
+   "clump": [
+    2.0,
+    6.0
+   ],
+   "wall": 0.03
+  },
+  "Ivy_Branch_8": {
+   "instances": 409,
+   "levels": 5,
+   "spacing": [
+    84.7,
+    178.9
+   ],
+   "scale": [
+    0.59,
+    1.45
+   ],
+   "freeTilt": 0.89,
+   "clump": [
+    2.0,
+    5.0
+   ],
+   "wall": 0.57
+  },
+  "SM_Plant3_8": {
+   "instances": 380,
+   "levels": 5,
+   "spacing": [
+    19.4,
+    70.4
+   ],
+   "scale": [
+    0.93,
+    2.96
+   ],
+   "freeTilt": 0.87,
+   "clump": [
+    2.0,
+    4.0
+   ],
+   "wall": 0.09
+  },
+  "Ivy_Branch_Draping_7": {
+   "instances": 353,
+   "levels": 4,
+   "spacing": [
+    100.0,
+    308.2
+   ],
+   "scale": [
+    0.78,
+    1.5
+   ],
+   "freeTilt": 0.51,
+   "clump": [
+    2.0,
+    5.0
+   ],
+   "wall": 0.24
+  },
+  "Ivy_Branch_4": {
+   "instances": 290,
+   "levels": 4,
+   "spacing": [
+    166.7,
+    461.0
+   ],
+   "scale": [
+    0.92,
+    1.83
+   ],
+   "freeTilt": 0.32,
+   "clump": [
+    2.0,
+    6.6
+   ],
+   "wall": 0.21
+  },
+  "Fern_4": {
+   "instances": 281,
+   "levels": 1,
+   "spacing": [
+    36.5,
+    67.0
+   ],
+   "scale": [
+    0.7,
+    1.39
+   ],
+   "freeTilt": 0.86,
+   "clump": [
+    2.0,
+    7.0
+   ],
+   "wall": 0.27
+  },
+  "SM_TropicalPlant__Sand": {
+   "instances": 230,
+   "levels": 1,
+   "spacing": [
+    105.7,
+    211.6
+   ],
+   "scale": [
+    2.11,
+    3.92
+   ],
+   "freeTilt": 0.74,
+   "clump": [
+    2.0,
+    12.0
+   ],
+   "wall": 0.07
+  },
+  "Fern_3": {
+   "instances": 228,
+   "levels": 1,
+   "spacing": [
+    83.3,
+    154.4
+   ],
+   "scale": [
+    1.14,
+    4.26
+   ],
+   "freeTilt": 0.94,
+   "clump": [
+    2.0,
+    6.0
+   ],
+   "wall": 0.01
+  },
+  "Stone_Pebble_6": {
+   "instances": 223,
+   "levels": 3,
+   "spacing": [
+    59.3,
+    148.5
+   ],
+   "scale": [
+    1.59,
+    4.33
+   ],
+   "freeTilt": 0.8,
+   "clump": [
+    2.0,
+    4.0
+   ],
+   "wall": 0.03
+  },
+  "Var1_LOD0_3": {
+   "instances": 202,
+   "levels": 2,
+   "spacing": [
+    0.4,
+    189.4
+   ],
+   "scale": [
+    0.82,
+    1.17
+   ],
+   "freeTilt": 0.96,
+   "clump": [
+    2.0,
+    4.0
+   ],
+   "wall": 0.0
+  },
+  "SM_TropicalPlant_12": {
+   "instances": 190,
+   "levels": 1,
+   "spacing": [
+    46.5,
+    120.2
+   ],
+   "scale": [
+    1.3,
+    2.21
+   ],
+   "freeTilt": 0.83,
+   "clump": [
+    2.0,
+    5.0
+   ],
+   "wall": 0.07
+  },
+  "Var1_LOD0_2": {
+   "instances": 182,
+   "levels": 3,
+   "spacing": [
+    41.0,
+    149.5
+   ],
+   "scale": [
+    1.62,
+    3.89
+   ],
+   "freeTilt": 0.77,
+   "clump": [
+    1.5,
+    5.0
+   ],
+   "wall": 0.03
+  },
+  "SM_TropicalTree_6": {
+   "instances": 178,
+   "levels": 1,
+   "spacing": [
+    511.5,
+    573.0
+   ],
+   "scale": [
+    2.14,
+    3.89
+   ],
+   "freeTilt": 0.94,
+   "clump": [
+    3.5,
+    12.5
+   ],
+   "wall": 0.0
+  },
+  "Pennyplant_Group_3": {
+   "instances": 144,
+   "levels": 1,
+   "spacing": [
+    77.3,
+    99.7
+   ],
+   "scale": [
+    1.8,
+    2.47
+   ],
+   "freeTilt": 0.92,
+   "clump": [
+    2.0,
+    7.2
+   ],
+   "wall": 0.02
+  },
+  "Grass_Clumped_Jungle": {
+   "instances": 142,
+   "levels": 1,
+   "spacing": [
+    31.9,
+    56.2
+   ],
+   "scale": [
+    1.03,
+    1.48
+   ],
+   "freeTilt": 0.01,
+   "clump": [
+    2.0,
+    5.0
+   ],
+   "wall": 0.41
+  },
+  "SM_Plant3_6": {
+   "instances": 136,
+   "levels": 3,
+   "spacing": [
+    0.2,
+    87.3
+   ],
+   "scale": [
+    1.0,
+    3.46
+   ],
+   "freeTilt": 0.97,
+   "clump": [
+    2.0,
+    6.0
+   ],
+   "wall": 0.02
+  },
+  "Var1_LOD0_4": {
+   "instances": 115,
+   "levels": 1,
+   "spacing": [
+    0.0,
+    264.1
+   ],
+   "scale": [
+    2.11,
+    3.93
+   ],
+   "freeTilt": 0.67,
+   "clump": [
+    1.0,
+    6.8
+   ],
+   "wall": 0.1
+  },
+  "Pennyplant_Group_4": {
+   "instances": 107,
+   "levels": 1,
+   "spacing": [
+    55.6,
+    91.9
+   ],
+   "scale": [
+    1.0,
+    1.28
+   ],
+   "freeTilt": 0.02,
+   "clump": [
+    2.0,
+    5.4
+   ],
+   "wall": 0.14
+  },
+  "Ivy_Branch_2": {
+   "instances": 105,
+   "levels": 5,
+   "spacing": [
+    226.7,
+    532.5
+   ],
+   "scale": [
+    1.04,
+    2.2
+   ],
+   "freeTilt": 0.3,
+   "clump": [
+    1.0,
+    3.6
+   ],
+   "wall": 0.3
+  },
+  "Ivy_Branch_10_SM": {
+   "instances": 103,
+   "levels": 4,
+   "spacing": [
+    120.0,
+    300.0
+   ],
+   "scale": [
+    0.52,
+    1.0
+   ],
+   "freeTilt": 0.28,
+   "clump": [
+    2.0,
+    4.0
+   ],
+   "wall": 0.45
+  }
+ },
+ "rocks": {
+  "Big_Stone_03_A": {
+   "units": 3807,
+   "levels": 26,
+   "spacing": [
+    359.1,
+    811.0
+   ],
+   "scale": [
+    1.0,
+    6.0
+   ],
+   "freeTilt": 0.47,
+   "height": [
+    8.0,
+    266.3,
+    678.0
+   ]
+  },
+  "Big_stone_01A": {
+   "units": 2194,
+   "levels": 25,
+   "spacing": [
+    219.8,
+    618.8
+   ],
+   "scale": [
+    0.5,
+    2.84
+   ],
+   "freeTilt": 0.33,
+   "height": [
+    -22.9,
+    45.1,
+    383.8
+   ]
+  },
+  "Big_Stone_02A": {
+   "units": 775,
+   "levels": 24,
+   "spacing": [
+    498.8,
+    1477.2
+   ],
+   "scale": [
+    1.0,
+    10.66
+   ],
+   "freeTilt": 0.59,
+   "height": [
+    -13.8,
+    185.8,
+    597.4
+   ]
+  },
+  "Small_stone_01A_A": {
+   "units": 262,
+   "levels": 13,
+   "spacing": [
+    93.2,
+    535.0
+   ],
+   "scale": [
+    1.0,
+    10.0
+   ],
+   "freeTilt": 0.22,
+   "height": [
+    -45.0,
+    -36.0,
+    -27.1
+   ]
+  },
+  "Small_stone_01B_A": {
+   "units": 161,
+   "levels": 10,
+   "spacing": [
+    181.2,
+    365.4
+   ],
+   "scale": [
+    1.0,
+    4.88
+   ],
+   "freeTilt": 0.32,
+   "height": [
+    -51.1,
+    -41.5,
+    -34.8
+   ]
+  },
+  "Small_stone_02A": {
+   "units": 266,
+   "levels": 15,
+   "spacing": [
+    114.8,
+    380.6
+   ],
+   "scale": [
+    1.0,
+    4.01
+   ],
+   "freeTilt": 0.67,
+   "height": [
+    -27.3,
+    10.7,
+    318.9
+   ]
+  },
+  "Small_stone_03A": {
+   "units": 194,
+   "levels": 14,
+   "spacing": [
+    121.3,
+    396.2
+   ],
+   "scale": [
+    1.52,
+    6.77
+   ],
+   "freeTilt": 0.57,
+   "height": [
+    -30.1,
+    155.0,
+    476.3
+   ]
+  }
+ },
+ "rockClusters": {
+  "sizes": {
+   "1": 6928,
+   "2": 416,
+   "3": 108,
+   "4": 50,
+   "5": 19,
+   "6": 14,
+   "7": 13,
+   "8": 10,
+   "9": 7,
+   "10": 39
+  },
+  "radius": [
+   133.7,
+   326.2
+  ]
+ }
+}

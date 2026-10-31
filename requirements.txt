@@ -1,0 +1,4 @@
+# Running Rift Lord from source (python3 -m workshop). Versions as the release build uses.
+pillow==12.3.0
+numpy==2.5.2
+PyYAML==6.0.3

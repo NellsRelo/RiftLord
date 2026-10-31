@@ -1,0 +1,12 @@
+# Building the app (workshop/build_app.py): the runtime, PyInstaller, and the light
+# baker's packages (OptiX through Mitsuba/Dr.Jit; the OpenGL fallback through moderngl).
+# Without the baker packages the app builds and missions keep the shipped light maps.
+-r requirements.txt
+pyinstaller==6.22.3
+pyinstaller-hooks-contrib==2026.7
+mitsuba==3.9.1
+drjit==1.5.0
+moderngl==5.13.0
+glcontext==3.1.0
+# the gate's static check (tools/gate.py: undefined names)
+pyflakes==3.4.0

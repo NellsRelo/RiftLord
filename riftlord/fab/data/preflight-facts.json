@@ -1,0 +1,55 @@
+{
+ "classes": {
+  "BodySetup": {
+   "custom_versions": [],
+   "flags": 2147483648,
+   "folder": "None",
+   "legacy": -7,
+   "licensee": 0,
+   "tag": 2653586369,
+   "ue4": 0
+  },
+  "MaterialInstanceConstant": {
+   "custom_versions": [],
+   "flags": 2147483648,
+   "folder": "None",
+   "legacy": -7,
+   "licensee": 0,
+   "tag": 2653586369,
+   "ue4": 0
+  },
+  "NavCollision": {
+   "custom_versions": [],
+   "flags": 2147483648,
+   "folder": "None",
+   "legacy": -7,
+   "licensee": 0,
+   "tag": 2653586369,
+   "ue4": 0
+  },
+  "StaticMesh": {
+   "custom_versions": [],
+   "flags": 2147483648,
+   "folder": "None",
+   "legacy": -7,
+   "licensee": 0,
+   "tag": 2653586369,
+   "ue4": 0
+  },
+  "Texture2D": {
+   "custom_versions": [],
+   "flags": 2147483648,
+   "folder": "None",
+   "legacy": -7,
+   "licensee": 0,
+   "tag": 2653586369,
+   "ue4": 0
+  }
+ },
+ "pak": {
+  "enc": 0,
+  "magic": 1517228769,
+  "mount": "../../../",
+  "ver": 4
+ }
+}

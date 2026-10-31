@@ -1,0 +1,217 @@
+{
+ "source": "riftlord/foliageadd.py --survey: shipped FoliageInstancedStaticMeshComponents with instances, most common (start, end) per mesh",
+ "meshes": {
+  "Branch_T1_5": [
+   0,
+   8000
+  ],
+  "Crystal_Single_1": [
+   0,
+   14000
+  ],
+  "Crystal_Single_3": [
+   0,
+   14000
+  ],
+  "Fern_1": [
+   0,
+   20000
+  ],
+  "Fern_3": [
+   0,
+   11000
+  ],
+  "Fern_4": [
+   0,
+   15000
+  ],
+  "Fern_5": [
+   0,
+   22000
+  ],
+  "Grass_Clumped_1": [
+   0,
+   7000
+  ],
+  "Grass_Clumped_2": [
+   0,
+   12000
+  ],
+  "Grass_Clumped_Dead_5": [
+   0,
+   10000
+  ],
+  "Grass_Clumped_Jungle": [
+   0,
+   0
+  ],
+  "Grass_Spreading_1": [
+   0,
+   12000
+  ],
+  "Grass_Spreading_Group_1": [
+   0,
+   8000
+  ],
+  "Ivy_Branch_1": [
+   0,
+   7000
+  ],
+  "Ivy_Branch_10_SM": [
+   7000,
+   10000
+  ],
+  "Ivy_Branch_2": [
+   0,
+   8000
+  ],
+  "Ivy_Branch_3": [
+   0,
+   12000
+  ],
+  "Ivy_Branch_4": [
+   0,
+   16000
+  ],
+  "Ivy_Branch_6": [
+   0,
+   8000
+  ],
+  "Ivy_Branch_8": [
+   0,
+   9000
+  ],
+  "Ivy_Branch_9": [
+   0,
+   10000
+  ],
+  "Ivy_Branch_Draping_7": [
+   0,
+   10000
+  ],
+  "Leaf_Single_1": [
+   0,
+   7000
+  ],
+  "Mushroom_1": [
+   0,
+   7000
+  ],
+  "Pennyplant_Group_1": [
+   0,
+   7000
+  ],
+  "Pennyplant_Group_3": [
+   0,
+   12000
+  ],
+  "Pennyplant_Group_4": [
+   0,
+   12000
+  ],
+  "SM_Plant3_6": [
+   0,
+   0
+  ],
+  "SM_Plant3_7": [
+   0,
+   0
+  ],
+  "SM_Plant3_8": [
+   0,
+   7000
+  ],
+  "SM_Plant4_2": [
+   0,
+   0
+  ],
+  "SM_TropicalPlant_12": [
+   0,
+   0
+  ],
+  "SM_TropicalPlant_14": [
+   0,
+   8000
+  ],
+  "SM_TropicalPlant_15": [
+   0,
+   8000
+  ],
+  "SM_TropicalPlant_17": [
+   0,
+   0
+  ],
+  "SM_TropicalPlant__Sand": [
+   0,
+   0
+  ],
+  "SM_TropicalTree_10": [
+   0,
+   17000
+  ],
+  "SM_TropicalTree_15": [
+   0,
+   0
+  ],
+  "SM_TropicalTree_6": [
+   0,
+   0
+  ],
+  "SM_TropicalTree_8": [
+   0,
+   0
+  ],
+  "SM_TropicalTree_9": [
+   0,
+   17000
+  ],
+  "Small_stone_01A_A": [
+   3000,
+   5000
+  ],
+  "Small_stone_01B_A": [
+   3000,
+   5000
+  ],
+  "Small_stone_01C_A": [
+   3000,
+   5000
+  ],
+  "Stone_Pebble_1": [
+   0,
+   5000
+  ],
+  "Stone_Pebble_6": [
+   0,
+   0
+  ],
+  "Var1_LOD0_2": [
+   0,
+   0
+  ],
+  "Var1_LOD0_3": [
+   0,
+   0
+  ],
+  "Var1_LOD0_4": [
+   0,
+   0
+  ],
+  "Var2_LOD0": [
+   0,
+   0
+  ],
+  "Var2_LOD0_2": [
+   0,
+   0
+  ],
+  "Var5_LOD0": [
+   0,
+   8000
+  ]
+ },
+ "default": [
+  0,
+  0
+ ]
+}
