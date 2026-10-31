@@ -40,7 +40,9 @@ ALLOWED = {'MIT', 'MIT-CMU', 'MIT-open-group', 'X11', 'BSD-2-Clause', 'BSD-3-Cla
            'Apache-2.0', 'ISC', 'Zlib', 'PSF-2.0', 'HPND', 'CC0-1.0', 'MPL-2.0', 'bzip2-1.0.6',
            'LGPL-2.1-or-later (dynamic)', 'LGPL-3.0-or-later (dynamic)',
            'GPL-2.0-or-later WITH Bootloader-exception',
-           'GPL-3.0-or-later WITH GCC-exception-3.1', 'Unicode-3.0', 'Unlicense'}
+           'GPL-3.0-or-later WITH GCC-exception-3.1', 'Unicode-3.0', 'Unlicense',
+           # the Visual C++ runtime and Universal CRT, redistributable with any Windows app
+           'LicenseRef-Microsoft-Redistributable'}
 #: Classifier and free-text licence names, as SPDX ids.
 ALIASES = {'MIT License': 'MIT', 'BSD License': 'BSD-3-Clause', 'BSD': 'BSD-3-Clause',
            'Apache Software License': 'Apache-2.0', 'Apache 2.0': 'Apache-2.0',
@@ -49,30 +51,58 @@ ALIASES = {'MIT License': 'MIT', 'BSD License': 'BSD-3-Clause', 'BSD': 'BSD-3-Cl
 
 #: Licence texts kept in the tree for components whose own install carries none.
 TEXTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'licenses')
-#: System libraries PyInstaller collects, by file name: (component, licence, licence file).
+#: System libraries PyInstaller collects, by file name: (component, licence, licence files).
 #: The library's own licence, not its distribution package's (lz4's package is GPL for the
-#: command line tool; liblz4 is BSD-2-Clause).
+#: command line tool; liblz4 is BSD-2-Clause). Licence files are tried where Arch keeps them
+#: (/usr/share/licenses) and where Debian and Ubuntu do (/usr/share/doc/<package>/copyright);
+#: the ones present are read.
 SYSTEM = [
     ('libpython3*.so*', 'CPython', 'PSF-2.0', 'PYTHON_LICENSE'),
     ('python3*.dll', 'CPython', 'PSF-2.0', 'PYTHON_LICENSE'),
-    ('libbrotli*.so*', 'Brotli', 'MIT', '/usr/share/licenses/brotli/LICENSE'),
-    ('libbz2.so*', 'bzip2', 'bzip2-1.0.6', '/usr/share/licenses/bzip2/LICENSE'),
-    ('libcrypto.so*', 'OpenSSL', 'Apache-2.0', '/usr/share/licenses/openssl/LICENSE.txt'),
-    ('libssl.so*', 'OpenSSL', 'Apache-2.0', '/usr/share/licenses/openssl/LICENSE.txt'),
-    ('libexpat.so*', 'Expat', 'MIT', '/usr/share/licenses/expat/COPYING'),
-    ('libffi.so*', 'libffi', 'MIT', '/usr/share/licenses/libffi/LICENSE'),
+    ('libbrotli*.so*', 'Brotli', 'MIT', ('/usr/share/licenses/brotli/LICENSE',
+                                         '/usr/share/doc/libbrotli*/copyright')),
+    ('libbz2.so*', 'bzip2', 'bzip2-1.0.6', ('/usr/share/licenses/bzip2/LICENSE',
+                                            '/usr/share/doc/libbz2-*/copyright')),
+    ('libcrypto.so*', 'OpenSSL', 'Apache-2.0', ('/usr/share/licenses/openssl/LICENSE.txt',
+                                                '/usr/share/doc/libssl3*/copyright')),
+    ('libssl.so*', 'OpenSSL', 'Apache-2.0', ('/usr/share/licenses/openssl/LICENSE.txt',
+                                             '/usr/share/doc/libssl3*/copyright')),
+    ('libexpat.so*', 'Expat', 'MIT', ('/usr/share/licenses/expat/COPYING',
+                                      '/usr/share/doc/libexpat1*/copyright')),
+    ('libffi.so*', 'libffi', 'MIT', ('/usr/share/licenses/libffi/LICENSE',
+                                     '/usr/share/doc/libffi8*/copyright')),
     ('libgcc_s.so*', 'GCC runtime (libgcc)', 'GPL-3.0-or-later WITH GCC-exception-3.1',
-     ('/usr/share/licenses/libgcc/RUNTIME.LIBRARY.EXCEPTION', os.path.join(TEXTS, 'GPL-3.0.txt'))),
+     ('/usr/share/licenses/libgcc/RUNTIME.LIBRARY.EXCEPTION', os.path.join(TEXTS, 'GCC-exception-3.1.txt'),
+      os.path.join(TEXTS, 'GPL-3.0.txt'))),
     ('libstdc++.so*', 'GCC runtime (libstdc++)', 'GPL-3.0-or-later WITH GCC-exception-3.1',
-     ('/usr/share/licenses/libstdc++/RUNTIME.LIBRARY.EXCEPTION', os.path.join(TEXTS, 'GPL-3.0.txt'))),
+     ('/usr/share/licenses/libstdc++/RUNTIME.LIBRARY.EXCEPTION', os.path.join(TEXTS, 'GCC-exception-3.1.txt'),
+      os.path.join(TEXTS, 'GPL-3.0.txt'))),
     ('liblz4.so*', 'LZ4 library', 'BSD-2-Clause', os.path.join(TEXTS, 'lz4-lib-LICENSE.txt')),
-    ('liblzma.so*', 'liblzma (XZ Utils)', '0BSD', '/usr/share/licenses/xz/COPYING'),
-    ('libmpdec.so*', 'mpdecimal', 'BSD-2-Clause', '/usr/share/licenses/mpdecimal/COPYRIGHT.txt'),
+    ('liblzma.so*', 'liblzma (XZ Utils)', '0BSD', ('/usr/share/licenses/xz/COPYING',
+                                                   '/usr/share/doc/liblzma5*/copyright')),
+    ('libmpdec.so*', 'mpdecimal', 'BSD-2-Clause', ('/usr/share/licenses/mpdecimal/COPYRIGHT.txt',
+                                                   '/usr/share/doc/libmpdec*/copyright')),
     ('libuuid.so*', 'libuuid (util-linux)', 'BSD-3-Clause',
-     '/usr/share/licenses/util-linux-libs/COPYING.BSD-3-Clause'),
-    ('libz.so*', 'zlib-ng', 'Zlib', '/usr/share/licenses/zlib-ng-compat/LICENSE.md'),
-    ('libzstd.so*', 'Zstandard', 'BSD-3-Clause', '/usr/share/licenses/zstd/LICENSE'),
-    ('libncursesw.so*', 'ncurses', 'MIT-open-group', '/usr/share/licenses/ncurses/COPYING'),
+     ('/usr/share/licenses/util-linux-libs/COPYING.BSD-3-Clause', '/usr/share/doc/libuuid1*/copyright')),
+    ('libz.so*', 'zlib', 'Zlib', ('/usr/share/licenses/zlib-ng-compat/LICENSE.md',
+                                  '/usr/share/doc/zlib1g*/copyright', os.path.join(TEXTS, 'Zlib.txt'))),
+    ('libzstd.so*', 'Zstandard', 'BSD-3-Clause', ('/usr/share/licenses/zstd/LICENSE',
+                                                  '/usr/share/doc/libzstd1*/copyright')),
+    ('libncursesw.so*', 'ncurses', 'MIT-open-group', ('/usr/share/licenses/ncurses/COPYING',
+                                                      '/usr/share/doc/libncursesw6*/copyright')),
+    # Windows: CPython's own copies (their texts are in CPython's LICENSE.txt), and the
+    # Microsoft runtimes it and the window need
+    ('libcrypto-*.dll', 'OpenSSL', 'Apache-2.0', 'PYTHON_LICENSE'),
+    ('libssl-*.dll', 'OpenSSL', 'Apache-2.0', 'PYTHON_LICENSE'),
+    ('libffi-*.dll', 'libffi', 'MIT', 'PYTHON_LICENSE'),
+    ('vcruntime140*.dll', 'Microsoft Visual C++ runtime', 'LicenseRef-Microsoft-Redistributable',
+     os.path.join(TEXTS, 'Microsoft-Redistributable.txt')),
+    ('msvcp140*.dll', 'Microsoft Visual C++ runtime', 'LicenseRef-Microsoft-Redistributable',
+     os.path.join(TEXTS, 'Microsoft-Redistributable.txt')),
+    ('ucrtbase.dll', 'Microsoft Universal C Runtime', 'LicenseRef-Microsoft-Redistributable',
+     os.path.join(TEXTS, 'Microsoft-Redistributable.txt')),
+    ('api-ms-win-*.dll', 'Microsoft Universal C Runtime', 'LicenseRef-Microsoft-Redistributable',
+     os.path.join(TEXTS, 'Microsoft-Redistributable.txt')),
 ]
 #: The native components build.py carries and the bootloader: (file name, component,
 #: licence, licence file or None to look beside the file). The bootloader entry covers
@@ -158,7 +188,7 @@ def _toc_paths(work):
         path = os.path.join(work, name)
         if not os.path.isfile(path):
             continue
-        with open(path) as fh:
+        with open(path, encoding='utf-8') as fh:
             toc = ast.literal_eval(fh.read())
         for item in toc:
             if isinstance(item, list):
@@ -236,7 +266,7 @@ def collect(work, zips=()):
             elif dec:
                 add('native:' + dec[1], kind='Native', name=dec[1], version='', license=dec[2],
                     texts=[], licence_file=os.path.join(os.path.dirname(src), dec[3]))
-            elif _ours(src) or name.startswith('native/LICENSE-'):
+            elif _ours(src) or name.replace('\\', '/').startswith('native/LICENSE-'):
                 own.add('data' if kind == 'DATA' else top)
             else:
                 unknown.append((name, src, kind))
@@ -338,7 +368,13 @@ def _ours(path):
 
 def _read(path):
     if path == 'PYTHON_LICENSE':
-        path = os.path.join(sysconfig.get_paths()['stdlib'], 'LICENSE.txt')
+        # in the standard library on Linux, beside python.exe on Windows
+        path = next((p for p in (os.path.join(sysconfig.get_paths()['stdlib'], 'LICENSE.txt'),
+                                 os.path.join(sys.base_prefix, 'LICENSE.txt'))
+                     if os.path.isfile(p)), None)
+    if path and '*' in path:
+        import glob
+        path = next(iter(sorted(glob.glob(path))), None)
     if path and path.startswith('pyinstaller:'):
         dist = md.distribution('pyinstaller')
         path = next((str(dist.locate_file(f)) for f in dist.files or []
@@ -596,7 +632,7 @@ def main(argv=None):
             comps['rust:' + c['name'] + ' ' + c['version']] = c
     for dist in args.web:
         try:
-            with open(os.path.join(dist, 'licenses.json')) as fh:
+            with open(os.path.join(dist, 'licenses.json'), encoding='utf-8') as fh:
                 pkgs = json.load(fh)
         except (OSError, ValueError):
             unknown.append(('licenses.json', dist, 'WEB'))
@@ -631,7 +667,7 @@ def main(argv=None):
                'components': [dict({k: c.get(k) for k in ('kind', 'name', 'version', 'license',
                                                           'files', 'used')}, texts=p['ids'])
                               for c, p in zip(rows, per)]}
-    with open(args.out + '.json', 'w') as fh:
+    with open(args.out + '.json', 'w', encoding='utf-8') as fh:
         json.dump(summary, fh, indent=1)
     for c in rows:
         print('  %-16s %-40s %-12s %s' % (c['kind'], c['name'], c['version'], c['license']))

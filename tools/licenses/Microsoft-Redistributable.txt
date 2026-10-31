@@ -1,0 +1,11 @@
+Microsoft Visual C++ runtime (vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll) and the
+Microsoft Universal C Runtime (ucrtbase.dll, api-ms-win-*.dll)
+
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+These files are distributable code under the Microsoft Visual Studio license terms
+(https://visualstudio.microsoft.com/license-terms/) and the Windows SDK license terms; the
+lists of distributable files are at https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files
+and https://learn.microsoft.com/cpp/windows/universal-crt-deployment. They are included
+unmodified so the application runs without a separate runtime install; the Universal C
+Runtime is also part of Windows 10 and later.
