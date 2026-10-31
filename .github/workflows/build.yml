@@ -79,15 +79,20 @@ jobs:
         run: python native/ispctexcomp/build.py
       - name: Python packages
         run: python -m pip install -r requirements-build.txt
+      # the third-party notices read the window's crates offline (tools/notices.py)
+      - name: Rust crates
+        run: cargo fetch --manifest-path shell/window/Cargo.toml
       - name: Build
         run: python tools/build.py
+      # the files are picked in Python: Git Bash's ls on Windows lists RiftLord.exe as RiftLord
       - name: Zip
-        shell: bash
-        run: |
-          cd dist
-          files=$(ls RiftLord RiftLord.exe RiftLordServer RiftLordServer.exe THIRD-PARTY-NOTICES.txt 2>/dev/null)
-          python -c "import sys,zipfile;z=zipfile.ZipFile(sys.argv[1],'w',zipfile.ZIP_DEFLATED);[z.write(f) for f in sys.argv[2:]]" \
-            "../RiftLord-${{ needs.version.outputs.version }}-${{ matrix.platform }}.zip" $files
+        working-directory: dist
+        run: >-
+          python -c "import os,sys,zipfile;
+          z=zipfile.ZipFile(sys.argv[1],'w',zipfile.ZIP_DEFLATED);
+          [z.write(f) for f in ('RiftLord','RiftLord.exe','RiftLordServer','RiftLordServer.exe','THIRD-PARTY-NOTICES.txt') if os.path.isfile(f)];
+          print(z.namelist())"
+          ../RiftLord-${{ needs.version.outputs.version }}-${{ matrix.platform }}.zip
       - uses: actions/upload-artifact@v4
         with:
           name: RiftLord-${{ matrix.platform }}
