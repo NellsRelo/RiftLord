@@ -7,6 +7,7 @@ gated by a difficulty byte, and the highest rung closes the onslaught -- and
 drives `bppatch` to write it.
 """
 
+import collections
 import os
 import sys
 
@@ -481,7 +482,7 @@ def copy_spawn(mm, node):
 
 
 def write_spawns(nodes, mm, indices, entries, protos, donor=None,
-                 resolve=None, retarget_var=None):
+                 resolve=None, retarget_var=None, where=None):
     """Make a block spawn exactly `entries`, adding or dropping calls to fit.
 
     Every shipped coordinator gives each spawn call a statement of its own, so
@@ -490,8 +491,26 @@ def write_spawns(nodes, mm, indices, entries, protos, donor=None,
 
     `donor` is a spawn statement already inserted into `nodes` for a block that
     declares none; it becomes the first slot.
+
+    A spawn statement the declaration runs more than once is no slot: one statement
+    holds one row, so every later row written into it replaced an earlier one, and
+    dropping it took away rows still wanted. It is dropped instead, and the rows go
+    into statements that run once, with copies added for the rest. Measured: Scenario04
+    wave 5 door 2 (12 statements run twice), Scenario08 and WC_16 wave 7 door 3 (11).
+
+    `where` names the wave and door for the message when no statement runs once.
     """
-    slots = [(mm[i][2], c['call']) for i, c in spawn_statements(mm, indices, resolve)]
+    visits = [(mm[i][2], c['call']) for i, c in spawn_statements(mm, indices, resolve)]
+    runs = collections.Counter(id(call) for _n, call in visits)
+    slots = [(node, call) for node, call in visits if runs[id(call)] == 1]
+    replayed = []
+    for node, call in visits:
+        if runs[id(call)] > 1 and not any(node is n for n in replayed):
+            replayed.append(node)
+    if replayed and not slots and entries:
+        raise SystemExit(
+            '%s: this level plays every spawn of this door twice, so its rows cannot be '
+            'saved; move them to another door' % (where or 'This wave'))
     if not slots and donor is not None:
         calls = (spawn_calls(donor, resolve) if resolve is not None
                  else bppatch.spawn_calls_in(donor))
@@ -504,6 +523,8 @@ def write_spawns(nodes, mm, indices, entries, protos, donor=None,
 
     at_node = {}
     used = 0
+    #: where the next added row goes: after the last one, so added rows keep their order
+    anchor = slots[-1][0] if slots else None
     for k, want in enumerate(entries):
         args = dict(guid=None if retarget_var else protos[want['unit']],
                     count=row_count(want),
@@ -523,9 +544,9 @@ def write_spawns(nodes, mm, indices, entries, protos, donor=None,
                     'This door has no spawn to copy in this wave. Load the map\'s '
                     'original onslaught, or add the units to a door that already sends '
                     'enemies in this wave, then save again.')
-            anchor = slots[-1][0]
             fresh = copy.deepcopy(anchor)
             insert_after(nodes, anchor, fresh)
+            anchor = fresh
             calls = (spawn_calls(fresh, resolve) if resolve is not None
                      else bppatch.spawn_calls_in(fresh))
             bppatch.set_spawn(calls[0]['call'], **args)
@@ -536,7 +557,7 @@ def write_spawns(nodes, mm, indices, entries, protos, donor=None,
         used = k + 1
 
     dropped = 0
-    for node, _c in slots[used:]:
+    for node in [n for n, _c in slots[used:]] + replayed:
         if drop(nodes, node):
             dropped += 1
     return {'set': min(used, len(slots)), 'added': max(0, used - len(slots)),
@@ -966,7 +987,8 @@ def author(spec, sh, protos, note=lambda _s: None):
                         donor = fresh
                     got = write_spawns(nodes, mm, idx, entries, protos,
                                        donor=donor, resolve=resolve,
-                                       retarget_var=retarget_var)
+                                       retarget_var=retarget_var,
+                                       where='Wave %d, door %d' % (i + 1, spawner))
                     # pacing sits in front of the spawn it delays, so one
                     # spawner can be padded without touching the others
                     for k, paced in enumerate(entries):
@@ -1712,20 +1734,36 @@ def check_built(files, coord_path, spec, note=lambda _s: None):
         want = sum(1 for e in
                    [x for v in (wave.get('spawns') or {}).values() for x in v]
                    if e.get('unit'))
-        out.append({'name': 'wave %d spawn calls' % number,
+        # in the editor's terms: rows saved, and the doors that lost or gained some
+        short = []
+        for spawner in sorted({int(k) for k in (wave.get('spawns') or {})} | set(got)):
+            rows = sum(1 for r in (wave.get('spawns') or {}).get(str(spawner), [])
+                       if r.get('unit'))
+            have = (got.get(spawner) or {}).get('OnslaughtSpawnEntities', 0)
+            if have != rows:
+                short.append('door %d: %d of %d' % (spawner, have, rows))
+        out.append({'name': 'wave %d spawn rows' % number,
                     'ok': spawns == want,
-                    'detail': '%d in the Blueprint, %d authored'
-                              % (spawns, want)})
+                    'detail': ('%d saved' % want) if spawns == want else
+                              '%d of %d saved (%s)' % (spawns, want, ', '.join(short))})
         # what the built Blueprint will actually send, against what was asked
         sent, asked = [], []
         for spawner, rows in sorted((wave.get('spawns') or {}).items()):
             asked += [r['unit'] for r in rows if r.get('unit')]
             sent += [u for u in per_units.get((number, int(spawner)), []) if u]
+        missing = collections.Counter(asked) - collections.Counter(sent)
+        extra = collections.Counter(sent) - collections.Counter(asked)
         out.append({'name': 'wave %d units' % number,
-                    'ok': sorted(sent) == sorted(asked),
-                    'detail': ('%s' % ', '.join(sorted(set(sent))) or 'none')
-                              + (' — asked for %s' % ', '.join(sorted(set(asked)))
-                                 if sorted(sent) != sorted(asked) else '')})
+                    'ok': not missing and not extra,
+                    'detail': '; '.join(
+                        part for part in (
+                            ('missing ' + ', '.join('%d %s' % (n, u) for u, n
+                                                    in sorted(missing.items())))
+                            if missing else '',
+                            ('not asked for ' + ', '.join('%d %s' % (n, u) for u, n
+                                                          in sorted(extra.items())))
+                            if extra else '') if part)
+                              or ', '.join(sorted(set(sent))) or 'none'})
 
         want_actions = set(wave.get('actions') or [])
         if want_actions:

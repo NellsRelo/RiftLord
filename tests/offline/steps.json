@@ -7,6 +7,7 @@
  ["preview effects", ["tests/offline/test_previewfx.py"]],
  ["unit renames", ["tests/offline/test_unitrenames.py"]],
  ["fewer waves than the host", ["tests/offline/test_fewer_waves.py"]],
+ ["replayed host spawns", ["tests/offline/test_replayed_spawns.py"]],
  ["probe from a record", ["tests/offline/test_probe_from_record.py"]],
  ["probe level cache", ["tests/offline/test_probecache.py"]],
  ["scramble and endless", ["tests/offline/test_scramble_endless.py"]],
