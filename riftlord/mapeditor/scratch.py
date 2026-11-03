@@ -912,6 +912,10 @@ def retarget_map_data(uasset, uexp, level_name, md_path, tex_path):
 MAP_VOLUME_CLASS = 'OMDMapVolume'
 #: How close (uu) a level's map volume actor sits to the MapData volume it pairs with.
 MAP_VOLUME_MATCH = 1.0
+#: A map volume brush's transform properties at their engine defaults, which the cooker
+#: leaves out of the export.
+BRUSH_DEFAULTS = {'RelativeLocation': (0.0, 0.0, 0.0), 'RelativeRotation': (0.0, 0.0, 0.0),
+                  'RelativeScale3D': (1.0, 1.0, 1.0)}
 
 
 def frame_volume_actors(uasset, uexp, level_name, volume):
@@ -945,13 +949,20 @@ def frame_volume_actors(uasset, uexp, level_name, volume):
         if not root or not 0 < root[0] <= len(pkg.exports):
             raise SystemExit('%s has a map volume with no brush to frame' % level_name)
         comp = pkg.exports[root[0] - 1]
-        cdata = bytearray(comp['data'])
-        fields = {nm: at for nm, _k, _s, at, _z in _tags(cdata, names, 0, len(cdata))}
-        missing = [f for f in ('RelativeLocation', 'RelativeRotation', 'RelativeScale3D')
-                   if f not in fields]
+        fields = {nm: at for nm, _k, _s, at, _z in _tags(comp['data'], names, 0, len(comp['data']))}
+        missing = [f for f in BRUSH_DEFAULTS if f not in fields]
         if missing:
-            raise SystemExit('%s\'s map volume brush has no %s to rewrite'
-                             % (level_name, ', '.join(missing)))
+            # a property at its default is not stored: add it with that value to rewrite
+            from riftlord.build import levelbuild
+            b = levelbuild.Builder.__new__(levelbuild.Builder)
+            b.pkg = pkg
+            for f in missing:
+                b.set_vector(root[0], f, BRUSH_DEFAULTS[f],
+                             'Rotator' if f == 'RelativeRotation' else 'Vector')
+            names = [n for n, _h in pkg.names]
+            fields = {nm: at for nm, _k, _s, at, _z in _tags(comp['data'], names, 0,
+                                                              len(comp['data']))}
+        cdata = bytearray(comp['data'])
         loc = struct.unpack_from('<3f', cdata, fields['RelativeLocation'])
         scale = struct.unpack_from('<3f', cdata, fields['RelativeScale3D'])
         k_old = next((k for k, v in enumerate(host) if max(abs(a - b) for a, b in zip(

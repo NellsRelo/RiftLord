@@ -63,5 +63,6 @@
  ["campaign index and working title", ["tests/offline/test_campaignindex.py"]],
  ["same title and Campaign Endless", ["tests/offline/test_samename.py"]],
  ["a custom campaign is one pak", ["tests/offline/test_campaignpak.py"]],
- ["gates on a retitled build", ["tests/offline/test_retitled_gates.py"]]
+ ["gates on a retitled build", ["tests/offline/test_retitled_gates.py"]],
+ ["map volume defaults", ["tests/offline/test_mapvolume_defaults.py"]]
 ]
