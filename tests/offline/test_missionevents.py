@@ -199,6 +199,27 @@ try:
 except (Exception, SystemExit) as exc:                # noqa: BLE001
     check('piece with dialogue compiles and names every line', False, str(exc))
 
+# Scenario_08 fires BattleMusicChange in wave 5, but its level binds no handler to it: the
+# build drops it as not possible on this host, and savetest must expect that.
+try:
+    from riftlord.onslaught import savetest
+    caps = hostevents.capabilities('Scenario_08')
+    check('Scenario_08 never hears its music change',
+          'BattleMusicChange' in caps['unheard'] and not caps['music']['available'],
+          caps['music'])
+    spec = wavespec.read_onslaught('Scenario_08')
+    check('Scenario_08 wave 5 reads its music change',
+          'BattleMusicChange' in spec['waves'][4]['actions'], spec['waves'][4]['actions'])
+    built, report = wavespec.with_events(spec, caps)
+    want = savetest.expected(spec, 'Scenario_08')
+    check('an unheard music change is not authored, and savetest expects that',
+          not built['waves'][4]['actions'] and not want['waves'][4]['actions']
+          and [r['status'] for r in report] == [wavespec.NOT_POSSIBLE],
+          (built['waves'][4]['actions'], want['waves'][4]['actions'], report))
+except (Exception, SystemExit) as exc:                 # noqa: BLE001
+    check('an unheard music change is not authored, and savetest expects that', False,
+          str(exc))
+
 for name, ok, detail in checks:
     print('%s  %s%s' % ('PASS' if ok else 'FAIL', name, '' if ok else ': %s' % (detail,)))
 failed = [c for c in checks if not c[1]]

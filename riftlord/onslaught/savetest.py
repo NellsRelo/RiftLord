@@ -42,7 +42,8 @@ ROOT = os.path.dirname(HERE)
 MISSIONS = ('900_Beset_Alpha_3_P', '900_Cellar_Alpha_1_P')
 #: Shipped maps tested by default.
 #: Scenario_12 and Scenario_18 have waves that leave a ground spawner unused (addmove).
-MAPS = ('Scenario_02', 'Scenario_09', 'Scenario_12', 'Scenario_18')
+#: Scenario_08 fires a music change its level never hears, and replays door 3's spawns.
+MAPS = ('Scenario_02', 'Scenario_08', 'Scenario_09', 'Scenario_12', 'Scenario_18')
 CASES = ('resave', 'add', 'addmove', 'remove', 'events', 'par')
 #: The par time the par case sets, in seconds (no shipped row uses it).
 PAR_CASE = 345.0
@@ -94,27 +95,64 @@ def _coordinator_as(name, ua, ux):
         bppatch.load = real
 
 
+def pacing(rows):
+    """A door's rows as they play: units and waits in order. A pause before a row and one
+    after the row ahead of it are the same wait (and read back as the latter); waits in a
+    row add up; nothing after the last unit counts."""
+    out = []
+
+    def pause(p):
+        if not p or not p.get('value'):
+            return
+        kind, value = p.get('kind') or 'wait', round(float(p['value']), 1)
+        if kind == 'wait' and out and out[-1][0] == 'wait':
+            out[-1] = ('wait', round(out[-1][1] + value, 1))
+        else:
+            out.append((kind, value))
+    for r in rows:
+        if not r.get('unit'):
+            continue
+        pause(r.get('before'))
+        out.append(('unit', r['unit']))
+        pause(r.get('after'))
+    while out and out[-1][0] != 'unit':
+        out.pop()
+    # A row reads back one pause, the gate when there is one: a gate and a wait between
+    # the same two units (a moved row's own wait beside the gate after the row ahead)
+    # play as written but read back as the gate.
+    return [p for k, p in enumerate(out)
+            if not (p[0] == 'wait' and 'gate' in (out[k - 1][0] if k else '',
+                                                  out[k + 1][0]))]
+
+
 def _summary(spec):
     out = []
     for w in spec['waves']:
         spawns = {k: sorted((e['unit'], e.get('count')) for e in v if e.get('unit'))
                   for k, v in (w.get('spawns') or {}).items()
                   if any(e.get('unit') for e in v)}
+        paced = {k: pacing(v) for k, v in (w.get('spawns') or {}).items()
+                 if any(e.get('unit') for e in v)}
         out.append((spawns, w.get('breakKind') or 'wave',
                     float(w.get('breakSeconds') or 10), w.get('coin'),
-                    sorted(w.get('actions') or [])))
+                    sorted(w.get('actions') or []), paced))
     return out
 
 
 def expected(spec, map_name, bundled=False):
-    """The waves a spec authors: its events written into them when it has any."""
-    if 'events' not in spec:
-        return spec
+    """The waves a spec authors: its events written into them, as the build does.
+
+    A spec without `events` has them read out of its waves first (wavespec.with_events),
+    so an action the host never hears is not authored: Scenario_08 fires
+    BattleMusicChange in wave 5, but its level binds no handler to it.
+    """
     from riftlord.onslaught import wavespec
     from riftlord.missions import hostevents
     caps = hostevents.capabilities(map_name)
     if bundled:
         caps = wavespec.bundle_caps(map_name, caps)
+    if 'events' not in spec:
+        spec = wavespec.split_events(spec, caps)[0]
     return wavespec.apply_events(spec, caps)[0]
 
 
@@ -136,6 +174,15 @@ def compare(spec, got):
             issues.append('wave %d coin %s, authored %s' % (i + 1, y[3], x[3]))
         if x[4] != y[4]:
             issues.append('wave %d events %s, authored %s' % (i + 1, y[4], x[4]))
+        # order and waits, where the units themselves agree
+        if x[0] == y[0]:
+            for door in sorted(x[5]):
+                want, have = x[5][door], y[5].get(door, [])
+                if want != have:
+                    at = next((k for k, (p, q) in enumerate(zip(want, have)) if p != q),
+                              min(len(want), len(have)))
+                    issues.append('wave %d door %s pacing differs at %d: %s, authored %s'
+                                  % (i + 1, door, at, have[at:at + 2], want[at:at + 2]))
     return issues
 
 

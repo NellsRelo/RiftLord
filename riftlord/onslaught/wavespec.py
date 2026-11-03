@@ -564,26 +564,70 @@ def write_spawns(nodes, mm, indices, entries, protos, donor=None,
             'dropped': dropped, 'nodes': at_node}
 
 
+#: Calls that make a statement more than a wait, so it is never dropped as one.
+NOT_A_WAIT = ('OnslaughtSpawnEntities', 'OnslaughtStartGroup', 'OnslaughtAction',
+              'OnslaughtEnd') + WAVE_ENDS
+
+
+def host_waits(mm, indices, resolve, shared=()):
+    """The host's `OnslaughtDelay` statements in front of a declaration's last spawn.
+
+    `read_onslaught` gives each of these to a row as its pause, and `write_pause` writes
+    the row's pause back, so a host wait left in place ran twice: every resave doubled a
+    wave's pacing, and a replayed block's waits (Scenario08 wave 7 door 3) came out
+    beside other rows. A wait after the last spawn belongs to no row and stays, as does
+    one in `shared`, which another wave or spawner also runs.
+    """
+    last = None
+    for k, i in enumerate(indices):
+        if spawn_calls(mm[i][2], resolve):
+            last = k
+    if last is None:
+        return []
+    late = set(indices[last:])
+    out = []
+    for i in dict.fromkeys(indices[:last]):
+        node = mm[i][2]
+        if i in late or i in shared:
+            continue
+        if not bppatch.calls_named(node, 'OnslaughtDelay', resolve):
+            continue
+        if any(bppatch.calls_named(node, fn, resolve) for fn in NOT_A_WAIT):
+            continue
+        out.append(node)
+    return out
+
+
 def write_pause(nodes, mm, resolve, anchor, pause, ahead):
     """Put a pause beside a spawn statement.
 
     `pause` is {'kind': 'wait'|'gate', 'value': n}: a wait is a flat
     `OnslaughtDelay`, a gate an `OnslaughtStartGroup` that holds until that
     share of the group before it has died.
+
+    Returns the statement that now holds the spawn. A pause ahead of it takes the
+    spawn's place and the spawn moves to a new statement after it, so a jump to the
+    spawn -- a block whose entry is its first spawn, as a copied block's is -- meets the
+    pause first. Inserted before it, the pause was skipped: a mission's opening waits
+    on such doors were lost on every save.
     """
     if not pause or not pause.get('value'):
-        return False
+        return anchor
     if pause.get('kind') == 'gate':
         node = clone_group(mm, resolve, float(pause['value']))
     else:
         node = clone_delay(mm, resolve, float(pause['value']))
     if node is None:
-        return False
+        return anchor
     if ahead:
-        insert_before(nodes, anchor, node)
-    else:
+        for slot in ('op', 'name', 'ops', 'fieldpaths', 'objptrs'):
+            a, b = getattr(anchor, slot), getattr(node, slot)
+            setattr(anchor, slot, b)
+            setattr(node, slot, a)
         insert_after(nodes, anchor, node)
-    return True
+        return node
+    insert_after(nodes, anchor, node)
+    return anchor
 
 
 def find_coin(mm, plan, wave, spawners, resolve):
@@ -806,6 +850,8 @@ def author(spec, sh, protos, note=lambda _s: None):
             write_settings(pkg, names, cdo_at, settings, note)
         eps = bppatch.entry_points(pkg, names, resolve)
         entry = eps['Onslaught_Start']
+        #: read before any variable is given another unit, as the editor read the host
+        lookup = unit_lookup(pkg, names, resolve)
 
         # A coordinator that names its units through Blueprint variables cannot
         # take a proto guid in the call. Each authored unit is given a variable
@@ -888,6 +934,11 @@ def author(spec, sh, protos, note=lambda _s: None):
                             % (i, owner[i][0], owner[i][1], number, spawner))
                     owner[i] = (number, spawner)
 
+            # {(wave, spawner): statements another wave or spawner also runs}
+            users = collections.Counter(j for ix in plan.values() for j in set(ix))
+            shared_by = {key: {j for j in ix if users[j] > 1}
+                         for key, ix in plan.items()}
+
             # a spawn statement to copy when a wave sends nothing through a
             # door the author wants to use
             any_spawn = next((mm[i][2] for (w, sp), ix in sorted(plan.items())
@@ -896,6 +947,8 @@ def author(spec, sh, protos, note=lambda _s: None):
 
             # door blocks copied in step 1, {wave number: [clones]}, not yet given a break
             opened = {}
+            # (wave, spawner) whose rows are exactly the host's, left as the host has them
+            kept = set()
             # {wave number: (break statement, clones)} for a break step 3 put in a copy
             break_home = {}
             # every door block copied in step 1, {wave number: [clones]}
@@ -912,6 +965,15 @@ def author(spec, sh, protos, note=lambda _s: None):
                     entries = [e for e in (wave.get('spawns') or {})
                                .get(str(spawner), []) if e.get('unit')]
                     if not idx and not entries:
+                        continue
+                    # An untouched door keeps the host's statements as they are: its
+                    # waits, groups and a block it runs twice (Scenario04 wave 5 door 2)
+                    # are then exactly the host's, which rewriting cannot promise.
+                    if entries and spawn_statements(mm, idx, resolve) and untouched(
+                            entries, door_rows(mm, idx, resolve, lookup)):
+                        kept.add((number, spawner))
+                        note('  wave %d spawner %d: unchanged (%d spawns)'
+                             % (i + 1, spawner, len(entries)))
                         continue
                     donor = None
                     if not spawn_statements(mm, idx, resolve) and entries:
@@ -959,7 +1021,7 @@ def author(spec, sh, protos, note=lambda _s: None):
                                      for c in bppatch.spawn_calls_in(node)]
                             block_entry = _write_clone_spawns(
                                 nodes, clones, calls, entries, protos,
-                                entry=block_entry)
+                                entry=block_entry, mm=mm, resolve=resolve)
                             # the copy's coin goes (step 3a places one per wave), as do
                             # events the author did not ask for
                             block_entry, _n = strip_clone_calls(
@@ -985,6 +1047,10 @@ def author(spec, sh, protos, note=lambda _s: None):
                         fresh = copy_spawn(mm, any_spawn)
                         insert_after(nodes, donor, fresh)
                         donor = fresh
+                    # the host's own waits go: the rows carry them, as read, and
+                    # write_pause puts each back beside its row
+                    for node in host_waits(mm, idx, resolve, shared_by[(number, spawner)]):
+                        drop(nodes, node)
                     got = write_spawns(nodes, mm, idx, entries, protos,
                                        donor=donor, resolve=resolve,
                                        retarget_var=retarget_var,
@@ -995,8 +1061,8 @@ def author(spec, sh, protos, note=lambda _s: None):
                         anchor = got['nodes'].get(k)
                         if anchor is None:
                             continue
-                        write_pause(nodes, mm, resolve, anchor,
-                                    paced.get('before'), ahead=True)
+                        anchor = write_pause(nodes, mm, resolve, anchor,
+                                             paced.get('before'), ahead=True)
                         write_pause(nodes, mm, resolve, anchor,
                                     paced.get('after'), ahead=False)
                     note('  wave %d spawner %d: %d set, %d added, %d dropped'
@@ -1013,6 +1079,8 @@ def author(spec, sh, protos, note=lambda _s: None):
             for i, wave in enumerate(waves[:len(live)]):
                 number = live[i]
                 for spawner in spawners:
+                    if (number, spawner) in kept:
+                        continue
                     for j in plan.get((number, spawner)) or []:
                         for call in bppatch.calls_named(mm[j][2],
                                                         'OnslaughtStartGroup',
@@ -1073,17 +1141,10 @@ def author(spec, sh, protos, note=lambda _s: None):
                                    .get(str(spawner), []) if e.get('unit')]
                         calls = [c for node in clones
                                  for c in bppatch.spawn_calls_in(node)]
+                        # the donor's gates are cleared there, before the rows' own
                         block_entry = _write_clone_spawns(
                             nodes, clones, calls, entries, protos,
-                            entry=block_entry)
-                        for node in clones:
-                            for call in bppatch.calls_named(
-                                    node, 'OnslaughtStartGroup', resolve):
-                                f = next((v for k, v in call.ops
-                                          if k == 'expr'
-                                          and v.name == 'FloatConst'), None)
-                                if f is not None:
-                                    f.ops[0] = (f.ops[0][0], 0.0)
+                            entry=block_entry, mm=mm, resolve=resolve)
                         amount = wave.get('coin')
                         if spawner == home and not last:
                             got = clone_break_home(nodes, mm, clones, resolve, kind,
@@ -1504,12 +1565,16 @@ def clone_break_home(nodes, mm, clones, resolve, kind, seconds, index=None):
     return fresh
 
 
-def _write_clone_spawns(nodes, clones, calls, entries, protos, entry=None):
+def _write_clone_spawns(nodes, clones, calls, entries, protos, entry=None,
+                        mm=None, resolve=None):
     """Fit a cloned block's spawn calls to `entries`, adding or dropping.
 
     Returns the block's entry statement, which moves if the original was one of
     the ones dropped -- the dispatch chain branches to it, and a chain pointing
     at a statement no longer in the list fails the whole edit.
+
+    Given `mm` and `resolve`, the rows' pauses are written too, in place of the waits
+    the donor block had between its spawns.
     """
     import copy
     int_donor = None
@@ -1524,6 +1589,9 @@ def _write_clone_spawns(nodes, clones, calls, entries, protos, entry=None):
         for got in bppatch.spawn_calls_in(node):
             owner[id(got['call'])] = node
 
+    #: the statement each row is written into, and where the next added row goes
+    row_nodes = {}
+    anchor = owner.get(id(calls[-1]['call'])) if calls else clones[-1]
     for k, want in enumerate(entries):
         args = dict(guid=protos[want['unit']],
                     count=row_count(want),
@@ -1533,15 +1601,17 @@ def _write_clone_spawns(nodes, clones, calls, entries, protos, entry=None):
         if k < len(calls):
             bppatch.set_spawn(calls[k]['call'], **args)
             set_add_count(calls[k]['call'], want, int_donor)
+            row_nodes[k] = owner.get(id(calls[k]['call']))
         else:
-            anchor = owner.get(id(calls[-1]['call'])) if calls else clones[-1]
             fresh = copy.deepcopy(anchor)
             insert_after(nodes, anchor, fresh)
             clones.append(fresh)
+            anchor = fresh
             got = bppatch.spawn_calls_in(fresh)
             if got:
                 bppatch.set_spawn(got[0]['call'], **args)
                 set_add_count(got[0]['call'], want, int_donor)
+                row_nodes[k] = fresh
 
     for c in calls[len(entries):]:
         victim = owner.get(id(c['call']))
@@ -1554,6 +1624,54 @@ def _write_clone_spawns(nodes, clones, calls, entries, protos, entry=None):
         drop(nodes, victim)
         if victim in clones:
             clones.remove(victim)
+    if mm is not None:
+        entry = _write_clone_pauses(nodes, mm, resolve, clones, entries, row_nodes, entry)
+    return entry
+
+
+def _write_clone_pauses(nodes, mm, resolve, clones, entries, row_nodes, entry):
+    """Give a cloned block its rows' pauses: the donor's waits in front of its last
+    spawn go (they were the donor's rows' pauses), and each row's are written beside
+    it. Returns the block's entry, which a pause in front of the entry becomes.
+
+    The donor's group gates are cleared first, as step 1b clears a written wave's: they
+    gated the donor's groups, and a row's gate is written as a group of its own.
+    """
+    for node in clones:
+        for call in bppatch.calls_named(node, 'OnslaughtStartGroup', resolve):
+            f = next((v for k, v in call.ops if k == 'expr' and v.name == 'FloatConst'),
+                     None)
+            if f is not None:
+                f.ops[0] = (f.ops[0][0], 0.0)
+    spawns = [n for n in clones if bppatch.spawn_calls_in(n)]
+    if spawns:
+        last = max(k for k, n in enumerate(nodes) if n is spawns[-1])
+        for victim in [n for n in nodes[:last] if any(n is c for c in clones)
+                       and bppatch.calls_named(n, 'OnslaughtDelay', resolve)
+                       and not any(bppatch.calls_named(n, fn, resolve)
+                                   for fn in NOT_A_WAIT)]:
+            entry = drop_clone_statement(nodes, clones, victim, entry)
+    for k, row in enumerate(entries):
+        anchor = row_nodes.get(k)
+        if anchor is None:
+            continue
+        for pause, ahead in ((row.get('before'), True), (row.get('after'), False)):
+            if not pause or not pause.get('value'):
+                continue
+            node = (clone_group(mm, resolve, float(pause['value']))
+                    if pause.get('kind') == 'gate'
+                    else clone_delay(mm, resolve, float(pause['value'])))
+            if node is None:
+                continue
+            if ahead:
+                insert_before(nodes, anchor, node)
+                # whatever branched to the row now meets its pause first
+                retarget(clones, anchor, node)
+                if anchor is entry:
+                    entry = node
+            else:
+                insert_after(nodes, anchor, node)
+            clones.insert(clones.index(anchor) + (0 if ahead else 1), node)
     return entry
 
 
@@ -3088,6 +3206,96 @@ def point_call_at(call, name_index):
     return False
 
 
+def _literal(call, kind, skip=0):
+    """The value of a call's `skip`-th argument of expression kind `kind`, or None."""
+    got = [v for k, v in call.ops if k == 'expr' and v.name == kind]
+    return got[skip].ops[0][1] if len(got) > skip else None
+
+
+def unit_lookup(pkg, names, resolve):
+    """{guid tuple or Blueprint variable name index: unit} for a coordinator's spawns."""
+    protos = onslaught.protos()
+    lookup = {tuple(g): n for n, g in protos.items()}
+    vars_, cdo_index = proto_vars(pkg, names, resolve)
+    if vars_ and cdo_index is not None:
+        for _n, rec in name_protos(vars_, pkg, cdo_index, protos).items():
+            lookup[rec['name_index']] = rec['proto']
+    return lookup
+
+
+def door_rows(mm, indices, resolve, lookup):
+    """The spec rows one wave sends through one door, read from its declaration.
+
+    Group gates and waits are attached to the spawn they precede; waits in a row add up.
+    """
+    rows, gate, wait = [], None, None
+    for i in indices:
+        node = mm[i][2]
+        # a group started with no gate after a gated one does not undo the gate: the
+        # wait for the group before still happened (a written gate sits in front of
+        # the host's own group start, which a rewrite zeroes)
+        for call in bppatch.calls_named(node, 'OnslaughtStartGroup', resolve):
+            gate = _literal(call, 'FloatConst') or gate
+        for call in bppatch.calls_named(node, 'OnslaughtDelay', resolve):
+            wait = (wait or 0.0) + (_literal(call, 'FloatConst') or 0.0)
+        for got in spawn_calls(node, resolve):
+            call = got['call']
+            kids = [v for k, v in call.ops if k == 'expr']
+            first = kids[0] if kids else None
+            unit = None
+            if first is not None and first.name == 'StructConst':
+                g = bppatch.guid_of(first)
+                unit = lookup.get(tuple(g)) if g else None
+            elif first is not None:
+                unit = lookup.get(first.ops[1][1])
+            _p, cnt, diff, promote = bppatch.spawn_parts(call)
+            pause = None
+            if gate:
+                pause = {'kind': 'gate', 'value': round(gate, 1)}
+            elif wait:
+                pause = {'kind': 'wait', 'value': round(wait, 1)}
+            rows.append({
+                'unit': unit,
+                'count': (cnt.ops[0][1] if cnt is not None
+                          and cnt.name == 'IntConst'
+                          else 0 if cnt is not None
+                          and cnt.name == 'IntZero' else 1),
+                'promote': (round(promote.ops[0][1], 3)
+                            if promote is not None else 0.5),
+                'difficulty': (diff.ops[0][1] if diff is not None
+                               else ALL),
+                'addCount': read_add_count(call),
+                'before': pause if not rows else None,
+                'after': None,
+                '_lead': pause if rows else None,
+            })
+            # a pause standing in front of a spawn is, to an author,
+            # the pause that follows the spawn before it
+            if len(rows) > 1 and rows[-1]['_lead']:
+                rows[-2]['after'] = rows[-1]['_lead']
+            gate, wait = None, None
+    rows = [r for r in rows if r['unit']]
+    for r in rows:
+        r.pop('_lead', None)
+    return rows
+
+
+def _row_key(row):
+    """A row as it is written, for telling an untouched door from an edited one."""
+    def pause(p):
+        return (p.get('kind') or 'wait', round(float(p['value']), 1)) \
+            if p and p.get('value') else None
+    return (row['unit'], row_count(row), int(row.get('difficulty', ALL)),
+            round(float(row.get('promote') or 0.0), 3),
+            None if row.get('addCount') is None else int(row['addCount']),
+            pause(row.get('before')), pause(row.get('after')))
+
+
+def untouched(entries, host):
+    """True when a door's authored rows are exactly the host's own (door_rows)."""
+    return [_row_key(r) for r in entries] == [_row_key(r) for r in host]
+
+
 def read_onslaught(map_name):
     """The map's own onslaught, as a spec the editor can open and edit.
 
@@ -3102,17 +3310,7 @@ def read_onslaught(map_name):
     entry = eps['Onslaught_Start']
     sh = shape(coord)
 
-    protos = onslaught.protos()
-    lookup = {tuple(g): n for n, g in protos.items()}
-    vars_, cdo_index = proto_vars(pkg, names, resolve)
-    if vars_ and cdo_index is not None:
-        for _n, rec in name_protos(vars_, pkg, cdo_index, protos).items():
-            lookup[rec['name_index']] = rec['proto']
-
-    def literal(call, kind, skip=0):
-        got = [v for k, v in call.ops
-               if k == 'expr' and v.name == kind]
-        return got[skip].ops[0][1] if len(got) > skip else None
+    lookup = unit_lookup(pkg, names, resolve)
 
     # every spawner the coordinator dispatches, including ones holding only a break or coin
     wmap, _seen = bppatch.wave_map(mm, entry, names, resolve)
@@ -3122,14 +3320,10 @@ def read_onslaught(map_name):
         wave = {'breakKind': 'wave', 'breakSeconds': 10,
                 'coin': None, 'actions': [], 'spawns': {}}
         for spawner in readable:
-            rows, gate, wait = [], None, None
-            for i in declared(mm, entry, names, resolve, number, spawner):
+            idx = declared(mm, entry, names, resolve, number, spawner)
+            rows = door_rows(mm, idx, resolve, lookup)
+            for i in idx:
                 node = mm[i][2]
-                for call in bppatch.calls_named(node, 'OnslaughtStartGroup',
-                                                resolve):
-                    gate = literal(call, 'FloatConst')
-                for call in bppatch.calls_named(node, 'OnslaughtDelay', resolve):
-                    wait = literal(call, 'FloatConst')
                 for call in bppatch.calls_named(node, 'OnslaughtAction',
                                                 resolve):
                     for x in bppatch._flat(call):
@@ -3137,42 +3331,6 @@ def read_onslaught(map_name):
                             for _k, v in x.ops:
                                 if isinstance(v, str) and v not in wave['actions']:
                                     wave['actions'].append(v)
-                for got in spawn_calls(node, resolve):
-                    call = got['call']
-                    kids = [v for k, v in call.ops if k == 'expr']
-                    first = kids[0] if kids else None
-                    unit = None
-                    if first is not None and first.name == 'StructConst':
-                        g = bppatch.guid_of(first)
-                        unit = lookup.get(tuple(g)) if g else None
-                    elif first is not None:
-                        unit = lookup.get(first.ops[1][1])
-                    _p, cnt, diff, promote = bppatch.spawn_parts(call)
-                    pause = None
-                    if gate:
-                        pause = {'kind': 'gate', 'value': round(gate, 1)}
-                    elif wait:
-                        pause = {'kind': 'wait', 'value': round(wait, 1)}
-                    rows.append({
-                        'unit': unit,
-                        'count': (cnt.ops[0][1] if cnt is not None
-                                  and cnt.name == 'IntConst'
-                                  else 0 if cnt is not None
-                                  and cnt.name == 'IntZero' else 1),
-                        'promote': (round(promote.ops[0][1], 3)
-                                    if promote is not None else 0.5),
-                        'difficulty': (diff.ops[0][1] if diff is not None
-                                       else ALL),
-                        'addCount': read_add_count(call),
-                        'before': pause if not rows else None,
-                        'after': None,
-                        '_lead': pause if rows else None,
-                    })
-                    # a pause standing in front of a spawn is, to an author,
-                    # the pause that follows the spawn before it
-                    if len(rows) > 1 and rows[-1]['_lead']:
-                        rows[-2]['after'] = rows[-1]['_lead']
-                    gate, wait = None, None
                 for call in bppatch.calls_named(node, 'OnslaughtGiveCoin',
                                                 resolve):
                     n = next((v for k, v in call.ops
@@ -3185,12 +3343,9 @@ def read_onslaught(map_name):
                                              else 'wave')
                         if fn == 'OnslaughtWaveBreak':
                             got = bppatch.calls_named(node, fn, resolve)[0]
-                            v = literal(got, 'FloatConst')
+                            v = _literal(got, 'FloatConst')
                             if v:
                                 wave['breakSeconds'] = round(v, 1)
-            rows = [r for r in rows if r['unit']]
-            for r in rows:
-                r.pop('_lead', None)
             if rows:
                 wave['spawns'][str(spawner)] = rows
         waves.append(wave)
