@@ -1,0 +1,13272 @@
+{
+ "source": "/mnt/2tb_pro_a/tmp/coverseams/covermine2.py over the 33 shipped levels (calibrate.py: each covered seam, its primary cover and how much of the opening it closes)",
+ "rule": "a cover is one placement of one family (its turn in the seam frame up to the mesh's symmetry) with 10 shipped cases on 3 levels, each closing 95% of its seam alone",
+ "covers": [
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_RB": 1200.97,
+    "Column_Sec_1_2_RB": 600.97
+   },
+   "cases": 18,
+   "levels": 9,
+   "level_names": [
+    "Scenario_05",
+    "Scenario_10",
+    "Scenario_11",
+    "Scenario_12",
+    "Scenario_13",
+    "Scenario_14",
+    "Scenario_16",
+    "Scenario_18",
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 17,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 13,
+    "Column_Sec_1_2_RB": 5
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.25
+   ],
+   "gap": [
+    -157.9,
+    157.9
+   ],
+   "depth": [
+    -245.4,
+    72.6
+   ],
+   "gap_seen": [
+    -219.0,
+    -161.5,
+    -159.0,
+    -158.0,
+    -99.0
+   ],
+   "widths": [
+    9.9,
+    179.9
+   ],
+   "families": {
+    "Wall_RB": 10,
+    "Wall_RB_MT_v1": 3,
+    "Wall_FB": 2,
+    "Wall_Sewer": 2,
+    "Wall_RB_Trim_v1": 1
+   }
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_RB": 1200.97,
+    "Column_Sec_1_2_RB": 600.97
+   },
+   "cases": 13,
+   "levels": 8,
+   "level_names": [
+    "Scenario_03",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_13",
+    "Scenario_16",
+    "Scenario_Ice_01",
+    "Scenario_Ice_02",
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 12,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 9,
+    "Column_Sec_1_2_RB": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.25
+   ],
+   "gap": [
+    -159.0,
+    158.9
+   ],
+   "depth": [
+    -257.1,
+    59.7
+   ],
+   "gap_seen": [
+    -174.0,
+    -160.5,
+    -159.0,
+    -158.0,
+    -18.5,
+    -8.0
+   ],
+   "widths": [
+    3.1,
+    150.1
+   ],
+   "families": {
+    "Wall_RB": 4,
+    "Wall_RB_MT_v1": 3,
+    "Wall_FB_Trim_v1": 2,
+    "Wall_RB_Trim_v1": 2,
+    "Wall_Sewer": 1,
+    "Wall_FB": 1
+   }
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_RB": 1200.97,
+    "Column_Sec_1_2_RB": 600.97
+   },
+   "cases": 12,
+   "levels": 6,
+   "level_names": [
+    "Scenario_05",
+    "Scenario_08",
+    "Scenario_11",
+    "Scenario_13",
+    "Scenario_16",
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 11,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 9,
+    "Column_Sec_1_2_RB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.25
+   ],
+   "gap": [
+    -158.0,
+    157.9
+   ],
+   "depth": [
+    -258.9,
+    58.2
+   ],
+   "gap_seen": [
+    -159.0,
+    -158.0,
+    -39.0
+   ],
+   "widths": [
+    10.0,
+    179.9
+   ],
+   "families": {
+    "Wall_RB": 6,
+    "Wall_RB_Trim_v1": 2,
+    "Wall_RB_MT_v1": 2,
+    "Wall_FB": 2
+   }
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "run_local": 2,
+   "members": {
+    "ColumnTrim_CastStone_900W": 899.98,
+    "ColumnTrim_CastStone_600W": 600.02,
+    "ColumnTrim_CastStone_1800W": 1800.02,
+    "ColumnTrim_CastStone_1200W": 1200.02
+   },
+   "cases": 10,
+   "levels": 6,
+   "level_names": [
+    "ScenarioDLC_02",
+    "Scenario_04",
+    "Scenario_09",
+    "Scenario_11",
+    "Scenario_12",
+    "Scenario_Other_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_600W": 3,
+    "ColumnTrim_CastStone_1200W": 3,
+    "ColumnTrim_CastStone_900W": 2,
+    "ColumnTrim_CastStone_1800W": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    0.7728,
+    1.5033
+   ],
+   "gap": [
+    -11.2,
+    91.9
+   ],
+   "depth": [
+    -57.9,
+    20.7
+   ],
+   "gap_seen": [
+    -72.0,
+    -37.0,
+    -12.0,
+    -11.5,
+    -11.0,
+    -3.0,
+    -2.0
+   ],
+   "widths": [
+    0.9,
+    43.2
+   ],
+   "families": {
+    "Wall_RB": 5,
+    "Wall_RB_MT_v1": 2,
+    "Wall_RB_Trim_v1": 2,
+    "Wall_FB": 1
+   }
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_RB": 1200.97,
+    "Column_Sec_1_2_RB": 600.97
+   },
+   "cases": 10,
+   "levels": 7,
+   "level_names": [
+    "Scenario_03",
+    "Scenario_05",
+    "Scenario_06",
+    "Scenario_13",
+    "Scenario_16",
+    "Scenario_Ice_01",
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 9,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 8,
+    "Column_Sec_1_2_RB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.25
+   ],
+   "gap": [
+    -159.0,
+    159.0
+   ],
+   "depth": [
+    -260.9,
+    55.0
+   ],
+   "gap_seen": [
+    -174.0,
+    -161.0,
+    -159.5,
+    -159.0,
+    -122.0,
+    -34.0,
+    -14.5
+   ],
+   "widths": [
+    1.1,
+    150.0
+   ],
+   "families": {
+    "Wall_RB": 3,
+    "Wall_FB": 2,
+    "Wall_Sewer": 1,
+    "Wall_RB_MT_v1": 1,
+    "Wall_FB_Trim_v1": 1,
+    "Wall_RB_MetalTrim_v1": 1,
+    "Wall_RB_Trim_v1": 1
+   }
+  }
+ ],
+ "thin": [
+  {
+   "type": "floor_seam",
+   "style": "",
+   "family": null,
+   "cases": 0,
+   "levels": 0,
+   "why": "no shipped seam of this kind has a cover running along it"
+  },
+  {
+   "type": "floor_seam",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     0.999,
+     0.035,
+     -0.0
+    ],
+    [
+     0.035,
+     -0.999,
+     -0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "WoodBeam7": 599.49
+   },
+   "cases": 4,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodBeam7": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.5613
+   ],
+   "stretch": [
+    1.5,
+    2.25
+   ],
+   "gap": [
+    -56.8,
+    53.1
+   ],
+   "depth": [
+    -18.8,
+    3.7
+   ],
+   "gap_seen": [
+    -64.5,
+    -58.0,
+    -55.5,
+    -37.5
+   ],
+   "widths": [
+    0.7,
+    1.0
+   ],
+   "families": {
+    "Floor_SB": 4
+   },
+   "why": "4 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "floor_seam",
+   "style": "Stone",
+   "family": "Metal_Trim_Diamond_2x",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Metal_Trim_Diamond_2x": 600.46
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_18"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Metal_Trim_Diamond_2x": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -10.6,
+    24.7
+   ],
+   "depth": [
+    -5.2,
+    7.5
+   ],
+   "gap_seen": [
+    -10.5
+   ],
+   "widths": [
+    1.0,
+    1.0
+   ],
+   "families": {
+    "Floor_SB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "floor_seam",
+   "style": "Wood",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     -0.03,
+     -0.0
+    ],
+    [
+     -0.03,
+     -1.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodBeam7": 599.49
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodBeam7": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.5613
+   ],
+   "stretch": [
+    1.6,
+    1.6
+   ],
+   "gap": [
+    -42.8,
+    65.1
+   ],
+   "depth": [
+    -18.8,
+    3.7
+   ],
+   "gap_seen": [
+    -49.5,
+    -36.0
+   ],
+   "widths": [
+    0.7,
+    0.8
+   ],
+   "families": {
+    "Floor_WD_V2": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "floor_seam",
+   "style": "Wood",
+   "family": "WoodPlank2",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodPlank2": 215.7
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_11"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodPlank2": 1
+   },
+   "scale": [
+    1.0,
+    1.3517,
+    2.4347
+   ],
+   "stretch": [
+    2.7997,
+    2.7997
+   ],
+   "gap": [
+    -28.3,
+    9.4
+   ],
+   "depth": [
+    -18.3,
+    3.7
+   ],
+   "gap_seen": [
+    -28.5
+   ],
+   "widths": [
+    1.1,
+    1.1
+   ],
+   "families": {
+    "Floor_WD": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "floor_seam",
+   "style": "Wood",
+   "family": "Metal_Trim_Diamond_2",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Metal_Trim_Diamond_2": 300.32
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_18"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Metal_Trim_Diamond_2": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -32.5,
+    2.3
+   ],
+   "depth": [
+    -4.5,
+    6.8
+   ],
+   "gap_seen": [
+    -32.5
+   ],
+   "widths": [
+    0.9,
+    0.9
+   ],
+   "families": {
+    "Floor_WD": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Archway_Wall_Base_SM",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "Archway_Wall_Base_SM": 667.56
+   },
+   "cases": 4,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Archway_Wall_Base_SM": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -31.2,
+    40.4
+   ],
+   "depth": [
+    -132.8,
+    14.5
+   ],
+   "gap_seen": [
+    -31.0
+   ],
+   "widths": [
+    19.3,
+    19.3
+   ],
+   "families": {
+    "Wall_FB": 4
+   },
+   "why": "4 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 3,
+   "run_local": 0,
+   "members": {
+    "Floor_Squarebrick_1x4": 1207.53
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Floor_Squarebrick_1x4": 3
+   },
+   "scale": [
+    1.0,
+    0.4324,
+    1.2672
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -24.7,
+    19.1
+   ],
+   "depth": [
+    -113.9,
+    18.0
+   ],
+   "gap_seen": [
+    -24.5
+   ],
+   "widths": [
+    8.1,
+    8.1
+   ],
+   "families": {
+    "Wall_FB": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Cren_Shelf",
+   "turn": [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Cren_Shelf_1x1": 301.08
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_08"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Cren_Shelf_1x1": 2
+   },
+   "scale": [
+    1.1,
+    1.0,
+    1.1
+   ],
+   "stretch": [
+    0.94,
+    1.1
+   ],
+   "gap": [
+    -33.1,
+    26.0
+   ],
+   "depth": [
+    -306.9,
+    28.8
+   ],
+   "gap_seen": [
+    -33.0
+   ],
+   "widths": [
+    11.5,
+    11.5
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Stairs_3x_4_SB",
+   "turn": [
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     -0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Stairs_3x_4_SB": 1211.33
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_08"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_3x_4_SB": 2
+   },
+   "scale": [
+    1.25,
+    1.0,
+    0.95
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -174.0,
+    401.5
+   ],
+   "depth": [
+    -61.0,
+    1064.0
+   ],
+   "gap_seen": [
+    -174.5,
+    -173.5
+   ],
+   "widths": [
+    16.5,
+    16.5
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutW",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutW": 1199.93
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_13"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutW": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -45.3,
+    24.6
+   ],
+   "depth": [
+    -15.9,
+    8.2
+   ],
+   "gap_seen": [
+    -46.0,
+    -45.0
+   ],
+   "widths": [
+    6.4,
+    7.4
+   ],
+   "families": {
+    "Wall_FB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Wall_2_2_FB": 600.02
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_02"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "Wall_2_2_FB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.9
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -4.2,
+    535.8
+   ],
+   "depth": [
+    -7.9,
+    91.4
+   ],
+   "gap_seen": [
+    -4.0
+   ],
+   "widths": [
+    15.9,
+    15.9
+   ],
+   "families": {
+    "Castle_Tower_FB_4x": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "ColumnBlock_TopTile_RB",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "ColumnBlock_TopTile_1_2_RB": 516.17
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_03"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "ColumnBlock_TopTile_1_2_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.2,
+    1.0
+   ],
+   "stretch": [
+    1.2,
+    1.2
+   ],
+   "gap": [
+    -271.8,
+    328.2
+   ],
+   "depth": [
+    -457.9,
+    161.4
+   ],
+   "gap_seen": [
+    -272.0
+   ],
+   "widths": [
+    8.1,
+    8.1
+   ],
+   "families": {
+    "Wall_FB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "RailingStairsBase_2",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "RailingStairsBase_2": 599.84
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_11"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "RailingStairsBase_2": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -17.5,
+    336.9
+   ],
+   "depth": [
+    -58.5,
+    19.9
+   ],
+   "gap_seen": [
+    -17.5
+   ],
+   "widths": [
+    26.5,
+    26.5
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "ColumnBlock_BottomTile_1_FB",
+   "turn": [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "ColumnBlock_BottomTile_1_FB": 615.78
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_18"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnBlock_BottomTile_1_FB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -583.5,
+    31.5
+   ],
+   "depth": [
+    -615.8,
+    0.0
+   ],
+   "gap_seen": [
+    -583.5
+   ],
+   "widths": [
+    16.5,
+    16.5
+   ],
+   "families": {
+    "Castle_Tower_FB_4x": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_RB": 1200.97
+   },
+   "cases": 3,
+   "levels": 2,
+   "level_names": [
+    "Scenario_03",
+    "Scenario_18"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -159.0,
+    159.0
+   ],
+   "depth": [
+    -129.3,
+    186.5
+   ],
+   "gap_seen": [
+    -159.0,
+    -158.0
+   ],
+   "widths": [
+    119.9,
+    142.3
+   ],
+   "families": {
+    "Castle_ExteriorWallAngle_CrenB": 2,
+    "Castle_ExteriorWallAngle_Cren": 1
+   },
+   "why": "3 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "",
+   "family": "ColumnBlock_BottomTile_1_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_BottomTile_1_FB": 615.08
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_18"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "ColumnBlock_BottomTile_1_FB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -307.9,
+    307.9
+   ],
+   "depth": [
+    -389.5,
+    226.3
+   ],
+   "gap_seen": [
+    -528.0,
+    -308.0,
+    -158.0
+   ],
+   "widths": [
+    80.0,
+    156.3
+   ],
+   "families": {
+    "Castle_ExteriorWall_Cren": 2,
+    "Castle_ExteriorWallAngle_Cren": 1
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTrim_CastStone_600W": 600.02,
+    "ColumnTrim_CastStone_1200W": 1200.02,
+    "ColumnTrim_CastStone_300W": 299.98
+   },
+   "cases": 4,
+   "levels": 3,
+   "level_names": [
+    "ScenarioDLC_02",
+    "ScenarioDLC_03",
+    "Scenario_15"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_300W": 2,
+    "ColumnTrim_CastStone_600W": 1,
+    "ColumnTrim_CastStone_1200W": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0126,
+    1.131
+   ],
+   "gap": [
+    -26.9,
+    76.9
+   ],
+   "depth": [
+    -83.1,
+    19.9
+   ],
+   "gap_seen": [
+    -92.0,
+    -32.0,
+    -22.0,
+    -12.0
+   ],
+   "widths": [
+    7.2,
+    44.9
+   ],
+   "families": {
+    "Wall_RB_Dry": 4
+   },
+   "why": "4 cases on 3 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Window_CastStone_Arch700",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "Window_CastStone_Arch700": 447.79
+   },
+   "cases": 4,
+   "levels": 1,
+   "level_names": [
+    "Scenario_15"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Window_CastStone_Arch700": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -172.1,
+    167.5
+   ],
+   "depth": [
+    -56.5,
+    753.7
+   ],
+   "gap_seen": [
+    -172.0
+   ],
+   "widths": [
+    142.1,
+    142.2
+   ],
+   "families": {
+    "Wall_RB_Dry": 4
+   },
+   "why": "4 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Woodbeam1",
+   "turn": [
+    [
+     -0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Woodbeam1": 600.0
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Woodbeam1": 3
+   },
+   "scale": [
+    0.6762,
+    0.6808,
+    1.0
+   ],
+   "stretch": [
+    0.5314,
+    1.0922
+   ],
+   "gap": [
+    -18.0,
+    41.6
+   ],
+   "depth": [
+    -50.7,
+    10.8
+   ],
+   "gap_seen": [
+    -29.5,
+    -18.0
+   ],
+   "widths": [
+    5.0,
+    19.9
+   ],
+   "families": {
+    "Wall_RB_Dry": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "ColumnBlock",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_1x2": 600.46
+   },
+   "cases": 3,
+   "levels": 2,
+   "level_names": [
+    "Scenario_15",
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "ColumnBlock_1x2": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -158.9,
+    159.0
+   ],
+   "depth": [
+    -558.8,
+    56.0
+   ],
+   "gap_seen": [
+    -159.0
+   ],
+   "widths": [
+    144.7,
+    154.9
+   ],
+   "families": {
+    "Wall_RB_Dry": 3
+   },
+   "why": "3 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "WallSec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "WallSec_3_3_V2_RB": 900.02
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_01"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "WallSec_3_3_V2_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -89.3,
+    12.1
+   ],
+   "depth": [
+    -911.3,
+    -11.2
+   ],
+   "gap_seen": [
+    -89.5
+   ],
+   "widths": [
+    2.9,
+    2.9
+   ],
+   "families": {
+    "Wall_RB_Dry": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Wall_2_2_FB": 600.01
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Wall_2_2_FB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.025,
+    1.025
+   ],
+   "gap": [
+    -300.0,
+    300.0
+   ],
+   "depth": [
+    -101.1,
+    -1.7
+   ],
+   "gap_seen": [
+    -300.0
+   ],
+   "widths": [
+    94.7,
+    94.7
+   ],
+   "families": {
+    "Wall_RB_Dry": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_2_FB": 600.0,
+    "Column_Sec_1_4_FB": 1200.0
+   },
+   "cases": 7,
+   "levels": 3,
+   "level_names": [
+    "Scenario_Sand_01",
+    "Scenario_Sand_02",
+    "Scenario_Sand_04"
+   ],
+   "kit_cases": 7,
+   "mesh_cases": {
+    "Column_Sec_1_4_FB": 4,
+    "Column_Sec_1_2_FB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -158.1,
+    157.7
+   ],
+   "depth": [
+    -227.7,
+    87.8
+   ],
+   "gap_seen": [
+    -163.5,
+    -158.0,
+    -148.0
+   ],
+   "widths": [
+    10.0,
+    150.0
+   ],
+   "families": {
+    "ArchwayGate_SAND": 3,
+    "Wall_FB_MT_SAND": 2,
+    "Wall_FB_MT_Window_SAND": 1,
+    "Wall_FB_MT_V6_SAND": 1
+   },
+   "why": "7 cases on 3 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Wall_2_2_FB": 600.01,
+    "Wall_1_2_FB": 450.0
+   },
+   "cases": 2,
+   "levels": 2,
+   "level_names": [
+    "Scenario_Sand_01",
+    "Scenario_Sand_04"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Wall_2_2_FB": 1,
+    "Wall_1_2_FB": 1
+   },
+   "scale": [
+    0.975,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.1
+   ],
+   "gap": [
+    -135.5,
+    449.5
+   ],
+   "depth": [
+    -145.8,
+    -46.5
+   ],
+   "gap_seen": [
+    -226.0,
+    -45.0
+   ],
+   "widths": [
+    76.1,
+    213.4
+   ],
+   "families": {
+    "Wall_FB_MT_SAND": 1,
+    "ArchwayGate_SAND": 1
+   },
+   "why": "2 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Archway_Pointed_B_SM",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Archway_Pointed_B_SM": 449.5
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Archway_Pointed_B_SM": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -77.3,
+    818.2
+   ],
+   "depth": [
+    -87.8,
+    69.2
+   ],
+   "gap_seen": [
+    -77.5
+   ],
+   "widths": [
+    212.9,
+    212.9
+   ],
+   "families": {
+    "Wall_FB_MT_SAND": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "SupportBlock_2",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "SupportBlock_2": 598.76
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "SupportBlock_2": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.2718
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -12.1,
+    66.3
+   ],
+   "depth": [
+    -13.7,
+    60.8
+   ],
+   "gap_seen": [
+    -12.0
+   ],
+   "widths": [
+    2.0,
+    2.0
+   ],
+   "families": {
+    "Wall_FB_MT_SAND": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     -0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     -0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTrim_CastStone_600W": 600.02
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_600W": 1
+   },
+   "scale": [
+    1.0,
+    1.2,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -3.8,
+    119.8
+   ],
+   "depth": [
+    -95.4,
+    8.4
+   ],
+   "gap_seen": [
+    -4.0
+   ],
+   "widths": [
+    62.6,
+    62.6
+   ],
+   "families": {
+    "ArchwayGate_Angled_SAND": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "Wall_Sec_4_2_V2_RB": 1200.05,
+    "Wall_Sec_2_4_V2_RB": 600.05,
+    "Wall_Sec_2_3_V2_RB": 600.05,
+    "Wall_Sec_2_2_V2_RB": 600.05
+   },
+   "cases": 9,
+   "levels": 5,
+   "level_names": [
+    "ScenarioDLC_01",
+    "Scenario_08",
+    "Scenario_12",
+    "Scenario_Ice_03",
+    "Scenario_Other_02"
+   ],
+   "kit_cases": 8,
+   "mesh_cases": {
+    "Wall_Sec_2_2_V2_RB": 4,
+    "Wall_Sec_4_2_V2_RB": 2,
+    "Wall_Sec_2_4_V2_RB": 2,
+    "Wall_Sec_2_3_V2_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.025
+   ],
+   "gap": [
+    -450.1,
+    150.0
+   ],
+   "depth": [
+    -111.5,
+    12.1
+   ],
+   "gap_seen": [
+    -1039.0,
+    -513.0,
+    -470.0,
+    -462.5,
+    -450.0,
+    -300.0,
+    -79.0,
+    -1.5
+   ],
+   "widths": [
+    4.4,
+    149.9
+   ],
+   "families": {
+    "Wall_RB": 5,
+    "Wall_FB": 3,
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "9 cases on 5 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "Wall_4_4_FB": 1200.01,
+    "Wall_2_2_FB": 600.01,
+    "Wall_2_3_FB": 600.01
+   },
+   "cases": 9,
+   "levels": 4,
+   "level_names": [
+    "ScenarioDLC_04",
+    "Scenario_Ice_03",
+    "Scenario_Sand_02",
+    "Scenario_Sand_03"
+   ],
+   "kit_cases": 6,
+   "mesh_cases": {
+    "Wall_4_4_FB": 4,
+    "Wall_2_2_FB": 3,
+    "Wall_2_3_FB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    0.85,
+    1.0
+   ],
+   "gap": [
+    -750.5,
+    150.0
+   ],
+   "depth": [
+    -120.0,
+    -20.7
+   ],
+   "gap_seen": [
+    -1155.0,
+    -930.0,
+    -870.0,
+    -750.5,
+    -750.0,
+    -450.0,
+    0.0
+   ],
+   "widths": [
+    45.0,
+    168.1
+   ],
+   "families": {
+    "Wall_FB": 6,
+    "Wall_FB_Double_Window": 3
+   },
+   "why": "9 cases on 4 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_TopTile_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 3,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_TopTile_1_2_RB": 600.0
+   },
+   "cases": 8,
+   "levels": 4,
+   "level_names": [
+    "Scenario_04",
+    "Scenario_06",
+    "Scenario_12",
+    "Scenario_15"
+   ],
+   "kit_cases": 8,
+   "mesh_cases": {
+    "ColumnBlock_TopTile_1_2_RB": 8
+   },
+   "scale": [
+    1.2,
+    1.2,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.2
+   ],
+   "gap": [
+    -309.7,
+    309.7
+   ],
+   "depth": [
+    -485.9,
+    82.7
+   ],
+   "gap_seen": [
+    -310.0,
+    -309.5,
+    -258.0
+   ],
+   "widths": [
+    144.1,
+    150.0
+   ],
+   "families": {
+    "Wall_RB": 4,
+    "Wall_RB_MT": 4
+   },
+   "why": "8 cases on 4 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_BottomTile_1_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_BottomTile_1_FB": 615.08
+   },
+   "cases": 7,
+   "levels": 2,
+   "level_names": [
+    "Scenario_18",
+    "Scenario_Sand_01"
+   ],
+   "kit_cases": 7,
+   "mesh_cases": {
+    "ColumnBlock_BottomTile_1_FB": 7
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.75
+   ],
+   "gap": [
+    -8.0,
+    607.9
+   ],
+   "depth": [
+    -407.0,
+    208.8
+   ],
+   "gap_seen": [
+    -406.5,
+    -158.0,
+    -8.0
+   ],
+   "widths": [
+    1.9,
+    146.8
+   ],
+   "families": {
+    "Wall_RB": 4,
+    "Wall_RB_Trim_v1": 2,
+    "Wall_FB": 1
+   },
+   "why": "7 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "SM_MERGED_Ceiling_Beams_A",
+   "turn": [
+    [
+     -0.0,
+     -1.0,
+     -0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "SM_MERGED_Ceiling_1x4_Beams_A": 320.14
+   },
+   "cases": 6,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "SM_MERGED_Ceiling_1x4_Beams_A": 6
+   },
+   "scale": [
+    1.1043,
+    1.0,
+    1.1043
+   ],
+   "stretch": [
+    1.2444,
+    1.2444
+   ],
+   "gap": [
+    -660.8,
+    688.2
+   ],
+   "depth": [
+    -30.4,
+    29.2
+   ],
+   "gap_seen": [
+    -965.0,
+    -961.0,
+    -926.0,
+    -396.0,
+    -373.0,
+    -354.0
+   ],
+   "widths": [
+    10.9,
+    33.9
+   ],
+   "families": {
+    "Wall_RB": 3,
+    "Wall_Sewer": 3
+   },
+   "why": "6 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_1x2": 600.46
+   },
+   "cases": 5,
+   "levels": 3,
+   "level_names": [
+    "Scenario_05",
+    "Scenario_10",
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 5,
+   "mesh_cases": {
+    "ColumnBlock_1x2": 5
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -159.0,
+    159.0
+   ],
+   "depth": [
+    -283.8,
+    137.6
+   ],
+   "gap_seen": [
+    -159.0,
+    -157.5
+   ],
+   "widths": [
+    90.2,
+    149.9
+   ],
+   "families": {
+    "Wall_RB": 5
+   },
+   "why": "5 cases on 3 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_Bottom_1_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_Bottom_1_FB": 612.84
+   },
+   "cases": 4,
+   "levels": 2,
+   "level_names": [
+    "Scenario_01",
+    "Scenario_Other_03"
+   ],
+   "kit_cases": 4,
+   "mesh_cases": {
+    "ColumnBlock_Bottom_1_FB": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -26.0,
+    586.0
+   ],
+   "depth": [
+    -430.2,
+    181.7
+   ],
+   "gap_seen": [
+    -256.0,
+    -36.0,
+    -16.0,
+    -6.0
+   ],
+   "widths": [
+    38.3,
+    200.0
+   ],
+   "families": {
+    "Wall_FB": 4
+   },
+   "why": "4 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Dome_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Dome_3x3_RB": 417.33
+   },
+   "cases": 4,
+   "levels": 1,
+   "level_names": [
+    "Scenario_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Dome_3x3_RB": 4
+   },
+   "scale": [
+    1.1,
+    1.1,
+    1.0
+   ],
+   "stretch": [
+    1.1,
+    1.1
+   ],
+   "gap": [
+    -963.0,
+    80.3
+   ],
+   "depth": [
+    -49.4,
+    993.9
+   ],
+   "gap_seen": [
+    -964.5,
+    -961.5
+   ],
+   "widths": [
+    3.8,
+    6.3
+   ],
+   "families": {
+    "Wall_RB": 4
+   },
+   "why": "4 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Stairs_3x_4_SB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Stairs_3x_4_SB": 605.74
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_11"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_3x_4_SB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -915.8,
+    295.5
+   ],
+   "depth": [
+    -101.4,
+    798.6
+   ],
+   "gap_seen": [
+    -916.0,
+    -895.5
+   ],
+   "widths": [
+    3.1,
+    13.2
+   ],
+   "families": {
+    "Wall_RB": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_Bottom_1_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_Bottom_1_RB": 750.0
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_18"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnBlock_Bottom_1_RB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -168.3,
+    446.3
+   ],
+   "depth": [
+    -306.5,
+    307.9
+   ],
+   "gap_seen": [
+    -236.5,
+    -168.5,
+    -148.5
+   ],
+   "widths": [
+    1.8,
+    70.0
+   ],
+   "families": {
+    "Wall_FB": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Dome_3x_Tunnel_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Dome_3x_Tunnel_RB": 393.71
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Other_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Dome_3x_Tunnel_RB": 3
+   },
+   "scale": [
+    1.3703,
+    1.25,
+    1.0
+   ],
+   "stretch": [
+    1.25,
+    1.25
+   ],
+   "gap": [
+    -535.3,
+    214.8
+   ],
+   "depth": [
+    -118.0,
+    1115.2
+   ],
+   "gap_seen": [
+    -555.0,
+    -535.5,
+    -294.0
+   ],
+   "widths": [
+    1.0,
+    17.9
+   ],
+   "families": {
+    "wall_RB": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Floor",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Floor_4x4": 1200.0
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Floor_4x4": 3
+   },
+   "scale": [
+    1.0,
+    0.8,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -101.5,
+    858.5
+   ],
+   "depth": [
+    -206.5,
+    -126.5
+   ],
+   "gap_seen": [
+    -816.5,
+    -101.5
+   ],
+   "widths": [
+    42.1,
+    42.4
+   ],
+   "families": {
+    "Wall_Med_FB_2Trap": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_Top_1_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_Top_1_RB": 600.0
+   },
+   "cases": 2,
+   "levels": 2,
+   "level_names": [
+    "Scenario_06",
+    "Scenario_14"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "ColumnBlock_Top_1_RB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -258.1,
+    255.8
+   ],
+   "depth": [
+    -321.3,
+    192.0
+   ],
+   "gap_seen": [
+    -259.0,
+    -257.0
+   ],
+   "widths": [
+    141.0,
+    149.9
+   ],
+   "families": {
+    "Wall_RB": 1,
+    "Wall_Sewer": 1
+   },
+   "why": "2 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTileA_CastStone_Top",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTileA_CastStone_Top": 325.74
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_09"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTileA_CastStone_Top": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -152.2,
+    111.2
+   ],
+   "depth": [
+    -71.4,
+    191.3
+   ],
+   "gap_seen": [
+    -171.5,
+    -133.0
+   ],
+   "widths": [
+    4.4,
+    5.0
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Woodbeam2",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Woodbeam2": 550.0
+   },
+   "cases": 2,
+   "levels": 2,
+   "level_names": [
+    "Scenario_12",
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Woodbeam2": 2
+   },
+   "scale": [
+    1.125,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    0.9893,
+    1.0
+   ],
+   "gap": [
+    -29.6,
+    56.0
+   ],
+   "depth": [
+    -70.7,
+    27.1
+   ],
+   "gap_seen": [
+    -31.0,
+    -28.0
+   ],
+   "widths": [
+    1.0,
+    1.9
+   ],
+   "families": {
+    "Wall_RB_MT_v1": 1,
+    "Wall_RB_MetalTrim_v1": 1
+   },
+   "why": "2 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Archway_Pointed_LF_Support_SM",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.707,
+     -0.707,
+     0.0
+    ],
+    [
+     0.707,
+     -0.707,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Archway_Pointed_LF_Support_SM": 449.48
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_18"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "Archway_Pointed_LF_Support_SM": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.25,
+    1.25
+   ],
+   "gap": [
+    -58.2,
+    140.1
+   ],
+   "depth": [
+    -359.5,
+    -161.2
+   ],
+   "gap_seen": [
+    -58.5,
+    -58.0
+   ],
+   "widths": [
+    93.1,
+    93.2
+   ],
+   "families": {
+    "ArchwayGate_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     -1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodBeam7": 599.49
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodBeam7": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    2.3847
+   ],
+   "stretch": [
+    0.9106,
+    0.9106
+   ],
+   "gap": [
+    -50.8,
+    29.2
+   ],
+   "depth": [
+    -1.8,
+    93.6
+   ],
+   "gap_seen": [
+    -51.0
+   ],
+   "widths": [
+    1.4,
+    1.4
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Archway_1x1x3_Short_RB",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     -1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Archway_1x1x3_Short_RB": 900.0
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_05"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Archway_1x1x3_Short_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    0.85,
+    0.85
+   ],
+   "gap": [
+    -103.0,
+    212.7
+   ],
+   "depth": [
+    -29.4,
+    270.7
+   ],
+   "gap_seen": [
+    -103.0
+   ],
+   "widths": [
+    144.2,
+    144.2
+   ],
+   "families": {
+    "Wall_FB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_Half_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_Half_RB": 1200.97
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Column_Sec_1_4_Half_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -7.6,
+    308.0
+   ],
+   "depth": [
+    -250.4,
+    -91.4
+   ],
+   "gap_seen": [
+    -7.5
+   ],
+   "widths": [
+    143.5,
+    143.5
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Stairs_4x_4_SB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     -0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Stairs_4x_4_SB": 607.21
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_05"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_4x_4_SB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -155.6,
+    1055.7
+   ],
+   "depth": [
+    -296.4,
+    903.6
+   ],
+   "gap_seen": [
+    -155.5
+   ],
+   "widths": [
+    149.9,
+    149.9
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Tower_Round_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Tower_Round_RB": 600.05
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_09"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Tower_Round_RB": 1
+   },
+   "scale": [
+    0.75,
+    0.75,
+    1.0
+   ],
+   "stretch": [
+    0.75,
+    0.75
+   ],
+   "gap": [
+    -278.7,
+    156.3
+   ],
+   "depth": [
+    -511.9,
+    -76.9
+   ],
+   "gap_seen": [
+    -278.5
+   ],
+   "widths": [
+    12.0,
+    12.0
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_TopTile_Half_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnBlock_TopTile_1_2_Half_RB": 600.0
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_11"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "ColumnBlock_TopTile_1_2_Half_RB": 1
+   },
+   "scale": [
+    1.175,
+    1.2,
+    1.0
+   ],
+   "stretch": [
+    1.2,
+    1.2
+   ],
+   "gap": [
+    -421.2,
+    183.6
+   ],
+   "depth": [
+    -765.1,
+    -455.4
+   ],
+   "gap_seen": [
+    -421.0
+   ],
+   "widths": [
+    22.6,
+    22.6
+   ],
+   "families": {
+    "Castle_Wide_Tower_RBFB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTileB_CastStone_Mid",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTileB_CastStone_Mid": 300.38
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_11"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTileB_CastStone_Mid": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -82.0,
+    80.7
+   ],
+   "depth": [
+    -79.4,
+    83.1
+   ],
+   "gap_seen": [
+    -82.0
+   ],
+   "widths": [
+    3.7,
+    3.7
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "WallSec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "WallSec_3_3_V2_RB": 900.02
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "WallSec_3_3_V2_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -600.0,
+    300.1
+   ],
+   "depth": [
+    -197.8,
+    -96.4
+   ],
+   "gap_seen": [
+    -600.0
+   ],
+   "widths": [
+    143.8,
+    143.8
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Archway_1x1x4_Short_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Archway_1x1x4_Short_RB": 338.54
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Archway_1x1x4_Short_RB": 1
+   },
+   "scale": [
+    0.75,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -755.0,
+    145.0
+   ],
+   "depth": [
+    -10.4,
+    307.6
+   ],
+   "gap_seen": [
+    -755.0
+   ],
+   "widths": [
+    0.9,
+    0.9
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Stairs_3x_2_SB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Stairs_3x_2_SB": 311.52
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_3x_2_SB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -3.4,
+    607.9
+   ],
+   "depth": [
+    -18.3,
+    881.7
+   ],
+   "gap_seen": [
+    -3.5
+   ],
+   "widths": [
+    2.1,
+    2.1
+   ],
+   "families": {
+    "Castle_Short_Tower_RBFB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_FB_2x_Window",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Wall_2_2_FB_2x_Window": 600.01
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_02"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Wall_2_2_FB_2x_Window": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -200.0,
+    400.0
+   ],
+   "depth": [
+    -120.0,
+    -20.7
+   ],
+   "gap_seen": [
+    -200.0
+   ],
+   "widths": [
+    200.0,
+    200.0
+   ],
+   "families": {
+    "Wall_FB_2x_Window": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_angle_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Wall_2_2_angle_FB": 585.04
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Wall_2_2_angle_FB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -290.0,
+    310.0
+   ],
+   "depth": [
+    -24.3,
+    75.0
+   ],
+   "gap_seen": [
+    -290.0
+   ],
+   "widths": [
+    4.3,
+    4.3
+   ],
+   "families": {
+    "Wall_FB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Pointed_Double_SM",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Column_Pointed_Double_SM": 850.34
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Column_Pointed_Double_SM": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -20.0,
+    140.1
+   ],
+   "depth": [
+    -119.9,
+    40.3
+   ],
+   "gap_seen": [
+    -20.0
+   ],
+   "widths": [
+    60.6,
+    60.6
+   ],
+   "families": {
+    "Wall_FB_Double_Window": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_4_RB": 1200.97,
+    "Column_Sec_1_2_RB": 600.97
+   },
+   "cases": 6,
+   "levels": 5,
+   "level_names": [
+    "ScenarioDLC_03",
+    "Scenario_11",
+    "Scenario_12",
+    "Scenario_13",
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 3,
+    "Column_Sec_1_2_RB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.25
+   ],
+   "gap": [
+    -128.1,
+    189.4
+   ],
+   "depth": [
+    -209.8,
+    107.1
+   ],
+   "gap_seen": [
+    -159.0,
+    -158.0,
+    -157.5,
+    -99.0,
+    -39.0,
+    -8.0
+   ],
+   "widths": [
+    142.0,
+    179.9
+   ],
+   "families": {
+    "Wall_RB_WDMT_v1": 2,
+    "Wall_RB_WD_v1": 2,
+    "Wall_RB_WDMTL_v1": 1,
+    "Wall_RB_WD_v2": 1
+   },
+   "why": "6 cases on 5 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Stairs_4x_4_SB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     -0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Stairs_4x_4_SB": 607.21
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_05"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_4x_4_SB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -155.9,
+    1055.5
+   ],
+   "depth": [
+    -256.4,
+    943.6
+   ],
+   "gap_seen": [
+    -156.0
+   ],
+   "widths": [
+    149.9,
+    149.9
+   ],
+   "families": {
+    "Wall_RB_WDMT_v1": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Column_Sec_Half_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Column_Sec_1_2_Half_RB": 600.97
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_03"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Column_Sec_1_2_Half_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -157.9,
+    157.7
+   ],
+   "depth": [
+    -101.4,
+    57.6
+   ],
+   "gap_seen": [
+    -158.0
+   ],
+   "widths": [
+    149.9,
+    149.9
+   ],
+   "families": {
+    "Wall_RB_WDMT_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTrim_CastStone_600W": 600.02
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_13"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_600W": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -31.4,
+    71.6
+   ],
+   "depth": [
+    -43.3,
+    60.6
+   ],
+   "gap_seen": [
+    -31.5
+   ],
+   "widths": [
+    0.5,
+    0.5
+   ],
+   "families": {
+    "Wall_RB_WDMT_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Floor_Squarebrick_4x4": 1207.53
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_08"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "Floor_Squarebrick_4x4": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.65
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -920.1,
+    285.9
+   ],
+   "depth": [
+    -23.5,
+    0.0
+   ],
+   "gap_seen": [
+    -922.0,
+    -918.5
+   ],
+   "widths": [
+    281.3,
+    284.4
+   ],
+   "families": {
+    "Scenario_08_HSection": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "Floor_Squarebrick_2x2": 600.0
+   },
+   "cases": 4,
+   "levels": 1,
+   "level_names": [
+    "Scenario_15"
+   ],
+   "kit_cases": 4,
+   "mesh_cases": {
+    "Floor_Squarebrick_2x2": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.65
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -304.9,
+    295.2
+   ],
+   "depth": [
+    -15.5,
+    0.4
+   ],
+   "gap_seen": [
+    -305.0
+   ],
+   "widths": [
+    295.1,
+    295.1
+   ],
+   "families": {
+    "ArchwayGate_Dry_RB": 4
+   },
+   "why": "4 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Window_CastStone_Tile700",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Window_CastStone_Tile700": 306.47
+   },
+   "cases": 4,
+   "levels": 1,
+   "level_names": [
+    "Scenario_15"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Window_CastStone_Tile700": 4
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -50.9,
+    754.1
+   ],
+   "depth": [
+    -1.2,
+    298.8
+   ],
+   "gap_seen": [
+    -51.0
+   ],
+   "widths": [
+    50.4,
+    50.4
+   ],
+   "families": {
+    "Wall_RB_Dry": 4
+   },
+   "why": "4 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Woodbeam1",
+   "turn": [
+    [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   ],
+   "turn_cases": 3,
+   "run_local": 2,
+   "members": {
+    "Woodbeam1": 600.0
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Woodbeam1": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.5
+   ],
+   "gap": [
+    -31.1,
+    57.0
+   ],
+   "depth": [
+    -59.1,
+    29.1
+   ],
+   "gap_seen": [
+    -31.0
+   ],
+   "widths": [
+    51.3,
+    51.3
+   ],
+   "families": {
+    "Wall_RB_Dry": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "SupportBlock",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "SupportBlock": 298.76
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_15"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "SupportBlock": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -20.1,
+    58.3
+   ],
+   "depth": [
+    -39.7,
+    18.9
+   ],
+   "gap_seen": [
+    -20.0
+   ],
+   "widths": [
+    51.6,
+    51.6
+   ],
+   "families": {
+    "Wall_RB_Dry": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "ColumnTrim_CastStone_300W_CutF": 299.98
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_12"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_300W_CutF": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0699,
+    1.0699
+   ],
+   "gap": [
+    -37.2,
+    32.9
+   ],
+   "depth": [
+    -23.0,
+    16.9
+   ],
+   "gap_seen": [
+    -37.0
+   ],
+   "widths": [
+    10.4,
+    10.4
+   ],
+   "families": {
+    "Wall_RB_Dry": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Column_Sec_1_4_RB": 317.97
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -256.2,
+    59.7
+   ],
+   "depth": [
+    -132.0,
+    1068.9
+   ],
+   "gap_seen": [
+    -256.0
+   ],
+   "widths": [
+    51.9,
+    51.9
+   ],
+   "families": {
+    "Wall_RB_Dry": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Sand",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Floor_Squarebrick_1x3": 912.03
+   },
+   "cases": 2,
+   "levels": 2,
+   "level_names": [
+    "Scenario_Sand_01",
+    "Scenario_Sand_02"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "Floor_Squarebrick_1x3": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.65
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -142.0,
+    166.4
+   ],
+   "depth": [
+    -22.6,
+    -0.2
+   ],
+   "gap_seen": [
+    -142.0
+   ],
+   "widths": [
+    162.0,
+    162.4
+   ],
+   "families": {
+    "ArchwayGate_SAND": 2
+   },
+   "why": "2 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Column_Sec_1_4_FB": 315.54
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_01"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Column_Sec_1_4_FB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -8.7,
+    307.4
+   ],
+   "depth": [
+    17.9,
+    1217.9
+   ],
+   "gap_seen": [
+    -8.5
+   ],
+   "widths": [
+    149.2,
+    149.2
+   ],
+   "families": {
+    "Wall_FB_MT_V2_SAND": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_FS",
+   "turn": [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 4,
+   "run_local": 0,
+   "members": {
+    "Floor_4_4_FS": 1200.0
+   },
+   "cases": 9,
+   "levels": 2,
+   "level_names": [
+    "Scenario_06",
+    "Scenario_17"
+   ],
+   "kit_cases": 9,
+   "mesh_cases": {
+    "Floor_3_1_FS": 8,
+    "Floor_4_4_FS": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.75
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -1057.1,
+    142.9
+   ],
+   "depth": [
+    -4.5,
+    0.0
+   ],
+   "gap_seen": [
+    -1057.0
+   ],
+   "widths": [
+    46.1,
+    142.9
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 8,
+    "Castle_Tower_RBFB": 1
+   },
+   "why": "9 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Woodbeam1",
+   "turn": [
+    [
+     0.014,
+     -0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     -0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     -0.014
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 2,
+   "members": {
+    "Woodbeam1": 600.0
+   },
+   "cases": 7,
+   "levels": 3,
+   "level_names": [
+    "ScenarioDLC_01",
+    "Scenario_11",
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Woodbeam1": 7
+   },
+   "scale": [
+    0.8383,
+    0.7426,
+    1.0
+   ],
+   "stretch": [
+    0.8313,
+    1.361
+   ],
+   "gap": [
+    -29.0,
+    36.3
+   ],
+   "depth": [
+    -51.3,
+    23.2
+   ],
+   "gap_seen": [
+    -39.0,
+    -29.0,
+    -24.0,
+    -23.0,
+    -19.5
+   ],
+   "widths": [
+    29.3,
+    51.3
+   ],
+   "families": {
+    "Wall_RB": 7
+   },
+   "why": "7 cases on 3 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 4,
+   "run_local": 0,
+   "members": {
+    "Wall_Sec_2_4_V2_RB": 1200.1
+   },
+   "cases": 6,
+   "levels": 4,
+   "level_names": [
+    "Scenario_05",
+    "Scenario_12",
+    "Scenario_18",
+    "Scenario_Other_02"
+   ],
+   "kit_cases": 6,
+   "mesh_cases": {
+    "Wall_Sec_2_4_V2_RB": 5,
+    "Wall_Sec_2_2_V2_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -88.1,
+    13.3
+   ],
+   "depth": [
+    -611.2,
+    -11.1
+   ],
+   "gap_seen": [
+    -95.5,
+    -80.5,
+    -25.5
+   ],
+   "widths": [
+    6.2,
+    396.3
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 4,
+    "Castle_Tower_FB_4x": 1,
+    "ArchwayGate_RB": 1
+   },
+   "why": "6 cases on 4 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Cren_Shelf",
+   "turn": [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 1,
+   "members": {
+    "Cren_Shelf_1x1": 301.08
+   },
+   "cases": 6,
+   "levels": 3,
+   "level_names": [
+    "Scenario_08",
+    "Scenario_10",
+    "Scenario_11"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Cren_Shelf_1x1": 6
+   },
+   "scale": [
+    1.1,
+    1.0,
+    1.1
+   ],
+   "stretch": [
+    1.1,
+    1.1
+   ],
+   "gap": [
+    -22.2,
+    313.6
+   ],
+   "depth": [
+    -32.4,
+    26.7
+   ],
+   "gap_seen": [
+    -22.0
+   ],
+   "widths": [
+    3.8,
+    294.8
+   ],
+   "families": {
+    "ArchwayGate_RB": 3,
+    "Castle_Wide_Tower_RBFB": 2,
+    "Wall_RB": 1
+   },
+   "why": "6 cases on 3 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Archway_1x1x3_Short_RB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     -0.0
+    ],
+    [
+     0.0,
+     1.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     -1.0
+    ]
+   ],
+   "turn_cases": 4,
+   "run_local": 0,
+   "members": {
+    "Archway_1x1x3_Short_RB": 900.0
+   },
+   "cases": 6,
+   "levels": 1,
+   "level_names": [
+    "Scenario_14"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Archway_1x1x3_Short_RB": 6
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -56.2,
+    259.4
+   ],
+   "depth": [
+    -36.1,
+    264.0
+   ],
+   "gap_seen": [
+    -56.0,
+    -6.0
+   ],
+   "widths": [
+    251.3,
+    301.5
+   ],
+   "families": {
+    "Wall_RB": 6
+   },
+   "why": "6 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutF": 1199.99
+   },
+   "cases": 3,
+   "levels": 2,
+   "level_names": [
+    "Scenario_13",
+    "Scenario_Other_02"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutF": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    0.8495,
+    1.0
+   ],
+   "gap": [
+    -14.5,
+    55.7
+   ],
+   "depth": [
+    -19.9,
+    20.0
+   ],
+   "gap_seen": [
+    -58.5,
+    -14.5
+   ],
+   "widths": [
+    9.6,
+    51.5
+   ],
+   "families": {
+    "Wall_RB": 2,
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "3 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodPlank1",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodPlank1": 215.79
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodPlank1": 2
+   },
+   "scale": [
+    1.0,
+    2.0202,
+    2.0202
+   ],
+   "stretch": [
+    2.534,
+    2.7554
+   ],
+   "gap": [
+    -32.2,
+    33.3
+   ],
+   "depth": [
+    -14.1,
+    4.2
+   ],
+   "gap_seen": [
+    -32.0
+   ],
+   "widths": [
+    0.5,
+    0.5
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTileB_CastStone_Base",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "ColumnTileB_CastStone_Base": 300.32
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_05"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTileB_CastStone_Base": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.86
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -126.0,
+    173.7
+   ],
+   "depth": [
+    -31.4,
+    226.9
+   ],
+   "gap_seen": [
+    -126.0
+   ],
+   "widths": [
+    26.6,
+    26.6
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone_CutW",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "ColumnTrim_CastStone_300W_CutW": 299.98,
+    "ColumnTrim_CastStone_900W_CutW": 899.96
+   },
+   "cases": 2,
+   "levels": 2,
+   "level_names": [
+    "Scenario_06",
+    "Scenario_14"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_300W_CutW": 1,
+    "ColumnTrim_CastStone_900W_CutW": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -13.2,
+    11.0
+   ],
+   "depth": [
+    -10.1,
+    59.7
+   ],
+   "gap_seen": [
+    -16.0,
+    -10.0
+   ],
+   "widths": [
+    1.3,
+    1.4
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Stairs_3x_4_SB",
+   "turn": [
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Stairs_3x_4_SB": 1211.33
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_08"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_3x_4_SB": 2
+   },
+   "scale": [
+    1.25,
+    1.0,
+    0.95
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -61.0,
+    1064.0
+   ],
+   "depth": [
+    -174.0,
+    401.5
+   ],
+   "gap_seen": [
+    -93.5,
+    -28.5
+   ],
+   "widths": [
+    51.5,
+    51.5
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Wall_2_2_FB": 600.02
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_12"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "Wall_2_2_FB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -98.6,
+    0.8
+   ],
+   "depth": [
+    -591.8,
+    8.2
+   ],
+   "gap_seen": [
+    -98.5
+   ],
+   "widths": [
+    1.3,
+    1.6
+   ],
+   "families": {
+    "Wall_RB": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     -0.0,
+     -1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTrim_CastStone_900W": 899.98
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_900W": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -63.2,
+    40.6
+   ],
+   "depth": [
+    -84.8,
+    18.3
+   ],
+   "gap_seen": [
+    -80.5,
+    -46.0
+   ],
+   "widths": [
+    22.3,
+    55.1
+   ],
+   "families": {
+    "Wall_FB_Angle": 1,
+    "Wall_FB_Angle_v2": 1
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "Column_Sec_1_2_FB": 315.54
+   },
+   "cases": 2,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_01"
+   ],
+   "kit_cases": 2,
+   "mesh_cases": {
+    "Column_Sec_1_2_FB": 2
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.05
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -14.4,
+    301.7
+   ],
+   "depth": [
+    -51.5,
+    578.5
+   ],
+   "gap_seen": [
+    -14.5
+   ],
+   "widths": [
+    193.5,
+    193.6
+   ],
+   "families": {
+    "Wall_Med_FB_2Trap": 2
+   },
+   "why": "2 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Woodbeam3",
+   "turn": [
+    [
+     -0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "Woodbeam3": 260.66
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "ScenarioDLC_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Woodbeam3": 1
+   },
+   "scale": [
+    0.6716,
+    0.5621,
+    1.0
+   ],
+   "stretch": [
+    1.3784,
+    1.3784
+   ],
+   "gap": [
+    -20.0,
+    24.1
+   ],
+   "depth": [
+    -29.3,
+    7.9
+   ],
+   "gap_seen": [
+    -20.0
+   ],
+   "widths": [
+    0.5,
+    0.5
+   ],
+   "families": {
+    "Wall_RB_MT_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Railing_TrimA_2",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Railing_TrimA_2": 599.99
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Railing_TrimA_2": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    0.8916,
+    0.8916
+   ],
+   "gap": [
+    -72.8,
+    6.4
+   ],
+   "depth": [
+    -2.2,
+    7.7
+   ],
+   "gap_seen": [
+    -73.0
+   ],
+   "widths": [
+    4.3,
+    4.3
+   ],
+   "families": {
+    "Castle_Tower_RBFB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Railing_TrimA_1",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Railing_TrimA_1": 299.98
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Railing_TrimA_1": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0209,
+    1.0209
+   ],
+   "gap": [
+    -72.7,
+    6.6
+   ],
+   "depth": [
+    -2.2,
+    7.7
+   ],
+   "gap_seen": [
+    -72.5
+   ],
+   "widths": [
+    4.4,
+    4.4
+   ],
+   "families": {
+    "Castle_Tower_RBFB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodPlank3",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     -1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "WoodPlank3": 258.08
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodPlank3": 1
+   },
+   "scale": [
+    1.9971,
+    1.0,
+    2.4347
+   ],
+   "stretch": [
+    2.9236,
+    2.9236
+   ],
+   "gap": [
+    -25.8,
+    7.3
+   ],
+   "depth": [
+    -14.1,
+    7.9
+   ],
+   "gap_seen": [
+    -26.0
+   ],
+   "widths": [
+    1.4,
+    1.4
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone_2",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 2,
+   "members": {
+    "ColumnTrim_CastStone_600W_2": 600.02
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_09"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "ColumnTrim_CastStone_600W_2": 1
+   },
+   "scale": [
+    1.1943,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -14.0,
+    110.1
+   ],
+   "depth": [
+    -103.6,
+    -0.6
+   ],
+   "gap_seen": [
+    -14.0
+   ],
+   "widths": [
+    101.3,
+    101.3
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodFloor",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodFloor_2x2": 600.0
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_12"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "WoodFloor_2x2": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.75
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -455.3,
+    144.7
+   ],
+   "depth": [
+    -41.8,
+    0.0
+   ],
+   "gap_seen": [
+    -455.5
+   ],
+   "widths": [
+    144.7,
+    144.7
+   ],
+   "families": {
+    "ArchwayGate_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "RailingStairsB",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "RailingStairsB": 611.71
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_12"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "RailingStairsB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -25.5,
+    63.6
+   ],
+   "depth": [
+    -26.2,
+    444.4
+   ],
+   "gap_seen": [
+    -25.5
+   ],
+   "widths": [
+    50.2,
+    50.2
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutW",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutW": 1199.93
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_14"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutW": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -56.9,
+    13.0
+   ],
+   "depth": [
+    -5.4,
+    18.8
+   ],
+   "gap_seen": [
+    -57.0
+   ],
+   "widths": [
+    1.1,
+    1.1
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodPlank2",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodPlank2": 215.7
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodPlank2": 1
+   },
+   "scale": [
+    1.0,
+    1.3517,
+    2.4347
+   ],
+   "stretch": [
+    5.0,
+    5.0
+   ],
+   "gap": [
+    -27.7,
+    10.0
+   ],
+   "depth": [
+    -14.2,
+    7.8
+   ],
+   "gap_seen": [
+    -27.5
+   ],
+   "widths": [
+    1.1,
+    1.1
+   ],
+   "families": {
+    "Wall_FB_Angle_v2": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "SM_MERGED_Column_BaseC_CastStone_3X",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     -0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -0.0,
+     0.0,
+     -1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "SM_MERGED_Column_BaseC_CastStone_3X": 899.02
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "SM_MERGED_Column_BaseC_CastStone_3X": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.75
+   ],
+   "stretch": [
+    1.05,
+    1.05
+   ],
+   "gap": [
+    -83.2,
+    218.1
+   ],
+   "depth": [
+    2.7,
+    49.3
+   ],
+   "gap_seen": [
+    -83.0
+   ],
+   "widths": [
+    201.4,
+    201.4
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "IceGathered_IceFloorGathered_1_SM",
+   "turn": [
+    [
+     -0.985,
+     0.174,
+     0.0
+    ],
+    [
+     -0.174,
+     -0.985,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "IceGathered_IceFloorGathered_1_SM": 94.78
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_01"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "IceGathered_IceFloorGathered_1_SM": 1
+   },
+   "scale": [
+    1.0,
+    7.0,
+    2.0
+   ],
+   "stretch": [
+    7.0,
+    7.0
+   ],
+   "gap": [
+    -199.8,
+    462.0
+   ],
+   "depth": [
+    -20.9,
+    23.4
+   ],
+   "gap_seen": [
+    -200.0
+   ],
+   "widths": [
+    143.9,
+    143.9
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     -0.0,
+     -0.0
+    ],
+    [
+     -0.0,
+     -1.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodBeam7": 599.49
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodBeam7": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.5613
+   ],
+   "stretch": [
+    1.5076,
+    1.5076
+   ],
+   "gap": [
+    -33.8,
+    46.3
+   ],
+   "depth": [
+    -20.4,
+    2.0
+   ],
+   "gap_seen": [
+    -34.0
+   ],
+   "widths": [
+    19.2,
+    19.2
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Stairs_2x_SB",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Stairs_2x_SB": 600.0
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_2x_SB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -56.2,
+    255.2
+   ],
+   "depth": [
+    -8.4,
+    153.1
+   ],
+   "gap_seen": [
+    -56.0
+   ],
+   "widths": [
+    249.5,
+    249.5
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Trim_Floor_MetalBand_Corner_1b_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 1,
+   "members": {
+    "Trim_Floor_MetalBand_Corner_1b_RB": 302.83
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Other_02"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Trim_Floor_MetalBand_Corner_1b_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.75
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -26.3,
+    275.2
+   ],
+   "depth": [
+    -12.3,
+    15.2
+   ],
+   "gap_seen": [
+    -26.5
+   ],
+   "widths": [
+    59.2,
+    59.2
+   ],
+   "families": {
+    "ArchwayGate_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Wood",
+   "family": "WoodFloor",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     -0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "WoodFloor_2x2": 600.0
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_12"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "WoodFloor_2x2": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.75
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -411.5,
+    188.5
+   ],
+   "depth": [
+    -41.8,
+    0.0
+   ],
+   "gap_seen": [
+    -411.5
+   ],
+   "widths": [
+    188.5,
+    188.5
+   ],
+   "families": {
+    "Wall_RB_WD_v1": 2,
+    "Wall_RB_WD_v2": 1
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_face",
+   "style": "Wood",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     -0.011,
+     -0.0
+    ],
+    [
+     0.011,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "WoodBeam7": 599.49
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Ice_02"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "WoodBeam7": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.5613
+   ],
+   "stretch": [
+    1.4,
+    1.4
+   ],
+   "gap": [
+    -51.6,
+    34.6
+   ],
+   "depth": [
+    -17.1,
+    5.3
+   ],
+   "gap_seen": [
+    -51.5
+   ],
+   "widths": [
+    0.8,
+    0.8
+   ],
+   "families": {
+    "Wall_RB_WD_v4": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "RailingC",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "RailingC_3W": 900.24,
+    "RailingC_2W": 600.21,
+    "RailingC": 300.09
+   },
+   "cases": 3,
+   "levels": 2,
+   "level_names": [
+    "Scenario_14",
+    "Scenario_18"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "RailingC_3W": 1,
+    "RailingC_2W": 1,
+    "RailingC": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -19.8,
+    59.4
+   ],
+   "depth": [
+    49.4,
+    144.1
+   ],
+   "gap_seen": [
+    -20.0,
+    -7.5
+   ],
+   "widths": [
+    6.7,
+    12.4
+   ],
+   "families": {
+    "Wall_RB": 3
+   },
+   "why": "3 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 0,
+   "members": {
+    "Floor_Squarebrick_1x3": 912.03,
+    "Floor_Squarebrick_2x2": 600.0
+   },
+   "cases": 3,
+   "levels": 2,
+   "level_names": [
+    "Scenario_16",
+    "Scenario_Ice_03"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "Floor_Squarebrick_1x3": 1,
+    "Floor_Squarebrick_2x2": 1,
+    "Floor_Squarebrick_3x3": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    0.65
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -118.9,
+    335.3
+   ],
+   "depth": [
+    56.7,
+    75.8
+   ],
+   "gap_seen": [
+    -167.0,
+    -71.0
+   ],
+   "widths": [
+    9.2,
+    70.8
+   ],
+   "families": {
+    "Wall_RB_MT_v1": 2,
+    "Wall_RB": 1
+   },
+   "why": "3 cases on 2 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 2,
+   "run_local": 1,
+   "members": {
+    "Column_Sec_1_4_RB": 317.97
+   },
+   "cases": 3,
+   "levels": 1,
+   "level_names": [
+    "Scenario_16"
+   ],
+   "kit_cases": 3,
+   "mesh_cases": {
+    "Column_Sec_1_4_RB": 3
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -57.9,
+    257.9
+   ],
+   "depth": [
+    -1050.9,
+    150.0
+   ],
+   "gap_seen": [
+    -58.0
+   ],
+   "widths": [
+    50.0,
+    50.0
+   ],
+   "families": {
+    "Wall_RB": 3
+   },
+   "why": "3 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutF": 1199.99
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_11"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "SM_MERGED_ColumnTrim_CastStone_1200W_CutF": 1
+   },
+   "scale": [
+    1.0,
+    1.0018,
+    1.0018
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -11.1,
+    59.3
+   ],
+   "depth": [
+    3.7,
+    43.7
+   ],
+   "gap_seen": [
+    -11.0
+   ],
+   "widths": [
+    10.6,
+    10.6
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Wall_Sec_4_2_V2_RB": 600.1
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_14"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Wall_Sec_4_2_V2_RB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -51.4,
+    50.0
+   ],
+   "depth": [
+    200.0,
+    1400.0
+   ],
+   "gap_seen": [
+    -51.5
+   ],
+   "widths": [
+    50.0,
+    50.0
+   ],
+   "families": {
+    "Wall_RB_Trim_v1": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Stairs_3x_SB",
+   "turn": [
+    [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    [
+     -0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Stairs_3x_SB": 900.0
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_16"
+   ],
+   "kit_cases": 0,
+   "mesh_cases": {
+    "Stairs_3x_SB": 1
+   },
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "stretch": [
+    1.0,
+    1.0
+   ],
+   "gap": [
+    -18.0,
+    293.3
+   ],
+   "depth": [
+    92.5,
+    254.1
+   ],
+   "gap_seen": [
+    -18.0
+   ],
+   "widths": [
+    9.2,
+    9.2
+   ],
+   "families": {
+    "Wall_RB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Cren_Shelf",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "turn_cases": 1,
+   "run_local": 0,
+   "members": {
+    "Cren_Shelf_1x1": 305.26
+   },
+   "cases": 1,
+   "levels": 1,
+   "level_names": [
+    "Scenario_Sand_01"
+   ],
+   "kit_cases": 1,
+   "mesh_cases": {
+    "Cren_Shelf_1x1": 1
+   },
+   "scale": [
+    1.0,
+    1.25,
+    1.09
+   ],
+   "stretch": [
+    1.25,
+    1.25
+   ],
+   "gap": [
+    -364.2,
+    12.2
+   ],
+   "depth": [
+    -29.3,
+    29.3
+   ],
+   "gap_seen": [
+    -364.0
+   ],
+   "widths": [
+    26.0,
+    26.0
+   ],
+   "families": {
+    "Wall_FB": 1
+   },
+   "why": "1 cases on 1 levels (a cover needs 10 on 3)"
+  }
+ ],
+ "open_pairs": [],
+ "shipped_widths": {
+  "floor_seam": [
+   [
+    0.7,
+    0
+   ],
+   [
+    0.7,
+    1
+   ],
+   [
+    0.7,
+    1
+   ],
+   [
+    0.7,
+    1
+   ],
+   [
+    0.8,
+    1
+   ],
+   [
+    0.8,
+    1
+   ],
+   [
+    0.9,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1342.7,
+    0
+   ]
+  ],
+  "skirting": [
+   [
+    1.3,
+    0
+   ],
+   [
+    1.3,
+    0
+   ],
+   [
+    1.3,
+    0
+   ],
+   [
+    1.3,
+    0
+   ],
+   [
+    1.3,
+    0
+   ],
+   [
+    1.5,
+    0
+   ],
+   [
+    1.5,
+    0
+   ],
+   [
+    1.5,
+    0
+   ],
+   [
+    6.4,
+    1
+   ],
+   [
+    6.7,
+    0
+   ],
+   [
+    7.0,
+    0
+   ],
+   [
+    7.2,
+    0
+   ],
+   [
+    7.4,
+    1
+   ],
+   [
+    8.1,
+    0
+   ],
+   [
+    8.1,
+    0
+   ],
+   [
+    8.1,
+    1
+   ],
+   [
+    8.1,
+    1
+   ],
+   [
+    8.1,
+    1
+   ],
+   [
+    8.1,
+    1
+   ],
+   [
+    11.5,
+    1
+   ],
+   [
+    11.5,
+    1
+   ],
+   [
+    13.2,
+    0
+   ],
+   [
+    15.2,
+    0
+   ],
+   [
+    15.9,
+    1
+   ],
+   [
+    15.9,
+    1
+   ],
+   [
+    16.5,
+    0
+   ],
+   [
+    16.5,
+    1
+   ],
+   [
+    16.5,
+    1
+   ],
+   [
+    16.5,
+    1
+   ],
+   [
+    18.2,
+    0
+   ],
+   [
+    18.2,
+    0
+   ],
+   [
+    19.3,
+    1
+   ],
+   [
+    19.3,
+    1
+   ],
+   [
+    19.3,
+    1
+   ],
+   [
+    19.3,
+    1
+   ],
+   [
+    26.5,
+    1
+   ],
+   [
+    37.5,
+    0
+   ]
+  ],
+  "wall_end": [
+   [
+    0.5,
+    1
+   ],
+   [
+    0.8,
+    0
+   ],
+   [
+    0.8,
+    0
+   ],
+   [
+    0.9,
+    0
+   ],
+   [
+    0.9,
+    1
+   ],
+   [
+    0.9,
+    1
+   ],
+   [
+    0.9,
+    1
+   ],
+   [
+    1.0,
+    0
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.0,
+    1
+   ],
+   [
+    1.1,
+    0
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.2,
+    1
+   ],
+   [
+    1.2,
+    1
+   ],
+   [
+    1.4,
+    1
+   ],
+   [
+    1.8,
+    1
+   ],
+   [
+    1.9,
+    1
+   ],
+   [
+    1.9,
+    1
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    1
+   ],
+   [
+    2.1,
+    0
+   ],
+   [
+    2.1,
+    1
+   ],
+   [
+    2.1,
+    1
+   ],
+   [
+    2.2,
+    0
+   ],
+   [
+    2.2,
+    1
+   ],
+   [
+    2.2,
+    1
+   ],
+   [
+    2.2,
+    1
+   ],
+   [
+    2.2,
+    1
+   ],
+   [
+    2.3,
+    0
+   ],
+   [
+    2.3,
+    1
+   ],
+   [
+    2.3,
+    1
+   ],
+   [
+    2.3,
+    1
+   ],
+   [
+    2.4,
+    1
+   ],
+   [
+    2.4,
+    1
+   ],
+   [
+    2.5,
+    0
+   ],
+   [
+    2.7,
+    1
+   ],
+   [
+    2.8,
+    0
+   ],
+   [
+    2.8,
+    1
+   ],
+   [
+    2.9,
+    1
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    3.1,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.2,
+    1
+   ],
+   [
+    3.3,
+    1
+   ],
+   [
+    3.3,
+    1
+   ],
+   [
+    3.3,
+    1
+   ],
+   [
+    3.3,
+    1
+   ],
+   [
+    3.4,
+    1
+   ],
+   [
+    3.4,
+    1
+   ],
+   [
+    3.7,
+    0
+   ],
+   [
+    3.7,
+    1
+   ],
+   [
+    3.8,
+    0
+   ],
+   [
+    3.8,
+    1
+   ],
+   [
+    3.9,
+    0
+   ],
+   [
+    3.9,
+    1
+   ],
+   [
+    4.2,
+    1
+   ],
+   [
+    4.3,
+    1
+   ],
+   [
+    4.3,
+    1
+   ],
+   [
+    4.4,
+    1
+   ],
+   [
+    4.4,
+    1
+   ],
+   [
+    4.5,
+    1
+   ],
+   [
+    4.9,
+    1
+   ],
+   [
+    4.9,
+    1
+   ],
+   [
+    4.9,
+    1
+   ],
+   [
+    5.0,
+    1
+   ],
+   [
+    5.0,
+    1
+   ],
+   [
+    5.3,
+    1
+   ],
+   [
+    5.3,
+    1
+   ],
+   [
+    5.5,
+    0
+   ],
+   [
+    5.5,
+    1
+   ],
+   [
+    5.6,
+    0
+   ],
+   [
+    5.7,
+    1
+   ],
+   [
+    5.8,
+    1
+   ],
+   [
+    5.9,
+    0
+   ],
+   [
+    6.3,
+    1
+   ],
+   [
+    6.8,
+    1
+   ],
+   [
+    7.0,
+    1
+   ],
+   [
+    7.2,
+    1
+   ],
+   [
+    8.5,
+    1
+   ],
+   [
+    8.5,
+    1
+   ],
+   [
+    9.1,
+    1
+   ],
+   [
+    9.9,
+    1
+   ],
+   [
+    10.0,
+    1
+   ],
+   [
+    10.0,
+    1
+   ],
+   [
+    10.0,
+    1
+   ],
+   [
+    10.0,
+    1
+   ],
+   [
+    10.0,
+    1
+   ],
+   [
+    10.0,
+    1
+   ],
+   [
+    10.3,
+    0
+   ],
+   [
+    10.9,
+    1
+   ],
+   [
+    10.9,
+    1
+   ],
+   [
+    11.5,
+    0
+   ],
+   [
+    11.9,
+    1
+   ],
+   [
+    12.0,
+    1
+   ],
+   [
+    12.2,
+    1
+   ],
+   [
+    12.3,
+    0
+   ],
+   [
+    12.6,
+    1
+   ],
+   [
+    13.1,
+    1
+   ],
+   [
+    13.1,
+    1
+   ],
+   [
+    13.1,
+    1
+   ],
+   [
+    13.1,
+    1
+   ],
+   [
+    13.2,
+    1
+   ],
+   [
+    13.2,
+    1
+   ],
+   [
+    13.2,
+    1
+   ],
+   [
+    13.2,
+    1
+   ],
+   [
+    13.3,
+    1
+   ],
+   [
+    13.3,
+    1
+   ],
+   [
+    16.8,
+    1
+   ],
+   [
+    17.9,
+    1
+   ],
+   [
+    19.2,
+    1
+   ],
+   [
+    19.7,
+    1
+   ],
+   [
+    19.9,
+    1
+   ],
+   [
+    22.0,
+    1
+   ],
+   [
+    22.6,
+    1
+   ],
+   [
+    27.5,
+    1
+   ],
+   [
+    27.5,
+    1
+   ],
+   [
+    33.9,
+    1
+   ],
+   [
+    33.9,
+    1
+   ],
+   [
+    34.5,
+    1
+   ],
+   [
+    34.5,
+    1
+   ],
+   [
+    35.1,
+    0
+   ],
+   [
+    35.1,
+    0
+   ],
+   [
+    35.1,
+    1
+   ],
+   [
+    35.1,
+    1
+   ],
+   [
+    35.4,
+    1
+   ],
+   [
+    35.4,
+    1
+   ],
+   [
+    36.9,
+    1
+   ],
+   [
+    38.1,
+    1
+   ],
+   [
+    38.3,
+    1
+   ],
+   [
+    39.7,
+    1
+   ],
+   [
+    40.9,
+    1
+   ],
+   [
+    41.0,
+    1
+   ],
+   [
+    41.0,
+    1
+   ],
+   [
+    41.9,
+    1
+   ],
+   [
+    42.0,
+    1
+   ],
+   [
+    42.1,
+    1
+   ],
+   [
+    42.1,
+    1
+   ],
+   [
+    42.2,
+    1
+   ],
+   [
+    42.4,
+    1
+   ],
+   [
+    42.8,
+    1
+   ],
+   [
+    43.1,
+    1
+   ],
+   [
+    43.1,
+    1
+   ],
+   [
+    43.2,
+    1
+   ],
+   [
+    43.5,
+    1
+   ],
+   [
+    43.5,
+    1
+   ],
+   [
+    44.0,
+    1
+   ],
+   [
+    44.4,
+    1
+   ],
+   [
+    44.5,
+    1
+   ],
+   [
+    44.9,
+    1
+   ],
+   [
+    44.9,
+    1
+   ],
+   [
+    45.0,
+    1
+   ],
+   [
+    45.0,
+    1
+   ],
+   [
+    45.3,
+    1
+   ],
+   [
+    45.3,
+    1
+   ],
+   [
+    46.6,
+    1
+   ],
+   [
+    49.9,
+    1
+   ],
+   [
+    51.0,
+    1
+   ],
+   [
+    54.4,
+    1
+   ],
+   [
+    55.6,
+    0
+   ],
+   [
+    58.3,
+    1
+   ],
+   [
+    58.3,
+    1
+   ],
+   [
+    60.6,
+    1
+   ],
+   [
+    62.1,
+    1
+   ],
+   [
+    62.6,
+    1
+   ],
+   [
+    63.7,
+    0
+   ],
+   [
+    63.7,
+    1
+   ],
+   [
+    64.1,
+    0
+   ],
+   [
+    69.9,
+    1
+   ],
+   [
+    70.0,
+    1
+   ],
+   [
+    73.6,
+    1
+   ],
+   [
+    73.9,
+    0
+   ],
+   [
+    73.9,
+    0
+   ],
+   [
+    75.3,
+    1
+   ],
+   [
+    75.9,
+    1
+   ],
+   [
+    76.1,
+    1
+   ],
+   [
+    77.9,
+    0
+   ],
+   [
+    79.9,
+    1
+   ],
+   [
+    80.0,
+    1
+   ],
+   [
+    80.0,
+    1
+   ],
+   [
+    81.9,
+    0
+   ],
+   [
+    84.4,
+    1
+   ],
+   [
+    89.9,
+    1
+   ],
+   [
+    90.2,
+    1
+   ],
+   [
+    90.3,
+    1
+   ],
+   [
+    90.3,
+    1
+   ],
+   [
+    91.1,
+    0
+   ],
+   [
+    91.7,
+    1
+   ],
+   [
+    91.7,
+    1
+   ],
+   [
+    92.4,
+    1
+   ],
+   [
+    93.1,
+    1
+   ],
+   [
+    93.2,
+    1
+   ],
+   [
+    94.6,
+    0
+   ],
+   [
+    94.7,
+    1
+   ],
+   [
+    95.7,
+    0
+   ],
+   [
+    100.0,
+    1
+   ],
+   [
+    100.0,
+    1
+   ],
+   [
+    102.4,
+    0
+   ],
+   [
+    119.9,
+    1
+   ],
+   [
+    120.0,
+    1
+   ],
+   [
+    123.2,
+    0
+   ],
+   [
+    124.5,
+    1
+   ],
+   [
+    125.1,
+    1
+   ],
+   [
+    125.1,
+    1
+   ],
+   [
+    140.5,
+    1
+   ],
+   [
+    140.9,
+    1
+   ],
+   [
+    141.0,
+    1
+   ],
+   [
+    141.4,
+    1
+   ],
+   [
+    141.9,
+    1
+   ],
+   [
+    141.9,
+    1
+   ],
+   [
+    141.9,
+    1
+   ],
+   [
+    141.9,
+    1
+   ],
+   [
+    142.0,
+    1
+   ],
+   [
+    142.1,
+    1
+   ],
+   [
+    142.1,
+    1
+   ],
+   [
+    142.2,
+    1
+   ],
+   [
+    142.2,
+    1
+   ],
+   [
+    142.2,
+    1
+   ],
+   [
+    142.2,
+    1
+   ],
+   [
+    142.2,
+    1
+   ],
+   [
+    142.2,
+    1
+   ],
+   [
+    142.3,
+    0
+   ],
+   [
+    142.3,
+    1
+   ],
+   [
+    142.3,
+    1
+   ],
+   [
+    142.7,
+    1
+   ],
+   [
+    143.1,
+    0
+   ],
+   [
+    143.1,
+    1
+   ],
+   [
+    143.1,
+    1
+   ],
+   [
+    143.1,
+    1
+   ],
+   [
+    143.2,
+    1
+   ],
+   [
+    143.2,
+    1
+   ],
+   [
+    143.3,
+    1
+   ],
+   [
+    143.4,
+    1
+   ],
+   [
+    143.5,
+    1
+   ],
+   [
+    143.5,
+    1
+   ],
+   [
+    143.5,
+    1
+   ],
+   [
+    143.6,
+    0
+   ],
+   [
+    143.8,
+    1
+   ],
+   [
+    143.8,
+    1
+   ],
+   [
+    143.9,
+    0
+   ],
+   [
+    144.1,
+    1
+   ],
+   [
+    144.1,
+    1
+   ],
+   [
+    144.2,
+    0
+   ],
+   [
+    144.2,
+    1
+   ],
+   [
+    144.3,
+    1
+   ],
+   [
+    144.3,
+    1
+   ],
+   [
+    144.5,
+    1
+   ],
+   [
+    144.6,
+    1
+   ],
+   [
+    144.7,
+    1
+   ],
+   [
+    144.9,
+    0
+   ],
+   [
+    144.9,
+    1
+   ],
+   [
+    145.2,
+    1
+   ],
+   [
+    145.3,
+    1
+   ],
+   [
+    146.8,
+    1
+   ],
+   [
+    147.6,
+    0
+   ],
+   [
+    147.7,
+    0
+   ],
+   [
+    147.8,
+    1
+   ],
+   [
+    148.7,
+    1
+   ],
+   [
+    149.2,
+    1
+   ],
+   [
+    149.4,
+    1
+   ],
+   [
+    149.5,
+    1
+   ],
+   [
+    149.9,
+    0
+   ],
+   [
+    149.9,
+    0
+   ],
+   [
+    149.9,
+    0
+   ],
+   [
+    149.9,
+    0
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    149.9,
+    1
+   ],
+   [
+    150.0,
+    0
+   ],
+   [
+    150.0,
+    0
+   ],
+   [
+    150.0,
+    0
+   ],
+   [
+    150.0,
+    0
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.0,
+    1
+   ],
+   [
+    150.1,
+    1
+   ],
+   [
+    150.7,
+    1
+   ],
+   [
+    154.5,
+    0
+   ],
+   [
+    154.9,
+    1
+   ],
+   [
+    155.2,
+    0
+   ],
+   [
+    156.3,
+    1
+   ],
+   [
+    158.7,
+    1
+   ],
+   [
+    162.2,
+    0
+   ],
+   [
+    168.1,
+    1
+   ],
+   [
+    169.9,
+    0
+   ],
+   [
+    169.9,
+    0
+   ],
+   [
+    169.9,
+    0
+   ],
+   [
+    174.7,
+    0
+   ],
+   [
+    174.9,
+    0
+   ],
+   [
+    176.2,
+    0
+   ],
+   [
+    178.0,
+    1
+   ],
+   [
+    178.0,
+    1
+   ],
+   [
+    179.9,
+    1
+   ],
+   [
+    179.9,
+    1
+   ],
+   [
+    179.9,
+    1
+   ],
+   [
+    179.9,
+    1
+   ],
+   [
+    180.2,
+    0
+   ],
+   [
+    181.0,
+    0
+   ],
+   [
+    190.3,
+    0
+   ],
+   [
+    192.3,
+    1
+   ],
+   [
+    193.8,
+    0
+   ],
+   [
+    200.0,
+    1
+   ],
+   [
+    200.0,
+    1
+   ],
+   [
+    212.9,
+    1
+   ],
+   [
+    213.4,
+    1
+   ],
+   [
+    239.1,
+    0
+   ],
+   [
+    241.2,
+    0
+   ],
+   [
+    323.4,
+    0
+   ],
+   [
+    401.0,
+    0
+   ],
+   [
+    462.7,
+    0
+   ],
+   [
+    465.9,
+    0
+   ]
+  ],
+  "wall_face": [
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    0
+   ],
+   [
+    0.5,
+    1
+   ],
+   [
+    0.5,
+    1
+   ],
+   [
+    0.5,
+    1
+   ],
+   [
+    0.6,
+    0
+   ],
+   [
+    0.7,
+    0
+   ],
+   [
+    0.8,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.1,
+    1
+   ],
+   [
+    1.3,
+    0
+   ],
+   [
+    1.3,
+    1
+   ],
+   [
+    1.3,
+    1
+   ],
+   [
+    1.4,
+    0
+   ],
+   [
+    1.4,
+    0
+   ],
+   [
+    1.4,
+    1
+   ],
+   [
+    1.4,
+    1
+   ],
+   [
+    1.6,
+    1
+   ],
+   [
+    1.6,
+    1
+   ],
+   [
+    1.8,
+    1
+   ],
+   [
+    1.9,
+    0
+   ],
+   [
+    1.9,
+    0
+   ],
+   [
+    1.9,
+    0
+   ],
+   [
+    1.9,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.0,
+    0
+   ],
+   [
+    2.8,
+    0
+   ],
+   [
+    3.4,
+    0
+   ],
+   [
+    3.8,
+    1
+   ],
+   [
+    4.3,
+    1
+   ],
+   [
+    4.4,
+    0
+   ],
+   [
+    4.4,
+    0
+   ],
+   [
+    4.4,
+    1
+   ],
+   [
+    6.2,
+    1
+   ],
+   [
+    6.2,
+    1
+   ],
+   [
+    7.0,
+    0
+   ],
+   [
+    8.2,
+    0
+   ],
+   [
+    8.3,
+    0
+   ],
+   [
+    9.6,
+    1
+   ],
+   [
+    10.4,
+    0
+   ],
+   [
+    10.4,
+    1
+   ],
+   [
+    11.1,
+    1
+   ],
+   [
+    13.2,
+    1
+   ],
+   [
+    16.2,
+    1
+   ],
+   [
+    19.2,
+    1
+   ],
+   [
+    22.3,
+    1
+   ],
+   [
+    26.6,
+    1
+   ],
+   [
+    26.6,
+    1
+   ],
+   [
+    29.3,
+    1
+   ],
+   [
+    29.3,
+    1
+   ],
+   [
+    29.3,
+    1
+   ],
+   [
+    30.9,
+    1
+   ],
+   [
+    31.3,
+    1
+   ],
+   [
+    32.9,
+    0
+   ],
+   [
+    32.9,
+    1
+   ],
+   [
+    34.0,
+    1
+   ],
+   [
+    34.0,
+    1
+   ],
+   [
+    34.7,
+    1
+   ],
+   [
+    41.1,
+    1
+   ],
+   [
+    41.1,
+    1
+   ],
+   [
+    41.5,
+    1
+   ],
+   [
+    44.7,
+    1
+   ],
+   [
+    44.8,
+    1
+   ],
+   [
+    44.8,
+    1
+   ],
+   [
+    44.9,
+    1
+   ],
+   [
+    46.1,
+    1
+   ],
+   [
+    46.1,
+    1
+   ],
+   [
+    46.3,
+    1
+   ],
+   [
+    49.4,
+    1
+   ],
+   [
+    49.4,
+    1
+   ],
+   [
+    50.2,
+    0
+   ],
+   [
+    50.2,
+    0
+   ],
+   [
+    50.2,
+    1
+   ],
+   [
+    50.4,
+    1
+   ],
+   [
+    50.4,
+    1
+   ],
+   [
+    50.4,
+    1
+   ],
+   [
+    50.4,
+    1
+   ],
+   [
+    51.1,
+    1
+   ],
+   [
+    51.1,
+    1
+   ],
+   [
+    51.2,
+    1
+   ],
+   [
+    51.3,
+    0
+   ],
+   [
+    51.3,
+    1
+   ],
+   [
+    51.3,
+    1
+   ],
+   [
+    51.3,
+    1
+   ],
+   [
+    51.3,
+    1
+   ],
+   [
+    51.3,
+    1
+   ],
+   [
+    51.4,
+    1
+   ],
+   [
+    51.5,
+    1
+   ],
+   [
+    51.5,
+    1
+   ],
+   [
+    51.5,
+    1
+   ],
+   [
+    51.6,
+    1
+   ],
+   [
+    51.6,
+    1
+   ],
+   [
+    51.7,
+    0
+   ],
+   [
+    51.9,
+    1
+   ],
+   [
+    55.1,
+    1
+   ],
+   [
+    59.2,
+    1
+   ],
+   [
+    59.2,
+    1
+   ],
+   [
+    61.1,
+    1
+   ],
+   [
+    61.1,
+    1
+   ],
+   [
+    61.1,
+    1
+   ],
+   [
+    61.1,
+    1
+   ],
+   [
+    61.5,
+    1
+   ],
+   [
+    68.1,
+    1
+   ],
+   [
+    68.1,
+    1
+   ],
+   [
+    83.7,
+    0
+   ],
+   [
+    93.5,
+    1
+   ],
+   [
+    96.1,
+    1
+   ],
+   [
+    96.1,
+    1
+   ],
+   [
+    96.1,
+    1
+   ],
+   [
+    96.1,
+    1
+   ],
+   [
+    97.3,
+    1
+   ],
+   [
+    97.3,
+    1
+   ],
+   [
+    99.5,
+    1
+   ],
+   [
+    99.5,
+    1
+   ],
+   [
+    101.3,
+    1
+   ],
+   [
+    101.4,
+    0
+   ],
+   [
+    141.9,
+    0
+   ],
+   [
+    142.3,
+    1
+   ],
+   [
+    142.9,
+    1
+   ],
+   [
+    143.0,
+    0
+   ],
+   [
+    143.9,
+    1
+   ],
+   [
+    144.0,
+    0
+   ],
+   [
+    144.2,
+    1
+   ],
+   [
+    144.3,
+    0
+   ],
+   [
+    144.6,
+    0
+   ],
+   [
+    144.6,
+    0
+   ],
+   [
+    144.7,
+    1
+   ],
+   [
+    144.7,
+    1
+   ],
+   [
+    145.6,
+    1
+   ],
+   [
+    147.1,
+    1
+   ],
+   [
+    148.8,
+    1
+   ],
+   [
+    148.8,
+    1
+   ],
+   [
+    149.2,
+    1
+   ],
+   [
+    149.2,
+    1
+   ],
+   [
+    149.2,
+    1
+   ],
+   [
+    149.3,
+    1
+   ],
+   [
+    149.4,
+    0
+   ],
+   [
+    162.0,
+    1
+   ],
+   [
+    162.4,
+    1
+   ],
+   [
+    188.5,
+    1
+   ],
+   [
+    188.5,
+    1
+   ],
+   [
+    188.5,
+    1
+   ],
+   [
+    193.5,
+    1
+   ],
+   [
+    193.6,
+    1
+   ],
+   [
+    196.1,
+    1
+   ],
+   [
+    201.2,
+    1
+   ],
+   [
+    201.4,
+    0
+   ],
+   [
+    201.4,
+    1
+   ],
+   [
+    202.9,
+    1
+   ],
+   [
+    206.7,
+    0
+   ],
+   [
+    246.1,
+    0
+   ],
+   [
+    249.5,
+    1
+   ],
+   [
+    251.3,
+    1
+   ],
+   [
+    251.4,
+    1
+   ],
+   [
+    251.5,
+    1
+   ],
+   [
+    251.5,
+    1
+   ],
+   [
+    271.5,
+    0
+   ],
+   [
+    278.7,
+    1
+   ],
+   [
+    280.5,
+    1
+   ],
+   [
+    281.3,
+    1
+   ],
+   [
+    284.4,
+    1
+   ],
+   [
+    292.6,
+    0
+   ],
+   [
+    292.9,
+    0
+   ],
+   [
+    293.5,
+    0
+   ],
+   [
+    293.5,
+    1
+   ],
+   [
+    293.5,
+    1
+   ],
+   [
+    294.7,
+    1
+   ],
+   [
+    294.7,
+    1
+   ],
+   [
+    294.7,
+    1
+   ],
+   [
+    294.7,
+    1
+   ],
+   [
+    294.8,
+    1
+   ],
+   [
+    295.1,
+    1
+   ],
+   [
+    295.1,
+    1
+   ],
+   [
+    295.1,
+    1
+   ],
+   [
+    295.1,
+    1
+   ],
+   [
+    296.8,
+    0
+   ],
+   [
+    296.8,
+    0
+   ],
+   [
+    301.4,
+    1
+   ],
+   [
+    301.5,
+    1
+   ],
+   [
+    324.2,
+    0
+   ],
+   [
+    385.4,
+    0
+   ],
+   [
+    396.3,
+    1
+   ],
+   [
+    811.9,
+    0
+   ],
+   [
+    1405.9,
+    0
+   ],
+   [
+    2007.1,
+    0
+   ],
+   [
+    2283.0,
+    0
+   ],
+   [
+    2405.8,
+    0
+   ],
+   [
+    3005.0,
+    0
+   ],
+   [
+    6372.7,
+    0
+   ]
+  ],
+  "wall_top": [
+   [
+    6.7,
+    1
+   ],
+   [
+    9.2,
+    1
+   ],
+   [
+    9.2,
+    1
+   ],
+   [
+    9.8,
+    1
+   ],
+   [
+    10.6,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.4,
+    1
+   ],
+   [
+    12.5,
+    1
+   ],
+   [
+    20.0,
+    1
+   ],
+   [
+    20.0,
+    1
+   ],
+   [
+    22.9,
+    0
+   ],
+   [
+    26.0,
+    1
+   ],
+   [
+    40.4,
+    1
+   ],
+   [
+    50.0,
+    1
+   ],
+   [
+    50.0,
+    1
+   ],
+   [
+    50.0,
+    1
+   ],
+   [
+    50.0,
+    1
+   ],
+   [
+    70.0,
+    1
+   ],
+   [
+    70.8,
+    1
+   ],
+   [
+    112.4,
+    1
+   ],
+   [
+    112.5,
+    1
+   ],
+   [
+    1422.6,
+    0
+   ],
+   [
+    1914.6,
+    0
+   ],
+   [
+    4203.2,
+    0
+   ],
+   [
+    4203.2,
+    0
+   ],
+   [
+    4203.2,
+    0
+   ]
+  ]
+ },
+ "below": [
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 9,
+   "levels": 6
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 8,
+   "levels": 6
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 7,
+   "levels": 3
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.71,
+     0.71,
+     0.0
+    ],
+    [
+     -0.71,
+     -0.71,
+     0.0
+    ]
+   ],
+   "cases": 7,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 6,
+   "levels": 3
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 6,
+   "levels": 4
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 6,
+   "levels": 4
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_FS",
+   "turn": [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 6,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 5,
+   "levels": 2
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 5,
+   "levels": 3
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 5,
+   "levels": 2
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 4,
+   "levels": 4
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 4,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 4,
+   "levels": 3
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 4,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 3
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 2
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 3
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 3
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 3
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 3,
+   "levels": 2
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutW",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.71,
+     -0.71,
+     0.0
+    ],
+    [
+     -0.71,
+     -0.71,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "ColumnBlock",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_FS",
+   "turn": [
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     0.04,
+     0.0
+    ],
+    [
+     0.04,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Archway_Wall_Base_SM",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Archway_Wall_Base_SM",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Floor",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 2,
+   "levels": 2
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Woodbeam1",
+   "turn": [
+    [
+     0.0,
+     0.01,
+     -1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     -0.01
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Woodbeam1",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "WallSec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodPlank1",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Column_Sec_Half_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Railing_TrimA_2",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Railing_TrimA_1",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Column_Sec_Half_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_FS",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock_TopTile_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTileA_CastStone_Top",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Wood",
+   "family": "WoodPlank2",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodFloor",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "RailingStairsB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Wood",
+   "family": "WoodFloor",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Woodbeam2",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Wood",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "RailingC",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone_CutW",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutW",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "SupportBlock",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "SupportBlock",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Stairs_3x_SB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "ColumnBlock_BottomTile_1_FB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "RailingC",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Archway_Pointed_LF_Support_SM",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.71,
+     -0.71,
+     0.0
+    ],
+    [
+     0.71,
+     -0.71,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Archway_Pointed_LF_Support_SM",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -0.71,
+     0.71,
+     0.0
+    ],
+    [
+     0.71,
+     0.71,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "",
+   "family": "ColumnBlock_BottomTile_1_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Stone",
+   "family": "Metal_Trim_Diamond_2x",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodPlank2",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Woodbeam1",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Dry",
+   "family": "Column_Sec_RB",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Woodbeam2",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Wood",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     1.0,
+     -0.03,
+     0.0
+    ],
+    [
+     -0.03,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     -1.0,
+     -0.04,
+     0.0
+    ],
+    [
+     0.04,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Wood",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     -1.0,
+     0.04,
+     0.0
+    ],
+    [
+     -0.04,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "floor_seam",
+   "style": "Stone",
+   "family": "WoodBeam7",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "Stairs_2x_SB",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "WallSec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnBlock",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Dry",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Stone",
+   "family": "SM_MERGED_ColumnTrim_CastStone_CutF",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Wall_Sec_V2_RB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Sand",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_top",
+   "style": "Stone",
+   "family": "Cren_Shelf",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Stone",
+   "family": "Floor",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_face",
+   "style": "Sand",
+   "family": "Floor_Squarebrick",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "skirting",
+   "style": "Stone",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "SupportBlock_2",
+   "turn": [
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "ColumnTrim_CastStone",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Wall_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  },
+  {
+   "type": "wall_end",
+   "style": "Sand",
+   "family": "Column_Sec_FB",
+   "turn": [
+    [
+     0.0,
+     0.0,
+     1.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cases": 1,
+   "levels": 1
+  }
+ ]
+}

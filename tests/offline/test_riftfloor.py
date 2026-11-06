@@ -47,25 +47,31 @@ check('a rift too high is not refused', riftfloor.describe('Unstable Rift 7', ro
       and all(r[4] for r in rows), rows)
 text = riftfloor.high_notes('Unstable Rift 7', rows)
 check('a rift too high is one warning with its height and the shipped highest',
-      len(text) == 1 and text[0].startswith('Unstable Rift 7 stands %.0f uu above the floor'
+      len(text) == 1 and text[0].startswith('Unstable Rift 7 stands %.0f units above the floor'
                                             % (riftfloor.DROP_LIMIT + 50.0))
-      and '(%.0f uu)' % riftfloor.SHIPPED_DROP_MAX[0] in text[0] and plain(text), text)
+      and '(%.0f units)' % riftfloor.SHIPPED_DROP_MAX[0] in text[0] and plain(text), text)
 check('a rift at the shipped offset has no warning', riftfloor.high_notes(
     'Unstable Rift 7', riftfloor.check_rift([[low]], (0.0, 0.0, riftfloor.SHIPPED_OFFSET)))
       == [])
 rows = riftfloor.check_rift([[low]], (900.0, 0.0, 100.0))
 text = riftfloor.describe('Unstable Rift 8', rows)
-check('a rift over no floor is refused', text == ['Unstable Rift 8 has no walkable floor '
-                                                  'under it'], text)
+check('a rift over no floor is refused', text == ['Unstable Rift 8 has no floor enemies can '
+                                                  'walk under it. Move it over floor, or '
+                                                  'put a floor piece under it.'], text)
 rows = riftfloor.check_rift([[low], [square(0.0, cx=900.0)]], (0.0, 0.0, 90.0))
 text = riftfloor.describe('Unstable Rift 8', rows)
 check('a rift over floor of one agent graph only names the enemies without it',
-      text == ['Unstable Rift 8 has no walkable floor under it for large enemies'], text)
+      text == ['Unstable Rift 8 has no floor under it that large enemies can walk on. Move '
+               'it over wider open floor, or put a floor piece under it.'], text)
 sunk_at = (0.0, 0.0, -40.0)
 rows = riftfloor.check_rift([[low]], sunk_at)
 text = riftfloor.describe('Unstable Rift 9', rows, riftfloor.sunk_depth([low], sunk_at))
 check('a rift under the floor is told to go up', text == [
-    'Unstable Rift 9 is 40 uu under the walkable floor; raise it above the floor'], text)
+    'Unstable Rift 9 is 40 units under the floor enemies walk on. Raise it above the '
+    'floor.'], text)
+text = riftfloor.describe('Unstable Rift 9', rows, riftfloor.sunk_depth([low], sunk_at), sunk_at)
+check('a refusal given the position names it', text and text[0].startswith(
+    'Unstable Rift 9 at (0, 0, -40) is 40 units'), text)
 
 # 3. the solid segment between rift and floor
 tri = np.array([[[-100.0, -100.0, 50.0], [100.0, -100.0, 50.0], [0.0, 100.0, 50.0]]])
@@ -151,7 +157,9 @@ if os.path.isdir(built) and os.path.exists(rec_path):
     open(os.path.join(away, *uexp.split('/')), 'wb').write(bytes(gone))
     bad = riftfloor.build_problems(away, record['plan'], record['level'])
     check('build check: a rift over no floor is refused, by its label',
-          bad == ['Unstable Rift 3 has no walkable floor under it'], bad)
+          len(bad) == 1 and bad[0].startswith('Unstable Rift 3 at (-90000, -90000, ')
+          and bad[0].endswith('has no floor enemies can walk under it. Move it over floor, '
+                              'or put a floor piece under it.'), bad)
 
     os.environ['OMD3_BUCKET'] = os.path.join(scratch, 'bucket')
     from riftlord.missions import bucket
@@ -193,7 +201,8 @@ if os.path.isdir(built) and os.path.exists(rec_path):
     finally:
         emit.write = real_write
     check('mission build fails on a rift over no floor, naming it',
-          'could not be built: Unstable Rift 3 has no walkable floor under it' in why, why)
+          'could not be built: Unstable Rift 3 at (-90000, -90000, ' in why
+          and 'has no floor enemies can walk under it' in why, why)
     shutil.rmtree(scratch, ignore_errors=True)
 
 # 7. the gate rows: a high rift is a note row that passes

@@ -79,7 +79,8 @@ bad = missionevents.rift_problems(saved, late)
 check('spawns through a closed rift are refused', len(bad) == 2, bad)
 none = dict(saved, events=[])
 check('a rift that never opens is refused',
-      missionevents.rift_problems(none) == ['unstable rift 3 never opens'],
+      missionevents.rift_problems(none) == ['Unstable Rift 3 never opens: give it an open '
+                                            'event in the Mission Events list'],
       missionevents.rift_problems(none))
 same = dict(saved, events=[dict(e, wave=1) for e in saved['events']])
 check('a close in the opening wave is refused', missionevents.rift_problems(same),

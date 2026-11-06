@@ -214,7 +214,7 @@ def scratch_plan():
             fab_piece(tile, terrain, matrix((-1200.0, 1200.0, Z))),
             {'kind': crystal.KIND, 'name': crystal.CLASS,
              'matrix': matrix((600.0, 900.0, Z + 150.0)),
-             crystal.KEY: {crystal.HEALTH_KEY: [800.0, 1500.0, 2500.0, 3000.0],
+             crystal.KEY: {crystal.MAP_DIFFICULTY: 1.5, 'pointHealth': 250.0,
                            'bobHeight': 40.0, 'bobSeconds': 6.0, 'riftGap': 3.0,
                            'groups': [group]}}],
     }

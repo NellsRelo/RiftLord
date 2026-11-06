@@ -894,10 +894,11 @@ _VOLUMES = {}
 
 
 def volume_at(level, cls, W):
-    """The name of the level's volume of class `cls` within() where W puts it, or None."""
+    """The name of the persistent level's volume of class `cls` within() where W puts it,
+    or None."""
     if level not in _VOLUMES:
         from riftlord.mapeditor import volumes
-        _VOLUMES[level] = volumes.level_volumes(level)
+        _VOLUMES[level] = volumes.package_volumes(level)
     for v in _VOLUMES[level]:
         M = np.array(v['matrix'], float).reshape(4, 4).T
         if v['cls'] == cls and within(W, M, 1.0)[2]:

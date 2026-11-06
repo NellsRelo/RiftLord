@@ -80,6 +80,12 @@ def main(argv=None):
         return terrain(argv[1:])
     if argv[:1] == ['--types']:
         return types(argv[1:])
+    #: SIGUSR1 prints every thread's stack to stderr (server.log): where a server that stopped
+    #: answering is stuck, with no debugger (ptrace is off)
+    import faulthandler
+    import signal
+    if hasattr(signal, 'SIGUSR1'):
+        faulthandler.register(signal.SIGUSR1, all_threads=True)
     from riftlord.app.__main__ import main as app_main
     return app_main(argv)
 

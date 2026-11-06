@@ -305,7 +305,7 @@ export function showVolumeProps (m) {
     '</div>'
   const mode = ctx.gizmo.mode
   const blocks = stopsNow(m, plan)
-  const rows = [`<div class="card sel"><b>${escape(d.name)}</b>` +
+  const rows = [`<div class="card sel"><b>${escape(v.title || d.name)}</b>` +
     `<div class="meta">${escape(v.label)}: ${escape(STOPS_TEXT[blocks] || v.stopsText)}` +
     '</div></div>',
   v.blocks

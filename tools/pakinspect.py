@@ -28,7 +28,7 @@ from riftlord.build import makemod  # noqa: E402
 from riftlord.core import paksource  # noqa: E402
 from riftlord.formats.ue.uassetio import Package  # noqa: E402
 
-#: Lifted actor names (riftlord/lavafx.py, riftlord/skyfog.py).
+#: Lifted actor names (riftlord/build/world/lavafx.py, riftlord/build/world/moons.py).
 FX_PREFIX = 'RiftLordFx_'
 SKY_PREFIX = 'RiftLordSky_'
 EXTENDS_RE = re.compile(r'/Mods/([^/]+)/%s/([^/.]+)\.uasset$' % makemod.EXTENDS_DIR)

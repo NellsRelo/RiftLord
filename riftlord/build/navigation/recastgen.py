@@ -98,7 +98,9 @@ USE_HULLS = False
 #: spans space its mesh does not), while the clutter by its spawners needs them.
 HULL_PROP_SIZE = 1000.0
 #: Meshes whose name has one of these words are ramps (stairs): their floor is a Recast area of
-#: its own (walk 2, recastgen.cpp), so each flight gets polygons of its own. Empty: off.
+#: its own (walk 2, recastgen.cpp), so each flight gets polygons of its own, and its spans
+#: skip Recast's steep-slope test (recastgen.cpp filterLedges: a tread one cell deep between
+#: two risers). Empty: off.
 RAMP_WORDS = ('stairs',)
 #: ...unless the name also has one of these (railings, side walls and caps beside a flight).
 RAMP_SKIP_WORDS = ('railing', 'rails', 'wall', 'side', 'cap')
@@ -132,6 +134,8 @@ DECOR_CLEAR = {42.0: 0.0, 80.0: 50.0}
 ERODE_SCALE = 1.0
 #: A Recast polygon edge with no neighbour.
 NULL_IDX = 0xFFFF
+#: navregen.AGENTS in a designer's words.
+AGENT_WORDS = ('ordinary', 'large')
 #: Clean the polygons before edge ids (navfan.clean); False writes them as Recast gives them.
 FAN_CLEAN = True
 
@@ -164,12 +168,26 @@ def placed_winding(tri, M):
     return tri[:, [0, 2, 1]] if np.linalg.det(np.asarray(M)[:3, :3]) < 0 else tri
 
 
+def inside_region(w, tri, lo, hi):
+    """(vertices, triangles) of one placed mesh less the triangles wholly outside the box
+    `lo`..`hi`, with the vertices only those leave out dropped; the mesh unchanged when none
+    is outside (docs/MAP-EDITOR.md, What the walkable-graph rebuild reads)."""
+    t = w[tri]
+    out = np.any(t.max(axis=1) < lo, axis=1) | np.any(t.min(axis=1) > hi, axis=1)
+    if not out.any():
+        return w, tri
+    tri = tri[~out]
+    used = np.unique(tri)
+    remap = np.full(len(w), -1, np.int64)
+    remap[used] = np.arange(len(used))
+    return w[used], remap[tri]
+
+
 def geometry(level_name, plan):
     """(vertices, triangles, walkable per triangle) in UE space: navregen's final pieces
     and blocking volumes, inside its gathering region. Obstacle-only components
     (navregen.OBSTACLE_ONLY) block but are never floor."""
-    bounds = navregen.region(level_name)
-    lo, hi = bounds[0] - navregen.REGION_MARGIN, bounds[1] + navregen.REGION_MARGIN
+    lo, hi = navregen.gather_region(level_name, plan)
     verts, tris, walk, n = [], [], [], 0
     segs = []
     if ROUTE_CLEAR:
@@ -211,6 +229,9 @@ def geometry(level_name, plan):
         w = (np.c_[v, np.ones(len(v))] @ M)[:, :3]
         if np.any(w.max(0) < lo) or np.any(w.min(0) > hi):
             continue
+        w, tri = inside_region(w, tri, lo, hi)
+        if not len(tri):
+            continue
         tri = placed_winding(tri, M)
         if obstacle and segs:
             centre = w[tri].mean(axis=1)
@@ -222,12 +243,18 @@ def geometry(level_name, plan):
         #: 2: a ramp's floor, in an area of its own (recastgen.cpp)
         walk.append(np.full(len(tri), (2 if ramp else 1) if walkable else 0, np.uint8))
         n += len(w)
-    for tri in navregen.blocking_volumes(level_name, plan):
-        t = np.asarray(tri, dtype=np.float64).reshape(-1, 3)
+    for tri in navregen.blocking_volumes(level_name, plan) + \
+            navregen.collision_boxes(level_name, plan):
+        t, idx = inside_region(np.asarray(tri, dtype=np.float64).reshape(-1, 3),
+                               np.arange(len(tri) * 3).reshape(-1, 3), lo, hi)
+        if not len(idx):
+            continue
         verts.append(t)
-        tris.append(np.arange(len(t)).reshape(-1, 3) + n)
-        walk.append(np.ones(len(t) // 3, np.uint8))
+        tris.append(idx + n)
+        walk.append(np.ones(len(idx), np.uint8))
         n += len(t)
+    if not verts:
+        return np.zeros((0, 3)), np.zeros((0, 3), np.int32), np.zeros(0, np.uint8)
     return np.vstack(verts), np.vstack(tris).astype(np.int32), np.concatenate(walk)
 
 
@@ -302,6 +329,7 @@ def run(verts, tris, walk, agent):
            MAX_EDGE, MIN_REGION_CELLS, MERGE_REGION_CELLS, DETAIL_DIST, DETAIL_ERROR,
            1.0 if DECOR_MODE else 0.0, DECOR_PROUD, DECOR_CLEAR.get(float(radius), 0.0)]
     rv = to_recast(verts).astype(np.float32)
+    exe = binary()
     with tempfile.TemporaryDirectory(dir=WORK_DIR) as d:
         src, dst = os.path.join(d, 'in.bin'), os.path.join(d, 'out.bin')
         with open(src, 'wb') as fh:
@@ -311,9 +339,10 @@ def run(verts, tris, walk, agent):
             fh.write(rv.tobytes())
             fh.write(tris.astype('<i4').tobytes())
             fh.write(walk.astype(np.uint8).tobytes())
-        done = subprocess.run([binary(), src, dst], capture_output=True, text=True)
+        done = subprocess.run([exe, src, dst], capture_output=True, text=True)
         if done.returncode:
-            raise SystemExit('recastgen failed: %s' % done.stderr.strip())
+            raise RuntimeError('recastgen failed: %s'
+                               % (done.stderr.strip() or 'exit code %d' % done.returncode))
         data = open(dst, 'rb').read()
     nv, npoly, nvp = struct.unpack_from('<iii', data, 0)
     bmin = struct.unpack_from('<3f', data, 12)
@@ -466,29 +495,68 @@ def planar(polys):
     return out
 
 
-def outside_exclusions(polys, level_name):
-    """Polygons whose centre is outside every NavPowerExclusionVolume."""
-    vols = navregen.nav_volumes(level_name, (navregen.EXCLUSION,))
-    if not vols:
+#: Floor a ground route walks over stays inside a NavPowerExclusionVolume when the floor
+#: outside the volumes does not join that route leg. The volumes describe the shipped play
+#: area (Scenario_Ice_02's NavPowerExclusionVolume2 takes every floor above z 900), and a
+#: plan's route is the designer saying where enemies walk, as with the blocking volumes a
+#: route crosses (riftlord/mapeditor/volumes.py). Only the polygons on the leg's walk come
+#: back: ignoring the volumes outright gave Repaired Mine 815 polygons against 324.
+ROUTES_CROSS_EXCLUSIONS = True
+
+
+def outside_exclusions(polys, level_name, legs=(), step=None):
+    """Polygons whose centre is outside every NavPowerExclusionVolume of every package of
+    the level (navregen.exclusion_volumes), plus, with ROUTES_CROSS_EXCLUSIONS, those on
+    the walk of each route leg in `legs` ([(label, a, b)], navregen.route_legs) that the
+    floor outside the volumes does not join. `step`: the agent's step, for the edge ids the
+    walk follows."""
+    vols = navregen.exclusion_volumes(level_name)
+    if not vols or not polys:
         return polys
     c = np.array([np.mean(p, axis=0) for p in polys]) + np.array([0.0, 0.0, 1.0])
     keep = np.ones(len(polys), bool)
     for v in vols:
         keep &= ~navregen.inside_volume(v, c)
+    if ROUTES_CROSS_EXCLUSIONS and legs and not keep.all():
+        keep |= route_walks(polys, keep, legs, step)
     return [p for p, k in zip(polys, keep) if k]
+
+
+def route_walks(polys, keep, legs, step=None):
+    """Mask of the polygons not in `keep` that a route leg walks over, for each leg the
+    polygons in `keep` do not join."""
+    kw = {} if step is None else {'step': step}
+    ids = navsurfgen.allocate_edge_ids(polys, tol=CELL * 0.25, **kw)
+    inside = [i for i in range(len(polys)) if keep[i]]
+    walk_in = navregen.walker([polys[i] for i in inside], [ids[i] for i in inside])
+    walk_all = navregen.walker(polys, ids)
+    out = np.zeros(len(polys), bool)
+    for _label, a, b in legs:
+        if walk_in(a, b) is not None:
+            continue
+        for i in walk_all.path(a, b) or ():
+            out[i] = not keep[i]
+    return out
 
 
 def graphs_for(level_name, plan=None, log=print):
     """[(polys, ids, tags, flags)] per agent, as navregen.graphs_for returns."""
     plan = plan or {}
+    if navregen.region(level_name) is None:
+        raise navregen.NoArea('%s has no NavMeshBoundsVolume' % level_name)
     verts, tris, walk = geometry(level_name, plan)
+    if not len(tris):
+        raise ValueError('no geometry inside the gathering region')
     log('  %d triangles' % len(tris))
     legs, _exits = navregen.route_legs(level_name, plan)
     anchors = [p for _l, a, b in legs for p in (a, b)]
     anchors += [at for _l, at in navregen.gameplay_points(level_name, plan)]
     out = []
-    for agent in navregen.AGENTS:
-        polys = planar(outside_exclusions(run(verts, tris, walk, agent), level_name))
+    for g, agent in enumerate(navregen.AGENTS):
+        raw = run(verts, tris, walk, agent)
+        if not raw:
+            raise ValueError('Recast found no floor for agent %r' % (agent,))
+        polys = planar(outside_exclusions(raw, level_name, legs, agent[1]))
         #: detail edge samples on a split polygon's side go into its unsplit neighbour's edge
         polys = navregen._mended(polys)
         #: one shared edge per pair of neighbours, no degenerate polygons: NavPower's
@@ -504,6 +572,14 @@ def graphs_for(level_name, plan=None, log=print):
             chosen = navregen.anchored(polys, ids, anchors)
             polys, ids, tags, flags = [[x[i] for i in chosen]
                                        for x in (polys, ids, tags, flags)]
+        if not polys:
+            raise navregen.Cause(
+                '%s stand%s on no floor the %s enemies can walk'
+                % (navregen.places(level_name, plan),
+                   's' if len(navregen.gameplay_points(level_name, plan)) == 1 else '',
+                   AGENT_WORDS[g]),
+                'move them onto the floor, or put floor under them',
+                '%d anchors, none on any of %d polygons' % (len(anchors), len(raw)))
         polys, ids, tags, flags = navregen.wall_last(polys, ids, tags, flags)
         log('  agent r%.0f: %d polygons' % (agent[0], len(polys)))
         out.append((polys, ids, tags, flags))

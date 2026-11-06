@@ -384,8 +384,9 @@ spawners = [('RiftLordSpawner1', 3, (0.0, 0.0, 98.0)), ('RiftLordSpawner2', 4, (
 warned = riftfloor.spawner_heights([floor], spawners, riftfloor.spawner_labels(
     {'spawners': [{'id': 30, 'index': 5}]}))
 check('only the spawner over 206.6 uu is warned about, by its Map Editor label',
-      warned == ['Spawner 30 stands 240 uu above the floor, higher than any shipped ground '
-                 'spawner (207 uu)'], warned)
+      warned == ['Spawner 30 stands 240 units above the floor, higher than any shipped '
+                 'ground spawner (207 units). Lower it toward the floor, or test it in '
+                 'game.'], warned)
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'fixtures'))
 import fixturelibs  # noqa: E402
 SPAWNER_PAKS = [p for p in (fixturelibs.pinned_mod(n) for n in ('900_Beset_Alpha_3_P.pak',)) if p]

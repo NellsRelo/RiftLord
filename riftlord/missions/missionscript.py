@@ -210,7 +210,9 @@ def apply(builder, level, plan, report):
         return 0
     mod = (plan or {}).get('_modKey')
     if not mod:
-        report['skipped'].append('mission scripts: no mod name to build them under')
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out('the mission scripts',
+                                                       'no _modKey in the plan'))
         return 0
     from riftlord.missions import missionevents
     for item in items:

@@ -129,4 +129,6 @@ def apply(builder, plan, report):
         report['notes'].append('rift warning box set to %s uu on %d rift(s)'
                                % (' x '.join('%g' % v for v in want), len(found)))
     else:
-        report['skipped'].append('rift warning: this level has no rift to resize')
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'the rift warning size', '', 'This level has no rift to resize it on.'))

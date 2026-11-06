@@ -170,7 +170,7 @@ def counts(rec):
 
 
 def build_state(root, rec):
-    """'built', 'stale', 'unbuilt' or 'failed', as the Missions page shows it."""
+    """'built', 'unlit', 'stale', 'unbuilt' or 'failed', as the Missions page shows it."""
     os.environ['OMD3_BUCKET'] = root
     from riftlord.missions import bucket
     try:

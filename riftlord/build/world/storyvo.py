@@ -198,4 +198,8 @@ def apply(builder, plan, report):
                                % (got['gates'], got['muted']))
     else:
         report['notes'].append('this level has no story dialogue to remove')
-    report['skipped'] += ['story dialogue: %s' % s for s in got['skipped']]
+    if got['skipped']:
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'all of the story dialogue', '; '.join(got['skipped']),
+            effect='some story lines may still play', verb='silence'))

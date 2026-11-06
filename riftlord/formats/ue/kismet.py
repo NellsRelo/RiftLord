@@ -567,12 +567,17 @@ def relocate(nodes, translate, positions=None):
     An operand that is a Node rather than an int is a jump to a statement with no
     old offset -- a newly built one -- and resolves through `positions`, a
     {id(node): memory offset} map of the edited statement list. Everything else
-    goes through `translate`.
+    goes through `translate`. A (Node, offset) pair is a place inside a newly built
+    statement: a copied SwitchValue's case chain.
     """
     n = 0
     for node, i in code_offsets(nodes):
         kind, old = node.ops[i]
-        if isinstance(old, Node):
+        if isinstance(old, tuple):
+            if not positions or id(old[0]) not in positions:
+                raise KeyError('case target node is not a statement in this function')
+            new = positions[id(old[0])] + old[1]
+        elif isinstance(old, Node):
             if not positions or id(old) not in positions:
                 raise KeyError('jump target node is not a statement in this function')
             new = positions[id(old)]

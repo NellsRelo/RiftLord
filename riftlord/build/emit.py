@@ -21,6 +21,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
+from riftlord.core import buildmessage  # noqa: E402
 from riftlord.core import gamepath  # noqa: E402
 from riftlord.build import makelevel  # noqa: E402
 from riftlord.build import makemod  # noqa: E402
@@ -42,6 +43,59 @@ NOT_YET = {}
 MAPDATA_LEVEL_RETARGET = False
 #: Keep the source level's MapData for the mission (no copy) unless a redraw needs one.
 MAPDATA_SHIPPED = False
+
+#: A plan key a retry sets (bucket._bake): keep the level's shipped walkable graph rather
+#: than rebuilding it, as when the rebuild fails.
+SHIPPED_FLOOR = '_shippedFloor'
+#: The warning for a build that keeps the shipped walkable graph.
+SHIPPED_FLOOR_NOTE = ('Rift Lord could not rebuild the floor enemies walk on for your floor '
+                      'changes, so the mission keeps the level\'s shipped enemy floor: '
+                      'where floor was added, moved or removed, enemies walk as they do on '
+                      'the shipped level.')
+#: The warning for a build whose light bake failed.
+LIGHTS_NOTE = ('Rift Lord could not bake the light maps, so the mission keeps the level\'s '
+               'shipped light maps: your lighting changes do not show in game until a build '
+               'bakes them.')
+#: The step a walkable-graph failure names.
+STEP_FLOOR = 'build the floor enemies walk on'
+
+
+def snap_point(exc, plan, uasset, uexp, object_name, done):
+    """(uasset, uexp, fixed line, plan fix) with the plan's path point a Problem `exc`
+    names moved onto the nearest floor of the level's walkable graph within its Reach
+    Radius (navsurfextend.nearest_floor), or None when it names no such point, the point
+    was moved already (`done`, ids) or no floor is that near. `plan['points']` takes the
+    new position."""
+    from riftlord.build import levelbuild
+    from riftlord.build.navigation import navsurf
+    from riftlord.build.navigation import navsurfextend
+    target = getattr(exc, 'target', None) or {}
+    pid = target.get('id')
+    if target.get('kind') != 'point' or pid in done:
+        return None
+    point = next((p for p in plan.get('points') or [] if p.get('id') == pid), None)
+    if point is None or point.get('flyersOnly') or not point.get('at'):
+        return None
+    reach = float(point.get('reachRadius') or leveldata.SCHEMA['point']['reachRadius'][1])
+    buf = navsurfextend._surface_of(uasset, uexp)
+    polys = [sec['verts'] for sec in navsurf.sections(buf, navsurf.graphs(buf)[0])]
+    got = navsurfextend.nearest_floor(polys, point['at'], reach)
+    if got is None:
+        return None
+    new_at, moved = got
+    builder = levelbuild.Builder.around(uasset, uexp, name=object_name)
+    index = builder.index_of('RiftLordPoint%d' % pid)
+    if not index:
+        return None
+    builder.place(index, location=tuple(new_at))
+    ua, ux = builder.write()
+    done.add(pid)
+    plan['points'] = [dict(p, at=[round(v, 1) for v in new_at]) if p is point else p
+                      for p in plan['points']]
+    line = ('Moved Path Point %s by %.0f units onto the floor at %s, inside its Reach '
+            'Radius of %.0f.' % (pid, moved, buildmessage.at(new_at), reach))
+    return ua, ux, line, {'kind': 'point', 'id': pid,
+                          'at': [round(v, 1) for v in new_at]}
 
 
 def pak_stem(title):
@@ -74,8 +128,10 @@ def mod_name(level_name, title=None):
     return 'RiftLord%s' % stem.replace('_', '')
 
 
-def path_checks(pak_path, map_name):
-    """[{name, ok, detail}] on the path graph of a pak that has just been written.
+def path_checks(pak_path, map_name, plan=None):
+    """[{name, ok, detail, plain}] on the path graph of a pak that has just been written;
+    `plain` is a failure in a designer's words, naming actors as the Map Editor does for
+    `plan`.
 
     Read from the finished pak, because two faults here hang the game on the loading
     screen while every structural check passes:
@@ -100,6 +156,10 @@ def path_checks(pak_path, map_name):
         navpatch.close_pak(pak_path)
 
     out = []
+    named = lambda export: buildmessage.editor_name(export, plan)
+
+    def placed(export, at):
+        return buildmessage.where(named(export), at) if at else named(export)
     seen = defaultdict(list)
     for name, rec in pts.items():
         if isinstance(rec.get('index'), int):
@@ -118,6 +178,8 @@ def path_checks(pak_path, map_name):
             if i in exit_indices or any(str(n).startswith('RiftLord') for n in v)}
     theirs = {i: v for i, v in dupes.items() if i not in ours}
     out.append({'name': 'every path point has a unique index', 'ok': not ours,
+                'fault': True,
+                'plain': 'Rift Lord could not number the path points apart.',
                 'detail': ('clashes on an index we name: %s' % ours) if ours
                           else '%d points%s' % (len(pts),
                                ', all distinct' if not theirs else
@@ -153,6 +215,8 @@ def path_checks(pak_path, map_name):
     biggest = max([n for _nm, n in paths] or [0])
     out.append({'name': 'some path actor holds every point',
                 'ok': bool(paths) and biggest >= len(pts) - 1,
+                'fault': True,
+                'plain': 'Rift Lord could not join every path point to the level\'s path.',
                 'detail': '%d path(s): %s, biggest holds %d of %d points'
                           % (len(paths), ', '.join('%s=%d' % x for x in paths),
                              biggest, len(pts))})
@@ -168,6 +232,16 @@ def path_checks(pak_path, map_name):
     exits = [n for n, r in pts.items() if r.get('exit')]
     out.append({'name': 'each rift in play has one exit point',
                 'ok': len(exits) == max(1, len(live)),
+                'plain': 'The level has %d exit point%s (%s) for %d rift%s in play. Give each '
+                         'rift one path point inside it that routes end at.'
+                         % (len(exits), '' if len(exits) == 1 else 's',
+                            ', '.join(named(n) for n in exits) or 'none', len(live),
+                            '' if len(live) == 1 else 's'),
+                'checks': [buildmessage.check(
+                    '%s is an exit point; the level has %d for %d rift%s in play.'
+                    % (named(n), len(exits), len(live), '' if len(live) == 1 else 's'),
+                    buildmessage.editor_target(n, plan), pts[n].get('location'))
+                    for n in exits],
                 'detail': '%d exit(s) for %d rift(s): %s'
                           % (len(exits), len(live), ', '.join(exits) or 'none')})
     #: With two rifts or more, each exit stands inside a rift of its own, or enemies on
@@ -184,6 +258,16 @@ def path_checks(pak_path, map_name):
     out.append({'name': 'each exit point stands inside a different rift' if len(live) > 1 else
                         'the exit point stands inside the rift (a note)',
                 'ok': not unpaired or len(live) <= 1,
+                'plain': '%s %s outside every rift, or %s a rift with another exit point. '
+                         'Move each exit point inside a different rift.'
+                         % ('; '.join(placed(n, pts[n].get('location')) for n in unpaired),
+                            'stands' if len(unpaired) == 1 else 'stand',
+                            'shares' if len(unpaired) == 1 else 'share'),
+                'checks': [buildmessage.check(
+                    '%s stands outside every rift, or shares one with another exit point. '
+                    'Move it inside a different rift.' % named(n),
+                    buildmessage.editor_target(n, plan), pts[n].get('location'))
+                    for n in unpaired],
                 'detail': ('outside every rift (or sharing one): %s' % ', '.join(unpaired))
                           if unpaired else '%d paired' % len(exits)})
 
@@ -193,7 +277,16 @@ def path_checks(pak_path, map_name):
     for sp in spawners:
         per_index[sp.get('index')].append(sp.get('export') or '?')
     clash = {i: v for i, v in per_index.items() if len(v) > 1}
+    clash_text = '; '.join('%s share index in level %s' % (
+        ' and '.join(placed(e, next((sp.get('location') for sp in spawners
+                                     if sp.get('export') == e), None)) for e in v), i)
+        for i, v in sorted(clash.items(), key=lambda kv: str(kv[0])))
+    #: an added spawner's clash is renumbered by the build (planactors.emit), so a clash
+    #: here is Rift Lord's
     out.append({'name': 'every spawner has a unique indexInLevel', 'ok': not clash,
+                'fault': True,
+                'plain': 'Rift Lord could not give every spawner a different index in level '
+                         '(%s).' % clash_text,
                 'detail': ('clashes: %s' % clash) if clash
                           else '%d spawners: %s' % (len(spawners),
                                                    sorted(per_index))})
@@ -204,6 +297,11 @@ def path_checks(pak_path, map_name):
     # takes enemies in at any rift and counts every leak against one rift point pool.
     parked = len(rifts) - len(live)
     out.append({'name': 'a rift is in play', 'ok': len(live) >= 1,
+                'plain': 'No rift is in play: every rift is removed or parked. Place a rift, '
+                         'or put the level\'s rift back.',
+                'checks': [buildmessage.check('No rift is in play: every rift is removed or '
+                                              'parked. Place a rift, or put the level\'s rift '
+                                              'back.')],
                 'detail': '%d in play%s: %s'
                           % (len(live), ' (%d parked)' % parked if parked else '',
                              ', '.join(r.get('name') or '?' for r in live) or 'none')})
@@ -245,6 +343,8 @@ def path_checks(pak_path, map_name):
         navpatch.close_pak(pak_path)
     out.append({'name': "every spawner's soft references resolve",
                 'ok': not bad,
+                'fault': True,
+                'plain': 'Rift Lord could not link a spawner to its door or first route point.',
                 'detail': '; '.join(bad) if bad
                           else '%d reference(s), all naming this map' % n_refs})
 
@@ -288,6 +388,9 @@ def path_checks(pak_path, map_name):
         navpatch.close_pak(pak_path)
     out.append({'name': 'soft-referenced names survive FName splitting',
                 'ok': not unsafe,
+                'fault': True,
+                'plain': 'Rift Lord could not name a spawner\'s door or first route point so '
+                         'the game finds it.',
                 'detail': '; '.join(unsafe) if unsafe
                           else '%d target(s), none ending in _<digits>' % checked})
 
@@ -317,6 +420,9 @@ def path_checks(pak_path, map_name):
         navpatch.close_pak(pak_path)
     out.append({'name': 'a doorless spawner is not invulnerable',
                 'ok': not bad_invuln,
+                'fault': True,
+                'plain': 'Rift Lord could not make the enemies of a spawner with no door '
+                         'hurtable by traps.',
                 'detail': '; '.join(bad_invuln) if bad_invuln
                           else 'every doorless spawner sets it false'})
 
@@ -341,6 +447,9 @@ def path_checks(pak_path, map_name):
         navpatch.close_pak(pak_path)
     if not graph:
         out.append({'name': 'added actors sit inside the navgraph', 'ok': False,
+                    'fault': True,
+                    'plain': 'Rift Lord could not read the floor enemies walk on in this '
+                             'level.',
                     'detail': 'this level has no NavPower graph at all'})
         # Not reachable today -- every shipped level has a surface graph -- but if it
         # ever is, the same split applies: flight is authorable and ground is not.
@@ -395,19 +504,34 @@ def path_checks(pak_path, map_name):
             navpatch.close_pak(pak_path)
         floor = ([s['verts'] for s in navsurf.sections(surf, navsurf.graphs(surf)[0])]
                  if surf else [])
-        ground = []
+        ground, ground_plain, ground_checks = [], [], []
         for n, r in rep2['points'].items():
             if mine(n) and r.get('location') and not r.get('flyersOnly') \
                     and navsurfextend.on_surface(floor, r['location']) is None:
                 ground.append('%s at (%.0f, %.0f, %.0f)' % ((n,) + tuple(r['location'])))
+                ground_plain.append(placed(n, r['location']))
+                ground_checks.append((n, r['location']))
         for sp in rep2['spawners']:
             if mine(sp['export']) and sp.get('start') and sp.get('location') \
                     and navsurfextend.on_surface(floor, sp['location']) is None:
                 ground.append('%s at (%.0f, %.0f, %.0f)'
                               % ((sp['export'],) + tuple(sp['location'])))
+                ground_plain.append(placed(sp['export'], sp['location']))
+                ground_checks.append((sp['export'], sp['location']))
         out.append({
             'name': 'added GROUND actors sit inside the navgraph',
             'ok': not ground,
+            'plain': '%s %s not on floor enemies can walk. Move %s onto floor the level\'s '
+                     'enemies walk on, or onto the route of a ground spawner so the floor '
+                     'can be extended to %s.'
+                     % ('; '.join(sorted(ground_plain)),
+                        'is' if len(ground_plain) == 1 else 'are',
+                        'it' if len(ground_plain) == 1 else 'them',
+                        'it' if len(ground_plain) == 1 else 'them'),
+            'checks': [buildmessage.check(
+                '%s is not on floor enemies can walk. Move it onto floor, or onto the route '
+                'of a ground spawner.' % named(n), buildmessage.editor_target(n, plan), at)
+                for n, at in ground_checks],
             'detail': ('off the walkable floor: %s. Enemies cannot walk there. Move '
                        'these onto floor the shipped level\'s enemies walk on, or onto the '
                        'route of a ground spawner so the floor can be extended to them'
@@ -442,6 +566,7 @@ def path_checks(pak_path, map_name):
             # reaches the exit.
             first = ref.split('.')[-1]
             walked, todo, ok, why = [], [first], False, 'no branch leads to the exit'
+            plain_why = 'none of its branches leads to a rift'
             while todo:
                 here = todo.pop(0)
                 if here in walked:
@@ -451,6 +576,7 @@ def path_checks(pak_path, map_name):
                 if rec is None:
                     if here == first:
                         why = '%s is not in the level' % here
+                        plain_why = 'its first route point is not in the built level'
                     continue
                 if rec.get('exit'):
                     ok = True
@@ -467,6 +593,17 @@ def path_checks(pak_path, map_name):
                                 "shipped spawner %d %s route (not ours)"
                                 % (sp['index'], which),
                         'ok': ok or not mine,
+                        'plain': 'The %s route of %s never reaches a rift: %s. Give the '
+                                 'route\'s last point a branch to a rift.'
+                                 % ('flyer' if which == 'flyer' else 'ground',
+                                    placed(sp.get('export'), sp.get('location')),
+                                    plain_why),
+                        'checks': [buildmessage.check(
+                            'The %s route of %s never reaches a rift. Give its last point '
+                            'a branch to a rift.' % ('flyer' if which == 'flyer' else 'ground',
+                                                     named(sp.get('export'))),
+                            buildmessage.editor_target(sp.get('export'), plan),
+                            sp.get('location'))],
                         'detail': why})
     return out
 
@@ -486,11 +623,18 @@ def flow_checks(pak_path, coord_object):
         bad = flowsim.survey(coord_object)
     except Exception as exc:                             # noqa: BLE001
         return [{'name': 'coordinator terminates for every spawner', 'ok': False,
+                 'fault': True,
+                 'plain': 'Rift Lord could not check that the waves finish.',
                  'detail': 'could not be simulated: %s: %s'
                            % (type(exc).__name__, exc)}]
     finally:
         navpatch.close_pak(pak_path)
     return [{'name': 'coordinator terminates for every spawner', 'ok': not bad,
+             'fault': True,
+             'plain': 'Rift Lord could not write waves that finish (%s); the mission would '
+                      'hang on loading.'
+                      % ', '.join('wave %d through spawner index %d' % (w, s)
+                                  for w, s, _h, _n, _t in bad[:4]),
              'detail': ('loops at ' + ', '.join('wave %d spawner %d' % (w, s)
                                                 for w, s, _h, _n, _t in bad[:4]))
                        if bad else 'every wave and spawner ends'}]
@@ -624,6 +768,9 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     `unlocks` is the heroes and items beating it grants (missionunlocks.clean).
     `endless_only` lists the mission in Endless alone (makemod.build)."""
     plan = plan if plan is not None else leveldata.load_plan(level_name)
+    #: a plan saved before the Lighting section, with the lighting its sky brought
+    from riftlord.build.world import lighting
+    plan = lighting.migrated(plan, level_name)
     title = title or ('%s (Rift Lord)' % level_name)
     mod = (mod or mod_name(level_name, title)).replace('_', '')
     # Only the PERSISTENT level is copied, and its sublevel references are left
@@ -647,6 +794,9 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     md_path = tex_path = None
     #: a redrawn minimap (riftlord/minimapredraw.py): {volume, reframe, ...} once drawn
     redraw = {}
+    #: what the build fixed (buildmessage A), the fallbacks it took (C), and the fixes it
+    #: stores back into the plan ({'kind', 'id', field: value})
+    fixed, fallbacks, plan_fixes = [], [], []
 
     def write_plan_in(uasset, uexp, level_path, object_name):
         from riftlord.core import buildstage
@@ -720,19 +870,31 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
             chains = planactors.ground_chains(
                 plan, planactors.level_actors(level_name))
         except ValueError as exc:
-            raise SystemExit('ground route: %s' % exc)
-        # The walkable graph rebuilt from the final geometry (navregen.ENABLED).
+            raise buildmessage.refusal(exc, 'read the ground routes')
+        # The walkable graph rebuilt from the final geometry (navregen.ENABLED). When the
+        # rebuild fails on Rift Lord's side, or a retry asks for it (SHIPPED_FLOOR), the
+        # level keeps its shipped graph.
         carved = []
         from riftlord.build.navigation import navregen
         regenerated = False
         if not new_level and navregen.wanted(level_name, plan):
-            buildstage.stage('Navmesh')
-            try:
-                out_a, out_x, carved = navregen.install(
-                    out_a, out_x, level_name, plan, log=lambda *_a: None)
-            except ValueError as exc:
-                raise SystemExit('walkable graph: %s' % exc)
-            regenerated = True
+            if plan.get(SHIPPED_FLOOR):
+                fallbacks.append(SHIPPED_FLOOR_NOTE)
+            else:
+                buildstage.stage('Navmesh')
+                try:
+                    out_a, out_x, carved = navregen.install(
+                        out_a, out_x, level_name, plan, log=lambda *_a: None)
+                    kept = [n for n in carved if isinstance(n, navregen.KeptNote)]
+                    carved = [n for n in carved if not isinstance(n, navregen.KeptNote)]
+                    fallbacks.extend(kept)
+                    regenerated = not kept
+                except (ValueError, SystemExit) as exc:
+                    if buildmessage.designer_written(exc) and not isinstance(
+                            exc, getattr(navregen, 'RebuildFailed', ())):
+                        raise buildmessage.refusal(exc, STEP_FLOOR)
+                    print('navregen: %s' % buildmessage.technical(exc))
+                    fallbacks.append(SHIPPED_FLOOR_NOTE)
         # Walkable floor under removed or moved floor pieces is cut out first.
         from riftlord.build.navigation import navsurfcarve
         if navsurfcarve.active() and not new_level and not regenerated:
@@ -740,13 +902,27 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
                 out_a, out_x, carved = navsurfcarve.carve_level(
                     out_a, out_x, level_name, plan, chains)
             except ValueError as exc:
-                raise SystemExit('removed floor: %s' % exc)
-        try:
-            out_a, out_x, walk_notes = navsurfextend.extend(
-                out_a, out_x, chains,
-                names=planactors.ground_names(plan, planactors.level_actors(level_name)))
-        except ValueError as exc:
-            raise SystemExit('ground route: %s' % exc)
+                raise buildmessage.refusal(exc, 'change the floor enemies walk on')
+        level_actors = planactors.level_actors(level_name)
+        ghosts = navregen.walkless_pieces(level_name, plan) if not new_level else ()
+        snapped = set()
+        while True:
+            try:
+                out_a, out_x, walk_notes = navsurfextend.extend(
+                    out_a, out_x, chains, names=planactors.ground_names(plan, level_actors),
+                    targets=planactors.ground_targets(plan, level_actors), ghosts=ghosts,
+                    fixed=fixed)
+                break
+            except buildmessage.Problem as exc:
+                moved = snap_point(exc, plan, out_a, out_x, object_name, snapped)
+                if moved is None:
+                    raise buildmessage.refusal(exc, 'add floor under the ground routes')
+                out_a, out_x, line, fix = moved
+                fixed.append(line)
+                plan_fixes.append(fix)
+                chains = planactors.ground_chains(plan, level_actors)
+            except ValueError as exc:
+                raise buildmessage.refusal(exc, 'add floor under the ground routes')
         got['walkable'] = carved + walk_notes
         # NavPower obstructions over placed walls and removed floor (navobstruct.py).
         from riftlord.build.navigation import navobstruct
@@ -766,11 +942,17 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     #: sublevels whose baked lighting the build writes (riftlord.lightbake)
     from riftlord.build.lighting import lightbake
     lightbake.decide(plan)
-    if lightbake.active() and not new_level:
+    if lightbake.active():
         from riftlord.core import buildstage
         buildstage.stage('Lightmap')
-        lightbake.prepare(level_name, plan)          # riftlord.lightbake: BAKE only
-        for tag in lightbake.sublevel_tags(level_name):
+        try:
+            lightbake.prepare(level_name, plan)      # riftlord.lightbake: BAKE only
+        except (Exception, SystemExit) as exc:       # noqa: BLE001
+            print('lightbake: %s' % buildmessage.technical(exc))
+            lightbake.give_up()
+            fallbacks.append(LIGHTS_NOTE)
+    if lightbake.active():
+        for tag in lightbake.sublevel_tags(level_name, plan):
             touched.setdefault(tag, {'moved': [], 'parked': []})['lightbake'] = True
     #: `.ubulk` payloads of copied packages, by package path (makemod packs two blobs)
     bulk_files = {}
@@ -780,10 +962,8 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     sub_packages = leveldata.level(level_name).get('subPackages') or {} if touched else {}
     #: the music the plan chooses: a copy of the `_Audio` sublevel (riftlord.levelmusic);
     #: edits to that sublevel's own sounds are written into the same copy
-    music = None
-    if not new_level:
-        from riftlord.build.world import levelmusic
-        music = levelmusic.copy(level_name, mod, plan)
+    from riftlord.build.world import levelmusic
+    music = levelmusic.copy(level_name, mod, plan)
     for tag, edits in sorted(touched.items()):
         if tag == 'persistent':
             continue                     # the persistent level is handled above
@@ -828,10 +1008,9 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     for path, blobs in missionscript.package(level_name, mod, plan).items():
         extra_files[path] = (blobs, '.uasset')
     #: the mission's lava rock materials, their overlay band fitted to its rocks
-    if not new_level:
-        from riftlord.build.world import lavafx
-        for path, blobs in lavafx.rock_materials(level_name, plan, mod).items():
-            extra_files[path] = ((blobs['.uasset'], blobs['.uexp']), '.uasset')
+    from riftlord.build.world import lavafx
+    for path, blobs in lavafx.rock_materials(level_name, plan, mod).items():
+        extra_files[path] = ((blobs['.uasset'], blobs['.uexp']), '.uasset')
     keep_streams = None
     if new_level:
         more, keep_streams, own, sub_report['scratch'] = scratchmod.streams(level_name, mod,
@@ -970,7 +1149,7 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     for path, blob in bulk_files.items():
         if blob:
             files['OMD/Content' + path[len('/Game'):] + '.ubulk'] = blob
-    if lightbake.active() and not new_level:      # riftlord.lightbake: persistent copy
+    if lightbake.active():                        # riftlord.lightbake: persistent copy
         lightbake.persistent_files(files, level_name, mod, sub_report)
     if ((plan or {}).get('world') or {}).get('warScenario') is not None:
         files = set_war_flag(files, plan_war(plan, level_name))
@@ -998,6 +1177,9 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     report['war'] = plan_war(plan, level_name)
     applied = report.get('applied') or {}
     report['applied'] = applied
+    report['fixed'] = fixed + list(applied.get('fixed') or [])
+    report['planFixes'] = plan_fixes + list(applied.get('planFixes') or [])
+    report['warnings'] = list(report.get('warnings') or []) + fallbacks
     # Only what really is still outstanding: geometry lives in the streamed sublevels,
     # which the mod does not copy, so moving or removing a wall cannot apply yet.
     report['not_applied'] = [NOT_YET[key] + ' x%d' % len(plan.get(key) or [])
@@ -1092,7 +1274,8 @@ def write(level_name, out=None, install=False, details=None, **kwargs):
     placement = kwargs.get('placement') or makemod.CUSTOM_MAPS
     _into, choice = customcampaign.resolve(placement, details)
     if isinstance(choice, dict) and not (choice.get('name') or '').strip():
-        raise SystemExit('name the new campaign')
+        raise buildmessage.Refusal('The new campaign has no name. Name it where the '
+                                   'mission\'s campaign is chosen, then build again.')
     # A rebuild keeps the mission's Guids: a campaign lists its missions by Guid.
     kwargs.setdefault('guids', makemod.previous_guids(out))
     kwargs.setdefault('endless', bool((details or {}).get('endless')))
@@ -1110,7 +1293,13 @@ def write(level_name, out=None, install=False, details=None, **kwargs):
     # reach `OnslaughtEnd`, which measurement disproved: a level carrying a spawner with no
     # coordinator arm at all loads and runs. What actually matters is whether the dispatch
     # TERMINATES, and `flow_checks` simulates that below.
-    report['checks_failed'] = ['%s: %s' % (n, d) for n, d in failures]
+    #: checks_failed: what the designer changes (B), with its Checks rows in `checks`;
+    #: faults: what Rift Lord could not make (C); checks_detail: the technical lines
+    report['checks_failed'], report['faults'], report['checks'] = [], [], []
+    report['checks_detail'] = ['%s: %s' % (n, d) for n, d in failures]
+    if failures:
+        report['faults'].append('Rift Lord could not make a mission that passes %d of the '
+                                'checks run on it.' % len(failures))
     # A BAD FLIGHT GRAPH BLOCKS THE BUILD.
     #
     # `install_flight` verifies the graph against its own invariants and then by
@@ -1118,7 +1307,10 @@ def write(level_name, out=None, install=False, details=None, **kwargs):
     # wrong -- and the game's only way of complaining about that is to hang and then
     # crash, with every other check passing.
     flight_bad = (report.get('applied') or {}).get('flight_failed') or []
-    report['checks_failed'] += ['flight graph: %s' % n for n in flight_bad]
+    report['checks_detail'] += ['flight graph: %s' % n for n in flight_bad]
+    if flight_bad:
+        report['faults'].append('Rift Lord could not build the flying area for the flyer '
+                                'routes.')
     if failures or flight_bad:
         # The same rule the converter follows: a package that does not read back is
         # not written, because the game's only way of complaining is to crash.
@@ -1137,7 +1329,10 @@ def write(level_name, out=None, install=False, details=None, **kwargs):
     try:
         files, report['modMinions'] = modminions.carry(files, report.get('mod'))
     except SystemExit as exc:
-        report['checks_failed'] = ['mod minions: %s' % exc]
+        shown, detail, rows = buildmessage.explain(exc, 'Level')
+        report['faults' if buildmessage.is_fault(exc) else 'checks_failed'] = [shown]
+        report['checks'] = rows
+        report['checks_detail'] = ['mod minions: %s' % (detail or shown)]
         report['written'] = None
         return report
     from riftlord.core import paksource
@@ -1146,13 +1341,20 @@ def write(level_name, out=None, install=False, details=None, **kwargs):
     # write and the pak is REMOVED if it fails: a level whose routes loop or share an
     # index hangs the game on load, and leaving it on disk invites exactly that.
     mapname = '%s_Map01' % report.get('mod')
-    graph = path_checks(out, mapname)
+    graph = path_checks(out, mapname, kwargs.get('plan') if kwargs.get('plan') is not None
+                        else leveldata.load_plan(level_name))
     graph += flow_checks(out, '%s_Onslaught01' % report.get('mod'))
     report['path_checks'] = graph
-    broken = ['%s: %s' % (c['name'], c['detail']) for c in graph if not c['ok']]
+    broken = [c for c in graph if not c['ok']]
     if broken:
         paksource.remove(out)
-        report['checks_failed'] = broken
+        report['checks_failed'] = list(dict.fromkeys(
+            c.get('plain') or '%s: %s' % (c['name'], c['detail']) for c in broken
+            if not c.get('fault')))
+        report['faults'] = list(dict.fromkeys(c['plain'] for c in broken if c.get('fault')))
+        report['checks'] = [row for c in broken if not c.get('fault')
+                            for row in c.get('checks') or []]
+        report['checks_detail'] = ['%s: %s' % (c['name'], c['detail']) for c in broken]
         report['written'] = None
         return report
     report['written'] = out
@@ -1183,8 +1385,8 @@ def main(argv=None):
     print('campaign     %s' % report.get('campaign_row'))
     print('level copy   %s' % report.get('level_from'))
     print('war scenario %s' % report['war'])
-    if report['checks_failed']:
-        for line in report['checks_failed']:
+    if report['checks_failed'] or report.get('faults'):
+        for line in report.get('checks_detail') or report['checks_failed']:
             print('   FAILED  %s' % line)
         return 1
     print('wrote        %s (%d bytes)' % (report['written'], report['bytes']))

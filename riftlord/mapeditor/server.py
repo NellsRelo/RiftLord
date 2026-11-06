@@ -289,7 +289,8 @@ class Handler(BaseHTTPRequestHandler):
                 from riftlord.mapeditor import mapinfo
                 query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
                 return self._send(200, mapinfo.info(
-                    parts[1], (query.get('mission') or [None])[0]))
+                    parts[1], (query.get('mission') or [None])[0],
+                    scratch=(query.get('scratch') or [''])[0] == '1'))
             #: A fresh mission Guid in UE's spelling (bucket.new_guid).
             if parts == ['guid', 'new']:
                 from riftlord.missions import bucket
@@ -401,11 +402,12 @@ class Handler(BaseHTTPRequestHandler):
             if parts == ['materials']:
                 return self._send(200, leveldata.materials())
             if len(parts) == 2 and parts[0] == 'look':
-                from riftlord.build.world import skyfog
-                home, fog = skyfog.fog_for(parts[1])
                 return self._send(200, {'material': parts[1],
-                                        'texture': leveldata.look_texture(parts[1]),
-                                        'fogHome': home, 'fog': fog})
+                                        'texture': leveldata.look_texture(parts[1])})
+            #: the Light section's values of an added light actor (lighting.kit_values)
+            if len(parts) == 2 and parts[0] == 'lightvalues':
+                from riftlord.build.world import lighting
+                return self._send(200, lighting.kit_values(parts[1]))
             if parts == ['catalogue']:
                 return self._send(200, leveldata.catalogue())
             #: start drawing the previews the browser has not got yet
@@ -423,6 +425,9 @@ class Handler(BaseHTTPRequestHandler):
                 got = dict(got, parts=[dict(p, materialTexture=leveldata.look_texture(
                     p['material']), materialTint=leveldata.material_tint(p['material']))
                     if p.get('material') else p for p in got.get('parts') or []])
+                #: how its meshes sit against each wall grid, for snapping (kitfit.py)
+                from riftlord.mapeditor import kitfit
+                got = dict(got, grids=kitfit.with_fit(parts[1], got.get('grids') or []))
                 return self._send(200, got)
             if len(parts) == 2 and parts[0] == 'geometry':
                 q = urllib.parse.parse_qs(
@@ -560,6 +565,20 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, riftfloor.editor_snap(
                     path.rsplit('/', 1)[-1], at, str(opts.get('for') or ''),
                     opts.get('plan') or None))
+            #: {plan, mission}: the Checks list for the open plan and its mission's last
+            #: build (riftlord/mapeditor/checks.py)
+            if path.startswith('/api/checks/'):
+                from riftlord.mapeditor import checks
+                opts = body or {}
+                return self._send(200, checks.for_plan(
+                    path.rsplit('/', 1)[-1], opts.get('plan') or {},
+                    str(opts['mission']) if opts.get('mission') else None))
+            #: {plan}: the seams the open map leaves that shipped levels cover, each with
+            #: its proposed cover (riftlord/mapeditor/coverseams.py for_plan)
+            if path.startswith('/api/coverseams/'):
+                from riftlord.mapeditor import coverseams
+                return self._send(200, coverseams.for_plan(path.rsplit('/', 1)[-1],
+                                                           (body or {}).get('plan') or {}))
             #: a custom campaign's name, description, hub style and banner (bucket.update_campaign)
             if path == '/api/campaign':
                 from riftlord.missions import bucket
@@ -648,18 +667,23 @@ class Handler(BaseHTTPRequestHandler):
                     out, mod = bucket.target(str(opts['mission']))
                     into = {'out': out, 'mod': mod}
                 from riftlord.missions import missionunlocks
-                report = emit.write(
-                    name, install=bool(opts.get('install')),
-                    title=opts.get('title') or None,
-                    placement=opts.get('placement') or None,
-                    details=opts.get('details') or None,
-                    scramble=(opts.get('details') or {}).get('scramble'),
-                    #: its place in a shipped campaign (emit.build `into_index`)
-                    into_index=(opts.get('details') or {}).get('campaignIndex') or None,
-                    #: what beating it grants, as the Missions page set it (missionunlocks)
-                    unlocks=missionunlocks.of_record(bucket.load(str(opts['mission'])))
-                    if into else None,
-                    **into)
+                from riftlord.core import buildmessage
+                with buildmessage.plain_errors(
+                        console.MAP_COOKER, bucket.reports_dir() if bucket.ACTIVE
+                        else gamepath.scratch('build-reports', gamepath.CODE_ROOT)):
+                    report = emit.write(
+                        name, install=bool(opts.get('install')),
+                        title=opts.get('title') or None,
+                        placement=opts.get('placement') or None,
+                        details=opts.get('details') or None,
+                        scramble=(opts.get('details') or {}).get('scramble'),
+                        #: its place in a shipped campaign (emit.build `into_index`)
+                        into_index=(opts.get('details') or {}).get('campaignIndex') or None,
+                        #: what beating it grants, as the Missions page set it
+                        #: (missionunlocks)
+                        unlocks=missionunlocks.of_record(bucket.load(str(opts['mission'])))
+                        if into else None,
+                        **into)
                 # Inside Rift Lord (the app) the build went to Missions: note what it was
                 # built from, so it can be opened again for editing. Its level is now the
                 # mission's own copy, which the Onslaught Editor edits in place (kind map).
@@ -672,10 +696,18 @@ class Handler(BaseHTTPRequestHandler):
                 if report.get('written'):
                     console.info('wrote %s' % os.path.basename(report['written']),
                                  console.MAP_COOKER)
-                for failed in report.get('checks_failed') or []:
+                for line in report.get('checks_detail') or []:
+                    console.debug('failed check: %s' % line, console.MAP_COOKER)
+                for failed in (report.get('checks_failed') or []) + \
+                        (report.get('faults') or []):
                     console.error('not built: %s' % failed, console.MAP_COOKER)
-                for skipped in report.get('not_applied') or []:
-                    console.warn('not applied: %s' % skipped, console.MAP_COOKER)
+                for line in report.get('fixed') or []:
+                    console.info(line, console.MAP_COOKER)
+                for skipped in (report.get('not_applied') or []) + \
+                        (report.get('warnings') or []):
+                    console.warn(skipped, console.MAP_COOKER)
+                report['checks_failed'] = list(report.get('checks_failed') or []) + \
+                    list(report.get('faults') or [])
                 return self._send(200, report)
         #: `BaseException`, because the converter REFUSES BY `raise SystemExit`.
         #:

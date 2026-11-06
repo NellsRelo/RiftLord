@@ -207,12 +207,14 @@ try:
           ['OrcsMustUI', 'Crystal Defense', 'Treasure Chests'], sm.required_mods(plan))
     bad = sm.build_problems(plan)
     check('a missing mod refuses the build in one line naming it',
-          bad == ['Crystal Defense is not installed (Crystal x1 needs ~mods/CrystalDefense_P.pak)'],
+          bad == ['Crystal Defense is not installed (Crystal x1 needs '
+                  '~mods/CrystalDefense_P.pak). Install it, or remove those pieces.'],
           bad)
     fakemods.write(ROOT, 'TreasureChests', 'incompatible')
     bad = sm.build_problems(plan)
     check('an incompatible mod refuses too', len(bad) == 2 and bad[1].startswith(
-        'Treasure Chests is an incompatible version (Treasure Chest x2; lacks '), bad)
+        'Treasure Chests is an incompatible version (Treasure Chest x2 needs a version '
+        'that works with Rift Lord). Update it'), bad)
     check('a plan without mod pieces needs nothing',
           sm.build_problems({'added': [{'kind': 'kit', 'name': 'BP_Pickup_Coin_C'}]}) == [])
     report = {'requires': ['x']}

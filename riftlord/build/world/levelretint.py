@@ -1,12 +1,12 @@
-"""The level's own lights in new colours and its own effects as other particle systems.
+"""The level's own effects as other particle systems.
 
-Plan data, both keyed '<sublevel tag>|<actor export>' like `actorMoves` and `removedFx`:
+Plan data, keyed '<sublevel tag>|<actor export>' like `actorMoves` and `removedFx`:
 
-* `lightColours` {key: '#rrggbb'}: every point, spot and rect light component of the actor
-  gets that LightColor (sRGB, as the level stores it). Static lights reach the game through
-  the light maps, so a recolour makes the build bake (riftlord.build.lighting.lightbake).
 * `fxSwaps` {key: template}: the Emitter actor's ParticleSystemComponent plays another
   shipped Cascade system (a surveyed effect, riftlord.mapeditor.fxsurvey).
+* `lightColours` {key: '#rrggbb'} was the level's lights' colours until 2026-11-05; it is
+  now `lights` {key: {'LightColor': '#rrggbb', ...}} (riftlord.build.world.lighting), and
+  clean_colours reads the old field for riftlord.build.world.lightmigrate.
 
     python3 -m riftlord.build.world.levelretint Scenario_16 PLAN.json   # what a plan writes
 """
@@ -21,8 +21,6 @@ import sys
 HEX = re.compile(r'^#[0-9a-f]{6}$')
 #: An actor key ('<sublevel tag>|<actor export, 1-based>').
 ACTOR_KEY = re.compile(r'^[^|]+\|[1-9][0-9]*$')
-#: Light kinds a colour applies to; the sun and sky light come with the sky (skymirror).
-LIGHT_KINDS = ('PointLight', 'SpotLight', 'RectLight')
 #: The actor class whose particle system can be swapped.
 SWAP_CLASS = 'Emitter'
 #: The preload group a placed emitter lists its Template in (apply.CREATE_BEFORE_SERIALIZE).
@@ -35,7 +33,7 @@ def hex_rgb(value):
 
 
 def clean_colours(raw):
-    """The plan's `lightColours`, checked: {key: '#rrggbb'} ({} for none)."""
+    """An old plan's `lightColours`, checked: {key: '#rrggbb'} ({} for none)."""
     out = {}
     if not isinstance(raw, dict):
         return out
@@ -70,23 +68,6 @@ def clean_swaps(raw):
     return out
 
 
-def light_edits(level, plan):
-    """{sublevel tag: {light component export: [r, g, b]}} the plan's `lightColours` write."""
-    want = clean_colours((plan or {}).get('lightColours'))
-    if not want:
-        return {}
-    from riftlord.mapeditor import leveldata
-    out = {}
-    for light in leveldata.level(level).get('lights') or []:
-        if light.get('kind') not in LIGHT_KINDS or not light.get('actor'):
-            continue
-        tag = light.get('sub') or 'persistent'
-        colour = want.get('%s|%d' % (tag, light['actor']))
-        if colour and light.get('export'):
-            out.setdefault(tag, {})[int(light['export'])] = hex_rgb(colour)
-    return out
-
-
 def swap_edits(level, plan):
     """{sublevel tag: {particle component export: template}} the plan's `fxSwaps` write."""
     want = clean_swaps((plan or {}).get('fxSwaps'))
@@ -115,29 +96,6 @@ def template_path(template):
     return '/Game/' + hits[0][len('../../../OMD/Content/'):-len('.uasset')]
 
 
-def paint(builder, lights, report):
-    """Write LightColor on each {component export: [r, g, b]}, adding the property where the
-    placement leaves it to its class. Returns a count."""
-    done = 0
-    for export, rgb in (lights or {}).items():
-        b, g, r = (max(0, min(255, int(round(v * 255)))) for v in (rgb[2], rgb[1], rgb[0]))
-        data = bytearray(builder.pkg.exports[export - 1]['data'])
-        span = builder._tag_span(data, 'LightColor')
-        if span and span[1] - span[2] == 4:
-            struct.pack_into('<3B', data, span[2], b, g, r)
-            builder.pkg.exports[export - 1]['data'] = bytes(data)
-        elif span is None:
-            builder.add_property(export, 'LightColor', 'StructProperty',
-                                 struct.pack('<4B', b, g, r, 255), struct_name='Color')
-        else:
-            report['skipped'].append('light export %d has an unreadable colour' % export)
-            continue
-        done += 1
-    if done:
-        report['notes'].append('%d light(s) recoloured' % done)
-    return done
-
-
 def swap(builder, swaps, report):
     """Point each {particle component export: template}'s Template at that particle system,
     and its preload list at the new import in place of the old. Returns a count."""
@@ -149,7 +107,10 @@ def swap(builder, swaps, report):
         data = pkg.exports[export - 1]['data']
         span = builder._tag_span(data, 'Template')
         if not span:
-            report['skipped'].append('effect export %d names no particle system' % export)
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the colour of one of the level\'s effects',
+                'effect export %d names no particle system' % export))
             continue
         old = struct.unpack_from('<i', data, span[2])[0]
         path = template_path(template)
@@ -194,8 +155,7 @@ def main(argv=None):
     with open(argv[1], encoding='utf-8') as fh:
         plan = json.load(fh)
     plan = plan.get('plan', plan)
-    for label, got in (('lights', light_edits(argv[0], plan)),
-                       ('effects', swap_edits(argv[0], plan))):
+    for label, got in (('effects', swap_edits(argv[0], plan)),):
         for tag, rows in sorted(got.items()):
             print('%s %s: %d' % (label, tag, len(rows)))
     return 0

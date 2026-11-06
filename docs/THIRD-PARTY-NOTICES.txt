@@ -180,7 +180,7 @@ libuuid (util-linux)                     -              server   BSD-3-Clause
 LZ4 library                              -              server   BSD-2-Clause
 mpdecimal                                -              server   BSD-2-Clause
 OpenSSL                                  -              server   Apache-2.0
-zlib-ng                                  -              server   Zlib
+zlib                                     -              server   Zlib
 Zstandard                                -              server   BSD-3-Clause
 
 ==============================================================================
@@ -965,7 +965,7 @@ OpenSSL
 Kind: System library. Used in: server. Licence: Apache-2.0
 Licence texts: Apache-2.0
 ------------------------------------------------------------------------------
-zlib-ng
+zlib
 Kind: System library. Used in: server. Licence: Zlib
 (C) 1995-2024 Jean-loup Gailly and Mark Adler
 Licence texts: Zlib

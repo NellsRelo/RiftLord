@@ -342,11 +342,12 @@ def build_problems(plan):
             continue
         pieces = ', '.join('%s x%d' % (f.label, used[f.id]) for f in off)
         if row['status'] == MISSING:
-            out.append('%s is not installed (%s needs %s)'
-                       % (mod.name, pieces, ' or '.join(mod.files)))
+            out.append('%s is not installed (%s needs %s). Install it, or remove those '
+                       'pieces.' % (mod.name, pieces, ' or '.join(mod.files)))
         else:
-            out.append('%s is an incompatible version (%s; lacks %s)'
-                       % (mod.name, pieces, ', '.join(row['missing'])))
+            print('%s lacks %s' % (mod.name, ', '.join(row['missing'])))
+            out.append('%s is an incompatible version (%s needs a version that works with '
+                       'Rift Lord). Update it, or remove those pieces.' % (mod.name, pieces))
     return out
 
 

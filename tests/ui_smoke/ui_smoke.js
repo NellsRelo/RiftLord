@@ -20,7 +20,8 @@ const CASE_TIMEOUT = { onslaught: 240, mapeditor: 600, reference: 2400, preview:
   controllers: 600, compounds: 600, compoundbrowser: 600, compoundparams: 600, decor: 600, titlebar: 180, campaign: 300, maptoggles: 600, minimapdoors: 600,
   cutaway: 600, addlook: 600, pickups: 600, crystal: 600, crystalhealth: 1200, gamemode: 600, crystallevel: 900, supportedmods: 600, modunits: 240, scramble: 300, scrambletiers: 300, unlocks: 300, header: 1200,
   fab: 300, setup: 300, appshell: 240, mapeditorui: 900, spawnerfacing: 600, multirift: 600, openwarn: 900,
-  onslaughtfloors: 600, campaignindex: 300, dialogue: 1200, floorsnap: 600, samename: 300, campaignpak: 300, retint: 600 }
+  onslaughtfloors: 600, campaignindex: 300, dialogue: 1200, floorsnap: 600, samename: 300, campaignpak: 300, retint: 600, diffpauses: 240,
+  lattice: 600, lighting: 900, moons: 900, collides: 600, coverseams: 600 }
 //: Every case budget and page wait is multiplied by this (RL_TIMEOUT_SCALE, at least 1): the
 //: release check raises it with the machine's load.
 const SCALE = Math.max(1, Number(process.env.RL_TIMEOUT_SCALE) || 1)
@@ -197,6 +198,58 @@ async function modunits (p, urls, _mission, log) {
   await sleep(300)
   const kept = await p.evaluate(() => document.querySelector('.row select[aria-label="Minion"]').value)
   check(value === pick.name && kept === pick.name, `picked ${pick.label} (${kept})`, log)
+}
+
+/** Onslaught Editor on Scenario_Sand_01: a per-difficulty pause (wavespec.delay_sites) reads
+ * "Wait 32 / 30 / 28 s (Endless 16 → 0)" with one number field per value; an out-of-range
+ * value marks its field and lists an issue, and an edited value updates the line. */
+async function diffPauses (p, urls, _mission, log) {
+  await p.goto(`${urls.onslaught}/?embedded=1&theme=dark&map=Scenario_Sand_01`,
+    { waitUntil: 'domcontentloaded', timeout: 60000 })
+  await waitFor(p, 'Scenario_Sand_01\'s waves', () => document.querySelectorAll('[role=tab]').length > 1 &&
+    !document.querySelector('.loading'), { timeout: 120000, polling: 250 })
+  const doors = await p.evaluate(() => [...document.querySelectorAll('[role=tab]')]
+    .map((t, i) => [i, t.textContent.trim()]).filter(([, t]) => /^Door/.test(t)).map(([i]) => i))
+  let found = false
+  for (const i of doors) {
+    await p.evaluate((k) => document.querySelectorAll('[role=tab]')[k].click(), i)
+    await sleep(600)
+    if (await p.evaluate(() => !!document.querySelector('.pause.split'))) { found = true; break }
+  }
+  check(found, 'a door tab shows a per-difficulty pause', log)
+  const read = () => p.evaluate(() => {
+    const box = document.querySelector('.pause.split')
+    return { sum: box.querySelector('.sum').textContent.trim(),
+             labels: [...box.querySelectorAll('.slots label span')].map(s => s.textContent.trim()),
+             bad: box.querySelectorAll('input.bad').length }
+  })
+  let got = await read()
+  check(got.sum === 'Wait 32 / 30 / 28 s (Endless 16 → 0)', `line: ${got.sum}`, log)
+  check(JSON.stringify(got.labels) === JSON.stringify(['Apprentice', 'War Mage', 'Rift Lord',
+    'Endless, loop 1', 'Endless, from loop 2']), `fields: ${got.labels.join(', ')}`, log)
+  const type = (label, value) => p.evaluate(([l, v]) => {
+    const f = document.querySelector(`.pause.split input[aria-label="${l} pause length"]`)
+    f.value = v
+    f.dispatchEvent(new Event('input', { bubbles: true }))
+  }, [label, value])
+  await type('Apprentice', '-1')
+  await sleep(300)
+  got = await read()
+  await p.evaluate(() => document.querySelector('button.issues')?.click())
+  await sleep(300)
+  const issue = await p.evaluate(() => /a pause on .* needs Apprentice from 0 to 300 seconds/.test(
+    document.querySelector('[role=dialog][aria-label="Errors and warnings"]')?.innerText ?? ''))
+  await p.evaluate(() => document.querySelector('[role=dialog][aria-label="Errors and warnings"] button[aria-label="Close"]')?.click())
+  check(got.bad === 1 && issue, `-1 s: ${got.bad} field marked, issue listed: ${issue}`, log)
+  await type('Apprentice', '12')
+  await type('Endless, loop 1', '9.5')
+  await sleep(300)
+  got = await read()
+  check(got.bad === 0 && got.sum === 'Wait 12 / 30 / 28 s (Endless 9.5 → 0)', `edited: ${got.sum}`, log)
+  if (process.env.RL_SHOTS) {
+    const box = await p.$('.pause.split')
+    if (box) await box.screenshot({ path: `${process.env.RL_SHOTS}/diffpauses.png` })
+  }
 }
 
 /** On a door tab: "+" under a row inserts one directly below it, Clear empties the door's
@@ -733,6 +786,236 @@ async function preview (p, urls, mission, log) {
   check(units > 0, `${units} enemy rows`, log)
 }
 
+/** Snapping to the shipped lattice (kitplace.js latticeDelta): a kit floor lands and moves
+ * with its grid start on the 150 uu lattice and its plane on a multiple of 50; a wall
+ * dragged near it stands on its edge with its grid 20 over its plane, and moves on the
+ * lattice along it; shift moves freely; pieces by an off-lattice room take its lattice
+ * (latticeRooms); a level kit floor moves on its own lattice and a nudge leaves it where it
+ * was. */
+async function lattice (p, urls, mission, log) {
+  await openMission(p, urls, mission, log)
+  const on = (v, step, offset = 0) => Math.abs((v - offset) / step - Math.round((v - offset) / step)) * step < LATTICE_TOLERANCE
+  const near = (a, b) => Math.abs(a - b) < LATTICE_TOLERANCE
+  const grid = (i) => p.evaluate((i) => window.__rl_addedGrids(i)[0], i)
+  const drag = (axis, d, shift = false) => p.evaluate((a, d, s) => window.__rl_dragPicked(a, d, s), axis, d, shift)
+  const show = (g) => `min ${g.min.map(v => v.toFixed(1)).join(', ')}, foot ${g.foot.toFixed(1)}`
+  // a floor lands on the lattice, well clear of the level
+  const f = await p.evaluate(async (name, clear) => {
+    const r = window.__rl_riftAt() || [0, 0, 0]
+    const n = (await window.__rl_addKit(name, [r[0] + 1234.5, r[1] - 877.3, r[2] + clear])) - 1
+    window.__rl_pickAdded(n)
+    return n
+  }, LATTICE_FLOOR, LATTICE_CLEAR)
+  let fg = await grid(f)
+  check(fg.surface === 'Floor' && on(fg.min[0], 150) && on(fg.min[1], 150) && on(fg.foot, 50),
+    `${LATTICE_FLOOR} placed: ${show(fg)}`, log)
+  // dragged, it keeps to the lattice
+  const fx = await drag(0, 190)
+  const fz = await drag(2, 37)
+  fg = await grid(f)
+  check(on(fg.min[0], 150) && on(fg.min[1], 150) && on(fg.foot, 50) && on(fx[0], 150) && near(fx[1], 0) &&
+    on(fz[2], 50) && near(fz[0], 0), `floor dragged 190 x, 37 z: moved ${fx[0].toFixed(1)}, ` +
+    `${fz[2].toFixed(1)}; ${show(fg)}`, log)
+  // a wall facing the floor (trap side +y), its foot 20 short of the floor's edge and its
+  // grid 9 over the floor's plane plus 20
+  const w = await p.evaluate(async (name, at) => (await window.__rl_addKit(name, at)) - 1, LATTICE_WALL,
+    [fg.min[0], fg.min[1] - 600, fg.foot])
+  const wallAt = [fg.min[0] + 33, fg.min[1] - 20, fg.foot + 9]
+  await p.evaluate((i, at) => {
+    window.__rl_setAddedMatrix(i, [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, at[0], at[1], at[2], 1])
+    window.__rl_pickAdded(i)
+  }, w, wallAt)
+  let wg = await grid(w)
+  const bottom0 = wg.min[2]
+  await drag(1, 7)
+  wg = await grid(w)
+  check(wg.surface === 'Wall' && near(wg.foot, fg.min[1]),
+    `${LATTICE_WALL} dragged 7 y: foot ${wg.foot.toFixed(1)} on the floor's edge ${fg.min[1].toFixed(1)}`, log)
+  await drag(2, -5)
+  wg = await grid(w)
+  check(near(wg.min[2], fg.foot + 20), `wall dragged -5 z: grid bottom ${bottom0.toFixed(1)} -> ` +
+    `${wg.min[2].toFixed(1)}, floor plane ${fg.foot.toFixed(1)} + 20`, log)
+  await drag(0, 40)
+  wg = await grid(w)
+  check(on(wg.min[0], 150) && near(wg.foot, fg.min[1]) && near(wg.min[2], fg.foot + 20),
+    `wall dragged 40 x: grid start ${wg.min[0].toFixed(1)} on the lattice, still on the floor's edge`, log)
+  const free = await drag(1, 7, true)
+  wg = await grid(w)
+  check(near(free[1], 7) && near(wg.foot, fg.min[1] + 7), `shift held: moved ${free[1].toFixed(2)}`, log)
+  await drag(1, -7)
+  await latticeCensus(p, log, on, near, grid, drag, f, w)
+  await latticeRooms(p, log, on, near, grid, drag)
+  // a level kit floor moves on its own lattice, and a nudge leaves it where it was
+  const host = await p.evaluate(() => window.__rl_pickHostFloor(120))
+  if (!host) {
+    check(false, 'a level kit floor to drag', log)
+    return
+  }
+  const hg = await p.evaluate(() => window.__rl_pickedGrid())
+  const own = (v, was, step) => on(v - was, step)
+  const hx = await drag(0, 160, false)
+  const hg2 = await p.evaluate(() => window.__rl_pickedGrid())
+  check(own(hg2.min[0], hg.min[0], 150) && near(hg2.min[1], hg.min[1]) && near(hg2.foot, hg.foot),
+    `level floor ${host} dragged 160 x: moved ${hx[0].toFixed(2)}; grid start ${hg.min[0].toFixed(1)} -> ` +
+    `${hg2.min[0].toFixed(1)}, ${on(hg.min[0], 150) ? 'on' : 'off'} the world lattice`, log)
+  const hn = await drag(0, 3, false)
+  const hg3 = await p.evaluate(() => window.__rl_pickedGrid())
+  check(near(hg3.min[0], hg2.min[0]), `nudged 3 x: moved ${hn[0].toFixed(2)}`, log)
+}
+
+/** The lattice case's kit placement census rules (docs/research/kit-placement-census.md)
+ * on the class geometry /api/kit serves: a plain wall dragged to floor `f` stands on it
+ * with its grid's bottom and its face on the edge; a wall whose skirting falls short of
+ * its origin keeps the floor CENSUS_STOP in front of its face; a column dragged to the end
+ * of wall `w` stands edge to edge with its grid on its origin line; a ceiling lands with
+ * its plane 20 over a step. */
+async function latticeCensus (p, log, on, near, grid, drag, f, w) {
+  const fg = await grid(f)
+  const wg = await grid(w)
+  const place = (name, m) => p.evaluate(async (name, m) => {
+    const i = (await window.__rl_addKit(name, m.slice(12, 15))) - 1
+    window.__rl_setAddedMatrix(i, m)
+    window.__rl_pickAdded(i)
+    return i
+  }, name, m)
+  // a plain wall at the floor's far edge facing it (turned 180): face and grid bottom on it
+  const pw = await place(CENSUS_PLAIN, [-1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0,
+    fg.min[0] + 700, fg.max[1] + CENSUS_OFF, fg.foot + 9, 1])
+  await drag(1, -3)
+  await drag(2, -3)
+  const pg = await grid(pw)
+  check(near(pg.foot, fg.max[1]) && near(pg.min[2], fg.foot),
+    `${CENSUS_PLAIN} (plain) dragged to the floor: face ${pg.foot.toFixed(1)} on its edge ${fg.max[1].toFixed(1)}, ` +
+    `grid bottom ${pg.min[2].toFixed(1)} on its plane ${fg.foot.toFixed(1)}`, log)
+  // a short-skirted wall at the floor's +x edge facing it (turned 90): its stop on the edge
+  const sw = await place(CENSUS_SHORT, [0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0,
+    fg.max[0] - 47.5 + CENSUS_STOP + CENSUS_OFF, fg.min[1] + 150, fg.foot, 1])
+  await drag(0, -3)
+  const sg = await grid(sw)
+  const face = (sg.min[0] + sg.max[0]) / 2
+  check(near(face - fg.max[0], CENSUS_STOP),
+    `${CENSUS_SHORT} dragged to the floor: the floor stops ${(face - fg.max[0]).toFixed(1)} in front of its face`, log)
+  // a column at the wall's +x end: its +y grid edge to edge with the wall's, on its origin line
+  const cw = await place(CENSUS_COLUMN, [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+    wg.max[0] + CENSUS_OFF, wg.foot - CENSUS_OFF, wg.min[2], 1])
+  await drag(0, -3)
+  await drag(1, 3)
+  const cg = (await p.evaluate((i) => window.__rl_addedGrids(i), cw))
+    .filter(g => g.surface === 'Wall' && g.max[1] - g.min[1] < 50).sort((a, b) => b.max[1] - a.max[1])[0]
+  const plane = cg && (cg.min[1] + cg.max[1]) / 2
+  check(cg && near(cg.min[0], wg.max[0]) && near(plane, wg.foot),
+    `${CENSUS_COLUMN} dragged to the wall's end: grid start ${cg && cg.min[0].toFixed(1)} on its end ` +
+    `${wg.max[0].toFixed(1)}, plane ${cg && plane.toFixed(1)} on its origin line ${wg.foot.toFixed(1)}`, log)
+  // a ceiling well clear of the rest: plane 20 over a step
+  const ce = await p.evaluate(async (name, at) => (await window.__rl_addKit(name, at)) - 1, CENSUS_CEILING,
+    [fg.min[0] + 5000, fg.min[1], fg.foot + 1017])
+  const ceg = await grid(ce)
+  check(ceg.surface === 'Ceiling' && on(ceg.foot, 50, 20), `${CENSUS_CEILING} placed: plane ${ceg.foot.toFixed(1)}`, log)
+}
+
+/** The lattice case's rooms: three kit floors chained edge to edge off the world lattice
+ * make a room; a floor dropped beside it lands on the room's phase and plane, a column
+ * mesh's footprint on its phase, a decor mesh where it is dropped; a floor dragged from
+ * empty space to beside the room takes the room's phase on the dragged axis. */
+async function latticeRooms (p, log, on, near, grid, drag) {
+  const wrap = (v, step) => ((v % step) + step) % step
+  const room = await p.evaluate(async (name, clear, off) => {
+    const r = window.__rl_riftAt() || [0, 0, 0]
+    const at = [r[0] + off[0], r[1] + off[1], r[2] + clear + off[2]]
+    const first = (await window.__rl_addKit(name, at)) - 1
+    const size = (g) => g.max[0] - g.min[0]
+    const width = size(window.__rl_addedGrids(first)[0])
+    const ids = [first]
+    for (let i = 1; i < 3; i++) ids.push((await window.__rl_addKit(name, at)) - 1)
+    ids.forEach((n, i) => window.__rl_setAddedMatrix(n,
+      [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, at[0] + width * i, at[1], at[2], 1]))
+    return ids.map(n => window.__rl_addedGrids(n)[0])
+  }, LATTICE_FLOOR, LATTICE_CLEAR, LATTICE_ROOM)
+  const phase = [wrap(room[0].min[0], 150), wrap(room[0].min[1], 150)]
+  const plane = room[0].foot
+  const right = room[2].max[0]
+  check(!on(room[0].min[0], 150) && !on(room[0].min[1], 150) && !on(plane, 50),
+    `room of 3 floors off the world lattice: phase ${phase.map(v => v.toFixed(1)).join(', ')}, plane ${plane.toFixed(1)}`, log)
+  // a floor dropped beside the room, clear of its edges
+  const size = [room[0].max[0] - room[0].min[0], room[0].max[1] - room[0].min[1]]
+  const d = await p.evaluate(async (name, at) => (await window.__rl_addKit(name, at)) - 1, LATTICE_FLOOR,
+    [right + LATTICE_ROOM_GAP + size[0] / 2, room[0].min[1] + LATTICE_ROOM_GAP + size[1] / 2, plane + 9])
+  const dg = await grid(d)
+  check(on(dg.min[0], 150, phase[0]) && on(dg.min[1], 150, phase[1]) && near(dg.foot, plane) &&
+    dg.min[0] - right > 37.5, `floor dropped beside the room: ${dg.min.map(v => v.toFixed(1)).join(', ')} on the ` +
+    `room lattice, plane ${dg.foot.toFixed(1)}`, log)
+  // a floor tile mesh: its footprint on the room's phase
+  const box = await p.evaluate(async (name, at) => window.__rl_addedBox((await window.__rl_addMesh(name, at)) - 1),
+    LATTICE_TILE, [room[1].min[0] + LATTICE_ROOM_GAP, room[1].min[1] + LATTICE_ROOM_GAP, plane])
+  const start = (lo, hi) => lo + ((hi - lo) - Math.max(1, Math.round((hi - lo) / 150)) * 150) / 2
+  check(box && on(start(box.min[0], box.max[0]), 150, phase[0]) && on(start(box.min[1], box.max[1]), 150, phase[1]),
+    `${LATTICE_TILE} dropped in the room: footprint ${box && box.min.slice(0, 2).map(v => v.toFixed(1)).join(', ')} on the room lattice`, log)
+  // a column mesh lands where dropped, and a second dropped 20 off its side lands against it
+  const colAt = [room[0].min[0] + LATTICE_ROOM_GAP + 37.3, room[0].min[1] + LATTICE_ROOM_GAP + 41.9, plane]
+  const col = await p.evaluate(async (name, at) => {
+    const i = (await window.__rl_addMesh(name, at)) - 1
+    return { m: window.__rl_addedMatrix(i), box: window.__rl_addedBox(i) }
+  }, LATTICE_COLUMN, colAt)
+  check(col.m && [0, 1, 2].every(k => near(col.m[12 + k], colAt[k])),
+    `${LATTICE_COLUMN} dropped in the room: at ${col.m && col.m.slice(12, 15).map(v => v.toFixed(1)).join(', ')}, not on the lattice`, log)
+  const col2At = [colAt[0] + (col.box.max[0] - col.box.min[0]) + LATTICE_EDGE_OFF, colAt[1], colAt[2]]
+  const col2 = await p.evaluate(async (name, at) => window.__rl_addedBox((await window.__rl_addMesh(name, at)) - 1),
+    LATTICE_COLUMN, col2At)
+  check(col2 && near(col2.min[0], col.box.max[0]) && near(col2.min[1], col.box.min[1]),
+    `${LATTICE_COLUMN} dropped ${LATTICE_EDGE_OFF} off the first's side: lands against it (${col2 && col2.min[0].toFixed(1)} vs ${col.box.max[0].toFixed(1)})`, log)
+  // a decor mesh lands where it is dropped
+  const dropAt = [room[1].min[0] + LATTICE_ROOM_GAP + 37.3, room[1].min[1] + LATTICE_ROOM_GAP + 41.9, plane]
+  const m = await p.evaluate(async (name, at) => window.__rl_addedMatrix((await window.__rl_addMesh(name, at)) - 1),
+    LATTICE_DECOR, dropAt)
+  check(m && [0, 1, 2].every(k => near(m[12 + k], dropAt[k])),
+    `${LATTICE_DECOR} (decor) dropped in the room: at ${m && m.slice(12, 15).map(v => v.toFixed(1)).join(', ')}, not snapped`, log)
+  // a floor from empty space dragged to beside the room
+  const n = await p.evaluate(async (name, at) => {
+    const n = (await window.__rl_addKit(name, at)) - 1
+    window.__rl_pickAdded(n)
+    return n
+  }, LATTICE_FLOOR, [right + LATTICE_ROOM_FAR, room[0].max[1] + LATTICE_ROOM_GAP + size[1] / 2, plane])
+  const ng = await grid(n)
+  const nx = await drag(0, room[1].min[0] + LATTICE_ROOM_GAP - ng.min[0])
+  const ng2 = await grid(n)
+  check(on(ng.min[0], 150) && on(ng2.min[0], 150, phase[0]),
+    `floor dragged ${nx[0].toFixed(1)} x from empty space to beside the room: grid start ${ng.min[0].toFixed(1)} -> ` +
+    `${ng2.min[0].toFixed(1)}, on the room lattice`, log)
+}
+
+//: The kit floor and wall the lattice case places (Proving Grounds' and North Wing's most used).
+const LATTICE_FLOOR = 'Floor_RB_3x3_C'
+const LATTICE_WALL = 'Wall_RB_MT_v1_1x4_C'
+//: The lattice case's floor goes this far above the rift, clear of the level's pieces.
+const LATTICE_CLEAR = 20000
+//: How far off a lattice line or a target a snapped value may read, in uu (float round trip).
+const LATTICE_TOLERANCE = 0.01
+//: Where the lattice case's room is built from the rift ([x, y, z] past LATTICE_CLEAR), off the
+//: world lattice and further from its other pieces than main.js LATTICE_REACH.
+const LATTICE_ROOM = [-9000 + 77.9, 9000 + 66.4, 18.2]
+//: A piece dropped by the room goes this far past a room grid's edge: more than kitplace.js
+//: NEIGHBOUR_RANGE, less than main.js LATTICE_REACH.
+const LATTICE_ROOM_GAP = 313.3
+//: The floor dragged to the room starts this far past it: more than main.js LATTICE_REACH.
+const LATTICE_ROOM_FAR = 3000
+//: A floor tile mesh, a structural mesh and a decor mesh (New Object shelves castle and decor).
+const LATTICE_TILE = 'Floor_Herringbone_2x2_SM'
+const LATTICE_COLUMN = 'Column_Sec_1_2_RB'
+const LATTICE_DECOR = 'Barrel_SM'
+//: A mesh dropped this far off another's side lands against it: less than main.js
+//: EDGE_SNAP_RANGE.
+const LATTICE_EDGE_OFF = 20
+//: The census rules' pieces: a plain wall, a wall whose skirting falls short of its origin
+//: (its floor stop 37.5 in front of its face), a column and a ceiling.
+const CENSUS_PLAIN = 'Wall_RB_2x2_C'
+const CENSUS_SHORT = 'Wall_RB_WDMTL_v1_1x2_C'
+const CENSUS_STOP = 37.5
+const CENSUS_COLUMN = 'Column_Sec_1_4_RB_C'
+const CENSUS_CEILING = 'Ceiling_SB_2x1_C'
+//: A piece is put this far short of the join it is dragged onto, in uu: less than kitplace.js
+//: NEIGHBOUR_RANGE.
+const CENSUS_OFF = 15
+
 // -- Map Editor editing tools (2026-10-21 round) ------------------------------------------
 
 //: A kit piece the editing cases place: a 4x4 floor with a trap grid.
@@ -809,6 +1092,43 @@ async function flip (p, urls, mission, log) {
   await p.keyboard.press('m')
   const back = await p.evaluate((i) => window.__rl_addedTurn(i), n)
   check(back.det > 0, `M key flips back (determinant ${back.det})`, log)
+}
+
+/** The Collides switch on the level's own pieces (riftlord/mapeditor/piececollision.py):
+ * it shows each piece's shipped state, a change is stored on the piece's edit, switching it
+ * back drops an edit that holds nothing else, and a Blueprint part has no switch. */
+async function collides (p, urls, mission, log) {
+  await openMission(p, urls, mission, log)
+  const ids = await p.evaluate(() => window.__rl_collisionIds())
+  check(ids.off !== undefined && ids.on !== undefined && ids.none !== undefined,
+    `level pieces shipped off ${ids.off}, on ${ids.on}, a Blueprint part ${ids.none}`, log)
+  const state = (id) => p.evaluate((id) => window.__rl_pieceCollision(id), id)
+  const toggle = () => p.evaluate(() => { document.querySelector('#piececollision').click() })
+  await p.evaluate((id) => window.__rl_pickPiece(id), ids.off)
+  let s = await state(ids.off)
+  check(s.shipped === false && s.box === false && !s.edit, `piece ${ids.off}: Collides unchecked as shipped`, log)
+  await toggle()
+  s = await state(ids.off)
+  check(s.box === true && s.edit && s.edit.collision === true, `switched on: its edit holds collision ${s.edit && s.edit.collision}`, log)
+  const saved = await p.evaluate(async (id) => {
+    await window.__rl_savePlan()
+    const plan = await (await fetch('api/plan/' + encodeURIComponent(window.__rl_levelName()))).json()
+    return (plan.edits || []).find(e => e.id === id) || null
+  }, ids.off)
+  check(saved && saved.collision === true && saved.matrix && saved.matrix.length === 16,
+    `the saved plan keeps it (collision ${saved && saved.collision})`, log)
+  await toggle()
+  s = await state(ids.off)
+  check(s.box === false && !s.edit, 'switched back: the unmoved piece has no edit', log)
+  await p.evaluate((id) => window.__rl_pickPiece(id), ids.on)
+  s = await state(ids.on)
+  check(s.shipped === true && s.box === true, `piece ${ids.on}: Collides checked as shipped`, log)
+  await toggle()
+  s = await state(ids.on)
+  check(s.box === false && s.edit && s.edit.collision === false, `switched off: its edit holds collision ${s.edit && s.edit.collision}`, log)
+  await p.evaluate((id) => window.__rl_pickPiece(id), ids.none)
+  const none = await p.evaluate(() => !document.querySelector('#piececollision'))
+  check(none, `Blueprint part ${ids.none}: no Collides switch`, log)
 }
 
 //: A trap grid's edge moves in steps of this many uu when its piece is resized
@@ -971,8 +1291,9 @@ async function setField (p, selector, value) {
   await sleep(300)
 }
 
-/** A level light's Colour sets `lightColours` and its marker's colour; Select All picks every
- * light shipped in that colour, and one change recolours them all; Ctrl+Z undoes it. An
+/** A level light's Light Color sets `lights[key].LightColor` and its marker's colour; Select
+ * All picks every light shipped in that colour, and one change recolours them all; Ctrl+Z
+ * undoes it. An
  * Emitter's Effect plays another system (`fxSwaps`) and its cloud is drawn as that one;
  * Select All picks every placement of the system. The plan keeps both through a save. */
 async function retint (p, urls, mission, log) {
@@ -980,10 +1301,11 @@ async function retint (p, urls, mission, log) {
   await layer(p, 'lights', true)
   const light = await pickOwnMark(p, 'light', m => ['PointLight', 'RectLight', 'SpotLight'].includes(m.lightKind), log)
   check(!!light, `picked the light ${light && light.key}`, log)
-  check(await p.evaluate(() => !!document.querySelector('#lightcolour')), 'the Light section has a Colour field', log)
+  check(await p.evaluate(() => !!document.querySelector('#lightcolour')), 'the Light section has a Light Color field', log)
   await setField(p, '#lightcolour', RETINT_COLOUR)
   let bits = await p.evaluate(() => window.__rl_planBits())
-  check(bits.lightColours[light.key] === RETINT_COLOUR, `Colour sets lightColours[${light.key}] = ${bits.lightColours[light.key]}`, log)
+  const colourOf = (b, k) => ((b.lights || {})[k] || {}).LightColor
+  check(colourOf(bits, light.key) === RETINT_COLOUR, `Light Color sets lights[${light.key}] = ${colourOf(bits, light.key)}`, log)
   let drawn = (await p.evaluate(() => window.__rl_levelActorMarks('light'))).find(m => m.key === light.key)
   check(drawn.colour === RETINT_COLOUR, `its marker draws ${drawn.colour}`, log)
   const same = await p.evaluate(() => document.querySelector('#lightsame')?.textContent || '')
@@ -993,14 +1315,14 @@ async function retint (p, urls, mission, log) {
     check(`Select All ${n}` === same && n > 1, `${same}: ${n} lights picked`, log)
     await setField(p, '#lightcolour', RETINT_COLOUR)
     bits = await p.evaluate(() => window.__rl_planBits())
-    check(Object.keys(bits.lightColours).length === n, `one change recolours all ${n} (${Object.keys(bits.lightColours).length} in the plan)`, log)
+    check(Object.keys(bits.lights).length === n, `one change recolours all ${n} (${Object.keys(bits.lights).length} in the plan)`, log)
   }
   await p.keyboard.down('Control')
   await p.keyboard.press('z')
   await p.keyboard.up('Control')
   await sleep(300)
   bits = await p.evaluate(() => window.__rl_planBits())
-  check(!same || Object.keys(bits.lightColours).length === 1, `Ctrl+Z undoes the last change (${Object.keys(bits.lightColours).length} left)`, log)
+  check(!same || Object.keys(bits.lights).length === 1, `Ctrl+Z undoes the last change (${Object.keys(bits.lights).length} left)`, log)
   await layer(p, 'lights', false)
 
   await layer(p, 'vfx', true)
@@ -1022,8 +1344,8 @@ async function retint (p, urls, mission, log) {
   check(await p.evaluate(() => window.__rl_savePlan()), 'the plan saves', log)
   const kept = await p.evaluate(async (name) => (await (await fetch('api/plan/' + encodeURIComponent(name))).json()),
     EFFECTS_LEVEL)
-  check(kept.lightColours && kept.lightColours[light.key] === RETINT_COLOUR && kept.fxSwaps &&
-    kept.fxSwaps[fx.key] === RETINT_TEMPLATE, 'the saved plan keeps lightColours and fxSwaps', log)
+  check(kept.lights && (kept.lights[light.key] || {}).LightColor === RETINT_COLOUR && kept.fxSwaps &&
+    kept.fxSwaps[fx.key] === RETINT_TEMPLATE, 'the saved plan keeps lights and fxSwaps', log)
 }
 
 /** The Mission Events button opens the list; Add Music Change adds an event (placing the
@@ -1421,17 +1743,19 @@ async function crystal (p, urls, mission, log) {
   check(near, `saved on the rift base, turned as /api/crystal says: ${saved.matrix.map(v => +v.toFixed(3)).join(',')}`, log)
   const c = saved.crystal || {}
   const g = (c.groups || [])[0] || {}
-  check(!('healthPerRiftPoint' in c) && !('minHealth' in c) &&
+  check(!('healthPerRiftPoint' in c) && !('minHealth' in c) && !('difficultyHealth' in c) &&
     (c.groups || []).length === 1 && g.name === 'North-west' && (g.rifts || []).length === 1 &&
     g.rifts[0].spawner === rift.id && g.rifts[0].difficulty === 5,
   `saved settings ${JSON.stringify(c)}`, log)
 }
 
-//: The Crystal Health labels, in EGameDifficulty order (crystal.py HEALTH_DIFFICULTIES).
-const CRYSTAL_HEALTH_LABELS = ['Apprentice', 'War Mage', 'Rift Lord', 'Endless']
-//: The healths the crystalhealth case sets in the Onslaught Editor's Timeline.
-const CRYSTAL_WAR_MAGE = 2500
-const CRYSTAL_ENDLESS = 4000
+//: The Crystal Health labels (crystal.py HEALTH_KEYS, spec.js HEALTH_FIELDS).
+const CRYSTAL_HEALTH_LABELS = ['Map Difficulty', 'Rift Point Health', 'Difficulty Share']
+//: The Map Difficulty out of range (crystal.py RANGES: -2 to 5) the case types first, then
+//: the values it sets in the Onslaught Editor's Timeline; Difficulty Share is left blank.
+const CRYSTAL_MAP_DIFFICULTY_BAD = 9
+const CRYSTAL_MAP_DIFFICULTY = 1.5
+const CRYSTAL_POINT_HEALTH = 300
 //: The crystalhealth mission's rift start point (crystal.py check_plan's) and trigger.
 const CRYSTAL_POINT_AT = [3000, 6800, 465]
 const CRYSTAL_TRIGGER = { at: 75, wave: null, alive: 0, both: false, open: 1, launchAfter: 0, launchAlive: 0 }
@@ -1445,24 +1769,27 @@ const CRYSTAL_ROW = { unit: 'OrcLight', count: 4 }
 //: How long the Onslaught Editor may take to open the new mission, baking it first, in ms.
 const CRYSTAL_BAKE_WAIT = 180000
 
-/** Set an input in the Onslaught Editor and fire a bubbling change (Svelte delegates it). */
-async function setSvelteField (p, selector, value) {
-  return p.evaluate((sel, v) => {
+/** Set an input in the Onslaught Editor and fire a bubbling change (Svelte delegates it);
+ * `kind` 'input' for a field that takes its value as typed. */
+async function setSvelteField (p, selector, value, kind = 'change') {
+  return p.evaluate((sel, v, k) => {
     const el = document.querySelector(sel)
     if (!el) return false
     el.value = v
-    el.dispatchEvent(new Event('change', { bubbles: true }))
+    el.dispatchEvent(new Event(k, { bubbles: true }))
     return true
-  }, selector, value)
+  }, selector, value, kind)
 }
 
 /** Crystal Defense authoring: a Crystal and a Rift Group of one Unstable Rift placed on
  * Scenario_02 in the Map Editor and kept as a new mission (Save As). In the Onslaught
- * Editor: the Timeline has Crystal Health (four difficulties) and no Rift points, and each
+ * Editor: the Timeline has Crystal Health (Map Difficulty, Rift Point Health, Difficulty
+ * Share; Map Difficulty out of range shows a red reason) and no Rift points, and each
  * wave lists the group's rift with its chance; the group has its own tab named after it
- * (no tab for the rift itself), with its trigger (When The Wave After Crystal Health ≤ 75 %,
+ * (no tab for the rift itself), with its trigger (When The Wave After Crystal Health ≤ 75 % of total,
  * Opens At Enemies Left ≤ 50 % as the contract's default, Open, Repeat Every), its rift and
- * an enemy row added in wave 1; Endless health, wave 2's chance 0, Opens At 20 Seconds Into
+ * an enemy row added in wave 1; Map Difficulty and Rift Point Health (Difficulty Share
+ * unset, not saved), wave 2's chance 0, Opens At 20 Seconds Into
  * the Wave, Repeat Every 1 Wave and the row are
  * saved into the plan; the Map Editor's panel still shows the group. RL_SHOTS keeps
  * crystal-health*.png. */
@@ -1516,7 +1843,7 @@ async function crystalhealth (p, urls, mission, log) {
   await p.goto(`${urls.onslaught}/?embedded=1&theme=dark&bucket=${encodeURIComponent(id)}&open=1`,
     { waitUntil: 'domcontentloaded', timeout: 60000 })
   await waitFor(p, 'the Onslaught Editor with Crystal Health on the Timeline',
-    () => document.querySelector('input[aria-label="Endless health"]') &&
+    () => document.querySelector('input[aria-label="Map Difficulty"]') &&
       document.querySelector('input[aria-label="Starting coin"]'), { timeout: CRYSTAL_BAKE_WAIT, polling: 1000 })
   const timeline = await p.evaluate(() => ({
     riftPoints: !!document.querySelector('input[aria-label="Rift points"]'),
@@ -1528,8 +1855,16 @@ async function crystalhealth (p, urls, mission, log) {
   check(timeline.tabs.includes('North-west') && !timeline.tabs.some(t => /^(Unstable Rift|Rift Tear|Crystal Rift)/.test(t)),
     `tabs: ${timeline.tabs.join(', ')}`, log)
   check(timeline.chance === 1, `wave 2 lists the group's Unstable Rift (${timeline.chance})`, log)
-  await setSvelteField(p, 'input[aria-label="War Mage health"]', String(CRYSTAL_WAR_MAGE))
-  await setSvelteField(p, 'input[aria-label="Endless health"]', String(CRYSTAL_ENDLESS))
+  await setSvelteField(p, 'input[aria-label="Map Difficulty"]', String(CRYSTAL_MAP_DIFFICULTY_BAD), 'input')
+  await sleep(200)
+  const bad = await p.evaluate(() => ({
+    red: !!document.querySelector('.timeline .crystal input.bad[aria-label="Map Difficulty"]'),
+    why: document.querySelector('.timeline .crystal .reason')?.textContent.trim() || '',
+    placeholder: document.querySelector('input[aria-label="Difficulty Share"]')?.placeholder }))
+  check(bad.red && bad.why === 'From -2 to 5' && bad.placeholder !== '',
+    `Map Difficulty ${CRYSTAL_MAP_DIFFICULTY_BAD}: red "${bad.why}"; Difficulty Share placeholder ${bad.placeholder}`, log)
+  await setSvelteField(p, 'input[aria-label="Map Difficulty"]', String(CRYSTAL_MAP_DIFFICULTY), 'input')
+  await setSvelteField(p, 'input[aria-label="Rift Point Health"]', String(CRYSTAL_POINT_HEALTH), 'input')
   await p.evaluate(() => {
     const box = document.querySelector('.timeline input[aria-label$="available in wave 2"]')
     box.checked = false
@@ -1546,7 +1881,8 @@ async function crystalhealth (p, urls, mission, log) {
       opens: tr.querySelector('select[aria-label="Opens At"]').value, alive: tr.querySelector('input[aria-label="Enemies Left"]')?.value,
       repeat: tr.querySelector('input[aria-label="Repeat Every"]').value }
   })
-  check(CRYSTAL_TRIGGER_WORDS.every(l => trigger.words.includes(l)) && !/Launch|Stay Open/.test(trigger.text) &&
+  check(CRYSTAL_TRIGGER_WORDS.every(l => trigger.words.includes(l)) && trigger.words.includes('% of total') &&
+    !/Launch|Stay Open/.test(trigger.text) &&
     trigger.when === 'at' && trigger.health === '75' && trigger.opens === 'alive' && trigger.alive === '50' && trigger.repeat === '',
   `trigger: ${trigger.words.join(' ')}; When ${trigger.when} ${trigger.health}, Opens At ${trigger.opens} ${trigger.alive}, repeat "${trigger.repeat}"`, log)
   await setSvelteField(p, '.group select[aria-label="Opens At"]', 'after')
@@ -1580,9 +1916,9 @@ async function crystalhealth (p, urls, mission, log) {
   const saved = ((rec.plan || {}).added || []).find(a => a.kind === 'crystal') || {}
   const c = saved.crystal || {}
   const g = (c.groups || [])[0] || {}
-  const health = c.difficultyHealth || []
-  check(health[1] === CRYSTAL_WAR_MAGE && health[3] === CRYSTAL_ENDLESS,
-    `plan health after the save: ${JSON.stringify(health)}`, log)
+  check(c.mapDifficulty === CRYSTAL_MAP_DIFFICULTY && c.pointHealth === CRYSTAL_POINT_HEALTH &&
+    !('pointDifficultyShare' in c) && !('difficultyHealth' in c),
+  `plan health after the save: ${JSON.stringify({ mapDifficulty: c.mapDifficulty, pointHealth: c.pointHealth, pointDifficultyShare: c.pointDifficultyShare, difficultyHealth: c.difficultyHealth })}`, log)
   const t = (g.triggers || [])[0] || {}
   const rows = (g.waves || [])[0] || []
   check(t.launchAfter === CRYSTAL_LAUNCH_AFTER && t.launchAlive === 0 && t.alive === 0 && t.repeat === CRYSTAL_REPEAT && !('close' in t) &&
@@ -4045,6 +4381,7 @@ async function mapeditorUi (p, urls, mission, log) {
     const c = Math.SQRT1_2
     window.__rl_setAddedMatrix(a, [c, c, 0, 0, -c, c, 0, 0, 0, 0, 1, 0, at[0], at[1], at[2], 1])
     const b = (await window.__rl_addMesh(cube, [at[0] + 115, at[1] + 60, at[2]])) - 1
+    window.__rl_setAddedMatrix(b, [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, at[0] + 115, at[1] + 60, at[2], 1])
     window.__rl_pickAdded(b)
     return window.__rl_edgeSnapTry(-10, false)
   }, CUBE, SNAP_HEIGHT)
@@ -4679,7 +5016,9 @@ async function currentBuild (p, mission, log) {
   const state = async () => (await p.evaluate(async () => (await (await fetch('api/bucket')).json())))
     .items.find(i => i.id === mission)?.state
   const was = await state()
-  if (was === 'built') return
+  //: 'unlit': built by an editor, its light bake left to the Missions page; an editor opens
+  //: it as it is (bucket.light_pending)
+  if (was === 'built' || was === 'unlit') return
   await p.evaluate(async (id) => fetch('api/bucket/build', { method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-Workshop': '1' }, body: JSON.stringify({ ids: [id] }) }), mission)
   await waitFor(p, `${mission} built`, async () => {
@@ -5186,11 +5525,338 @@ async function dialogue (p, urls, mission, log) {
     `reopened: ${got.length} lines as saved`, log)
 }
 
+//: A shipped level with every Lighting section and four suns (Scenario_09, Front Lawn).
+const LIGHTING_LEVEL = 'Scenario_09'
+//: The Height Fog's Fog Density the case writes.
+const LIGHTING_FOG = 0.37
+
+/** Map Settings' Lighting: the sections show the level's real values; a change stores
+ * it, the view draws it and Reset takes it out; the shipped value stores nothing; a sun's
+ * Intensity and Pitch, its direction handle, Add Sun and Delete; a vector (Saturation); no
+ * horizontal scroll; a placed light's Intensity and Mobility; a save keeps it all. The
+ * mission (an older plan with another level's sky) opens with that sky's lighting as its
+ * own values. */
+//: The narrowest a row's label may be drawn, px: narrower, its words break a letter a line.
+const ROW_LABEL_MIN = 40
+
+/** The texts of the right sidebar's row labels drawn narrower than ROW_LABEL_MIN. */
+async function squeezedLabels (p) {
+  return p.evaluate((min) => [...document.querySelectorAll('#propsbody .row > span:first-child')]
+    .filter(e => e.offsetParent && !e.closest('details:not([open])') && e.textContent.trim().length > 3 &&
+      e.getBoundingClientRect().width < min)
+    .map(e => e.textContent.trim().slice(0, 40)), ROW_LABEL_MIN)
+}
+
+async function lightingCase (p, urls, mission, log) {
+  const sel = (t, prop) => `[data-lit-target="${t}"][data-lit-prop="${prop}"]`
+  const bits = () => p.evaluate(() => window.__rl_planBits())
+  await openMission(p, urls, mission, log)
+  await waitFor(p, 'the mission\'s Lighting', (s) => document.querySelector(s),
+    { timeout: 120000, polling: 250 }, sel('section:heightFog', 'FogInscatteringColor'))
+  let b = await bits()
+  check(Object.keys(b.lighting || {}).length > 0, `the older mission opens with its sky's lighting as values: ${Object.keys(b.lighting || {}).join(', ')}`, log)
+  check(await p.evaluate(() => !!document.querySelector('[data-lit-reset="section:heightFog"]')),
+    'its Height Fog shows those values with Reset', log)
+
+  await openLevelNamed(p, urls, LIGHTING_LEVEL, log)
+  await waitFor(p, 'the Lighting sections in Map Settings', (s) => document.querySelector(s),
+    { timeout: 120000, polling: 250 }, sel('section:heightFog', 'FogDensity'))
+  const box = () => p.evaluate(() => {
+    const d = document.querySelector('#lightingbox')
+    return d ? { open: d.open, title: d.querySelector(':scope > summary').textContent } : null
+  })
+  let lit = await box()
+  check(lit && lit.title === 'Lighting' && !lit.open, `the Lighting section starts closed (${JSON.stringify(lit)})`, log)
+  await clickIn(p, '#lightingbox > summary')
+  await sleep(200)
+  check((await box()).open, 'clicking Lighting opens it', log)
+  const inside = await p.evaluate(() => [...document.querySelectorAll('#lightingbox h2')].map(h => h.textContent))
+  check(['Sun', 'Moon', 'Sky Light', 'Height Fog', 'Post Process'].every(h => inside.includes(h)),
+    `Lighting holds ${inside.join(', ')}`, log)
+  const squeezed = await squeezedLabels(p)
+  check(!squeezed.length, `no Lighting label is squeezed to a letter a line (${squeezed.join(' | ')})`, log)
+  const info = await p.evaluate(async (n) => (await (await fetch('api/mapinfo/' + n)).json()).lighting, LIGHTING_LEVEL)
+  const heads = await p.evaluate(() => [...document.querySelectorAll('#propsbody h2')].map(h => h.textContent))
+  check(['Sun', 'Sky Light', 'Atmospheric Fog', 'Height Fog', 'Post Process'].every(h => heads.includes(h)),
+    `sections: ${heads.join(', ')}`, log)
+  const shipped = info.sections.heightFog.FogDensity
+  const shown = await p.evaluate((s) => document.querySelector(s).value, sel('section:heightFog', 'FogDensity'))
+  check(+shown === shipped, `Fog Density shows the level's ${shipped} (${shown})`, log)
+
+  await setField(p, sel('section:heightFog', 'FogDensity'), String(LIGHTING_FOG))
+  await sleep(300)
+  b = await bits()
+  check(((b.lighting || {}).heightFog || {}).FogDensity === LIGHTING_FOG, `Fog Density ${LIGHTING_FOG} is in the plan`, log)
+  check((await box()).open, 'Lighting stays open after a change redraws Map Settings', log)
+  const view = await p.evaluate(() => window.__rl_lightingView())
+  check(view.fog.fogDensity === LIGHTING_FOG, `the view draws the fog at ${view.fog.fogDensity}`, log)
+  const reset = '[data-lit-reset="section:heightFog"][data-lit-prop="FogDensity"]'
+  check(await p.evaluate((s) => !!document.querySelector(s), reset), 'Fog Density has Reset', log)
+  await clickIn(p, reset)
+  await sleep(300)
+  b = await bits()
+  check(!('FogDensity' in ((b.lighting || {}).heightFog || {})), 'Reset takes it out', log)
+  await setField(p, sel('section:heightFog', 'FogDensity'), String(shipped))
+  await sleep(300)
+  b = await bits()
+  check(!((b.lighting || {}).heightFog), 'the shipped value stores nothing', log)
+
+  const sun = info.suns[0]
+  const t = 'sun:' + sun.key
+  await setField(p, sel(t, 'Intensity'), '4.5')
+  await sleep(300)
+  await setField(p, sel(t, 'Pitch'), '-60')
+  await sleep(300)
+  b = await bits()
+  const lightsOf = (k) => (b.lights || {})[k] || {}
+  check(lightsOf(sun.key).Intensity === 4.5, `${sun.name}: Intensity 4.5 in the plan`, log)
+  const rot = lightsOf(sun.key).RelativeRotation || []
+  check(Math.abs(rot[0] + 60) < 0.01, `${sun.name}: Pitch -60 is its rotation (${rot.join(', ')})`, log)
+  await clickIn(p, `[data-sun-pick="${t}"]`)
+  await sleep(300)
+  const handle = await p.evaluate(() => window.__rl_lightingView())
+  check(handle.handle && handle.selectedSun === t, `the picked sun shows its direction handle (${handle.selectedSun})`, log)
+
+  const suns = await p.evaluate(() => document.querySelectorAll('[data-sun-pick]').length)
+  await clickIn(p, '#sunadd')
+  await waitFor(p, 'the added sun', (n) => document.querySelectorAll('[data-sun-pick]').length === n + 1,
+    { timeout: 60000, polling: 250 }, suns)
+  b = await bits()
+  const added = b.added.findIndex(a => a.kind === 'kit' && a.name === 'DirectionalLight')
+  check(added >= 0, `Add Sun adds a DirectionalLight (added[${added}])`, log)
+  await clickIn(p, `[data-sun-del="added:${added}"]`)
+  await sleep(300)
+  b = await bits()
+  check(!b.added.some(a => a.name === 'DirectionalLight'), 'Delete takes the added sun out', log)
+  const other = info.suns[1]
+  await clickIn(p, `[data-sun-del="sun:${other.key}"]`)
+  await sleep(300)
+  b = await bits()
+  check((b.removedFx || []).includes(other.key), `Delete turns ${other.name} off (removedFx)`, log)
+
+  await setField(p, `${sel('section:postProcess', 'ColorSaturation')}[data-lit-i="0"]`, '0.5')
+  await sleep(300)
+  b = await bits()
+  const sat = ((b.lighting || {}).postProcess || {}).ColorSaturation || []
+  check(sat[0] === 0.5, `Saturation's red 0.5 is in the plan (${sat.join(', ')})`, log)
+  const wide = await p.evaluate(() => { const e = document.querySelector('#props'); return e.scrollWidth - e.clientWidth })
+  check(wide <= 0, `Map Settings does not scroll sideways (${wide} px)`, log)
+  if (process.env.RL_SHOTS) {
+    const panel = await p.$('#props')
+    if (panel) await panel.screenshot({ path: `${process.env.RL_SHOTS}/lighting.png` })
+  }
+
+  await layer(p, 'lights', true)
+  const light = await pickOwnMark(p, 'light', m => m.lightKind === 'PointLight', log)
+  check(!!light, `picked the light ${light && light.key}`, log)
+  if (light) {
+    await waitFor(p, 'the Light section', (s) => document.querySelector(s), { timeout: 30000, polling: 250 },
+      sel('light', 'Intensity'))
+    await setField(p, sel('light', 'Intensity'), '123')
+    await sleep(300)
+    //: the Mobility it does not ship with, where it has one to choose (a light shipped
+    //: Movable offers Movable alone)
+    const mob = await p.evaluate((s) => {
+      const m = document.querySelector(s)
+      return { now: m.value, other: [...m.options].map(o => o.value).find(v => v !== m.value) || null }
+    }, sel('light', 'Mobility'))
+    if (mob.other) await setField(p, sel('light', 'Mobility'), mob.other)
+    await sleep(300)
+    b = await bits()
+    check(lightsOf(light.key).Intensity === 123 && lightsOf(light.key).Mobility === (mob.other || undefined),
+      `the light's Intensity 123 and Mobility ${mob.other || mob.now + ' (its only choice)'} are in the plan ` +
+      `(${JSON.stringify(lightsOf(light.key))})`, log)
+  }
+  check(await p.evaluate(() => window.__rl_savePlan()), 'the plan saves', log)
+  const kept = await p.evaluate(async (name) => (await (await fetch('api/plan/' + encodeURIComponent(name))).json()),
+    LIGHTING_LEVEL)
+  check(((kept.lighting || {}).postProcess || {}).ColorSaturation && ((kept.lights || {})[sun.key] || {}).Intensity === 4.5 &&
+    (kept.removedFx || []).includes(other.key) && (!light || ((kept.lights || {})[light.key] || {}).Intensity === 123),
+  'the saved plan keeps the lighting, the sun and the light', log)
+}
+
+//: A shipped level with a moon (Scenario_06, The Lava Pits).
+const MOON_LEVEL = 'Scenario_06'
+
+/** Map Settings' Moon: the level's moon shows its real direction, distance, scale and
+ * material; a Pitch change stores its location and turn, Reset takes it out and the
+ * shipped value stores nothing; Scale and Material; its direction handle; the view draws
+ * it on the sky; Add Moon and Delete (an added one leaves, the level's goes into
+ * removedFx); no horizontal scroll; a save keeps it all. The mission (Scenario_01, no
+ * moon) shows Add Moon alone. */
+async function moonsCase (p, urls, mission, log) {
+  const sel = (t, prop) => `[data-moon-target="${t}"][data-moon-prop="${prop}"]`
+  const bits = () => p.evaluate(() => window.__rl_planBits())
+  await openMission(p, urls, mission, log)
+  await waitFor(p, 'the mission\'s Moon section', () => document.querySelector('#moonadd'),
+    { timeout: 120000, polling: 250 })
+  check(await p.evaluate(() => !document.querySelector('[data-moon-pick]')), 'a level with no moon lists none', log)
+
+  await openLevelNamed(p, urls, MOON_LEVEL, log)
+  await waitFor(p, 'the Moon section in Map Settings', () => document.querySelector('[data-moon-pick]'),
+    { timeout: 120000, polling: 250 })
+  const info = await p.evaluate(async (n) => (await (await fetch('api/mapinfo/' + n)).json()).moons, MOON_LEVEL)
+  const moon = info.moons[0]
+  const t = 'moon:' + moon.key
+  const loc = moon.values.RelativeLocation
+  const dist = Math.hypot(...loc)
+  const pitch = Math.asin(loc[2] / dist) * 180 / Math.PI
+  const shown = await p.evaluate((a, b) => [document.querySelector(a).value, document.querySelector(b).value],
+    sel(t, 'Pitch'), sel(t, 'Distance'))
+  check(Math.abs(+shown[0] - pitch) < 0.01 && Math.abs(+shown[1] - dist) < 1,
+    `the moon shows its Pitch ${pitch.toFixed(2)} and Distance ${Math.round(dist)} (${shown.join(', ')})`, log)
+
+  await setField(p, sel(t, 'Pitch'), '30')
+  await sleep(300)
+  let b = await bits()
+  const own = (b.moons || {})[moon.key] || {}
+  const l = own.RelativeLocation || [0, 0, 0]
+  check(Math.abs(Math.asin(l[2] / Math.hypot(...l)) * 180 / Math.PI - 30) < 0.01 && !!own.RelativeRotation,
+    `Pitch 30 stores the moon's location and its turn (${JSON.stringify(own)})`, log)
+  const reset = `[data-moon-reset="${t}"][data-moon-prop="Pitch"]`
+  check(await p.evaluate((s) => !!document.querySelector(s), reset), 'Pitch has Reset', log)
+  await clickIn(p, reset)
+  await sleep(300)
+  b = await bits()
+  check(!(b.moons || {})[moon.key], 'Reset takes it out', log)
+  await setField(p, sel(t, 'Pitch'), shown[0])
+  await sleep(300)
+  b = await bits()
+  check(!(b.moons || {})[moon.key], 'the shipped value stores nothing', log)
+
+  await setField(p, sel(t, 'Scale'), '2500')
+  await setField(p, sel(t, 'Material'), 'Moon_Snow_01_Inst')
+  await sleep(300)
+  b = await bits()
+  const mine = (b.moons || {})[moon.key] || {}
+  check(JSON.stringify(mine.RelativeScale3D) === '[2500,2500,2500]' && mine.Material === 'Moon_Snow_01_Inst',
+    `Scale and Material are in the plan (${JSON.stringify(mine)})`, log)
+
+  await clickIn(p, `[data-moon-pick="${t}"]`)
+  await sleep(300)
+  const view = await p.evaluate(() => window.__rl_lightingView())
+  check(view.moonHandle && view.selectedMoon === t, `the picked moon shows its direction handle (${view.selectedMoon})`, log)
+  check(view.moons.length === 1 && view.moons[0].textured && view.moons[0].size > 0,
+    `the view draws the moon on the sky (${JSON.stringify(view.moons)})`, log)
+  if (process.env.RL_SHOTS) {
+    //: the camera at the level's origin, looking at the moon
+    await p.evaluate((d) => window.__rl_view([0, 0, 2000], [d[0] * 10000, d[1] * 10000, 2000 + d[2] * 10000]),
+      loc.map(c => c / dist))
+    await sleep(1500)
+    await p.screenshot({ path: `${process.env.RL_SHOTS}/moons-view.png` })
+  }
+
+  await clickIn(p, '#moonadd')
+  await sleep(300)
+  b = await bits()
+  check((b.addedMoons || []).length === 1, 'Add Moon adds a moon', log)
+  const listed = await p.evaluate(() => [...document.querySelectorAll('[data-moon-pick]')].map(e => e.textContent))
+  check(listed.length === 2, `the Moon section lists both (${listed.join(', ')})`, log)
+  await setField(p, sel('addedmoon:0', 'Yaw'), '-45')
+  await sleep(300)
+  b = await bits()
+  const a0 = (b.addedMoons || [])[0] || {}
+  const al = a0.RelativeLocation || [1, 0, 0]
+  check(Math.abs(Math.atan2(al[1], al[0]) * 180 / Math.PI + 45) < 0.01,
+    `the added moon's Yaw -45 is its location (${JSON.stringify(a0)})`, log)
+  if (!(await p.evaluate(() => document.querySelector('#lightingbox').open))) {
+    await clickIn(p, '#lightingbox > summary')
+    await sleep(200)
+  }
+  const wide = await p.evaluate(() => { const e = document.querySelector('#props'); return e.scrollWidth - e.clientWidth })
+  check(wide <= 0, `Map Settings does not scroll sideways (${wide} px)`, log)
+  if (process.env.RL_SHOTS) {
+    await p.evaluate(() => document.querySelector('[data-moon-pick]').scrollIntoView())
+    const panel = await p.$('#props')
+    if (panel) await panel.screenshot({ path: `${process.env.RL_SHOTS}/moons.png` })
+  }
+  check(await p.evaluate(() => window.__rl_savePlan()), 'the plan saves', log)
+  const kept = await p.evaluate(async (name) => (await (await fetch('api/plan/' + encodeURIComponent(name))).json()),
+    MOON_LEVEL)
+  check(((kept.moons || {})[moon.key] || {}).Material === 'Moon_Snow_01_Inst' && (kept.addedMoons || []).length === 1,
+    `the saved plan keeps the moons (${JSON.stringify({ moons: kept.moons, addedMoons: kept.addedMoons })})`, log)
+
+  await clickIn(p, '[data-moon-del="addedmoon:0"]')
+  await sleep(300)
+  b = await bits()
+  check(!(b.addedMoons || []).length, 'Delete takes the added moon out', log)
+  await clickIn(p, `[data-moon-del="${t}"]`)
+  await sleep(300)
+  b = await bits()
+  check((b.removedFx || []).includes(moon.key), `Delete takes the level's moon out (removedFx ${moon.key})`, log)
+  const left = await p.evaluate(() => window.__rl_lightingView().moons.length)
+  check(left === 0, `the view draws no moon (${left})`, log)
+}
+
+//: Proving Grounds' (900_Arena_P) added #207 and #69 relative to #207, twice, 3000 uu apart: a
+//: wall turned a quarter turn ending 4.4 uu short of a column (two wall-end seams). Each is
+//: [kit, its turn (the matrix's first 12 floats), offset].
+const SEAM_WALL = [0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]
+const SEAM_UPRIGHT = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]
+const SEAM_PIECES = [0, 3000].flatMap(dx => [['Wall_RB_MT_v2_2x3_C', SEAM_WALL, [dx, 0, 0]],
+  ['Column_Sec_1_1_FB_C', SEAM_UPRIGHT, [dx - 218.0729, 305.8571, 73.519]]])
+//: The seam pieces go this far above the rift, clear of the level's pieces.
+const SEAM_CLEAR = 20000
+
+/** Cover Seams on two wall-end seams: the counts read on a line of their own, one proposal
+ * accepted adds its covers to the plan as added meshes with collision off, one skipped adds
+ * nothing. */
+async function coverSeams (p, urls, mission, log) {
+  await openMission(p, urls, mission, log)
+  const before = await p.evaluate(async (pieces, clear) => {
+    const r = window.__rl_riftAt() || [0, 0, 0]
+    const at = [Math.round(r[0]), Math.round(r[1]), Math.round(r[2] + clear)]
+    for (const [name, turn, d] of pieces) {
+      const i = (await window.__rl_addKit(name, [at[0] + d[0], at[1] + d[1], at[2] + d[2]])) - 1
+      window.__rl_setAddedMatrix(i, [...turn, at[0] + d[0], at[1] + d[1], at[2] + d[2], 1])
+    }
+    window.__rl_deselect()
+    return window.__rl_planCounts().added
+  }, SEAM_PIECES, SEAM_CLEAR)
+  await clickIn(p, '#seamfind')
+  await waitFor(p, 'the Cover Seams answer', () => { const s = window.__rl_seams(); return s.asked && !s.busy }, { timeout: 120000 })
+  let s = await p.evaluate(() => window.__rl_seams())
+  const ours = s.proposals.filter(q => q.seam.type === 'wall_end')
+  check(!s.error && ours.length >= 2, `Cover Seams proposes ${ours.length} wall-end covers ` +
+    `(${s.proposals.length} proposals, ${s.problems.length} not placed${s.error ? ', ' + s.error : ''})`, log)
+  if (ours.length < 2) return
+  const counts = await p.evaluate(() => {
+    const c = document.querySelector('.seamcount')
+    if (!c) return null
+    const r = c.getBoundingClientRect()
+    return { text: c.textContent, width: r.width, height: r.height }
+  })
+  check(counts && counts.width > 200 && counts.height < 40,
+    `the counts read on one line (${JSON.stringify(counts)})`, log)
+  const squeezed = await squeezedLabels(p)
+  check(!squeezed.length, `no Map Settings label is squeezed to a letter a line (${squeezed.join(' | ')})`, log)
+  const [take, skip] = ours
+  await clickIn(p, `[data-seam-pick="${take.id}"]`)
+  await sleep(300)
+  s = await p.evaluate(() => window.__rl_seams())
+  check(s.picked === take.id && s.ghosts === take.items.length, `picked, its ${s.ghosts} covers are drawn`, log)
+  await clickIn(p, `[data-seam-accept="${take.id}"]`)
+  await waitFor(p, 'the accepted covers', (n) => window.__rl_planCounts().added === n, { timeout: 60000 },
+    before + take.items.length)
+  await clickIn(p, `[data-seam-skip="${skip.id}"]`)
+  await sleep(300)
+  s = await p.evaluate(() => window.__rl_seams())
+  const added = (s.added || []).slice(before)
+  check(added.length === take.items.length && added.every(a => a.kind === 'mesh' && a.collision === false &&
+    a.name === (take.items.find(i => i.matrix.join() === a.matrix.join()) || {}).name),
+  `accepted: ${added.length} added meshes, collision off, as proposed (${added.map(a => a.name).join(', ')})`, log)
+  check(s.accepted.includes(take.id) && s.skipped.includes(skip.id) && !s.open.includes(take.id) &&
+    !s.open.includes(skip.id), 'the accepted and the skipped proposal leave the list', log)
+  const html = await p.evaluate(() => document.querySelector('#propsbody').innerHTML)
+  check(!html.includes(`data-seam-pick="${skip.id}"`), 'the skipped proposal is not listed', log)
+}
+
 const CASES = { onslaught, mapeditor, reference, preview, rotation, flip, gridsize, effects, events,
   saveas, controllers, compounds: compoundKits, compoundbrowser: compoundBrowser, compoundparams: compoundParams, decor: decorTools, titlebar, campaign, maptoggles,
   minimapdoors, cutaway, addlook, pickups, crystal, crystalhealth, gamemode, crystallevel, supportedmods, modunits, scramble, scrambletiers, unlocks, header, fab: fabKits, setup, appshell: appShell,
   mapeditorui: mapeditorUi, spawnerfacing: spawnerFacing, multirift: multiRift, openwarn: openWarn, onslaughtfloors: onslaughtFloors,
-  campaignindex: campaignIndex, dialogue, floorsnap: floorSnap, samename: sameName, campaignpak: campaignPak, retint }
+  campaignindex: campaignIndex, dialogue, floorsnap: floorSnap, samename: sameName, campaignpak: campaignPak, retint,
+  diffpauses: diffPauses, lattice, lighting: lightingCase, moons: moonsCase, collides, coverseams: coverSeams }
 
 /** One blank page asks for a WebGL context: {ok, vendor, renderer, why}. Not ok when there
  * is no context, the GPU reads as disabled (a blocklisted or crashed GPU process), or WebGL

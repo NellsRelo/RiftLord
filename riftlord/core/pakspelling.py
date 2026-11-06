@@ -117,9 +117,11 @@ def plan_problems(plan):
     for name, path in dependency_paks(plan):
         bad = problems(path)
         if bad:
-            out.append('%s (%s) holds %d package path(s) under two FName spellings, which '
-                       'the game loads twice and crashes on: %s'
-                       % (name, os.path.basename(path), len(bad), '; '.join(bad[:3])))
+            print('%s (%s) holds %d package path(s) under two FName spellings: %s'
+                  % (name, os.path.basename(path), len(bad), '; '.join(bad[:3])))
+            out.append('the installed %s (%s) has files the game would load twice and crash '
+                       'on. Update or reinstall %s, then build again'
+                       % (name, os.path.basename(path), name))
     return out
 
 

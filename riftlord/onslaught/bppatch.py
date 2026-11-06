@@ -577,15 +577,27 @@ def clone_block(mm, indices, entry=None):
     Returns (clones, entry_clone). `entry` is the block's entry memory offset;
     statements come back in layout order, and the entry is rarely the first of
     them, so a rung must branch to `entry_clone`, not to `clones[0]`.
+
+    A SwitchValue's case chain points inside its own statement; in a copy it becomes
+    (copy, offset into it), or the copy's cases would run the original's and carry on
+    after the original statement.
     """
     import copy
-    from riftlord.formats.ue.kismet import code_offsets
+    from riftlord.formats.ue.kismet import code_offsets, node_sizes
     clones = [copy.deepcopy(mm[i][2]) for i in indices]
     inside = dict((mm[i][0], clones[k]) for k, i in enumerate(indices))
+    spans = [(mm[i][0], mm[i][0] + node_sizes(mm[i][2])[1], clones[k])
+             for k, i in enumerate(indices)]
     for c in clones:
         for node, j in code_offsets([c]):
             kind, old = node.ops[j]
-            if isinstance(old, int) and old in inside:
+            # a case chain ends at the end of its statement at most, which is also
+            # where the next statement starts
+            home = next((s for s in spans if s[2] is c and s[0] < old <= s[1]), None) \
+                if node.name == 'SwitchValue' and isinstance(old, int) else None
+            if home is not None:
+                node.ops[j] = (kind, (c, old - home[0]))
+            elif isinstance(old, int) and old in inside:
                 node.ops[j] = (kind, inside[old])
     return clones, (inside.get(entry) if entry is not None else clones[0])
 

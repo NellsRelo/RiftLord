@@ -7,3 +7,4 @@ target/
 .sync/
 .pytest_cache/
 *.part
+tools/research

@@ -5,23 +5,21 @@
            trackLabel, PAR_MIN, PAR_MAX, memberKey, RIFT_CHANCE, PICK_LABEL, PICK_TIP,
            DIALOGUE_WHEN, LINE_TEXT_MAX, LINE_SPEAKER_MAX, LINE_MIN, LINE_MAX, LINE_DELAY_MAX,
            SHIPPED_SPEAKERS, lineLength, newLine, dialogueLines, syncLineWaves,
-           lineProblems } from './spec.js'
+           lineProblems, HEALTH_FIELDS, healthProblem } from './spec.js'
   import { musicButton } from '../../../shared/musicpreview.js'
 
   //: `riftName(spawner)`: an Unstable Rift's name as the map shows it
   let { spec, detail, mode = null, units = [], onremovewave,
         riftName = (s) => `Unstable Rift ${s}` } = $props()
 
-  //: the Crystal's health per difficulty (spec.riftTear.health), and its Rift Groups
+  //: the Crystal's health fields (spec.riftTear.health), and its Rift Groups
   let health = $derived(spec.riftTear?.health ?? null)
   let tearGroups = $derived(spec.riftTear?.groups ?? [])
 
-  /** One difficulty's health changed: blank 0, a number clamped to range. */
-  function setHealth(d, raw) {
-    const n = Number(raw)
-    const [lo, hi] = health.range ?? [0, 10000000]
-    if (raw === '' || raw === null) health.values[d] = 0
-    else if (Number.isFinite(n)) health.values[d] = Math.max(lo, Math.min(hi, n))
+  /** A health field as typed: blank null (Map Difficulty 0, an override the mode's); review
+   *  refuses one out of range. */
+  function setHealth(key, raw) {
+    health.values[key] = raw === '' || raw === null ? null : Number(raw)
   }
 
   /** A member's chance in a wave: 0 unavailable, else 1..100 (100 is stored as none). */
@@ -387,13 +385,17 @@
       <header><h3>Crystal Health</h3></header>
       <div class="body">
         <div class="grid">
-          {#each health.difficulties as name, d (name)}
-            <span class="lab">{name}</span>
+          {#each HEALTH_FIELDS as [key, label, step] (key)}
+            {@const range = health.ranges?.[key]}
+            {@const why = healthProblem(health.values?.[key], range)}
+            <span class="lab">{label}</span>
             <div class="inline">
-              <input type="number" min={health.range?.[0] ?? 0} max={health.range?.[1] ?? 10000000}
-                     step="50" value={health.values[d] || ''} aria-label={`${name} health`}
-                     onchange={(e) => { setHealth(d, e.currentTarget.value)
-                                        e.currentTarget.value = health.values[d] || '' }} />
+              <input type="number" min={range?.[0]} max={range?.[1]} {step}
+                     value={health.values?.[key] ?? ''}
+                     placeholder={String(health.defaults?.[key] ?? '')}
+                     class:set={health.values?.[key] != null} class:bad={!!why}
+                     oninput={(e) => setHealth(key, e.currentTarget.value)} aria-label={label} />
+              {#if why}<span class="reason" role="alert">{why}</span>{/if}
             </div>
           {/each}
         </div>
@@ -604,6 +606,8 @@
   .rift.off span { color: var(--text-dim); }
   .lab.pick { cursor: help; }
   .crystal .inline input { width: 96px; }
+  .crystal input.set { border-color: var(--accent); }
+  .crystal .reason { color: var(--bad); font-size: 11px; white-space: nowrap; }
   .chip { font-size: 12px; padding: 3px 9px; border-radius: 11px; }
   .chip.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 </style>

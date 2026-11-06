@@ -141,8 +141,9 @@ EXPECTED = [('regenerate', ('*_Minimap.uexp', '*_Minimap.uasset', '*_Minimap_*.u
             # else in it differing; certified in the comparison itself (spawnerfacing_apply)
             ('spawnerfacing', (), SPAWNERFACING_REASON, None),
             # by content: a level (or sublevel) whose parked actors' sounds are silenced
-            # (geomedits.silence) and whose own moon, under a sky from another home
-            # (skyfog.own_extras), is parked as geomedits.park writes it, read with FNames
+            # (geomedits.silence) and whose own moon (moons.MATERIALS; parked by a sky
+            # from another home before 2026-11-05, now by `removedFx`), is parked as
+            # geomedits.park writes it, read with FNames
             # resolved, nothing else in it differing; the walkable graph and spawner facing
             # certified alongside; certified in the comparison itself (content_certify)
             ('parked', (), PARKED_REASON, None)]
@@ -725,7 +726,7 @@ def content_certify(a_ua, a_ux, b_ua, b_ux):
       - an AudioComponent of an actor parked in the new level: `bAutoActivate` false and
         `Sound` none (geomedits.silence);
       - an OMDMapDisplayComponent of a parked actor: `bShowMarker` false (hide_markers);
-      - the root component of an actor with a moon (skyfog.SKY_EXTRA_WORDS) on it: only its
+      - the root component of an actor with a moon (moons.MATERIALS) on it: only its
         RelativeLocation, moved to a parking spot (geomedits.park);
       - the root component of an added spawner: only its RelativeRotation, from none or yaw 0
         to spawnerfacing's rule (as spawnerfacing_apply);
@@ -734,7 +735,7 @@ def content_certify(a_ua, a_ux, b_ua, b_ux):
     The imports, the export table (less names and serial offsets) and the preloads must be
     the same, and the only names gained PARKED_NAMES."""
     from riftlord.build import levelbuild
-    from riftlord.build.world import skyfog
+    from riftlord.build.world import moons as moonmod
     from riftlord.mapeditor import geomedits
     from riftlord.mapeditor import spawnerfacing
     try:
@@ -770,7 +771,7 @@ def content_certify(a_ua, a_ux, b_ua, b_ux):
         return actor > 0 and _parked_at(location(ex_b, actor))
 
     def has_moon(actor):
-        return any(_mentions(ex_b[p][3], skyfog.SKY_EXTRA_WORDS) for i, p in enumerate(paths)
+        return any(_mentions(ex_b[p][3], moonmod.MATERIALS) for i, p in enumerate(paths)
                    if p == paths[actor - 1] or owner(i + 1) == actor)
 
     facing = None

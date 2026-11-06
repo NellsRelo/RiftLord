@@ -178,14 +178,19 @@ build holds the map), else from the built level's placed Crystal (`map_report`'s
 `pieces`), so a pak opened without its record reads the same, Rift Groups included
 (`rifttear.level_view`). In Crystal Defense:
 
-- the Timeline has no Rift points (`MODES[...]['hide']`) and has **Crystal Health** per
-  difficulty; each wave lists every Rift Group's Unstable Rifts under "<group> · Pick
-  Chance (%)", each available or not and its chance of being picked when the group opens
-  that wave (MemberChance; 0 = not available);
+- the Timeline has no Rift points (`MODES[...]['hide']`) and has **Crystal Health**: Map
+  Difficulty (MapDifficulty, -2 to 5 difficulty steps, blank 0) and the optional overrides
+  Rift Point Health (PointHealth) and Difficulty Share (PointDifficultyShare), blank = the
+  mode's (shown as placeholders), written only when set; out of range shows red. One rift
+  point's health = PointHealth x (1 + (difficulty step + MapDifficulty) x PointDifficultyShare)
+  / (1 + 0.25 x (players - 4)); the Crystal's is the initial rift points x that. Each wave
+  lists every Rift Group's Unstable Rifts under "<group> · Pick Chance (%)", each available
+  or not and its chance of being picked when the group opens that wave (MemberChance; 0 =
+  not available);
 - each **Rift Group** has a tab named after it (`lib/RiftGroup.svelte`): **Opens** (the
   group's lock and its triggers, `lib/Trigger.svelte`, each on two lines: **When** [Wave n |
-  The Wave After Crystal Health ≤ x % | From Wave n After Crystal Health ≤ x %] (`wave`,
-  `at`, both with `both`), then **Opens At** [Seconds Into the Wave n s | Enemies Left ≤ x %]
+  The Wave After Crystal Health ≤ x % of total | From Wave n After Crystal Health ≤ x % of
+  total] (`wave`, `at`, both with `both`), then **Opens At** [Seconds Into the Wave n s | Enemies Left ≤ x %]
   (`launchAfter`, `launchAlive`, at most 75), **Open** n Rifts (`open`, at most the group's
   rifts) and **Repeat Every** n Waves (blank = never); Wave and Open out of range show red
   with the reason and refuse the save (`review`, `rifttear.spec_problems`). `alive` is
@@ -247,6 +252,22 @@ The mapping of difficulty bytes 0 to 4 onto the game's named difficulties is
   WaveBreak at; a sibling Onslaught import gives the class and outer.
 - **Wave events** are cloned `OnslaughtAction` statements. An event the author
   did not ask for is dropped, so a map's own boss does not turn up uninvited.
+- **Per-difficulty pauses.** Seven coordinators (Scenario11, Scenario13, Ice_01, Sand_01,
+  Sand_03-05) wait 39 times with `OnslaughtDelay(Delay)`, `Delay` set in each case of a
+  Switch on `GetGameDifficulty` (Apprentice, War Mage, Rift Lord, Endless) and the Endless
+  case again on `GetEndlessIteration` (loop 1, then from loop 2; Sand_04 from loop 3).
+  ScenarioDLC_02 waits 3 times on the Endless loop alone. `wavespec.delay_sites` reads each
+  as a row pause with `byDifficulty` values, shown as "Wait 32 / 30 / 28 s (Endless 16 →
+  0)" with a field per value. Saving writes the values into the host's own statements; a
+  pause whose row moved off its wave, door or place becomes a flat wait of its largest
+  value (`settle_pauses`) and its statements wait no more. A new pause is always flat:
+  a fresh Switch means building its statements and, on the other coordinators, new
+  variables and imports. Sand_04's opening `OnslaughtDelay(Delay)` has no setter of its
+  own and is not read. A copied block's SwitchValue keeps its case chain inside the copy
+  (`bppatch.clone_block`); before, an Endless run of a copy jumped into the original. An
+  appended wave copies its donor block's Switch cases too (`clone_with_branches`); without
+  them Sand_01's copy ran on into the donor's spawns (62 declared for 51 rows). A gate a
+  row asks for survives the opening-delay step, which clears only the host's own gates.
 
 Every build re-reads the finished coordinator and checks it declares what was
 asked for -- wave count, the actual units each wave sends (whichever way the

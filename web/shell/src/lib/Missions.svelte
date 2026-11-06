@@ -81,8 +81,10 @@
 
   /** A row's build state: a running build's word for it, else the list's. */
   const rowState = (item) => progress[item.id] || item.state
-  const needsBuild = (item) => ['unbuilt', 'stale', 'failed'].includes(rowState(item))
-  const blocksPacking = (item) => rowState(item) !== 'built'
+  const needsBuild = (item) => ['unbuilt', 'stale', 'failed', 'unlit'].includes(rowState(item))
+  //: an 'unlit' mission (built by an editor, its light bake still to do) is baked by
+  //: Install and Package first (bakeFirst)
+  const blocksPacking = (item) => !['built', 'unlit'].includes(rowState(item))
 
   /** Build missions one after another, showing each row's progress as it goes. */
   async function doBuild(ids) {
@@ -121,6 +123,15 @@
     }
   }
 
+  /** Build the chosen missions whose light bake an editor's build left to do (state 'unlit'),
+   *  so Install and Package take them lit. False when a build failed (doBuild says why). */
+  async function bakeFirst(ids) {
+    const unlit = ids.filter((id) => byId.get(id) && rowState(byId.get(id)) === 'unlit')
+    if (!unlit.length) return true
+    await doBuild(unlit)
+    return unlit.every((id) => byId.get(id) && rowState(byId.get(id)) === 'built')
+  }
+
   /** The refusal Install and Package give when a chosen mission is not built, or null. */
   function unbuiltRefusal(ids, verb) {
     const names = ids.map((id) => byId.get(id)).filter((i) => i && blocksPacking(i)).map((i) => i.title)
@@ -148,6 +159,7 @@
   async function doInstall(ids, label) {
     const refused = unbuiltRefusal(ids, 'installed')
     if (refused) return (message = { tone: 'bad', text: refused })
+    if (!(await bakeFirst(ids))) return
     busy = 'install'
     message = null
     try {
@@ -176,6 +188,7 @@
   async function doPackage(ids, label, zipName = null) {
     const refused = unbuiltRefusal(ids, 'packaged')
     if (refused) return (message = { tone: 'bad', text: refused })
+    if (!(await bakeFirst(ids))) return
     const name = zipName || (ids.length === 1 ? `${ids[0]}.zip` : 'RiftLord_Missions.zip')
     if (!isNative()) {
       const a = document.createElement('a')
@@ -339,12 +352,17 @@
     built: { label: 'Built', tone: 'ok', tip: 'Built from its latest save; ready to install or package' },
     stale: { label: 'Out of date', tone: 'warn', tip: 'Edited since it was last built; build it again' },
     unbuilt: { label: 'Not built', tone: 'warn', tip: 'Saved but never built; build it before installing' },
+    unlit: { label: 'Lighting to bake', tone: 'warn', tip: 'Built for an editor without its light bake; Build, Install or Package bakes it' },
     failed: { label: 'Build failed', tone: 'bad', tip: 'Its last build failed' },
     queued: { label: 'Queued', tone: 'dim', tip: 'Waiting for the build in front of it' },
     building: { label: 'Building…', tone: 'busy', tip: 'Being built now' },
   }
   const buildOf = (item) => {
     const b = BUILD[rowState(item)] || BUILD.built
+    //: what changed the lighting, from the build that left it unbaked
+    if (rowState(item) === 'unlit' && item.lighting?.length) {
+      return { ...b, tip: `${b.tip} (${item.lighting.join(', ')})` }
+    }
     //: the stage alone (Lightmap, Level, Navmesh, Waves): the column is narrow
     return rowState(item) === 'building' && stages[item.id]
       ? { ...b, label: stages[item.id] } : b

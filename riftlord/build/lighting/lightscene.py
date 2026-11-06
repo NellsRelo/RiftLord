@@ -344,17 +344,22 @@ EMITTERS = 'emitters'
 PIECE_KEY_DECIMALS = 1
 #: Package tag of components a plan adds (occluders only: they have no light map).
 ADDED = 'added'
+#: Kinds of added piece a bake lays in as occluders (apply_plan): shipped meshes by name.
+#: Added meshes and kit pieces that get light maps are laid in as receivers instead
+#: (lightalloc); Fab pieces are not read by the baker.
+OCCLUDING_KINDS = ('mesh',)
 
 
 def _piece_key(tag, component, translation):
     return (tag, component, tuple(round(float(v), PIECE_KEY_DECIMALS) for v in translation))
 
 
-def apply_plan(level, comps_by_path, plan):
+def apply_plan(level, comps_by_path, plan, received=()):
     """Lay a Rift Lord plan over the components: removed pieces are dropped, moved ones
-    take their new matrix, added meshes become occluders (key ADDED). Pieces are found
-    by sublevel, component export and translation among riftlord.leveldata's pieces,
-    whose ids the plan uses. Returns {'removed', 'moved', 'added', 'unmatched'} counts."""
+    take their new matrix, added meshes become occluders (key ADDED), except the items
+    in `received`, which lightalloc lays in as receivers. Pieces are found by sublevel,
+    component export and translation among riftlord.leveldata's pieces, whose ids the
+    plan uses. Returns {'removed', 'moved', 'added', 'unmatched'} counts."""
     from riftlord.mapeditor import leveldata
     removed = set(plan.get('removed') or [])
     moved = {e['id']: e['matrix'] for e in (plan.get('edits') or []) if 'id' in e}
@@ -385,16 +390,36 @@ def apply_plan(level, comps_by_path, plan):
             c['matrices'] = mats
             c['removed'] = not mats
     added = []
-    for a in plan.get('added') or []:
-        if a.get('kind', 'mesh') != 'mesh' or not a.get('name'):
+    received = set(received)
+    for n, a in enumerate(plan.get('added') or []):
+        if a.get('kind', 'mesh') not in OCCLUDING_KINDS or not a.get('name'):
+            continue
+        counts['added'] += 1
+        if n in received:
             continue
         added.append({'guid': None, 'export': None, 'mesh': a['name'],
                       'matrices': [np.array(a['matrix'], np.float64).reshape(4, 4).T],
                       'occluder': True, 'lightmap': None, 'mesh_index': None,
-                      'instances': None, 'package': ADDED})
-        counts['added'] += 1
+                      'instances': None, 'package': ADDED, 'item': n})
     comps_by_path[ADDED] = added
     return counts
+
+
+def drop_host(comps_by_path):
+    """Take every component of the level's own out of the scene, as a level that streams
+    none of its host's geometry and parks the rest has them (riftlord.mapeditor.scratch).
+    Returns the count taken out."""
+    gone = 0
+    for path, comps in comps_by_path.items():
+        if path in (ADDED, EMITTERS):
+            continue
+        for c in comps:
+            if c['matrices']:
+                gone += 1
+            c['matrices'], c['removed'] = [], True
+            if c['instances']:
+                c['instances'] = []
+    return gone
 
 
 def static_light_guids(bd):
@@ -434,16 +459,84 @@ def _brightness(kind, p):
     return b * 16.0
 
 
-def lights(level, static_guids, packages_=None):
-    """[light] for every Static point, spot and rect light of the level.
+def light_record(kind, guid, p, m, package, export):
+    """One light (lights()) from its merged properties `p` and world matrix `m`."""
+    rec = {'kind': kind, 'guid': guid, 'package': package, 'export': export,
+           'position': [float(v) for v in m[:3, 3]],
+           'direction': [float(v) for v in _axis(m, 0)],
+           'tangent': [float(v) for v in _axis(m, 2)],
+           'colour': linear_colour(p['LightColor']),
+           'brightness': _brightness(kind, p),
+           'radius': float(p['AttenuationRadius']),
+           'falloff': float(p['LightFalloffExponent']),
+           'inverse_squared': bool(p['bUseInverseSquaredFalloff']) or kind == 'rect',
+           'cast_shadows': bool(p['CastShadows']) and bool(p['CastStaticShadows']),
+           'indirect': float(p['IndirectLightingIntensity'])}
+    if kind == 'rect':
+        rec['source_radius'] = 0.5 * float(p['SourceWidth'])
+        rec['source_length'] = 0.5 * float(p['SourceHeight'])
+    else:
+        rec['source_radius'] = max(1.0, float(p['SourceRadius']))
+        rec['source_length'] = float(p['SourceLength'])
+    if kind == 'spot':
+        outer = min(max(float(p['OuterConeAngle']), 0.0), 89.0)
+        rec['outer'] = outer
+        rec['inner'] = min(max(float(p['InnerConeAngle']), 0.0), outer)
+    return rec
+
+
+def edit_props(p, edits, defaults):
+    """Put a plan's light values (riftlord.build.world.lighting: '#rrggbb' colours, lists,
+    None for the class default) into merged props `p`, in this module's form: FColor
+    (r, g, b, a), tuples; positions left out. Returns `p`."""
+    for prop, value in (edits or {}).items():
+        if prop.startswith('Relative'):
+            continue
+        if value is None:
+            if prop in defaults:
+                p[prop] = defaults[prop]
+            else:
+                p.pop(prop, None)
+            continue
+        p.update(scene_props({prop: value}))
+    return p
+
+
+def scene_props(edits):
+    """A plan's light values (riftlord.build.world.lighting: '#rrggbb' colours, lists)
+    as this module's props: FColor (r, g, b, a), tuples; positions and None left out."""
+    out = {}
+    for prop, value in (edits or {}).items():
+        if value is None or prop.startswith('Relative'):
+            continue
+        if isinstance(value, str) and value.startswith('#'):
+            rgb = [int(value[k:k + 2], 16) for k in (1, 3, 5)]
+            out[prop] = tuple(rgb) + ((int(value[7:9], 16),) if len(value) == 9 else (255,))
+        elif isinstance(value, list):
+            out[prop] = tuple(float(np.float32(v)) for v in value)
+        elif isinstance(value, float):
+            #: as the package stores it, so a value read back from one bakes the same
+            out[prop] = float(np.float32(value))
+        else:
+            out[prop] = value
+    return out
+
+
+def lights(level, static_guids, packages_=None, edits=None, moves=None, removed=()):
+    """[light] for every Static point, spot and rect light of the level, with a plan's
+    `edits` ({actor key: light values}, riftlord.build.world.lighting), `moves` ({actor
+    key: [dx, dy, dz]}) and `removed` actor keys; a light the plan makes Movable is left
+    out.
 
     A light: {'kind', 'guid', 'position', 'direction' (X axis), 'tangent' (Z axis),
     'colour' (linear rgb), 'brightness', 'radius', 'falloff', 'inverse_squared',
     'source_radius', 'source_length', 'inner', 'outer' (cone half angles, degrees),
     'cast_shadows', 'indirect', 'package', 'export'}."""
     out = []
+    gone = set(removed or ())
     for path in packages_ or packages(level):
         pkg = Package(path)
+        tag = tag_of(level, path)
         for i, e in enumerate(pkg.exports):
             kind = LIGHT_KINDS.get(str(e.get('cls') or ''))
             if not kind:
@@ -452,38 +545,28 @@ def lights(level, static_guids, packages_=None):
             guid = own.get('LightGuid')
             if not isinstance(guid, bytes) or guid not in static_guids:
                 continue
+            key = '%s|%d' % (tag, int(e.get('outer') or 0))
+            if key in gone:
+                continue
             p = dict(DEFAULTS)
             p.update(pkg.props(i))
+            edit_props(p, (edits or {}).get(key), DEFAULTS)
+            if p.get('Mobility', 'EComponentMobility::Static') != 'EComponentMobility::Static':
+                continue
             m = pkg.world(i)
-            rec = {'kind': kind, 'guid': guid, 'package': path, 'export': i + 1,
-                   'position': [float(v) for v in m[:3, 3]],
-                   'direction': [float(v) for v in _axis(m, 0)],
-                   'tangent': [float(v) for v in _axis(m, 2)],
-                   'colour': linear_colour(p['LightColor']),
-                   'brightness': _brightness(kind, p),
-                   'radius': float(p['AttenuationRadius']),
-                   'falloff': float(p['LightFalloffExponent']),
-                   'inverse_squared': bool(p['bUseInverseSquaredFalloff']) or kind == 'rect',
-                   'cast_shadows': bool(p['CastShadows']) and bool(p['CastStaticShadows']),
-                   'indirect': float(p['IndirectLightingIntensity'])}
-            if kind == 'rect':
-                rec['source_radius'] = 0.5 * float(p['SourceWidth'])
-                rec['source_length'] = 0.5 * float(p['SourceHeight'])
-            else:
-                rec['source_radius'] = max(1.0, float(p['SourceRadius']))
-                rec['source_length'] = float(p['SourceLength'])
-            if kind == 'spot':
-                outer = min(max(float(p['OuterConeAngle']), 0.0), 89.0)
-                rec['outer'] = outer
-                rec['inner'] = min(max(float(p['InnerConeAngle']), 0.0), outer)
-            out.append(rec)
+            shift = (moves or {}).get(key)
+            if shift:
+                m = m.copy()
+                m[:3, 3] += np.asarray(shift, np.float64)
+            out.append(light_record(kind, guid, p, m, path, i + 1))
     return out
 
 
 # ------------------------------------------------------------------- sky light
 
-def sky_light(level, packages_=None):
-    """The level's Static sky light: {'colour' (linear), 'brightness', 'indirect',
+def sky_light(level, packages_=None, edits=None):
+    """The level's Static sky light with a plan's sky light values (`edits`,
+    riftlord.build.world.lighting): {'colour' (linear), 'brightness', 'indirect',
     'lower_black', 'lower_colour', 'cubemap' (/Game path or None), 'angle',
     'cast_shadows'}, or None."""
     for path in packages_ or packages(level):
@@ -493,6 +576,7 @@ def sky_light(level, packages_=None):
                 continue
             p = dict(SKY_DEFAULTS)
             p.update(pkg.props(i))
+            edit_props(p, edits, SKY_DEFAULTS)
             if p.get('Mobility', 'EComponentMobility::Static') != 'EComponentMobility::Static':
                 continue
             cube = None

@@ -37,6 +37,7 @@ ROOT = os.path.dirname(HERE)
 
 from riftlord.core import gamefiles  # noqa: E402
 from riftlord.build import levelbuild
+from riftlord.core import buildmessage  # noqa: E402
 from riftlord.formats.omd3 import omd3level  # noqa: E402
 from riftlord.formats.omd3 import omd3actors  # noqa: E402
 from riftlord.build import pathemit  # noqa: E402
@@ -380,9 +381,11 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
             if scale != (1.0, 1.0, 1.0):
                 mesh = _child_named(builder, got, 'DoorMesh')
                 if mesh is None:
-                    report['skipped'].append(
-                        '%s has no DoorMesh component, so it cannot be resized'
-                        % name)
+                    report['skipped'].append(buildmessage.left_out(
+                        'the size of Door %s' % door.get('id', n),
+                        '%s has no DoorMesh component' % name,
+                        'This door type has no size; set its size back to 1, or pick another '
+                        'door type.'))
                 else:
                     final = tuple(a * b for a, b in
                                   zip(authored_door_scale(cls), scale))
@@ -411,6 +414,11 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
         from riftlord.mapeditor import kitactors
         cat = meshcat.load()
         actor_donor = donor_for('StaticMeshActor')
+        #: {index in `added`: {component or None: MapBuildDataId}} of the pieces a bake
+        #: gives light maps (riftlord/build/lighting/lightalloc.py)
+        from riftlord.build.lighting import lightalloc
+        receiving = lightalloc.active(level_name, plan)
+        receivers = lightalloc.by_item(plan) if receiving else {}
         #: added teleporters by their plan id, to link once both ends exist
         teleporters = {}
         #: {index in `added`: placed actor} for the materials painted on them
@@ -423,7 +431,8 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
                 #: (riftlord/mapeditor/crystal.py)
                 from riftlord.mapeditor import crystal
                 if crystal.piece(plan) is not item:
-                    report['skipped'].append('a second Crystal is not placed')
+                    report['skipped'].append(buildmessage.left_out(
+                        'a second Crystal', '', 'A mission takes one; remove the extra.'))
                     continue
                 got = crystal.place(builder, item, free_name(crystal.PLACED_NAME), plan,
                                     report)
@@ -450,6 +459,9 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
                 if got:
                     controllers.after_add(builder, got, item, report)
                     _collision_off(builder, got, item, report)
+                    if receiving:
+                        lightalloc.receive_kit(builder, got, receivers.get(n) or {}, report)
+                        lightalloc.light_actor(builder, got, n, report)
                     report['added'] += 1
                     report['scales_carried'] = (report.get('scales_carried', 0)
                                                 + carry_scale(builder, got, item['name']))
@@ -459,13 +471,18 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
                 continue
             info = cat.get(item['name'])
             if not info or not actor_donor:
-                report['skipped'].append('no way to place %s' % item['name'])
+                report['skipped'].append(buildmessage.left_out(
+                    'the added piece %s' % buildmessage.piece_label(item),
+                    'no catalogue entry or no StaticMeshActor donor', verb='place'))
                 continue
             path = info['path'].replace('../../../OMD/Content', '/Game')
             idx, why = add_mesh(builder, actor_donor, path, item['name'],
-                                item['matrix'], 'RiftLordMesh_%d' % n)
+                                item['matrix'], 'RiftLordMesh_%d' % n,
+                                receiver=(receivers.get(n) or {}).get(None), report=report)
             if idx is None:
-                report['skipped'].append(why or ('could not place %s' % item['name']))
+                report['skipped'].append(buildmessage.left_out(
+                    'the added piece %s' % buildmessage.piece_label(item),
+                    why or 'add_mesh refused', verb='place'))
             else:
                 _collision_off(builder, idx, item, report)
                 report['added'] += 1
@@ -474,6 +491,9 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
         #: materials painted on added meshes and kit pieces (riftlord/lavafx.py)
         from riftlord.build.world import lavafx as _paints
         _paints.paint_added(builder, added, placed, report)
+        #: the added light actors' own light values (riftlord.build.world.lighting)
+        from riftlord.build.world import lighting as _lighting
+        _lighting.write_added(builder, added, placed, report)
 
     #: the Mission Events piece (riftlord/missionevents.py), on any level
     from riftlord.missions import missionevents
@@ -484,13 +504,16 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
     #: effects: the plan's `fx` items (riftlord/lavafx.py), on any level, a new one too
     from riftlord.build.world import lavafx
     report['added'] += lavafx.apply(builder, level_name, plan, report)
-    #: the chosen sky's moon, from its home level (riftlord/skyfog.py)
-    from riftlord.build.world import skyfog
+    #: the moons the plan adds (riftlord.build.world.moons), on any level; an older plan's
+    #: as its sky brought them (lighting.migrated, as sublevel_edits reads it)
+    from riftlord.build.world import lighting as _lit
+    from riftlord.build.world import moons
     try:
-        report['added'] += skyfog.lift_extras(builder, level_name, plan, report)
-    except Exception as exc:                         # noqa: BLE001
-        report['skipped'].append('sky pieces not placed: %s: %s'
-                                 % (type(exc).__name__, exc))
+        report['added'] += moons.place_added(builder, _lit.migrated(plan, level_name),
+                                             free_name, report)
+    except (Exception, SystemExit) as exc:           # noqa: BLE001
+        report['skipped'].append(buildmessage.left_out(
+            'the moons', '%s: %s' % (type(exc).__name__, exc)))
 
     #: Fab library pieces and trap grids (riftlord/fabemit.py), only when the plan has them
     from riftlord.mapeditor import fabemit
@@ -506,40 +529,39 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
         paint_look(builder, plan, report,
                    planes=plane_exports(level_name, plan).get('persistent'))
     except Exception as exc:                         # noqa: BLE001
-        report['skipped'].append('could not repaint the look: %s: %s'
-                                 % (type(exc).__name__, exc))
+        report['skipped'].append(buildmessage.left_out(
+            'the sky, liquid and floor colours', '%s: %s' % (type(exc).__name__, exc)))
 
     #: the plan's world settings (kill height, War Scenario flag)
     try:
         from riftlord.mapeditor import mapinfo
         mapinfo.apply_world(builder, plan, report)
     except Exception as exc:                         # noqa: BLE001
-        report['skipped'].append('could not write the world settings: %s: %s'
-                                 % (type(exc).__name__, exc))
+        report['skipped'].append(buildmessage.left_out(
+            'the world settings (kill height, War Scenario)',
+            '%s: %s' % (type(exc).__name__, exc)))
 
     #: blocking and kill volumes: the plan's edits, and any a ground route crosses
-    if not _scratch.is_scratch(plan):
-        try:
-            from riftlord.mapeditor import volumes
-            volumes.apply(builder, plan, level_name, report)
-        except Exception as exc:                     # noqa: BLE001
-            report['skipped'].append('could not write the volumes: %s: %s'
-                                     % (type(exc).__name__, exc))
+    try:
+        from riftlord.mapeditor import volumes
+        volumes.apply(builder, plan, level_name, report)
+    except Exception as exc:                         # noqa: BLE001
+        report['skipped'].append(buildmessage.left_out(
+            'the blocking and kill volume changes', '%s: %s' % (type(exc).__name__, exc)))
 
     #: scene settings and the intro filter, where the persistent level holds them;
     #: sublevels get theirs in apply_to_sublevel (riftlord.levelfx)
     from riftlord.build.world import levelfx
     if not _scratch.is_scratch(plan):
         try:
-            from riftlord.build.world import skyfog
-            scene_world = skyfog.world_with_sky(plan)
+            scene_world = plan.get('world') or {}
             levelfx.apply(builder, scene_world, report)
             said, skipped = levelfx.notes(level_name, scene_world)
             report['notes'] += said
             report['skipped'] += skipped
         except Exception as exc:                     # noqa: BLE001
-            report['skipped'].append('could not write the scene settings: %s: %s'
-                                     % (type(exc).__name__, exc))
+            report['skipped'].append(buildmessage.left_out(
+                'the scene settings', '%s: %s' % (type(exc).__name__, exc)))
 
     #: story dialogue (riftlord.storyvo), the intro card (riftlord.levelintro) and the
     #: rift warning box (riftlord.riftwarning)
@@ -551,8 +573,8 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
         try:
             module.apply(builder, plan, report)
         except Exception as exc:                     # noqa: BLE001
-            report['skipped'].append('could not write the %s: %s: %s'
-                                     % (label, type(exc).__name__, exc))
+            report['skipped'].append(buildmessage.left_out(
+                'the %s' % label, '%s: %s' % (type(exc).__name__, exc)))
 
     #: moved and added primitives drop out of the level's precomputed visibility
     report['visibility_reset'] = _geomedits.forget_moved_visibility(builder, visibility_snap)
@@ -562,17 +584,22 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
             report['visibility_cells_dropped'] = _geomedits.forget_precomputed_visibility(
                 builder)
         except ValueError as exc:
-            report['skipped'].append('could not drop the precomputed visibility: %s' % exc)
+            report['skipped'].append(buildmessage.left_out(
+                'the camera visibility for removed and moved pieces', str(exc),
+                effect='pieces seen through a removed or moved piece may blink in game',
+                verb='reset'))
 
     #: every listed actor in the Level export's create-before-serialization group
     report['level_preloads_added'] = builder.preload_listed_actors()
     gaps = builder.level_preload_gaps()
     if gaps:
-        raise SystemExit('%d listed actors are not preloaded by the Level' % len(gaps))
+        raise unlinked(builder, [g - 1 for g in gaps], plan,
+                       '%d listed actors are not preloaded by the Level' % len(gaps))
     report['preload_dropped'] = [(index, name) for index, name in builder.preload_dropped]
-    bad = null_preloads(builder)
+    bad = null_preloads(builder, indices=True)
     if bad:
-        raise SystemExit('null preload dependency on %s' % ', '.join(sorted(set(bad))))
+        raise unlinked(builder, bad, plan, 'null preload dependency on %s' % ', '.join(
+            sorted({levelbuild._name_of(builder.pkg, i) for i in bad})))
     ua, ux = builder.write()
     return ua, ux, report
 
@@ -598,7 +625,10 @@ def sublevel_edits(level_name, plan=None):
     sublevel -- so only geometry needs this. A moved or removed wall is in whichever
     sublevel the level streams it from, usually `_Castle`.
 
-    Returns {sublevel tag: {'moved': [(export, matrix)], 'parked': [export]}}.
+    Returns {sublevel tag: {'moved': [(export, matrix)], 'parked': [export]}}, and
+    'collision' {component export: (on, mesh)} where the plan switches a level piece's
+    collision (riftlord/mapeditor/piececollision.py), and 'volumes' (volumes.writes
+    rows) where the plan edits a sublevel's volume or a ground route crosses one.
     """
     plan = plan if plan is not None else leveldata.load_plan(level_name)
     removed = set(plan.get('removed') or [])
@@ -608,11 +638,18 @@ def sublevel_edits(level_name, plan=None):
     #: sublevels holding scene settings the plan changes (riftlord.levelfx)
     from riftlord.build.world import levelfx
     from riftlord.mapeditor import scratch as _scratch_mod
-    #: the plan's world settings, with the chosen sky's fog colours where it sets none
-    from riftlord.build.world import skyfog
-    scene_world = skyfog.world_with_sky(plan)
+    #: the plan's world settings (wind, the intro filter)
+    scene_world = plan.get('world') or {}
     filter_tags = ([] if _scratch_mod.is_scratch(plan)
                    else levelfx.sublevel_tags(level_name, scene_world))
+    #: the plan's lighting: suns, sky light, fog, post process, the level's own lights
+    #: (riftlord.build.world.lighting)
+    from riftlord.build.world import lighting
+    plan = lighting.migrated(plan, level_name)
+    lit = lighting.package_edits(level_name, plan)
+    #: the level's own moons the plan changes (riftlord.build.world.moons)
+    from riftlord.build.world import moons
+    moon_edits = moons.package_edits(level_name, plan)
     #: the level's own effects the plan takes out: {sublevel tag: [actor export]}
     gone_fx = removed_fx(plan)
     #: the level's own lights and effects the plan moves (riftlord.leveldata.clean_actor_moves)
@@ -622,33 +659,38 @@ def sublevel_edits(level_name, plan=None):
     plates = controllers.plate_edits(plan)
     #: the level's own lights recoloured and effects swapped (riftlord.build.world.levelretint)
     from riftlord.build.world import levelretint
-    tints = levelretint.light_edits(level_name, plan)
     swaps = levelretint.swap_edits(level_name, plan)
+    #: the sublevels' own volumes the plan edits or a ground route crosses (volumes.py)
+    from riftlord.mapeditor import volumes
+    vol_rows = volumes.sublevel_writes(level_name, plan)
     if not removed and not moved and not planes and not filter_tags and not gone_fx \
-            and not shifted and not plates and not tints and not swaps \
-            and not (look.get('sky') or look.get('liquid')):
+            and not shifted and not plates and not lit and not swaps and not moon_edits \
+            and not vol_rows and not (look.get('sky') or look.get('liquid')):
         return {}
     out = {}
+    for tag, rows in vol_rows.items():
+        out.setdefault(tag, {'moved': [], 'parked': []})['volumes'] = rows
+    #: the level's own pieces whose Collides switch the plan changes (piececollision)
+    from riftlord.mapeditor import piececollision
+    for (tag, export), row in piececollision.switched(level_name, plan).items():
+        out.setdefault(tag, {'moved': [], 'parked': []}).setdefault(
+            'collision', {})[export] = row
     for tag, by_actor in plates.items():
         out.setdefault(tag, {'moved': [], 'parked': []})[controllers.PLATES_KEY] = by_actor
     for tag, actors in gone_fx.items():
         out.setdefault(tag, {'moved': [], 'parked': []})['parked'].extend(actors)
-    #: the level's own moon, when the plan's sky comes from another home (skyfog)
-    if not _scratch_mod.is_scratch(plan):
-        for tag, exports in skyfog.own_extras(level_name, plan).items():
-            rows = out.setdefault(tag, {'moved': [], 'parked': []})['parked']
-            rows.extend(e for e in exports if e not in rows)
+    for tag, edits in moon_edits.items():
+        out.setdefault(tag, {'moved': [], 'parked': []})['moons'] = edits
     for tag, rows in shifted.items():
         out.setdefault(tag, {'moved': [], 'parked': []})['moved'].extend(rows)
     for tag in filter_tags:
         out.setdefault(tag, {'moved': [], 'parked': []})['scene'] = scene_world
     #: lights glowing off repainted liquid planes (riftlord.liquidlights)
-    if not _scratch_mod.is_scratch(plan):
-        from riftlord.build.world import liquidlights
-        for tag, lights in liquidlights.edits(level_name, plan).items():
-            out.setdefault(tag, {'moved': [], 'parked': []})['lights'] = lights
-    for tag, lights in tints.items():
-        out.setdefault(tag, {'moved': [], 'parked': []})['lightColours'] = lights
+    from riftlord.build.world import liquidlights
+    for tag, lights in liquidlights.edits(level_name, plan).items():
+        out.setdefault(tag, {'moved': [], 'parked': []})['lights'] = lights
+    for tag, edits in lit.items():
+        out.setdefault(tag, {'moved': [], 'parked': []})['lighting'] = edits
     for tag, by_export in swaps.items():
         out.setdefault(tag, {'moved': [], 'parked': []})['fxSwaps'] = by_export
     #: per-plane liquid materials, by the sublevel that holds each plane
@@ -720,11 +762,16 @@ def sublevel_edits(level_name, plan=None):
 
 
 def retint(builder, edits, report):
-    """The plan's light colours (after the liquid lights', so they win) and effect swaps
-    for one package (riftlord.build.world.levelretint)."""
+    """The plan's lighting (riftlord.build.world.lighting; after the liquid lights', so
+    its light colours win), effect swaps (riftlord.build.world.levelretint) and the
+    level's own moons (riftlord.build.world.moons) for one package."""
     from riftlord.build.world import levelretint
-    if edits.get('lightColours'):
-        levelretint.paint(builder, edits['lightColours'], report)
+    if edits.get('lighting'):
+        from riftlord.build.world import lighting
+        lighting.write(builder, edits['lighting'], report)
+    if edits.get('moons'):
+        from riftlord.build.world import moons
+        moons.write(builder, edits['moons'], report)
     if edits.get('fxSwaps'):
         levelretint.swap(builder, edits['fxSwaps'], report)
 
@@ -742,15 +789,21 @@ def apply_to_sublevel(uasset, uexp, object_name, edits):
             paint_look(builder, {'look': edits.get('look') or {}}, report,
                        planes=edits.get('planes'))
         except Exception as exc:                     # noqa: BLE001
-            report['skipped'].append('could not repaint %s: %s: %s'
-                                     % (object_name, type(exc).__name__, exc))
-    if edits.get('scene'):
-        from riftlord.build.world import levelfx
-        levelfx.apply(builder, edits['scene'], report)
+            report['skipped'].append(buildmessage.left_out(
+                'the colours of one part of the level',
+                '%s: %s: %s' % (object_name, type(exc).__name__, exc)))
     if edits.get('lights'):
         from riftlord.build.world import liquidlights
         liquidlights.paint(builder, edits['lights'], report)
     retint(builder, edits, report)
+    if edits.get('volumes'):
+        from riftlord.mapeditor import volumes
+        volumes.write_package(builder, edits['volumes'], report)
+    #: after the lighting, which rewrites whole exports: the intro filter and the wind
+    #: are written at offsets into them
+    if edits.get('scene'):
+        from riftlord.build.world import levelfx
+        levelfx.apply(builder, edits['scene'], report)
     #: wall plates (riftlord/controllers.py)
     from riftlord.mapeditor import controllers
     controllers.apply_package(builder, edits, report)
@@ -860,17 +913,23 @@ def _collision_off(builder, actor, item, report):
     done = piececollision.switch_off(builder, actor)
     report['collision_off'] = report.get('collision_off', 0) + 1
     if not done:
-        report['skipped'].append('%s has no static mesh to switch collision off on'
-                                 % item.get('name'))
+        report['skipped'].append(buildmessage.left_out(
+            'the added piece %s' % buildmessage.piece_label(item),
+            'no static mesh component', effect='that piece type keeps its collision',
+            verb='turn Collides off on'))
 
 
-def add_mesh(builder, donor, mesh_path, mesh_name, matrix, rename):
+def add_mesh(builder, donor, mesh_path, mesh_name, matrix, rename, receiver=None,
+             report=None):
     """Place one static mesh: a lifted `StaticMeshActor` pointed at a different mesh.
 
     A level has no actor for a mesh it never placed, so one is lifted and repointed. The
     component's `StaticMesh` is an object reference, so swapping it is a matter of
     importing the mesh and writing the new index -- which is also how the mesh reaches the
     level's import table, where the game looks for it.
+
+    `receiver` is the MapBuildDataId of the light map a bake gives it (lightalloc): the
+    mesh then stays Static and its LODData names that id.
     """
     pkg, index = donor
     actor = builder.lift_actor(pkg, index, rename=rename)
@@ -891,9 +950,13 @@ def add_mesh(builder, donor, mesh_path, mesh_name, matrix, rename):
     #: every piece added to a Scenario_01 level did: Dome_Half, Dome_3x3_Borders_RB).
     if MESH_FORGET_LIGHTING:
         from riftlord.mapeditor import fabemit
+        from riftlord.build.lighting import lightalloc
         for field in fabemit.CLEARED_ON_PIECE:
             builder.clear_property(root, field)
-        if _mesh_reach(mesh_name, matrix) > (MOVABLE_MESH_MAX_EXTENT or float('inf')):
+        if receiver is not None and lightalloc.receive(builder, root, receiver):
+            if report is not None:
+                report['light_receivers'] = report.get('light_receivers', 0) + 1
+        elif _mesh_reach(mesh_name, matrix) > (MOVABLE_MESH_MAX_EXTENT or float('inf')):
             clear_lod_data(builder, root)
         else:
             fabemit.forget_lighting(builder, root)
@@ -1074,10 +1137,8 @@ def plane_exports(level_name, plan):
     #: rocks near lava take their lava material (riftlord.lavafx), painted as planes are
     try:
         from riftlord.build.world import lavafx
-        from riftlord.mapeditor import scratch as _scratch_mod
-        if not _scratch_mod.is_scratch(plan):
-            for tag, rocks in lavafx.rock_paints(level_name, plan).items():
-                out.setdefault(tag, {}).update(rocks)
+        for tag, rocks in lavafx.rock_paints(level_name, plan).items():
+            out.setdefault(tag, {}).update(rocks)
     except Exception:                                # noqa: BLE001
         pass
     if not planes:
@@ -1124,7 +1185,9 @@ def paint_look(builder, plan, report, planes=None):
         path = omd3actors._asset_for(name)
         game = (path or '').replace('../../../OMD/Content/', '/Game/')
         if not game.startswith('/Game/'):
-            report['skipped'].append('no asset for the material %r' % name)
+            report['skipped'].append(buildmessage.left_out(
+                'the painted material %s' % name, 'no asset for it',
+                'Pick another material for the pieces painted with it.'))
             return None
         owner = builder._import('/Script/CoreUObject', 'Package', 0, game)
         return builder._import('/Script/Engine', 'MaterialInstanceConstant',
@@ -1221,8 +1284,10 @@ def link_teleporters(builder, teleporters, report):
                                    'players nowhere' % tid)
             continue
         if other not in teleporters:
-            report['skipped'].append('teleporter %s links to teleporter %s, which is not '
-                                     'placed' % (tid, other))
+            report['skipped'].append(buildmessage.left_out(
+                'the link from teleporter %s' % tid, '',
+                'It links to teleporter %s, which is not placed; place it, or link teleporter '
+                '%s to another.' % (other, tid)))
             continue
         partner = teleporters[other][0]
         builder.set_object(index, geomedits.TELEPORT_LINK, partner)
@@ -1285,8 +1350,9 @@ def add_preload(builder, package_index, group, target):
     pkg.exports[package_index - 1]['meta'] = bytes(meta)
 
 
-def null_preloads(builder):
-    """Names of the exports whose preload list holds a null entry.
+def null_preloads(builder, indices=False):
+    """Names (with `indices`, 0-based export indices) of the exports whose preload list
+    holds a null entry.
 
     No shipped level has one (134,992 entries over 31 maps), and the loader indexes
     its node table with every entry.
@@ -1296,8 +1362,36 @@ def null_preloads(builder):
         first = struct.unpack_from('<i', e['meta'], 84)[0]
         n = sum(struct.unpack_from('<4i', e['meta'], 88))
         if first >= 0 and 0 in pkg.preload[first:first + n]:
-            bad.append(levelbuild._name_of(pkg, i))
+            bad.append(i if indices else levelbuild._name_of(pkg, i))
     return bad
+
+
+def piece_of(builder, index, plan, target=False):
+    """The Map Editor's name for what the plan added that export `index` (0-based) is
+    or belongs to ('Spawner 3', 'the added piece Torch_A'), or None for the level's own;
+    with `target`, (name, Checks target)."""
+    pkg, seen = builder.pkg, set()
+    while 0 <= index < len(pkg.exports) and index not in seen:
+        seen.add(index)
+        meta = pkg.exports[index]['meta']
+        ni, number = struct.unpack_from('<ii', meta, levelbuild.NAME_AT)
+        text = pkg.names[ni][0] if 0 <= ni < len(pkg.names) else ''
+        full = '%s_%d' % (text, number - 1) if number > 0 else text
+        if full.startswith('RiftLord'):
+            name = buildmessage.editor_name(full, plan)
+            return (name, buildmessage.editor_target(full, plan)) if target else name
+        index = struct.unpack_from('<i', meta, levelbuild.OUTER_AT)[0] - 1
+    return None
+
+
+def unlinked(builder, indices, plan, detail):
+    """What a build raises for exports the level cannot load in order (C): LeaveOut, so the
+    build is made again without them, when each belongs to an added piece; else a Fault."""
+    owners = [piece_of(builder, i, plan, target=True) for i in indices]
+    items = [t['added'] for _n, t in (o for o in owners if o) if 'added' in (t or {})]
+    if owners and all(o and 'added' in (o[1] or {}) for o in owners):
+        return buildmessage.LeaveOut(items, sorted({n for n, _t in owners}), detail)
+    return buildmessage.fault('link the plan\'s pieces into the level', detail)
 
 
 def _child_named(builder, actor_index, want):
@@ -1418,12 +1512,16 @@ def _add(builder, cls, at, rename, rotation, report, scale=None, donor=None):
     catalogue donor."""
     donor = donor or donor_for(cls)
     if not donor:
-        report['skipped'].append('no donor for %s' % cls)
+        report['skipped'].append(buildmessage.left_out(
+            'a %s' % buildmessage.piece_label({'name': cls}), 'no donor for %s' % cls,
+            verb='place'))
         return None
     try:
         index = builder.lift_actor(donor[0], donor[1], rename=rename)
     except Exception as exc:                         # noqa: BLE001
-        report['skipped'].append('%s could not be lifted: %s' % (cls, exc))
+        report['skipped'].append(buildmessage.left_out(
+            'a %s' % buildmessage.piece_label({'name': cls}),
+            '%s could not be lifted: %s' % (cls, exc), verb='place'))
         return None
     # `place_whole`, because a donor root that shipped unturned has no
     # RelativeRotation to overwrite (interior door, spawner, rift).

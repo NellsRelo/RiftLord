@@ -118,6 +118,12 @@ def level(name):
             door['index'] = number.get(door.get('export'))
     except (Exception, SystemExit):                  # noqa: BLE001
         pass
+    #: each switchable piece's shipped collision, `collides` (riftlord/mapeditor/piececollision.py)
+    try:
+        from riftlord.mapeditor import piececollision
+        piececollision.annotate(got.get('pieces') or [], got.get('subPackages'))
+    except (Exception, SystemExit):                  # noqa: BLE001
+        pass
     #: blocking and kill volumes (riftlord.volumes.level_volumes)
     try:
         from riftlord.mapeditor import volumes
@@ -412,10 +418,14 @@ def catalogue():
         #: was last built
         shelf = (meshcat.category_of(info['path'], name) if info.get('path')
                  else info.get('category', 'decoration'))
-        rows.append({'name': name, 'kind': 'mesh', 'thumb': name,
-                     'category': shelf,
-                     'cells': info.get('cells', [0, 0, 0]),
-                     'trapgrid': False})
+        row = {'name': name, 'kind': 'mesh', 'thumb': name,
+               'category': shelf,
+               'cells': info.get('cells', [0, 0, 0]),
+               'trapgrid': False}
+        #: its footprint snaps to the lattice when placed (main.js landing)
+        if meshcat.footprint_on_lattice(info.get('path') or '', name):
+            row['lattice'] = True
+        rows.append(row)
     kit_path = gamepath.data('kit-catalogue.json')
     parts = omd3actors.part_index()
     try:
@@ -495,7 +505,7 @@ def kit_label(cls):
 #: is lifted whole from a level that places it, as a kit piece is (riftlord/apply.py _add).
 #: A level's own lighting rig, the sun, coordinators, volumes and characters are left out.
 ACTOR_GROUPS = (
-    ('Lights', r'^(PointLight|SpotLight|RectLight)$'),
+    ('Lights', r'^(PointLight|SpotLight|RectLight|DirectionalLight)$'),
     ('Torches and Braziers',
      r'^(BP_(WallTorch|OrcTorch|Brazier|Chandelier|Lighting_WallCrystal)\w*|Lizard_Brazier)_C$'),
     ('Banners', r'^Banner\w*_BP(_Wind)?_C$'),
@@ -609,12 +619,15 @@ def kit_parts(class_name):
 
 @functools.lru_cache(maxsize=None)
 def _kit_geometry():
+    """kit-geometry.json's pieces by lower-cased name: a class name's case may differ
+    from its asset's (`Wall_RB_MT_v3_1x4_Angle_C` is `Wall_RB_MT_v3_1x4_angle.uasset`)."""
     import json as _json
     try:
         with open(gamepath.data('kit-geometry.json')) as fh:
-            return _json.load(fh).get('pieces') or {}
+            pieces = _json.load(fh).get('pieces') or {}
     except (OSError, ValueError):
         return {}
+    return {name.lower(): info for name, info in pieces.items()}
 
 
 def kit_grids(class_name):
@@ -625,7 +638,7 @@ def kit_grids(class_name):
     """
     name = class_name[:-2] if class_name.endswith('_C') else class_name
     out = []
-    for g in (_kit_geometry().get(name) or {}).get('grids') or []:
+    for g in (_kit_geometry().get(name.lower()) or {}).get('grids') or []:
         m = omd3level._matrix((0.0, 0.0, 0.0), g.get('rotation') or (0, 0, 0), (1, 1, 1))
         normal = [round(m[r][0], 6) for r in range(3)]
         surface = ('Floor' if normal[2] > KIT_FACE_VERTICAL else
@@ -944,7 +957,8 @@ def plan_path(name):
 
 
 def empty_plan(name):
-    return {'level': name, 'region': None, 'look': {}, 'rifts': [], 'doors': [],
+    return {'level': name, 'region': None, 'look': {}, 'lighting': {}, 'moons': {},
+            'rifts': [], 'doors': [],
             'spawners': [], 'wiring': [], 'removed': [], 'waves': [], 'edits': [],
             'added': []}
 
@@ -972,7 +986,10 @@ def load_plan(name):
                 isinstance(item.get('matrix'), list) and len(item['matrix']) == 16:
             item['matrix'] = _apply.unsheared(item['matrix'])
     from riftlord.mapeditor import planactors
-    return planactors.migrate(got)
+    got.setdefault('level', name)
+    #: a plan saved before the Lighting section (riftlord.build.world.lightmigrate)
+    from riftlord.build.world import lighting
+    return lighting.migrate(planactors.migrate(got))
 
 
 def _vec(value, fallback=(0.0, 0.0, 0.0)):
@@ -1195,8 +1212,10 @@ def light_rig(name):
     """The level's point, spot and rect lights as the Map Editor previews them, read with
     their Blueprint class defaults (lightscene): [{key ('<tag>|<actor export>'), kind,
     position, direction, colour (linear rgb), brightness (UE's units: candelas x 10^4 for
-    an inverse-squared light), radius, inverseSquared, falloff, outer, inner, mobility}]."""
+    an inverse-squared light), radius, inverseSquared, falloff, outer, inner, mobility,
+    values (the Light section's, riftlord.build.world.lighting)}]."""
     from riftlord.build.lighting import lightscene
+    from riftlord.build.world import lighting
     out = []
     for path in lightscene.packages(name):
         try:
@@ -1223,7 +1242,10 @@ def light_rig(name):
                     'inverseSquared': bool(p['bUseInverseSquaredFalloff']) or kind == 'rect',
                     'falloff': float(p['LightFalloffExponent']),
                     'outer': float(p['OuterConeAngle']), 'inner': float(p['InnerConeAngle']),
-                    'mobility': str(p.get('Mobility') or '')})
+                    'mobility': str(p.get('Mobility') or ''),
+                    #: the Light section's values (riftlord.build.world.lighting)
+                    'values': lighting.from_scene(p, str(e.get('cls') or ''),
+                                                  bool(pkg.template(i)))})
             except Exception:                        # noqa: BLE001
                 continue
     return out
@@ -1278,6 +1300,10 @@ def save_plan(name, data):
     """
     if not isinstance(data, dict):
         raise ValueError('expected an object')
+    #: a plan saved before the Lighting section (riftlord.build.world.lightmigrate)
+    from riftlord.build.world import lighting
+    from riftlord.build.world import moons
+    data = lighting.migrated(data if data.get('level') else dict(data, level=name))
     known_units = {u['name'] for u in units()}
 
     rifts = []
@@ -1322,11 +1348,18 @@ def save_plan(name, data):
             continue
         edits.append({'id': int(e['id']), 'mesh': str(e.get('mesh') or ''),
                       'matrix': [round(float(v), 4) for v in matrix]})
+        #: the piece's Collides switch (riftlord/mapeditor/piececollision.py)
+        from riftlord.mapeditor import piececollision
+        if isinstance(e.get(piececollision.KEY), bool):
+            edits[-1][piececollision.KEY] = e[piececollision.KEY]
 
     added = []
     #: (items cleaned so far, raw item): group fields copied after (compounds.keep_groups)
     group_marks = []
+    #: len(added) before each raw item: where laid Fab grids' piece indices land (fabgrids)
+    raw_marks = []
     for a in data.get('added') or []:
+        raw_marks.append(len(added))
         if not isinstance(a, dict):
             continue
         matrix = a.get('matrix')
@@ -1389,10 +1422,18 @@ def save_plan(name, data):
             if a.get('paints') else None
         if paints:
             item['paints'] = paints
+        #: placed with collision off (riftlord/mapeditor/piececollision.py)
+        from riftlord.mapeditor import piececollision
+        if a.get(piececollision.KEY) is False:
+            item[piececollision.KEY] = False
         #: an actor's own settings: cue, wall plate, lightning, pour (riftlord/controllers.py)
         if item['kind'] == 'kit':
             from riftlord.mapeditor import controllers
             controllers.clean_item(item, a)
+            #: an added light's own values (riftlord.build.world.lighting)
+            light = lighting.clean_added(a.get(lighting.ADDED_KEY))
+            if light:
+                item[lighting.ADDED_KEY] = light
         added.append(item)
     #: compound and tool groups (riftlord/compounds.py)
     from riftlord.mapeditor import compounds as _compounds
@@ -1495,6 +1536,10 @@ def save_plan(name, data):
     world = mapinfo.clean_world(data.get('world'))
     out = {'level': str(data.get('level') or name), 'region': region, 'look': look,
            'mission': mission, 'world': world,
+           #: always stored: a plan without it is from before the Lighting section
+           lighting.PLAN_KEY: lighting.clean(data.get(lighting.PLAN_KEY)),
+           #: the level's own moons (riftlord.build.world.moons); always stored, as above
+           moons.PLAN_KEY: moons.clean(data.get(moons.PLAN_KEY)),
            'rifts': rifts, 'doors': doors, 'spawners': spawners,
            'wiring': wiring, 'removed': removed, 'waves': waves,
            'edits': edits, 'added': added,
@@ -1507,10 +1552,14 @@ def save_plan(name, data):
     #: the level's own lights and effects moved (clean_actor_moves)
     if clean_actor_moves(data.get('actorMoves')):
         out['actorMoves'] = clean_actor_moves(data.get('actorMoves'))
-    #: the level's own lights recoloured and effects swapped (riftlord.build.world.levelretint)
+    #: the level's own lights' values (riftlord.build.world.lighting) and effects swapped
+    #: (riftlord.build.world.levelretint)
+    if lighting.clean_lights(data.get(lighting.LIGHTS_KEY)):
+        out[lighting.LIGHTS_KEY] = lighting.clean_lights(data.get(lighting.LIGHTS_KEY))
+    #: the moons the plan adds (riftlord.build.world.moons)
+    if moons.clean_added(data.get(moons.ADDED_KEY)):
+        out[moons.ADDED_KEY] = moons.clean_added(data.get(moons.ADDED_KEY))
     from riftlord.build.world import levelretint
-    if levelretint.clean_colours(data.get('lightColours')):
-        out['lightColours'] = levelretint.clean_colours(data.get('lightColours'))
     if levelretint.clean_swaps(data.get('fxSwaps')):
         out['fxSwaps'] = levelretint.clean_swaps(data.get('fxSwaps'))
     #: the level's own torches' wall plates (riftlord/controllers.py)
@@ -1535,13 +1584,22 @@ def save_plan(name, data):
     #: trap grids the author laid over Fab pieces (riftlord/fabemit.py)
     if data.get('fabGrids'):
         from riftlord.mapeditor import fabemit
-        if fabemit.clean_grids(data.get('fabGrids')):
-            out['fabGrids'] = fabemit.clean_grids(data.get('fabGrids'))
+        #: piece indices follow the save's own cleaning of `added`; a grid whose pieces are
+        #: gone keeps the Fab pieces under it, or is dropped (fabemit.mend_grids, fabgrids)
+        saved_at = [start if (raw_marks[k + 1] if k + 1 < len(raw_marks) else len(added)) > start
+                    else None for k, start in enumerate(raw_marks)]
+        grid_notes = []
+        laid = fabemit.mend_grids(fabemit.clean_grids(data.get('fabGrids')), added, saved_at,
+                                  grid_notes)
+        if laid:
+            out['fabGrids'] = laid
     try:
         errors, warnings = planactors.check(out, out['level'])
         warnings = errors + warnings
     except Exception as exc:                         # noqa: BLE001
         warnings = ['the routes could not be checked: %s' % exc]
+    if data.get('fabGrids'):
+        warnings = warnings + grid_notes
     os.makedirs(PLANS, exist_ok=True)
     with open(plan_path(name), 'w') as fh:
         json.dump(out, fh, indent=1)

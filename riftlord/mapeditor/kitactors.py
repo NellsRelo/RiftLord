@@ -836,7 +836,9 @@ def place(builder, item, rename, plan, report):
                 elif kind == 'FloatProperty':
                     builder.set_property(actor, name, kind, struct.pack('<f', value))
     except SystemExit as exc:
-        report['skipped'].append('%s not placed: %s' % (cls, exc))
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'a %s' % buildmessage.piece_label({'name': cls}), str(exc), verb='place'))
         return None
     where, rot, scale = applier.transform_of(item['matrix'])
     applier.place_whole(builder, actor, location=where, rotation=rot, scale=scale)

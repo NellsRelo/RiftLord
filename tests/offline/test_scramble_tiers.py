@@ -212,7 +212,7 @@ try:
         [('Tier_02', 0, guid_bytes(2))], registered_path('ClashMod')))
     _files, report = M.extension('TierProbe', mission, {'tiers': ['Tier_02']}, clash)
     lines = [line for warn, line in M.describe(report) if warn]
-    check('the build console names the clash', any('Tier_02 is also a row of ClashMod' in line
+    check('the build console names the clash', any('Tier_02 is also a tier of ClashMod' in line
                                                     for line in lines), lines)
 finally:
     shutil.rmtree(ROOT, ignore_errors=True)

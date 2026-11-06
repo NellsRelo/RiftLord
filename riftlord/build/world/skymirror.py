@@ -1,6 +1,10 @@
 """A sky's home lighting, copied onto the level: suns, sky light, atmosphere, height fog
 and the unbound post-process settings, property by property.
 
+The build no longer runs this (2026-11-05: a sky is only the sky dome's material).
+riftlord.build.world.lightmigrate runs it to read what an older plan's sky brought, and
+stores that as the plan's own Lighting values.
+
 Painting colours alone left Beset under a night sky looking like day (Bake B,
 2026-10-16): Front Lawn's fill suns stayed at -10 deg pitch, its sky light lit from a
 fixed daytime cubemap (SourceType SLS_SpecifiedCubemap) where Dragon Boneyard's
@@ -185,7 +189,11 @@ def mirror(builder, home, report):
     """Copy `home`'s lighting components onto the matching ones in builder.pkg."""
     got = _home(home)
     if not got:
-        report['skipped'].append('%s\'s lighting could not be read' % home)
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'the sky\'s home lighting', '%s\'s lighting could not be read' % home,
+            effect='the sky comes without its sun angles, sky light, fog and colour grade',
+            verb='read'))
         return 0
     pkg = builder.pkg
     add = pkg.add_name

@@ -143,6 +143,34 @@ export function fromMap(read, base) {
            events: (read.events ?? []).map((e) => ({ ...e })) }
 }
 
+/** The values a per-difficulty pause holds (wavespec.PAUSE_SLOTS), in order. `all` is every
+ *  difficulty and the Endless loops before `endlessLaterFrom`. */
+export const PAUSE_SLOTS = ['all', 'apprentice', 'warMage', 'riftLord', 'endless', 'endlessLater']
+/** Longest pause, in seconds (Pause.svelte's flat wait). */
+export const PAUSE_MAX = 300
+
+/** A per-difficulty pause slot's label. */
+export function slotLabel(slot, from = 2) {
+  return { all: 'All', apprentice: 'Apprentice', warMage: 'War Mage', riftLord: 'Rift Lord',
+           endless: from > 2 ? `Endless, loops 1-${from - 1}` : 'Endless, loop 1',
+           endlessLater: `Endless, from loop ${from}` }[slot]
+}
+
+/** True when a pause value is a number from 0 to PAUSE_MAX. */
+export function pauseOk(v) {
+  return v !== '' && v !== null && Number.isFinite(Number(v)) && Number(v) >= 0 && Number(v) <= PAUSE_MAX
+}
+
+/** A per-difficulty pause in one line: "Wait 32 / 30 / 28 s (Endless 16 → 0)". */
+export function pauseSummary(p) {
+  const v = p.byDifficulty, n = (x) => `${Number(x)}`
+  const own = ['all', 'apprentice', 'warMage', 'riftLord'].filter((s) => s in v).map((s) => n(v[s]))
+  const loop = 'endless' in v ? v.endless : v.all
+  const from = (p.endlessLaterFrom ?? 2) > 2 ? ` from loop ${p.endlessLaterFrom}` : ''
+  const later = 'endlessLater' in v ? ` (Endless ${n(loop)} → ${n(v.endlessLater)}${from})` : ''
+  return `Wait ${own.join(' / ')} s${later}`
+}
+
 /** Mission event kinds (wavespec.apply_events): boss, music change, unstable rift. */
 export const EVENT_KINDS = ['boss', 'music', 'rift']
 
@@ -416,6 +444,20 @@ export const memberKey = (gi, spawner) => `${gi}:${spawner}`
 //: The most Enemies Left % a trigger opens at: a higher one can end the wave as the units come out.
 export const TRIGGER_ALIVE_MAX = 75
 
+//: The Crystal's health fields (rifttear._health, crystal.py HEALTH_KEYS): [key, label, step].
+export const HEALTH_FIELDS = [['mapDifficulty', 'Map Difficulty', 0.1],
+  ['pointHealth', 'Rift Point Health', 1], ['pointDifficultyShare', 'Difficulty Share', 0.05]]
+
+/** Why a Crystal health field's value is refused for its [lo, hi] `range`, or ''; blank is
+ *  none (Map Difficulty 0, an override the mode's). */
+export function healthProblem(v, range) {
+  if (v === null || v === undefined || v === '') return ''
+  const n = Number(v)
+  if (!Number.isFinite(n)) return 'A number'
+  if (range && (n < range[0] || n > range[1])) return `From ${range[0]} to ${range[1]}`
+  return ''
+}
+
 /** Why a trigger's Open (rifts opened, RiftPick) is out of range for a group of `rifts`
  *  Unstable Rifts, or ''. */
 export function triggerOpenProblem(t, rifts) {
@@ -571,10 +613,22 @@ export function review(spec, can = null, detail = null, units = []) {
         } else if (!flies.has(s.unit) && path === 'fly') {
           add('error', where, `${s.unit} walks, but ${door} is a flyer route.`)
         }
+        for (const p of [s.before, s.after]) {
+          const bad = Object.entries(p?.byDifficulty ?? {}).filter(([, v]) => !pauseOk(v))
+          if (bad.length) {
+            add('error', where, `a pause on ${door} needs ${bad.map(([k]) => slotLabel(k, p.endlessLaterFrom)).join(', ')} from 0 to ${PAUSE_MAX} seconds.`)
+          }
+        }
 
       })
     })
   })
+
+  const health = spec.riftTear?.health
+  for (const [key, label] of health ? HEALTH_FIELDS : []) {
+    const why = healthProblem(health.values?.[key], health.ranges?.[key])
+    if (why) add('error', 'Crystal Health', `${label} ${health.values[key]}: ${why}.`)
+  }
 
   for (const g of spec.riftTear?.groups ?? []) {
     for (const t of g.triggers ?? []) {

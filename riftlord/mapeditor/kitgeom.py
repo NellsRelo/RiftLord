@@ -32,6 +32,13 @@ The grid is an `OMDTrapGridBoxComponent` inside the piece's Blueprint, carrying
 actor axis, so the box is rotated into actor space before being combined with the
 offset -- reading `BoxExtent` positionally gives the right numbers on the wrong
 axes, which looks plausible and tiles wrongly.
+
+A grid's `RelativeLocation` and `RelativeRotation` are relative to the component it is
+attached to (its Simple Construction Script node's parent), and a grid may be declared
+by an ancestor class and only inherited: `Trapezoid_Landing` and `Stairs_MultiTiered`
+hang theirs off turned and lifted parts, `Wall_RB_MT_v3_1x4_Angle` inherits its one.
+`grids` merges the components of the class and its ancestors by name (leaf wins, field
+by field) and walks each grid's parent chain up to the actor's root component.
 """
 
 import argparse
@@ -53,6 +60,9 @@ GEOMETRY = gamepath.data('kit-geometry.json')
 
 #: One OMD3 trap cell, in Unreal units.
 CELL = 300.0
+#: Largest difference from the identity (matrix entry, scale) a parent chain may have
+#: and still leave a grid's own transform as stored.
+SAME = 1e-4
 
 
 def _rotate(vec, pitch, yaw, roll):
@@ -96,27 +106,150 @@ def _vectors(pkg, export):
     return out
 
 
+#: Component name suffix the cooker adds to a component promoted to a variable.
+GEN_SUFFIX = '_GEN_VARIABLE'
+
+
+def _fname(pkg, data, at):
+    i = struct.unpack_from('<i', data, at)[0]
+    return pkg.names[i][0] if 0 <= i < len(pkg.names) else None
+
+
+def _components(pkg):
+    """({component name: {cls, loc?, rot?, scale?, extent?}}, {component name: parent
+    name}, [root node component names]) of one Blueprint package: its component
+    templates (its own and the inherited ones it overrides) and its Simple Construction
+    Script's tree. A root node's parent is the component it names, if any."""
+    from riftlord.formats.omd3 import meshcat
+    names = [n for n, _h in pkg.names]
+    comps, nodes = {}, {}
+    roots = []
+
+    def name_of(i):
+        name = levelbuild._name_of(pkg, i)
+        return name[:-len(GEN_SUFFIX)] if name.endswith(GEN_SUFFIX) else name
+    for i, e in enumerate(pkg.exports):
+        cls = levelbuild.resolve(pkg, struct.unpack_from('<i', e['meta'], 0)[0])[1] or ''
+        data = e['data']
+        if cls == 'SCS_Node' or cls == 'SimpleConstructionScript':
+            props = meshcat._walk(data, names, 0, len(data))
+            nodes[i + 1] = (cls, data, props)
+            continue
+        if 'Component' not in cls or not cls.endswith('Component'):
+            continue
+        rec = {'cls': cls}
+        vec = _vectors(pkg, e)
+        for field, key in (('RelativeLocation', 'loc'), ('RelativeRotation', 'rot'),
+                           ('RelativeScale3D', 'scale'), ('BoxExtent', 'extent')):
+            if field in vec:
+                rec[key] = list(vec[field])
+        comps.setdefault(name_of(i), {}).update(rec)
+    parents = {}
+
+    def objects(data, props, field):
+        if field not in props:
+            return []
+        _k, at, _size = props[field]
+        count = struct.unpack_from('<i', data, at)[0]
+        return [struct.unpack_from('<i', data, at + 4 + 4 * k)[0] for k in range(max(count, 0))]
+
+    def template(node):
+        _c, data, props = nodes[node]
+        if 'ComponentTemplate' not in props:
+            return None
+        ref = struct.unpack_from('<i', data, props['ComponentTemplate'][1])[0]
+        return name_of(ref - 1) if 0 < ref <= len(pkg.exports) else None
+    for node, (cls, data, props) in nodes.items():
+        if cls == 'SimpleConstructionScript':
+            for root in objects(data, props, 'RootNodes'):
+                if root in nodes and template(root):
+                    roots.append(template(root))
+            continue
+        me = template(node)
+        if not me:
+            continue
+        if 'ParentComponentOrVariableName' in props:
+            parent = _fname(pkg, data, props['ParentComponentOrVariableName'][1])
+            if parent and parent != 'None':
+                parents.setdefault(me, parent[:-len(GEN_SUFFIX)]
+                                   if parent.endswith(GEN_SUFFIX) else parent)
+        for child in objects(data, props, 'ChildNodes'):
+            if child in nodes and template(child):
+                parents[template(child)] = me
+    return comps, parents, roots
+
+
+def _class_chain(asset_path):
+    """Package paths of the Blueprint at `asset_path` and its Blueprint ancestors, leaf
+    first."""
+    from riftlord.formats.omd3 import omd3actors
+    leaf = asset_path.rsplit('/', 1)[-1]
+    chain = [asset_path]
+    for cls in omd3actors.ancestry(leaf + '_C')[1:]:
+        path = omd3actors._asset_for(cls)
+        if path:
+            chain.append(path)
+    return chain
+
+
 def grids(asset_path):
     """Every trap grid box of one kit Blueprint, in the actor's own space.
 
     Each is {'min', 'max', 'cells', 'extent', 'offset', 'rotation'}, where min and
-    max bound the box on the actor's axes.
+    max bound the box on the actor's axes. A grid attached to a component other than
+    the root gets its transform composed up the attachment chain: `offset` and
+    `rotation` are then the box's centre and turn in actor space, and `extent` its
+    half-extent under the chain's scale.
     """
-    ua, ux = gamefiles.package(asset_path)
-    pkg = Package(ua, ux)
-    pkg.load_payloads()
+    from riftlord.build import apply as _apply
+    from riftlord.formats.omd3 import omd3level
+    comps, parents, root = {}, {}, None
+    for path in reversed(_class_chain(asset_path)):   # ancestor first, leaf wins
+        ua, ux = gamefiles.package(path)
+        pkg = Package(ua, ux)
+        pkg.load_payloads()
+        got, up, roots = _components(pkg)
+        for name, rec in got.items():
+            comps.setdefault(name, {}).update(rec)
+        parents.update(up)
+        if root is None and roots:
+            #: the most ancestral class's first root node is the actor's root component
+            root = next((r for r in roots if r not in parents), None)
+
+    def local(name):
+        rec = comps.get(name) or {}
+        return omd3level._matrix(rec.get('loc') or (0.0, 0.0, 0.0),
+                                 rec.get('rot') or (0.0, 0.0, 0.0),
+                                 rec.get('scale') or (1.0, 1.0, 1.0))
+
+    def chain(name):
+        """The transform of `name`'s parent in actor space, or None for the root."""
+        out, seen, cur = None, {name}, parents.get(name)
+        while cur and cur != root and cur in comps and cur not in seen:
+            seen.add(cur)
+            out = local(cur) if out is None else omd3level._matmul(local(cur), out)
+            cur = parents.get(cur)
+        return out
+
     out = []
-    for e in pkg.exports:
-        cls = levelbuild.resolve(
-            pkg, struct.unpack_from('<i', e['meta'], 0)[0])[1] or ''
-        if 'TrapGridBox' not in cls:
+    for name, rec in comps.items():
+        if 'TrapGridBox' not in rec['cls'] or not rec.get('extent'):
             continue
-        got = _vectors(pkg, e)
-        extent = got.get('BoxExtent')
-        if not extent:
-            continue
-        offset = got.get('RelativeLocation', (0.0, 0.0, 0.0))
-        pitch, yaw, roll = got.get('RelativeRotation', (0.0, 0.0, 0.0))
+        extent = tuple(rec['extent'])
+        offset = tuple(rec.get('loc') or (0.0, 0.0, 0.0))
+        pitch, yaw, roll = rec.get('rot') or (0.0, 0.0, 0.0)
+        above = chain(name)
+        if above is not None and all(abs(above[r][c] - (1.0 if r == c else 0.0)) < SAME
+                                     for r in range(3) for c in range(4)):
+            above = None
+        if above is not None or any(abs(v - 1.0) > SAME for v in rec.get('scale') or ()):
+            #: composed up the attachment chain, under every scale on the way
+            m = local(name) if above is None else omd3level._matmul(above, local(name))
+            loc, rot, scale = _apply.transform_of(
+                [m[r][c] for c in range(4) for r in range(4)])
+            offset = tuple(round(v, 4) for v in loc)
+            pitch, yaw, roll = (round(v, 4) for v in rot)
+            extent = tuple(round(abs(extent[a] * scale[a]), 4) for a in range(3))
         # The box's own rotation decides which half-extent lies along which actor
         # axis. Rotating the extent vector and taking magnitudes does that without
         # having to case on the angles.
@@ -130,10 +263,29 @@ def grids(asset_path):
     return out
 
 
+def placed_classes(catalogue):
+    """{piece: {'path'}} for the Blueprint classes the shipped levels place
+    (omd3actors.load) that are not in `catalogue`."""
+    from riftlord.formats.omd3 import omd3actors
+    have = {name.lower() for name in catalogue}
+    out = {}
+    for cls in omd3actors.load():
+        name = cls[:-2] if cls.endswith('_C') else cls
+        if name.lower() in have:
+            continue
+        path = omd3actors._asset_for(cls)
+        if path and path.startswith('../../../OMD/Content/'):
+            out[name] = {'path': '/Game/' + path[len('../../../OMD/Content/'):],
+                         'placed': True}
+    return out
+
+
 def build(catalogue=CATALOGUE, out_path=GEOMETRY):
-    """Measure every piece in the catalogue and write kit-geometry.json."""
+    """Measure every piece in the catalogue, and every other Blueprint class the shipped
+    levels place that has a trap grid, and write kit-geometry.json."""
     with open(catalogue) as fh:
         kit = json.load(fh)
+    kit.update(placed_classes(kit))
     out, failed = {}, {}
     for name, info in sorted(kit.items()):
         path = (info.get('path') or '').replace('/Game/', '../../../OMD/Content/')
@@ -143,10 +295,12 @@ def build(catalogue=CATALOGUE, out_path=GEOMETRY):
         try:
             found = grids(path)
         except Exception as exc:                     # noqa: BLE001
-            failed[name] = str(exc)
+            if not info.get('placed'):
+                failed[name] = str(exc)
             continue
         if not found:
-            failed[name] = 'no trap grid box component'
+            if not info.get('placed'):
+                failed[name] = 'no trap grid box component'
             continue
         out[name] = {'path': info['path'], 'grids': found}
     with open(out_path, 'w') as fh:

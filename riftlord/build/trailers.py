@@ -11,7 +11,8 @@ placed ones in the first shipped map that places the class. Among several, the m
 trailer of exports with the same name, else of the class.
 
 The gate holds a lifted actor's components to the exact donor components they were lifted
-from (a kit piece's StaticMeshComponents carry their own lightmap and vertex-colour LODData),
+from (a kit piece's StaticMeshComponents carry their own lightmap and vertex-colour LODData;
+a light-map receiver's names its own MapBuildDataId instead, lightalloc),
 and a written actor's components to that reference or, where the class's serialization is
 known (StaticMeshComponent), to its structure.
 
@@ -269,6 +270,38 @@ def donor_trailer(donor, name):
     return None
 
 
+def _lod_ids(trailer):
+    """(the trailer with every LODData MapBuildDataId zeroed and an empty LODData given
+    one zeroed entry, [ids]) of a StaticMeshComponent trailer of ids alone, or None."""
+    from riftlord.build.lighting import lightalloc
+    if trailer is None or len(trailer) < 8:
+        return None
+    at = 4 + (16 if struct.unpack_from('<i', trailer, 0)[0] else 0)
+    if at + 4 > len(trailer):
+        return None
+    count = struct.unpack_from('<i', trailer, at)[0]
+    size = lightalloc.LOD_INFO_SIZE
+    if count < 0 or at + 4 + count * size != len(trailer):
+        return None
+    out = bytearray(trailer)
+    ids = []
+    for k in range(count):
+        o = at + 4 + k * size + 2
+        ids.append(bytes(trailer[o:o + 16]))
+        out[o:o + 16] = bytes(16)
+    if count == 0:
+        out[at:at + 4] = struct.pack('<i', 1)
+        out += lightalloc.LOD_STRIP + bytes(16)
+    return bytes(out), ids
+
+
+def received(got, want, ids):
+    """True when trailer `got` is the donor's `want` with its LODData naming receiver ids
+    (`ids`, lightalloc.receivers) in place of the donor's."""
+    a, b = _lod_ids(got), _lod_ids(want)
+    return bool(a and b and ids and a[0] == b[0] and a[1] and all(i in ids for i in a[1]))
+
+
 def gates(files, plan=None):
     """[(name, ok, detail)]: every component of a lifted actor ends as the donor component
     it was lifted from; every component of a written actor ends as `reference` finds for
@@ -284,6 +317,8 @@ def gates(files, plan=None):
     if not mine:
         return effects
     bad, lifted, written, cache = [], 0, 0, {}
+    from riftlord.build.lighting import lightalloc
+    ids = {bytes.fromhex(r['guid']) for r in lightalloc.receivers(plan)}
     for i, (actor, aname, name, cls) in sorted(mine.items()):
         if not cls:
             continue
@@ -296,7 +331,7 @@ def gates(files, plan=None):
             want = donor_trailer(donor, name) if donor else None
             if want is not None:
                 lifted += 1
-                if t != want:
+                if t != want and not received(t, want, ids):
                     bad.append('%s: %d trailer bytes %s, its donor %d bytes %s'
                                % (label, len(t or b''), (t or b'').hex() or '-', len(want),
                                   want.hex()))

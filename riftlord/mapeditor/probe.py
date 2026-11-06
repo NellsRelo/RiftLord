@@ -512,7 +512,8 @@ def _probe(args, clock, process_started):
             bucket.bake(ident)
             gate('bake', True)
         except (Exception, SystemExit) as exc:  # noqa: BLE001
-            gate('bake', False, str(exc))
+            detail = getattr(exc, 'detail', '')
+            gate('bake', False, '%s%s' % (exc, ' [%s]' % detail if detail else ''))
     step('bake', t)
     level_cache = {'used': not args.no_cache, 'hit': stats['hit'], 'saved': stats['saved'],
                    'key': stats['key'], 'keying seconds': round(stats['seconds'], 2),
@@ -639,9 +640,15 @@ def _probe(args, clock, process_started):
                             worst[key] -= len(found.get(key, ()))
                     gate('regenerated graph has no fatal polygon defects beyond shipped',
                          not +worst, ', '.join('%s %d' % kv for kv in (+worst).items()))
-                    bare = navregen.unsupported(buf, level, plan)
-                    gate('regenerated graph has floor under every spawner and door',
-                         not bare, ', '.join(bare[:6]))
+                    #: a level spawner or door the plan leaves where it is and the shipped
+                    #: graph has no floor under either is not ours (Scenario_Ice_02's
+                    #: MobSpawnerDoor3 and BP_WSForceFieldDoor_2)
+                    moved = {w['name'] for w in plan.get('wiring') or [] if w.get('at')}
+                    ship_bare = set(navregen.unsupported(ship, level, {}))
+                    bare = [b for b in navregen.unsupported(buf, level, plan)
+                            if b not in ship_bare or b.split(' ', 1)[1] in moved]
+                    gate('regenerated graph has floor under every spawner and door the '
+                         'shipped graph has floor under', not bare, ', '.join(bare[:6]))
                     cut = navregen.disconnected(buf, level, plan)
                     edited = bool(plan.get('removed') or plan.get('edits')
                                   or plan.get('added'))

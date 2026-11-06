@@ -15,9 +15,10 @@ CustomMaps.yaml entry gets `GameType: CrystalDefense`.
 
 Plan data: one `added` item per mission,
     {kind: 'crystal', name: 'BP_Crystal_C', matrix,
-     crystal: {difficultyHealth: [4], bobHeight, bobSeconds, riftGap, groups: [...]}}
-`difficultyHealth` is the Crystal's fixed health per difficulty (HEALTH_KEY), edited in the
-Map Editor's Crystal panel and the Onslaught Editor's Rift Tear tab (rifttear.editor_view's
+     crystal: {mapDifficulty, [pointHealth], [pointDifficultyShare], bobHeight, bobSeconds,
+               riftGap, groups: [...]}}
+`mapDifficulty` and the optional `pointHealth` / `pointDifficultyShare` set the health of
+one rift point (HEALTH_KEYS), edited in the Onslaught Editor's Timeline (rifttear.editor_view's
 `health`). Plans made before Rift Tear groups carry `rifts: [{at, spawner, unit, count}]`.
 `rifts[].spawner` is the id of a plan spawner with `unstable`; its indexInLevel is read
 after planactors.emit has numbered the spawners, and the spawner is written with the row's
@@ -58,25 +59,34 @@ PLACED_NAME = 'RiftLordCrystal'
 #: The class's float variables read from its default object, with the class's own defaults
 #: (Mods/CrystalDefense) used when the class cannot be read.
 CLASS_FLOATS = {'HealthPerRiftPoint': 20.0, 'MinHealth': 1000.0, 'BobHeight': 25.0,
-                'BobSeconds': 4.0, 'RiftGap': 2.0}
+                'BobSeconds': 4.0, 'RiftGap': 2.0, 'PointHealth': 166.7,
+                'PointDifficultyShare': 0.2, 'MapDifficulty': 0.0}
 #: Plan float fields and the class variables they write.
 FLOAT_VARS = (('bobHeight', 'BobHeight', 25.0),
               ('bobSeconds', 'BobSeconds', 4.0),
               ('riftGap', 'RiftGap', 2.0))
-#: Crystal health: one fixed value per difficulty, plan `difficultyHealth` [Apprentice, War
-#: Mage, Rift Lord, Endless] (EGameDifficulty order), written whole as the per-instance
-#: float[4] DIFFICULTY_HEALTH (contract with win64-64, 2026-10-24). 0 is no value: the
-#: Crystal falls back to the class's MinHealth / HealthPerRiftPoint, which are never
-#: written. Plans with healthPerRiftPoint / minHealth read as minHealth at every difficulty.
-HEALTH_KEY = 'difficultyHealth'
-DIFFICULTY_HEALTH = 'DifficultyHealth'
-HEALTH_DIFFICULTIES = ('Apprentice', 'War Mage', 'Rift Lord', 'Endless')
-HPP_VAR, MIN_VAR = 'HealthPerRiftPoint', 'MinHealth'
+#: Crystal health (GameModes/archetypes/defend per_map, 2026-11-04): one rift point's health
+#: = PointHealth x (1 + (difficulty step + MapDifficulty) x PointDifficultyShare) /
+#: (1 + 0.25 x (players - 4)), at least 1; the crystal's is the initial rift points x that.
+#: Plan key -> class variable. `mapDifficulty` is always kept (written when it differs from
+#: the class default); `pointHealth` and `pointDifficultyShare` are overrides, kept and
+#: written only when set (OVERRIDES).
+HEALTH_KEYS = {'mapDifficulty': 'MapDifficulty', 'pointHealth': 'PointHealth',
+               'pointDifficultyShare': 'PointDifficultyShare'}
+MAP_DIFFICULTY = 'mapDifficulty'
+OVERRIDES = ('pointHealth', 'pointDifficultyShare')
+#: Plan keys of the health models before it (fixed health per difficulty; health per rift
+#: point with a floor): dropped on load and save. The class still declares their variables.
+OLD_HEALTH_KEYS = ('difficultyHealth', 'healthPerRiftPoint', 'minHealth')
+OLD_HEALTH_VARS = ('DifficultyHealth', 'HealthPerRiftPoint', 'MinHealth')
 LABELS = {'bobHeight': 'Bob Height', 'bobSeconds': 'Bob Seconds',
-          'riftGap': 'Gap Between Minion Rows (s)', 'health': 'Health'}
+          'riftGap': 'Gap Between Minion Rows (s)', 'mapDifficulty': 'Map Difficulty',
+          'pointHealth': 'Rift Point Health', 'pointDifficultyShare': 'Difficulty Share'}
 RIFT_AT, RIFT_INDEX, RIFT_WAVE = 'RiftAt', 'RiftIndex', 'RiftWave'
 #: Accepted ranges of the plan fields.
-RANGES = {'health': (0.0, 10000000.0),
+#: mapDifficulty is in difficulty steps (OMD3's difficulties: -0.8 Apprentice .. 0.8 Rift Lord).
+RANGES = {'mapDifficulty': (-2.0, 5.0), 'pointHealth': (1.0, 100000.0),
+          'pointDifficultyShare': (0.0, 1.0),
           'bobHeight': (0.0, 1000.0), 'bobSeconds': (0.1, 600.0), 'riftGap': (0.0, 60.0),
           'at': (0.1, 99.9), 'count': (1, 100)}
 #: An older rift row's count when it gives none.
@@ -265,7 +275,9 @@ def defaults():
     """The plan fields' defaults: the class's own."""
     got = class_defaults()
     out = {key: got[prop] for key, prop, _d in FLOAT_VARS}
-    out[HEALTH_KEY] = [got[MIN_VAR]] * len(HEALTH_DIFFICULTIES)
+    out[MAP_DIFFICULTY] = got[HEALTH_KEYS[MAP_DIFFICULTY]]
+    #: unset overrides: the class's own
+    out.update({key: None for key in OVERRIDES})
     out['groups'] = []
     #: waves of one onslaught loop the groups' per-wave rows cover (rifttear.wave_count)
     out['waveCount'] = 0
@@ -274,35 +286,30 @@ def defaults():
     return out
 
 
-def _old_health(raw, base):
-    """difficultyHealth of settings saved before it: their minHealth at every difficulty."""
-    if raw.get('minHealth') is None:
-        return list(base[HEALTH_KEY])
-    try:
-        v = max(RANGES['health'][0], min(RANGES['health'][1], float(raw['minHealth'])))
-    except (TypeError, ValueError):
-        return list(base[HEALTH_KEY])
-    return [round(v, 4)] * len(HEALTH_DIFFICULTIES)
-
-
 def values(item):
-    """A crystal item's settings with the defaults filled in (a blank health 0)."""
-    out = defaults()
+    """A crystal item's settings with the defaults filled in (a blank Map Difficulty the
+    default, a blank override None); older health keys are left out."""
+    base = defaults()
+    out = dict(base)
     raw = (item or {}).get(KEY) or {}
     out.update({k: v for k, v in raw.items() if k in out})
-    if not isinstance(raw.get(HEALTH_KEY), list):
-        out[HEALTH_KEY] = _old_health(raw, out)
-    else:
-        out[HEALTH_KEY] = [0.0 if v is None or v == '' else v for v in raw[HEALTH_KEY]]
+    for key in HEALTH_KEYS:
+        if out[key] == '':
+            out[key] = base[key]
     return out
 
 
 def clean_health(raw):
-    """difficultyHealth validated: one number per HEALTH_DIFFICULTIES entry, a blank 0."""
-    if not isinstance(raw, list) or len(raw) != len(HEALTH_DIFFICULTIES):
-        raise ValueError('Crystal Health takes %d values' % len(HEALTH_DIFFICULTIES))
-    return [0.0 if v is None or v == '' else _number(v, 'health', '%s %s' % (d, LABELS['health']))
-            for v, d in zip(raw, HEALTH_DIFFICULTIES)]
+    """The health fields of `raw` validated: {mapDifficulty (a blank 0), and each override
+    that is set}."""
+    raw = raw if isinstance(raw, dict) else {}
+    md = raw.get(MAP_DIFFICULTY)
+    out = {MAP_DIFFICULTY: 0.0 if md is None or md == '' else
+           _number(md, MAP_DIFFICULTY, LABELS[MAP_DIFFICULTY])}
+    for key in OVERRIDES:
+        if raw.get(key) is not None and raw.get(key) != '':
+            out[key] = _number(raw[key], key, LABELS[key])
+    return out
 
 
 def _number(raw, key, label):
@@ -323,8 +330,7 @@ def clean_piece(raw, matrix):
     out = {}
     for key, _prop, _d in FLOAT_VARS:
         out[key] = _number(r.get(key, base[key]), key, LABELS[key])
-    out[HEALTH_KEY] = clean_health(r[HEALTH_KEY] if isinstance(r.get(HEALTH_KEY), list)
-                                   else _old_health(r, base))
+    out.update(clean_health(r))
     rows = []
     for row in (r.get('rifts') or [])[:RIFTS_MAX]:
         if not isinstance(row, dict):
@@ -396,7 +402,8 @@ def problems(plan, spec=None):
         return []
     out = []
     if len(items) > 1:
-        out.append('a mission takes one Crystal, not %d' % len(items))
+        out.append('the map has %d Crystals and a mission takes one: remove the extra '
+                   'Crystals' % len(items))
     #: Crystal Defense is always one crystal over one rift (user, 2026-10-30): more rifts are
     #: Rift Defense only
     rifts = rifts_in_play(plan)
@@ -407,12 +414,17 @@ def problems(plan, spec=None):
     ups = unstable_spawners(plan)
     for sid in rift_ids(plan):
         if sid in ups and ups[sid].get('start') is None:
-            out.append('Unstable Rift %d, which the Crystal opens, has no start point'
+            out.append('Unstable Rift %d, which the Crystal opens, has no start point, so its '
+                       'enemies have no route: give it a start point'
                        % (ups[sid].get('index') or sid))
     out += rifttear.problems(v, plan, spec, unit_guids() if rifttear.groups(v) else {})
     #: a missing mod is refused by supportedmods.build_problems
     if pak():
-        out += class_problems()
+        wrong = class_problems()
+        if wrong:
+            print('crystal class: %s' % '; '.join(wrong))
+            out.append('the installed Crystal Defense has a Crystal this version of Rift Lord '
+                       'cannot place: update Crystal Defense, or remove the Crystal')
     return out
 
 
@@ -626,8 +638,7 @@ def editor_info(level_name, rift=None):
     return {'spot': where, 'available': bool(pak()), 'units': units, 'parts': model_parts(),
             'levelRifts': level_rifts(level_name),
             'labels': LABELS, 'fields': [k for k, _p, _d in FLOAT_VARS],
-            'healthDifficulties': list(HEALTH_DIFFICULTIES),
-            'healthRange': list(RANGES['health']),
+            'healthRanges': {k: list(RANGES[k]) for k in HEALTH_KEYS},
             'count': COUNT_DEFAULT, 'countRange': list(RANGES['count']),
             'pak': pak_name(), 'defaults': defaults(), 'label': LABEL,
             'hitFields': [{'key': k, 'label': prop} for k, prop, _a in crystalfit_fields()] +
@@ -674,19 +685,29 @@ def float_properties(item):
             if abs(v - float(base[prop])) > 1e-4}
 
 
-def health_array(item):
-    """{DIFFICULTY_HEALTH: [health per difficulty, 0 = none]}, all four always."""
-    return {DIFFICULTY_HEALTH: [round(float(v or 0), 4) for v in values(item)[HEALTH_KEY]]}
+def health_properties(item):
+    """{variable: value} of the Crystal's health: MapDifficulty when it differs from the class
+    default, each override when set. DifficultyHealth, HealthPerRiftPoint and MinHealth are
+    never written."""
+    got = values(item)
+    out = {}
+    md = round(float(got[MAP_DIFFICULTY] or 0), 4)
+    if abs(md - float(class_defaults()[HEALTH_KEYS[MAP_DIFFICULTY]])) > 1e-4:
+        out[HEALTH_KEYS[MAP_DIFFICULTY]] = md
+    for key in OVERRIDES:
+        if got[key] is not None:
+            out[HEALTH_KEYS[key]] = round(float(got[key]), 4)
+    return out
 
 
 def written_properties(plan, item, guids=None):
     """{variable: value} the placed crystal is written with: its floats that differ from the
-    class default, its health per difficulty (health_array), and its Rift Tear arrays
+    class default, its health (health_properties), and its Rift Tear arrays
     (rifttear.arrays: groups resolved to the plan's numbered spawners; trigger arrays at
     full length)."""
     from riftlord.mapeditor import rifttear
     out = float_properties(item)
-    out.update(health_array(item))
+    out.update(health_properties(item))
     v = values(item)
     if uses_rows(item):
         out.update(rows_arrays(plan, item))
@@ -817,8 +838,8 @@ def adopt(level_name):
     for g in view['groups']:
         for r in g['rifts']:
             r['spawner'] = -abs(int(r['spawner']))
-    settings = {'groups': view['groups'], HEALTH_KEY: view['health']['values'],
-                'riftGap': view['riftGap']}
+    settings = {'groups': view['groups'], 'riftGap': view['riftGap']}
+    settings.update(clean_health(view['health']))
     if view.get('waveCount'):
         settings['waveCount'] = view['waveCount']
     yaw = (p.get('rotation') or [0, 0, 0])[1]
@@ -850,12 +871,17 @@ def place(builder, item, rename, plan, report):
         #: the level's own Crystal (adopt): written over in place, its earlier arrays cleared
         actor = next((a for a, p in placed(builder) if p.get('_name') == item[LEVEL_KEY]), None)
         if actor is None:
-            report['skipped'].append('%s not placed: the level has no %s'
-                                     % (LABEL, item[LEVEL_KEY]))
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the %s' % LABEL, 'the level has no %s' % item[LEVEL_KEY],
+                'The level\'s Crystal it takes over is gone; place a new Crystal.'))
             return None
         for name, _k in rifttear.ARRAYS:
             builder.clear_property(actor, name)
         builder.clear_property(actor, rifttear.WAVE_COUNT)
+        #: and its health: what the plan sets is written below, an older model's dropped
+        for name in tuple(HEALTH_KEYS.values()) + OLD_HEALTH_VARS:
+            builder.clear_property(actor, name)
         rename = item[LEVEL_KEY]
     else:
         try:
@@ -870,9 +896,8 @@ def place(builder, item, rename, plan, report):
     from riftlord.mapeditor import crystalfit
     for prop, value in crystalfit.user_half(item).items():
         builder.set_property(actor, prop, 'FloatProperty', struct.pack('<f', value))
-    for prop, vals in health_array(item).items():
-        builder.set_property(actor, prop, 'ArrayProperty', struct.pack('<i', len(vals)) +
-                             b''.join(struct.pack('<f', x) for x in vals), 'FloatProperty')
+    for prop, value in health_properties(item).items():
+        builder.set_property(actor, prop, 'FloatProperty', struct.pack('<f', value))
     v = values(item)
     if uses_rows(item):
         got = rows_arrays(plan, item)
@@ -1028,7 +1053,8 @@ def gates(files_, plan, mission_row=None):
     want = written_properties(built, item, guids)
     want = {k: x for k, x in want.items() if not isinstance(x, list) or x}
     shown = {k: x for k, x in vals.items()
-             if k in {p for _k, p, _d in FLOAT_VARS} | {MIN_VAR, HPP_VAR, DIFFICULTY_HEALTH}}
+             if k in {p for _k, p, _d in FLOAT_VARS} | set(HEALTH_KEYS.values())
+             | set(OLD_HEALTH_VARS)}
     shown.update({k: x for k, x in rifttear.read(level.pkg, actor).items() if x})
     protos = ('UnitProto', 'RowProto')
     for key in protos:
@@ -1219,7 +1245,7 @@ def check_plan():
                         'flyersOnly': False, 'groundOnly': False, 'next': []}],
             'spawners': [rift(7, [2150.0, 6950.0, 537.0]), rift(8, [3850.0, 6950.0, 527.0])],
             'added': [{'kind': KIND, 'name': CLASS, 'matrix': matrix,
-                       KEY: {HEALTH_KEY: [800.0, 1500.0, 2500.0, 3000.0],
+                       KEY: {MAP_DIFFICULTY: 1.5, 'pointHealth': 250.0,
                              'bobHeight': 40.0, 'bobSeconds': 6.0,
                              'riftGap': 3.0, 'groups': [group]}}]}
 

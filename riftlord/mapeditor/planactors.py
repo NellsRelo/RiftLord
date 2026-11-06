@@ -434,7 +434,8 @@ def graph(plan, level):
                           [dict(b) for b in nxt], 'changed': True, 'point': p}
     if exit_name in removed and rift_to == exit_name:
         problems.append('%s is the level\'s exit point. Removing it needs a rift '
-                        'added in its place, and this plan adds none' % exit_name)
+                        'added in its place, and this plan adds none: place a rift, or put '
+                        '%s back' % (exit_name, exit_name))
     for n in nodes.values():
         for b in n['next']:
             if b['to'] == 'rift':
@@ -471,8 +472,9 @@ def graph(plan, level):
             continue
         for b in n['next']:
             if b['to'] not in nodes:
-                problems.append('point %s leads to %s, which is neither an added point '
-                                'nor one of the level\'s' % (key, b['to']))
+                problems.append('%s has a branch to %s, which is not in the level; point '
+                                'that branch at another point'
+                                % (point_label(key), point_label(b['to'])))
     return nodes, removed, problems
 
 
@@ -499,6 +501,12 @@ def reaches_exit(nodes, exit_name):
     return good
 
 
+def point_label(key):
+    """A path point as the Map Editor names it: 'Path Point N' for the plan's, the level's
+    own by name."""
+    return 'Path Point %s' % key if isinstance(key, int) else str(key)
+
+
 def check(plan, level_name, level=None):
     """(errors, warnings) for the plan's actors against the level they go into."""
     level = level or level_actors(level_name)
@@ -515,10 +523,11 @@ def check(plan, level_name, level=None):
         label = rift_label(plan, r.get('id'))
         e = r.get('exit')
         if e is not None and e not in points:
-            errors.append('%s: its exit point %s is not a path point you placed' % (label, e))
+            errors.append('%s: its exit point %s is not a path point you placed; pick one of '
+                          'yours inside it as its exit' % (label, e))
         elif e is not None and e in named:
-            errors.append('%s and %s share exit point %s'
-                          % (rift_label(plan, named[e]), label, e))
+            errors.append('%s and %s share exit point %s; give each rift a different exit '
+                          'point inside it' % (rift_label(plan, named[e]), label, e))
         elif e is None and r.get('id') not in own.values() and not (
                 n == 0 and moves_exit(plan, level)):
             errors.append('%s has no exit point, so no route can end at it. Place a path '
@@ -528,37 +537,40 @@ def check(plan, level_name, level=None):
     for pid, rid in own.items():
         rift = next((r for r in plan.get('rifts') or [] if r.get('id') == rid), None)
         if rift and rift.get('at') and not in_rift(points[pid]['at'], rift['at']):
-            warnings.append('point %s, the exit of %s, stands outside the rift\'s enter area '
-                            '(%g uu across it, %g below to %g above it)'
-                            % (pid, rift_label(plan, rid), RIFT_ENTER_RADIUS,
+            warnings.append('%s, the exit of %s, stands outside the rift (%g units across '
+                            'it, %g below to %g above it); move it inside the rift'
+                            % (point_label(pid), rift_label(plan, rid), RIFT_ENTER_RADIUS,
                                RIFT_ENTER_DROP + RIFT_ENTER_HALF,
                                RIFT_ENTER_HALF - RIFT_ENTER_DROP))
         if points[pid].get('next'):
-            warnings.append('point %s is the exit of %s, so its branches are not used'
-                            % (pid, rift_label(plan, rid)))
+            warnings.append('%s is the exit of %s, so its branches are not used; remove '
+                            'them' % (point_label(pid), rift_label(plan, rid)))
     for key, n in nodes.items():
         if key not in good:
-            errors.append('enemies at point %s can never reach the rift: none of its '
+            errors.append('enemies at %s can never reach the rift: none of its '
                           'branches leads there. Give it a branch toward the rift'
-                          % key)
+                          % point_label(key))
         total = sum(b['weight'] for b in n['next'])
         low, high = SHIPPED_WEIGHT_SUM
         if (n['kind'] == 'plan' or n['changed']) and n['next'] and not (
                 low - WEIGHT_TOLERANCE <= total <= high + WEIGHT_TOLERANCE):
-            warnings.append('point %s: branch weights add up to %.2f; shipped levels '
-                            'use %.1f to %.1f' % (key, total, low, high))
+            warnings.append('%s: branch weights add up to %.2f; shipped levels use %.1f '
+                            'to %.1f, so set its weights to add up to 1'
+                            % (point_label(key), total, low, high))
         if len(n['next']) > MAX_SHIPPED_FANOUT and (n['kind'] == 'plan' or n['changed']):
-            warnings.append('point %s has %d branches; no shipped level has more than '
-                            '%d' % (key, len(n['next']), MAX_SHIPPED_FANOUT))
+            warnings.append('%s has %d branches; no shipped level has more than %d, so test '
+                            'it in game' % (point_label(key), len(n['next']),
+                                            MAX_SHIPPED_FANOUT))
     # spawner starts
     level_edits = {w['name']: w for w in plan.get('wiring') or []}
     for sp in plan.get('spawners') or []:
         for key in ('start', 'flyerStart'):
             r = sp.get(key)
             if r is not None and r not in nodes:
-                errors.append('spawner %s: its %s %s is not a point in the level'
+                errors.append('Spawner %s: its %s %s is not a point in the level; give it '
+                              'another start point'
                               % (sp['id'], 'flyer start' if key == 'flyerStart'
-                                 else 'start', r))
+                                 else 'start', point_label(r)))
     for name, sp in level['spawners'].items():
         w = level_edits.get(name) or {}
         if w.get('gone'):
@@ -566,8 +578,8 @@ def check(plan, level_name, level=None):
         for key in ('start', 'flyerStart'):
             r = w[key] if key in w else sp.get(key)
             if r is not None and r not in nodes:
-                errors.append('spawner %s starts at %s, which this plan removes or does '
-                              'not have; give it another start point' % (name, r))
+                errors.append('%s starts at %s, which this plan removes or does not have; '
+                              'give it another start point' % (name, point_label(r)))
     reached = set()
     for sp in list(plan.get('spawners') or []) + list(level['spawners'].values()):
         for key in ('start', 'flyerStart'):
@@ -579,35 +591,47 @@ def check(plan, level_name, level=None):
         reached.update(b['to'] for b in n['next'])
     for p in plan.get('points') or []:
         if p['id'] not in reached:
-            warnings.append('point %s is not reached from any spawner or point'
-                            % p['id'])
+            warnings.append('%s is not reached from any spawner or point; give a route a '
+                            'branch to it, or remove it' % point_label(p['id']))
     # indices
     seen = {}
     for name, sp in level['spawners'].items():
         if not (level_edits.get(name) or {}).get('gone') and sp.get('index'):
             seen.setdefault(sp['index'], []).append(name)
+    unstable = set()
     for sp in plan.get('spawners') or []:
         if sp.get('index'):
-            seen.setdefault(sp['index'], []).append('spawner %s' % sp['id'])
+            label = ('Unstable Rift %s' if sp.get('unstable') else 'Spawner %s') % (
+                sp['index'] if sp.get('unstable') else sp['id'])
+            seen.setdefault(sp['index'], []).append(label)
+            if sp.get('unstable'):
+                unstable.add(label)
+    #: an added spawner's clash the build renumbers (emit); an unstable rift's is a design
+    #: decision, since Mission Events name it by its index
     for i, who in seen.items():
-        if len(who) > 1:
-            errors.append('spawner index %d is used by %s' % (i, ' and '.join(who)))
+        rifts = [w for w in who if w in unstable]
+        if len(who) > 1 and rifts:
+            errors.append('%s share index in level %d; give %s a different "index in '
+                          'level" in its Settings, and point its Mission Events at it'
+                          % (' and '.join(who), i, rifts[-1]))
     # player starts
     phases = [(s['phase'], level_edits.get(s['export']) or {}) for s in level['starts']]
     live = [w.get('phase', ph) for ph, w in phases if not w.get('gone')]
     live += [s['phase'] for s in plan.get('playerStarts') or []]
     if level['starts'] or plan.get('playerStarts'):
         if not any(ph in ('breaks', 'both') for ph in live):
-            errors.append('no player start is left for between waves')
+            errors.append('no player start is left for between waves; place a Player '
+                          'Start Used Between Waves')
         if not any(ph in ('waves', 'both') for ph in live):
-            errors.append('no player start is left for during waves')
+            errors.append('no player start is left for during waves; place a Player Start '
+                          'Used During Waves')
     # doors
     gone_doors = {w['name'] for w in plan.get('wiring') or [] if w.get('gone')
                   and w['name'] in level['doors']}
     for sp in plan.get('spawners') or []:
         if isinstance(sp.get('door'), str) and sp['door'] in gone_doors:
-            errors.append('spawner %s uses %s, which this plan removes'
-                          % (sp['id'], sp['door']))
+            errors.append('Spawner %s uses %s, which this plan removes; pick another door '
+                          'for it' % (sp['id'], sp['door']))
     return errors, warnings
 
 
@@ -750,7 +774,10 @@ def emit(builder, plan, level_name, level_path, ctx):
     for w in plan.get('wiring') or []:
         index = by_name.get(w['name'])
         if not index:
-            report['skipped'].append('%s is not in the level' % w['name'])
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the change to %s' % w['name'], '',
+                'It is not in this level any more; undo the change to it.'))
             continue
         if w.get('gone') and w['name'] == level['exit'] and moves_exit(plan, level):
             builder.place(index, location=tuple(plan['rifts'][0]['at']))
@@ -888,8 +915,12 @@ def emit(builder, plan, level_name, level_path, ctx):
         if wanted <= 0 or wanted in ctx['taken_indices']:
             was, wanted = wanted, ctx['free_index']()
             if was > 0:
-                report['notes'].append('spawner index %d is taken; used %d instead'
-                                       % (was, wanted))
+                #: stored back into the plan by the build (bucket), where it can be changed
+                report.setdefault('fixed', []).append(
+                    'Gave Spawner %s index in level %d, since %d is taken; waves sent through '
+                    '%d go to the spawner that has it.' % (sp.get('id'), wanted, was, was))
+                report.setdefault('planFixes', []).append(
+                    {'kind': 'spawner', 'id': sp.get('id'), 'index': wanted})
         else:
             ctx['taken_indices'].add(wanted)
         sp['index'] = wanted
@@ -1057,7 +1088,7 @@ def ground_chains(plan, level):
 
 def ground_names(plan, level):
     """{(x, y, z): label} of the points ground_chains walks, labelled as the Map Editor
-    labels them: "Spawner N" (an added spawner, at its floor), "Point N" (an added path
+    labels them: "Spawner N" (an added spawner, at its floor), "Path Point N" (an added path
     point) and the level's own point names."""
     from riftlord.build.navigation import navsurfextend
     nodes, _removed, _p = graph(plan, level)
@@ -1073,5 +1104,28 @@ def ground_names(plan, level):
             at = w.get('at') or sp['location']
             out[(at[0], at[1], at[2] - navsurfextend.SPAWNER_ABOVE_FLOOR)] = name
     for key, n in nodes.items():
-        out[tuple(n['at'])] = ('Point %s' % key) if n['kind'] == 'plan' else str(key)
+        out[tuple(n['at'])] = ('Path Point %s' % key) if n['kind'] == 'plan' else str(key)
+    return out
+
+
+def ground_targets(plan, level):
+    """{(x, y, z): Checks target} of the points ground_chains walks, keyed as ground_names:
+    {'kind': 'spawner', 'id'} and {'kind': 'point', 'id'} for the plan's, {'name'} for the
+    level's own (buildmessage.check)."""
+    from riftlord.build.navigation import navsurfextend
+    nodes, _removed, _p = graph(plan, level)
+    out = {}
+    for sp in plan.get('spawners') or []:
+        if sp.get('at') is not None:
+            at = sp['at']
+            out[(at[0], at[1], at[2] - navsurfextend.SPAWNER_ABOVE_FLOOR)] = \
+                {'kind': 'spawner', 'id': sp.get('id')}
+    for name, w in ((w['name'], w) for w in plan.get('wiring') or []):
+        sp = level['spawners'].get(name)
+        if sp and not w.get('gone'):
+            at = w.get('at') or sp['location']
+            out[(at[0], at[1], at[2] - navsurfextend.SPAWNER_ABOVE_FLOOR)] = {'name': name}
+    for key, n in nodes.items():
+        out[tuple(n['at'])] = ({'kind': 'point', 'id': key} if n['kind'] == 'plan'
+                               else {'name': str(key)})
     return out

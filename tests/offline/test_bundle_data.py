@@ -58,6 +58,10 @@ def main():
                     read.update(READ_RE.findall(fh.read()))
     missing = sorted(read - set(build.DATA) - DEV_ONLY)
     present = [d for d in build.DATA if not os.path.exists(os.path.join(ROOT, 'riftlord', 'data', d))]
+    data_dir = os.path.join(ROOT, 'riftlord', 'data')
+    on_disk = {os.path.relpath(os.path.join(b, n), data_dir).replace(os.sep, '/')
+               for b, _d, fs in os.walk(data_dir) for n in fs if n.endswith('.json')}
+    loose = sorted(on_disk - set(build.DATA) - DEV_ONLY)
     unbundled = sorted(key_sources() - set(build.fab_code_files()))
     from riftlord.core import bpkitlink
     from riftlord.types import setup as types_setup
@@ -72,6 +76,8 @@ def main():
                                                 os.path.join(ROOT, 'riftlord', 'types', n)))
     checks = [('every data file the app reads is bundled', not missing, ', '.join(missing)),
               ('every bundled data file exists', not present, ', '.join(present)),
+              ('every data file in riftlord/data is bundled or development-only', not loose,
+               ', '.join(loose)),
               ('every source file the terrain kits\' Setup key reads is bundled as text',
                not unbundled, ', '.join(unbundled)),
               ('every file Setup\'s type-data keys read is bundled as text where they read it',

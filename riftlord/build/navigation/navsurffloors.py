@@ -272,11 +272,12 @@ def cover(boxes, cell=CELL, step=STEP, lines=None):
 
 
 def _orient_slopes(boxes, cell, step=STEP):
-    """Flip each sloped piece if the other orientation fits its neighbours better."""
+    """Flip each sloped piece if the other orientation fits its neighbours better; a box
+    that names its flip (a fifth entry) keeps it."""
     flat = [b for b in boxes if not (len(b) > 2 and b[2])]
     out = []
     for box in boxes:
-        if not (len(box) > 2 and box[2]):
+        if not (len(box) > 2 and box[2]) or len(box) > 4:
             out.append(box)
             continue
         lo, hi, _sl, yaw = box[0], box[1], box[2], box[3]

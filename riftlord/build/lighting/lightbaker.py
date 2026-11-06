@@ -851,7 +851,8 @@ def shade(c0, c1, normal):
 class Baker:
     """GPU state for one level: occluders uploaded once, atlases baked one at a time."""
 
-    def __init__(self, level, lights, sky, tags=None, plan=None, emitters=None, log=print):
+    def __init__(self, level, lights, sky, tags=None, plan=None, emitters=None, log=print,
+                 receivers=None, host=True, baked_lights=()):
         from riftlord.build.lighting import lightscene
         import moderngl
         self.level = level
@@ -869,9 +870,24 @@ class Baker:
                 self.bds[path] = bd
             del bd
         self.plan_counts = None
+        received = {r['item'] for r in receivers or ()}
         if plan:
-            self.plan_counts = lightscene.apply_plan(level, self.comps, plan)
+            self.plan_counts = lightscene.apply_plan(level, self.comps, plan, received)
             log('plan: %s' % self.plan_counts)
+        if not host:
+            log('host pieces taken out: %d' % lightscene.drop_host(self.comps))
+        self.receiver_count = 0
+        if receivers:
+            from riftlord.build.lighting import lightalloc
+            path = self.packages[0]
+            if path not in self.bds:
+                raise SystemExit('lightbake: added pieces get light maps only in a bake of '
+                                 'the persistent level')
+            got = lightalloc.extend(self.bds[path], path, receivers, baked_lights)
+            self.comps.setdefault(path, []).extend(got)
+            self.receiver_count = len(got)
+            log('receivers: %d added components, %d atlases' % (
+                len(got), len({c['lightmap']['textures'][0] for c in got})))
         self.emitter_count = 0
         if emitters:
             ids, radiance = emitters
@@ -1685,7 +1701,18 @@ def bake(level, tags, out_dir, spec=None, log=print):
     * 'plan': a Rift Lord plan (its removed, edits and added pieces change the scene);
     * 'light_colours': {'<tag>|<export>': [r, g, b]} new LightColor of a light component,
       as riftlord.liquidlights gives it (FColor / 255, sRGB);
-    * 'sky_level': take the sky light from this level instead (a chosen sky's home).
+    * 'light_edits', 'light_moves', 'light_removed': the plan's own lights' values, moves
+      and removals by actor key (riftlord.build.world.lighting.bake_inputs), over the
+      liquid lights' colours;
+    * 'sky_light_edit': the plan's Sky Light values;
+    * 'sky_level': take the sky light from this level instead;
+    * 'static_sky': False when the built level's sky light is not Static (no sky baked);
+    * 'streamed': tags of the host packages whose Static lights the built level keeps
+      (None: all);
+    * 'host': False when the built level keeps none of the host's pieces
+      (lightscene.drop_host);
+    * 'receivers', 'added_lights': the plan's added pieces that get light maps and the
+      Static lights its added actors bring (riftlord.build.lighting.lightalloc).
 
     Returns a report."""
     from riftlord.build.lighting import lightscene
@@ -1696,15 +1723,38 @@ def bake(level, tags, out_dir, spec=None, log=print):
         bd = lightscene.registry(path)
         if bd is not None:
             guids |= lightscene.static_light_guids(bd)
-    lights = lightscene.lights(level, guids)
+    #: the packages the built level streams of its host (tags), None for all
+    streamed = spec.get('streamed')
+    paths = [p for p in lightscene.packages(level)
+             if streamed is None or lightscene.tag_of(level, p) in streamed]
+    lights = lightscene.lights(level, guids, paths, edits=spec.get('light_edits'),
+                               moves=spec.get('light_moves'),
+                               removed=spec.get('light_removed') or ()) if paths else []
+    added = []
+    for rec in spec.get('added_lights') or []:
+        added.append(dict(rec, guid=bytes.fromhex(rec['guid']),
+                          position=[float(v) for v in rec['position']]))
+    lights += added
     recolour = spec.get('light_colours') or {}
+    #: the plan's own light colours win over the liquid lights' (apply.retint)
+    edited = set()
+    for path in paths:
+        pkg = lightscene.Package(path)
+        tag = lightscene.tag_of(level, path)
+        for i, e in enumerate(pkg.exports):
+            key = '%s|%d' % (tag, int(e.get('outer') or 0))
+            if 'LightColor' in ((spec.get('light_edits') or {}).get(key) or {}):
+                edited.add('%s|%d' % (tag, i + 1))
     done = 0
     for l in lights:
         key = '%s|%d' % (lightscene.tag_of(level, l['package']), l['export'])
-        if key in recolour:
+        if key in recolour and key not in edited:
             l['colour'] = lightscene.linear_colour([v * 255.0 for v in recolour[key]])
             done += 1
-    sky = lightscene.sky_light(spec.get('sky_level') or level)
+    sky = None
+    if spec.get('static_sky', True):
+        sky = lightscene.sky_light(spec.get('sky_level') or level,
+                                   edits=spec.get('sky_light_edit'))
     if spec.get('sky') and SKY_FROM_TEXTURE and sky:
         sky = sky_from_texture(sky, spec['sky'], level, fog=spec.get('sky_fog'), log=log)
     for k, at in enumerate(spec.get('lava_lights') or []):
@@ -1719,7 +1769,8 @@ def bake(level, tags, out_dir, spec=None, log=print):
             emitters = (ids, spec.get('lava_radiance') or LAVA_RADIANCE)
     set_quality(spec.get('quality') or CURRENT_QUALITY)
     baker = Baker(level, lights, sky, tags=tags, plan=spec.get('plan'), emitters=emitters,
-                  log=log)
+                  log=log, receivers=spec.get('receivers'), host=spec.get('host', True),
+                  baked_lights=added)
     cache = spec.get('sublevel_cache')
     report = {'level': level, 'lights': len(lights), 'recoloured': done,
               'recolour_asked': len(recolour), 'sky_level': spec.get('sky_level') or level,
@@ -1728,6 +1779,7 @@ def bake(level, tags, out_dir, spec=None, log=print):
               'lava_lights': len(spec.get('lava_lights') or []),
               'lava_emitter_instances': baker.emitter_count,
               'lava_radiance': list(emitters[1]) if emitters else None,
+              'receivers': baker.receiver_count, 'added_lights': len(added),
               'settings': {'SKY_RAYS': SKY_RAYS, 'SHADOW_RAYS': SHADOW_RAYS,
                            'DENOISE': DENOISE, 'quality': CURRENT_QUALITY,
                            'backend': baker.backend, 'DIRECT_ONLY': DIRECT_ONLY}}
@@ -1840,7 +1892,10 @@ def sublevel_key(baker, path, sky, spec):
     every occluder and light that reaches its bounds (padded by SUBLEVEL_REACH), the sky,
     the emitters, the quality and the baker's own source. Editing pieces elsewhere on the
     map leaves the key, and the cached bake, alone."""
-    recv = [(c['export'], c['mesh'], [np.round(m, 2).tolist() for m in c['matrices']])
+    recv = [(c['export'], c['mesh'], [np.round(m, 2).tolist() for m in c['matrices']],
+             c['guid'].hex() if c.get('guid') else None, c['lightmap']['type'],
+             list(c['lightmap'].get('textures') or ()),
+             list(c['lightmap'].get('coord_bias') or ()))
             for c in baker.comps[path]]
     pts = [m[:3, 3] for c in baker.comps[path] for m in c['matrices']]
     if not pts:

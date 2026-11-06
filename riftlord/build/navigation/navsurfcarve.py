@@ -27,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 from riftlord.build.navigation import navsurf  # noqa: E402
 from riftlord.build.navigation import navsurfgen  # noqa: E402
+from riftlord.core import buildmessage  # noqa: E402
 
 #: Builds change the walkable graph for removed floor only when this is True.
 ENABLED = False
@@ -407,33 +408,46 @@ def carve_level(uasset, uexp, level_name, plan, chains=()):
             if got is not None:
                 out, notes = got, notes + more
     if navsurfadd.ENABLED:
-        boxes = [box for _name, box in added_floor(plan)]
+        floors = added_floor(plan)
+        boxes = [box for _name, box in floors]
         got, more, _stats = navsurfadd.add_buffer(out, boxes)
         if got is not None:
             bad = navsurfadd.check(out, got)
             if bad:
-                raise ValueError('the added walkable floor breaks the graph\'s rules: %s'
-                                 % '; '.join(bad[:5]))
+                raise buildmessage.Problem(
+                    'An added floor piece overlaps the floor enemies walk on in a way they '
+                    'cannot use (%s). Move it so it meets the floor edge to edge.'
+                    % '; '.join(buildmessage.where(
+                        buildmessage.piece_label({'name': name}),
+                        [(box[0][k] + box[1][k]) / 2 for k in range(3)])
+                        for name, box in floors[:4]),
+                    'the added walkable floor breaks the graph\'s rules: %s'
+                    % '; '.join(bad[:5]))
             out, notes = got, notes + more
     if out is buf:
         return uasset, uexp, []
     problems = check(out)
     if problems:
-        raise ValueError('the changed walkable graph failed its checks: %s'
-                         % '; '.join(problems))
+        raise buildmessage.fault(
+            'change the floor enemies walk on for the removed and added floor',
+            'the changed walkable graph failed its checks: %s' % '; '.join(problems))
     broken, detours = broken_legs(buf, out, chains)
     if broken:
-        raise ValueError(
-            'removed floor cuts a ground route: no walkable floor is left between %s'
+        raise buildmessage.Problem(
+            'Removed floor cuts a ground route: no floor enemies can walk is left between '
+            'the route points at %s. Put the floor back, or move the route onto floor.'
             % '; '.join('(%.0f, %.0f, %.0f) and (%.0f, %.0f, %.0f)' % (a + b)
                         for a, b in broken))
     for a, b, db, da in detours:
-        notes.append('removed floor makes enemies walk %.0f uu instead of %.0f between '
-                     '(%.0f, %.0f, %.0f) and (%.0f, %.0f, %.0f)' % ((da, db) + a + b))
+        notes.append('Removed floor makes enemies walk %.0f units instead of %.0f between '
+                     'the route points at (%.0f, %.0f, %.0f) and (%.0f, %.0f, %.0f).'
+                     % ((da, db) + a + b))
     ua, ux, checks = navsurfinject.set_surface_bytes(uasset, uexp, out)
     bad = [name for name, ok in checks if not ok]
     if bad:
-        raise ValueError('writing the changed walkable graph failed: %s' % '; '.join(bad))
+        raise buildmessage.fault(
+            'write the changed floor enemies walk on into the level',
+            'writing the changed walkable graph failed: %s' % '; '.join(bad))
     return ua, ux, notes
 
 

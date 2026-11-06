@@ -465,22 +465,10 @@ def _template_for(cls, component):
         return {}
 
 
-def read_package(package_path, actor_parts=None, actor_meshes=None, keep_local=False):
-    """Everything drawable in one package: meshes, lights and particle systems.
-
-    One pass, one load, one chain walker shared between them. A light component has
-    no transform of its own any more than a mesh component does -- 253 of Split
-    Stairs' point lights sit at the origin unless the chain above them is walked --
-    so the same `world()` serves all three.
-
-    `keep_local` gives each Blueprint part its transform relative to its actor
-    (`local`, column-major) and its component name, as riftlord.kitdonors reads them.
-    """
-    info, uexp, hdr = _load(package_path)
-    if actor_parts is None:
-        actor_parts = omd3actors.part_index()
-    if actor_meshes is None:
-        actor_meshes = omd3actors.mesh_index()
+def _chain(info, uexp, hdr):
+    """(props, template_of, own, world) of one loaded package: an export's properties by
+    name, a component's class template, its own transform and its world transform
+    (4x4 rows) up its AttachParent chain."""
     props_of = {}
     world_of = {}
 
@@ -534,6 +522,56 @@ def read_package(package_path, actor_parts=None, actor_meshes=None, keep_local=F
                 m = _matmul(world(parent - 1, seen), m)
         world_of[i] = m
         return m
+
+    return props, template_of, own, world
+
+
+#: UBoxComponent's BoxExtent default (uu).
+BOX_EXTENT = (32.0, 32.0, 32.0)
+
+
+def boxes(package_path):
+    """[{export, actor, name, extent, matrix (4x4 rows), body}] for every box component
+    of one package: its half size (instance, else class template, else BOX_EXTENT) and its
+    BodyInstance fields (instance, else class template, else {}; omd3templates.body_fields).
+    `actor` is the owning actor's export (1-based)."""
+    info, uexp, hdr = _load(package_path)
+    props, template_of, _own, world = _chain(info, uexp, hdr)
+    names = info.get('names') or []
+    out = []
+    for i, e in enumerate(info['exports']):
+        if not _class_of(info, e).endswith('BoxComponent'):
+            continue
+        p, t = props(i), template_of(i)
+        extent = onslaught.as_vec(p['BoxExtent'][2]) if 'BoxExtent' in p else None
+        body = t.get('body') or {}
+        raw = (p.get('BodyInstance') or (0, 0, None))[2]
+        if isinstance(raw, (bytes, bytearray)):
+            body = dict(body, **omd3templates.body_fields(bytes(raw), names))
+        out.append({'export': i + 1, 'actor': e.get('outer') or None,
+                    'name': str(e.get('name') or '').replace(omd3templates.GEN_SUFFIX, ''),
+                    'extent': list(extent or t.get('extent') or BOX_EXTENT),
+                    'matrix': world(i), 'body': body})
+    return out
+
+
+def read_package(package_path, actor_parts=None, actor_meshes=None, keep_local=False):
+    """Everything drawable in one package: meshes, lights and particle systems.
+
+    One pass, one load, one chain walker shared between them. A light component has
+    no transform of its own any more than a mesh component does -- 253 of Split
+    Stairs' point lights sit at the origin unless the chain above them is walked --
+    so the same `world()` serves all three.
+
+    `keep_local` gives each Blueprint part its transform relative to its actor
+    (`local`, column-major) and its component name, as riftlord.kitdonors reads them.
+    """
+    info, uexp, hdr = _load(package_path)
+    if actor_parts is None:
+        actor_parts = omd3actors.part_index()
+    if actor_meshes is None:
+        actor_meshes = omd3actors.mesh_index()
+    props, template_of, own, world = _chain(info, uexp, hdr)
 
     def import_name(index):
         i = -index - 1
@@ -743,6 +781,11 @@ def read_package(package_path, actor_parts=None, actor_meshes=None, keep_local=F
         if not parts and cls in actor_meshes:
             parts = [{'mesh': actor_meshes[cls][0], 'loc': [0.0, 0.0, 0.0],
                       'rot': [0.0, 0.0, 0.0], 'scale': [1.0, 1.0, 1.0]}]
+        #: a class whose asset differs from it in case: its pieces are late (after the
+        #: level's other pieces; docs/MAP-EDITOR.md, Piece ids)
+        late = omd3actors.found_by_case_only(cls)
+        if not parts and late:
+            parts = omd3actors.late_parts(cls)
         if not parts:
             continue
         base = None
@@ -788,6 +831,8 @@ def read_package(package_path, actor_parts=None, actor_meshes=None, keep_local=F
             # The actor's export, not the part's, so moving one means moving the actor.
             entry = {'mesh': mesh_name, 'matrix': _flat(m),
                      'source': 'blueprint', 'actor': cls, 'export': i + 1}
+            if late:
+                entry['late'] = True
             if keep_local:
                 entry['local'] = _flat(_matmul(_inverse(base), m))
                 entry['componentName'] = part.get('component')
@@ -899,6 +944,31 @@ def _scenario_key(name, sky_module):
     return name
 
 
+def packages(name):
+    """[(sublevel tag, package path, extra)] of a level's packages in the order `read` reads
+    them, persistent level first; `extra` for one of extra_sublevels. A tag two packages
+    would share takes the leaf name."""
+    extras = extra_sublevels(name)
+    out, seen = [], {}
+    for pkg in sublevels(name) + extras:
+        leaf = pkg.rsplit('/', 1)[-1]
+        if pkg in extras and not leaf.startswith(name):
+            leaf = name + '_' + leaf.rsplit('_', 1)[-1]
+        # A mission's level streams the source map's sublevels, whose leaves
+        # start with the source's name, not the mission's: take the tag from
+        # whichever known suffix the leaf ends with.
+        tag = leaf[len(name):].lstrip('_') if leaf.startswith(name) else ''
+        if not tag and leaf != name:
+            tag = next((suffix.lstrip('_') for suffix in GEOMETRY_SUBLEVELS
+                        if suffix and leaf.endswith(suffix)), '')
+        tag = tag or 'persistent'
+        if seen.get(tag, pkg) != pkg:
+            tag = leaf
+        seen[tag] = pkg
+        out.append((tag, pkg, pkg in extras))
+    return out
+
+
 def read(name, want_geometry=True):
     """One shipped level: its drawable pieces and its spawners, doors and routes."""
     pieces, lights, vfx, rifts, subs, sounds = [], [], [], [], [], []
@@ -907,21 +977,7 @@ def read(name, want_geometry=True):
     if want_geometry:
         actor_parts = omd3actors.part_index()
         actor_meshes = omd3actors.mesh_index()
-        extras = extra_sublevels(name)
-        for pkg in sublevels(name) + extras:
-            leaf = pkg.rsplit('/', 1)[-1]
-            if pkg in extras and not leaf.startswith(name):
-                leaf = name + '_' + leaf.rsplit('_', 1)[-1]
-            # A mission's level streams the source map's sublevels, whose leaves
-            # start with the source's name, not the mission's: take the tag from
-            # whichever known suffix the leaf ends with.
-            tag = leaf[len(name):].lstrip('_') if leaf.startswith(name) else ''
-            if not tag and leaf != name:
-                tag = next((suffix.lstrip('_') for suffix in GEOMETRY_SUBLEVELS
-                            if suffix and leaf.endswith(suffix)), '')
-            tag = tag or 'persistent'
-            if sub_packages.get(tag, pkg) != pkg:
-                tag = leaf
+        for tag, pkg, extra in packages(name):
             sub_packages[tag] = pkg
             subs.append(tag)
             try:
@@ -933,7 +989,7 @@ def read(name, want_geometry=True):
             if tag == FOLIAGE_SUBLEVEL or tag.endswith('_' + FOLIAGE_SUBLEVEL):
                 for item in got:
                     item['foliage'] = True
-            if pkg in extras:
+            if extra:
                 for item in got:
                     item['late'] = True
             pieces.extend(got)

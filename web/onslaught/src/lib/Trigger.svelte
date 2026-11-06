@@ -1,9 +1,10 @@
 <script>
   // One Rift Group trigger (riftlord/mapeditor/rifttear.py, BP_Crystal's Rift* arrays), on two
   // lines:
-  //   When [Wave | The Wave After Crystal Health ≤ | From Wave] [n] [After Crystal Health ≤ x %]
+  //   When [Wave | The Wave After Crystal Health ≤ | From Wave] [n] [After Crystal Health ≤ x % of total]
   //   Opens At [Seconds Into the Wave | Enemies Left ≤] [n] s|%   Open [n] Rifts   Repeat Every [n] Waves
   // When: `wave` alone; `at` alone (opens in the next wave); `wave` and `at` with `both`.
+  // `at` is a % of the Crystal's total health (its initial rift points x one point's health).
   // Opens At: `launchAfter` seconds, or `launchAlive` enemies left (at most ALIVE_MAX).
   // `alive` is never written (0); spec.js injectTear converts an older trigger that has it.
   import { triggerOpenProblem, triggerWaveProblem, TRIGGER_ALIVE_MAX as ALIVE_MAX } from './spec.js'
@@ -79,7 +80,7 @@
     {#if when !== 'wave'}
       <input type="number" min="1" max="99" step="1" value={t.at} aria-label="Crystal Health"
              onchange={(e) => { setHealth(e.currentTarget.value); e.currentTarget.value = t.at }} />
-      <span class="w">%</span>
+      <span class="w">% of total</span>
     {/if}
     <span class="grow"></span>
     <button class="ghost del" aria-label="Remove this trigger" onclick={onremove}>✕</button>

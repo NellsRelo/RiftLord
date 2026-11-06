@@ -475,8 +475,10 @@ def visibility_is_stale(plan):
     precomputed visibility then still hides pieces behind walls that are gone, from
     every cell that saw them only through those walls."""
     from riftlord.mapeditor import scratch
+    from riftlord.mapeditor import piececollision
     plan = plan or {}
-    return bool(plan.get('removed') or plan.get('edits') or scratch.is_scratch(plan))
+    return bool(plan.get('removed') or piececollision.moving_edits(plan)
+                or scratch.is_scratch(plan))
 
 
 def _fstring_end(data, at):
@@ -549,8 +551,8 @@ def apply_edits(builder, edits, report):
     """Write one level's moved, parked and per-instance edits.
 
     `edits` is one entry of `apply.sublevel_edits`: 'parked' exports, 'moved'
-    (export, matrix, shipped matrix) rows and 'instances'
-    {export: {'parked': [(instance, piece matrix)], 'moved': [...]}}.
+    (export, matrix, shipped matrix) rows, 'collision' {export: (on, mesh)} and
+    'instances' {export: {'parked': [(instance, piece matrix)], 'moved': [...]}}.
     """
     from riftlord.build import apply
     parked = list(edits.get('parked') or [])
@@ -584,27 +586,44 @@ def apply_edits(builder, edits, report):
         try:
             target, where, rot, scale = moved_relative(builder, export, matrix, original)
         except ValueError as exc:
-            report['skipped'].append('could not move export %d: %s' % (export, exc))
+            from riftlord.core import buildmessage
+            from riftlord.build import levelbuild
+            report['skipped'].append(buildmessage.left_out(
+                'the level piece %s' % levelbuild._name_of(builder.pkg, export - 1),
+                'export %d: %s' % (export, exc), effect='it stays where the level has it',
+                verb='move'))
             continue
         if rot is None and scale is None and all(
                 abs(p - q) < SAME_PLACE for p, q in zip(where, relative(builder, target)[0])):
             continue
         apply.place_whole(builder, target, location=where, rotation=rot, scale=scale)
         report['moved'] += 1
+    #: the level's own pieces' Collides switch (riftlord/mapeditor/piececollision.py)
+    from riftlord.mapeditor import piececollision
+    for export, (on, mesh) in sorted((edits.get('collision') or {}).items()):
+        if export in parked:
+            continue
+        piececollision.switch_component(builder, export, on, mesh)
+        report['collision_switched'] = report.get('collision_switched', 0) + 1
     for export, rows in (edits.get('instances') or {}).items():
         parked = rows.get('parked') or []
         if rows.get('moved'):
-            report['skipped'].append(
-                '%d foliage instance(s) of export %d were moved; instances can be removed '
-                'but not moved' % (len(rows['moved']), export))
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the move of %d foliage instance%s' % (len(rows['moved']),
+                                                       '' if len(rows['moved']) == 1 else 's'),
+                'export %d' % export, 'Foliage the level ships with can be removed but not moved; '
+                'move it back, or remove it and add new foliage.'))
         if not parked:
             continue
         try:
             world = component_world(parked[0][1], builder, export, parked[0][0])
             got = park_instances(builder, export, [k for k, _m in parked], world)
         except ValueError as exc:
-            report['skipped'].append('could not remove instances of export %d: %s'
-                                     % (export, exc))
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'removing %d foliage instance%s' % (len(parked), '' if len(parked) == 1 else 's'),
+                'export %d: %s' % (export, exc)))
             continue
         report['parked'] += got
         report.setdefault('instances', 0)

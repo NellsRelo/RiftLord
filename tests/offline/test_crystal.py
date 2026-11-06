@@ -39,36 +39,42 @@ _w, saved = records.validate_plan({'plan': two})
 kept = [a for a in saved['added'] if a.get('kind') == crystal.KIND]
 check('the save keeps one crystal', len(kept) == 1, len(kept))
 check('the save keeps its settings and groups',
-      kept and kept[0]['crystal'] == {'difficultyHealth': [800.0, 1500.0, 2500.0, 3000.0],
+      kept and kept[0]['crystal'] == {'mapDifficulty': 1.5, 'pointHealth': 250.0,
                                       'bobHeight': 40.0, 'bobSeconds': 6.0, 'riftGap': 3.0,
                                       'groups': [GROUP]},
       kept and kept[0]['crystal'])
-for label, value in (('a negative health', -5), ('a health that is not a number', 'x')):
+for key, value in (('mapDifficulty', -2.5), ('mapDifficulty', 5.5), ('mapDifficulty', 'x'),
+                   ('pointHealth', 0), ('pointHealth', 'x'),
+                   ('pointDifficultyShare', -0.1), ('pointDifficultyShare', 1.5)):
     bad = copy.deepcopy(PLAN)
-    bad['added'][0]['crystal']['difficultyHealth'][2] = value
+    bad['added'][0]['crystal'][key] = value
     try:
         records.validate_plan({'plan': bad})
-        check('%s is refused' % label, False)
+        check('%s %r is refused' % (key, value), False)
     except ValueError:
-        check('%s is refused' % label, True)
+        check('%s %r is refused' % (key, value), True)
 blank = copy.deepcopy(PLAN)
-blank['added'][0]['crystal']['difficultyHealth'] = [None, 1500.0, '', 0]
+blank['added'][0]['crystal'].update(mapDifficulty='', pointHealth=None, pointDifficultyShare='')
 _w, got = records.validate_plan({'plan': blank})
-check('a blank health saves as 0 (no value)',
-      [a for a in got['added'] if a.get('kind') == crystal.KIND][0]['crystal']['difficultyHealth']
-      == [0.0, 1500.0, 0.0, 0.0])
+bc = [a for a in got['added'] if a.get('kind') == crystal.KIND][0]['crystal']
+check('a blank Map Difficulty saves as 0 and blank overrides are not kept',
+      bc.get('mapDifficulty') == 0.0 and 'pointHealth' not in bc
+      and 'pointDifficultyShare' not in bc, bc)
 older = copy.deepcopy(PLAN)
-del older['added'][0]['crystal']['difficultyHealth']
-older['added'][0]['crystal'].update(healthPerRiftPoint=5.0, minHealth=1200.0)
+for key in crystal.HEALTH_KEYS:
+    older['added'][0]['crystal'].pop(key, None)
+older['added'][0]['crystal'].update(difficultyHealth=[800.0, 1500.0, 2500.0, 3000.0],
+                                    healthPerRiftPoint=5.0, minHealth=1200.0)
 _w, got = records.validate_plan({'plan': older})
 oc = [a for a in got['added'] if a.get('kind') == crystal.KIND][0]['crystal']
-check('a plan with Health per Rift Point reads as its Minimum Health at every difficulty',
-      oc['difficultyHealth'] == [1200.0] * 4 and 'healthPerRiftPoint' not in oc
-      and 'minHealth' not in oc
-      and crystal.values(older['added'][0])['difficultyHealth'] == [1200.0] * 4, oc)
-check('it writes DifficultyHealth only, never HealthPerRiftPoint or MinHealth',
-      {k: x for k, x in crystal.written_properties(older, older['added'][0], {}).items()
-       if 'Health' in k} == {'DifficultyHealth': [1200.0] * 4},
+check('an older plan\'s difficultyHealth, healthPerRiftPoint and minHealth are dropped (Map '
+      'Difficulty 0)',
+      not set(crystal.OLD_HEALTH_KEYS) & set(oc) and oc.get('mapDifficulty') == 0.0
+      and not set(crystal.OLD_HEALTH_KEYS) & set(crystal.values(older['added'][0])), oc)
+check('it writes no DifficultyHealth, HealthPerRiftPoint or MinHealth; Map Difficulty 0 and '
+      'unset overrides write nothing',
+      not set(crystal.written_properties(older, older['added'][0], {}))
+      & set(crystal.OLD_HEALTH_VARS + tuple(crystal.HEALTH_KEYS.values())),
       crystal.written_properties(older, older['added'][0], {}))
 rows_item = {'kind': crystal.KIND, 'matrix': ITEM['matrix'],
              'crystal': {'rifts': [{'at': 75.0, 'spawner': 7, 'unit': 'OrcLight', 'count': 3}]}}
@@ -113,14 +119,18 @@ for key, value in (('launchAfter', 601), ('launchAfter', -1), ('launchAlive', 10
 # 2. only what differs from the class default is written, and the groups' arrays
 plain = {'added': [{'kind': crystal.KIND, 'matrix': ITEM['matrix'],
                     'crystal': dict(crystal.defaults())}]}
-base_min = crystal.class_defaults()['MinHealth']
-check('defaults write the four healths (the class MinHealth) and nothing else',
-      crystal.written_properties(plain, plain['added'][0])
-      == {'DifficultyHealth': [base_min] * 4},
+check('defaults write nothing',
+      crystal.written_properties(plain, plain['added'][0]) == {},
       crystal.written_properties(plain, plain['added'][0]))
+share = copy.deepcopy(plain)
+share['added'][0]['crystal'].update(pointDifficultyShare=0.2, mapDifficulty=-0.5)
+check('a set override is written even at the mode\'s value, and Map Difficulty when not 0',
+      crystal.written_properties(share, share['added'][0])
+      == {'PointDifficultyShare': 0.2, 'MapDifficulty': -0.5},
+      crystal.written_properties(share, share['added'][0]))
 guids = crystal.unit_guids()
 got = crystal.written_properties(PLAN, ITEM, guids)
-want = {'DifficultyHealth': [800.0, 1500.0, 2500.0, 3000.0],
+want = {'MapDifficulty': 1.5, 'PointHealth': 250.0,
         'BobHeight': 40.0, 'BobSeconds': 6.0, 'RiftGap': 3.0,
         'GroupStart': [0], 'GroupSize': [2], 'GroupMembers': [3, 4],
         'MemberDifficulty': [5, 3], 'MemberPlayers': [0, 2],
@@ -193,17 +203,23 @@ check('the Onslaught Editor keeps the Map Editor\'s name and rifts, takes its ow
       changed and mg['name'] == 'North-west' and [r['spawner'] for r in mg['rifts']] == [7, 8]
       and mg['rifts'][1]['difficulty'] == 1 and mg['minions'][0]['unit'] == 'Ogre'
       and merged['added'][0]['crystal']['riftGap'] == 1.5, mg)
-check('the Rift Tear tab shows the plan\'s health per difficulty',
-      view['health']['values'] == [800.0, 1500.0, 2500.0, 3000.0]
-      and view['health']['difficulties'] == ['Apprentice', 'War Mage', 'Rift Lord', 'Endless'],
+check('the Rift Tear tab shows the plan\'s health fields, the mode\'s defaults and ranges',
+      view['health']['values'] == {'mapDifficulty': 1.5, 'pointHealth': 250.0,
+                                   'pointDifficultyShare': None}
+      and set(view['health']['defaults']) == set(crystal.HEALTH_KEYS)
+      and view['health']['ranges']['mapDifficulty'] == [-2.0, 5.0],
       view['health'])
-view['health']['values'] = [900, 1500, None, 5000]
+view['health']['values'] = {'mapDifficulty': None, 'pointHealth': None,
+                            'pointDifficultyShare': 0.3}
 merged = copy.deepcopy(PLAN)
 rifttear.merge_editor(merged, view)
-check('the Rift Tear tab\'s health is the plan\'s, which the Map Editor reads (blank 0)',
-      merged['added'][0]['crystal']['difficultyHealth'] == [900.0, 1500.0, 0.0, 5000.0]
-      and rifttear.editor_view(merged)['health']['values'] == [900.0, 1500.0, 0.0, 5000.0],
-      merged['added'][0]['crystal'])
+mc = merged['added'][0]['crystal']
+check('the Rift Tear tab\'s health is the plan\'s (blank Map Difficulty 0, a cleared override '
+      'gone)',
+      mc.get('mapDifficulty') == 0.0 and 'pointHealth' not in mc
+      and mc.get('pointDifficultyShare') == 0.3
+      and rifttear.editor_view(merged)['health']['values']
+      == {'mapDifficulty': 0.0, 'pointHealth': None, 'pointDifficultyShare': 0.3}, mc)
 same = copy.deepcopy(older)
 check('an unchanged health from the tab changes nothing',
       not rifttear.merge_editor(same, rifttear.editor_view(older)))
@@ -267,12 +283,18 @@ if crystal.pak():
     def read_back(folder):
         return crystal.placed(built(folder))[0][1]
     props = read_back(SCRATCH)
-    check('read back: DifficultyHealth as set, HealthPerRiftPoint and MinHealth unwritten',
-          props.get('DifficultyHealth') == [800.0, 1500.0, 2500.0, 3000.0]
-          and 'HealthPerRiftPoint' not in props and 'MinHealth' not in props, props)
+    check('read back: MapDifficulty and PointHealth as set; PointDifficultyShare, '
+          'DifficultyHealth, HealthPerRiftPoint and MinHealth unwritten',
+          props.get('MapDifficulty') == 1.5 and props.get('PointHealth') == 250.0
+          and not {'PointDifficultyShare', 'DifficultyHealth', 'HealthPerRiftPoint',
+                   'MinHealth'} & set(props), props)
     level = built(SCRATCH)
     tear = rifttear.read(level.pkg, crystal.placed(level)[0][0])
-    view = rifttear.level_view(tear)
+    view = rifttear.level_view(tear, {k: props[k] for k in crystal.HEALTH_KEYS.values()
+                                      if k in props})
+    check('read back: a no-record view\'s health fields are the written ones',
+          view['health']['values'] == {'mapDifficulty': 1.5, 'pointHealth': 250.0,
+                                       'pointDifficultyShare': None}, view['health'])
     check('read back: RiftRepeat as written, and a no-record view\'s triggers repeat as planned',
           tear.get('RiftRepeat') == [0, 2]
           and [t['repeat'] for t in view['groups'][0]['triggers']] == [0, 2],
@@ -280,13 +302,16 @@ if crystal.pak():
     blank_dir = os.path.join(SCRATCH, 'blank')
     os.makedirs(blank_dir, exist_ok=True)
     bplan = crystal.check_plan()
-    bplan['added'][0]['crystal']['difficultyHealth'] = [0, 1800.0, 0, 0]
+    for key in crystal.HEALTH_KEYS:
+        bplan['added'][0]['crystal'].pop(key, None)
+    bplan['added'][0]['crystal']['pointDifficultyShare'] = 0.25
     #: and the second rift without a start point: only the start gate fails
     bplan['spawners'][1]['start'] = None
     fails = crystal.check(blank_dir, log=lambda _s: None, plan=bplan)
     props = read_back(blank_dir)
-    check('read back: blank healths written as 0, all four',
-          props.get('DifficultyHealth') == [0.0, 1800.0, 0.0, 0.0], props)
+    check('read back: only the set override, no MapDifficulty at 0',
+          props.get('PointDifficultyShare') == 0.25
+          and not {'MapDifficulty', 'PointHealth', 'DifficultyHealth'} & set(props), props)
     check('the start gate fails on a Crystal rift with no StartingPathPoint, and only it',
           len(fails) == 1 and 'start at a placed path point' in fails[0], fails)
 else:

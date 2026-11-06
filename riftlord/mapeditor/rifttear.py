@@ -16,11 +16,11 @@ Plan data, on the plan's Crystal item (`crystal.groups`; `crystal.riftGap` and
 level's own (an adopted Crystal, crystal.adopt). `difficulty` is an EOnslaughtDifficulty (0
 Apprentice, 1 War Mage, 2 Rift Lord, 3 Co-op, 4 Endless from loop 2, 5 Any), as wave rows use
 it; `players` 0 any, 1 solo, 2 co-op. A trigger MARKS when the Crystal's health falls to `at`
-%, the wave reaches `wave` and/or the current wave's enemies left fall to `alive` % of its most
-(`both`: all set conditions, else any); blank fields are none. A marked group LAUNCHES in a
-wave: a wave or enemies-left trigger's in the wave it is met in while that wave is fought,
-else the next; a health trigger's in the next wave to begin; at the first of `launchAfter`
-seconds into the wave (already passed: at once), its enemies left falling to `launchAlive` %,
+% of its total, the wave reaches `wave` and/or the current wave's enemies left fall to `alive`
+% of its most (`both`: all set conditions, else any); blank fields are none. A marked group
+LAUNCHES in a wave: a wave or enemies-left trigger's in the wave it is met in while that wave
+is fought, else the next; a health trigger's in the next wave to begin; at the first of
+`launchAfter` seconds into the wave (already passed: at once), its enemies left falling to `launchAlive` %,
 and its last enemy (both 0: 50 %). The first row comes out 2 s after the rift appears (win64-64,
 2026-10-28). A trigger marks once; with `repeat` N (Repeat Every (Waves), 0 = once) it marks
 again from N waves after it last marked whenever its conditions still hold, counting across
@@ -549,15 +549,20 @@ ONSLAUGHT_RIFT = ('difficulty', 'players', 'chances')
 
 
 def _health(values):
+    """The Onslaught Editor's health fields from the Crystal's `values` (crystal.HEALTH_KEYS:
+    an unset override None), with each field's range and the class's defaults."""
     from riftlord.mapeditor import crystal
-    return {'values': list(values), 'difficulties': list(crystal.HEALTH_DIFFICULTIES),
-            'range': list(crystal.RANGES['health'])}
+    base = crystal.class_defaults()
+    return {'values': {k: values.get(k) for k in crystal.HEALTH_KEYS},
+            'defaults': {k: base[prop] for k, prop in crystal.HEALTH_KEYS.items()},
+            'ranges': {k: list(crystal.RANGES[k]) for k in crystal.HEALTH_KEYS}}
 
 
 def editor_view(plan):
     """What the Onslaught Editor edits of the plan's Crystal, or None without one:
     {groups: [...], riftGap, waveCount, rifts: [{id, index, label}],
-     health: {values: [health per difficulty], difficulties: [label], range: [lo, hi]}}.
+     health: {values: {mapDifficulty, pointHealth, pointDifficultyShare}, defaults: {..},
+              ranges: {key: [lo, hi]}}}.
     A group's `waves` are its enemy rows per wave of a loop; a rift's `chances` its % per
     wave."""
     from riftlord.mapeditor import crystal
@@ -574,7 +579,7 @@ def editor_view(plan):
             'waveCount': wave_count(v),
             'rifts': [{'id': i, 'index': n, 'label': 'Unstable Rift %d' % (n or i)}
                       for i, n in sorted(index.items())],
-            'health': _health(v[crystal.HEALTH_KEY])}
+            'health': _health(v)}
 
 
 def _row_view(rows, i, values):
@@ -673,11 +678,15 @@ def level_view(arrays, scalars=None, spawner_units=None):
             'launchAlive': pad('RiftLaunchAlive', n, 0.0)[e],
             'repeat': pad('RiftRepeat', n, NO_REPEAT)[e]})
     indices = sorted({r['spawner'] for g in out for r in g['rifts'] if r['spawner']})
-    health = list(arrays.get(crystal.DIFFICULTY_HEALTH) or [])
+    #: the health variables as written; MapDifficulty not written is the class default
+    health = {k: scalars.get(prop) for k, prop in crystal.HEALTH_KEYS.items()}
+    if health[crystal.MAP_DIFFICULTY] is None:
+        health[crystal.MAP_DIFFICULTY] = crystal.class_defaults()[
+            crystal.HEALTH_KEYS[crystal.MAP_DIFFICULTY]]
     return {'groups': out, 'riftGap': scalars.get('RiftGap', crystal.CLASS_FLOATS['RiftGap']),
             'waveCount': waves,
             'rifts': [{'id': i, 'index': i, 'label': 'Unstable Rift %d' % i} for i in indices],
-            'health': _health((health + [0.0] * 4)[:4])}
+            'health': _health(health)}
 
 
 def merge_editor(plan, view):
@@ -692,7 +701,8 @@ def merge_editor(plan, view):
 
     def state():
         return repr((settings.get('groups'), settings.get('riftGap'), settings.get('rifts'),
-                     settings.get('waveCount'), crystal.values(item)[crystal.HEALTH_KEY]))
+                     settings.get('waveCount'),
+                     [crystal.values(item)[k] for k in crystal.HEALTH_KEYS]))
     before = state()
     mine = groups(crystal.values(item))
     theirs = clean_groups(view.get('groups'))
@@ -713,8 +723,10 @@ def merge_editor(plan, view):
     if view.get('waveCount') is not None and (wave_count(view) or 'waveCount' in settings):
         settings['waveCount'] = wave_count(view)
     health = view.get('health') if isinstance(view.get('health'), dict) else {}
-    if isinstance(health.get('values'), list):
-        settings[crystal.HEALTH_KEY] = crystal.clean_health(health['values'])
-        for old in ('healthPerRiftPoint', 'minHealth'):
-            settings.pop(old, None)
+    if isinstance(health.get('values'), dict):
+        for key in crystal.HEALTH_KEYS:
+            settings.pop(key, None)
+        settings.update(crystal.clean_health(health['values']))
+    for old in crystal.OLD_HEALTH_KEYS:
+        settings.pop(old, None)
     return before != state()

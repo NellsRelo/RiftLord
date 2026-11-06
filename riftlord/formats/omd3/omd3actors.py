@@ -170,8 +170,32 @@ def _asset_for(class_name):
         for a in gamefiles.find(ext='.uasset'):
             _BY_NAME.setdefault(a.rsplit('/', 1)[-1][:-len('.uasset')],
                                 a[:-len('.uasset')])
+        #: by lower-cased name too: a class's case may differ from its asset's
+        #: (`Wall_RB_MT_v3_1x4_Angle_C` is `Wall_RB_MT_v3_1x4_angle.uasset`)
+        for name, path in list(_BY_NAME.items()):
+            _BY_NAME.setdefault(name.lower(), path)
     base = class_name[:-2] if class_name.endswith('_C') else class_name
-    return _BY_NAME.get(base)
+    return _BY_NAME.get(base) or _BY_NAME.get(base.lower())
+
+
+def found_by_case_only(class_name):
+    """True when a class's asset is found only by its lower-cased name
+    (`Wall_RB_MT_v3_1x4_Angle_C`, asset `Wall_RB_MT_v3_1x4_angle`)."""
+    _asset_for(class_name)
+    base = class_name[:-2] if class_name.endswith('_C') else class_name
+    return base not in _BY_NAME and base.lower() in _BY_NAME
+
+
+_LATE_PARTS = {}
+
+
+def late_parts(class_name):
+    """parts_of(class_name) for a class found_by_case_only, else []: the classes the
+    stored part index (PARTS) has no entry for."""
+    if class_name not in _LATE_PARTS:
+        _LATE_PARTS[class_name] = parts_of(class_name) if found_by_case_only(class_name) \
+            else []
+    return _LATE_PARTS[class_name]
 
 
 def meshes_of(class_name):

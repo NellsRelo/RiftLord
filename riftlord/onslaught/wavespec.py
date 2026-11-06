@@ -15,6 +15,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
 from riftlord.onslaught import bppatch  # noqa: E402
+from riftlord.core import buildmessage  # noqa: E402
+
+#: The warning for a wave event the coordinator has nowhere to put.
+EVENT_LEFT_OUT = ('Rift Lord could not add the event %s to wave %d on this map, so the wave '
+                  'plays without it.')
 from riftlord.build import makelevel  # noqa: E402
 from riftlord.build.minimap import mapdata  # noqa: E402
 from riftlord.build.navigation import navpatch  # noqa: E402
@@ -200,8 +205,9 @@ def shape(bp_name):
         kind = next((f for f in BREAK_FNS if calls.get(f)), None)
         breaks[wave] = kind
     if close is None:
-        raise SystemExit('%s never closes: no OnslaughtEnd within %d waves'
-                         % (bp_name, WAVE_LIMIT))
+        raise buildmessage.internal('writing the waves',
+                                    '%s never closes: no OnslaughtEnd within %d waves'
+                                    % (bp_name, WAVE_LIMIT))
 
     # capacity from the declaration, not the ladder's block: an action-prefixed
     # wave declares its spawns outside the block entirely
@@ -281,9 +287,8 @@ def insert_before(nodes, anchor, fresh):
         if n is anchor:
             nodes.insert(j, fresh)
             return True
-    raise SystemExit('the statement to insert before is no longer in the '
-                     'function; appending past EndOfScript would emit code '
-                     'the game never reaches')
+    raise buildmessage.internal('writing the waves',
+                                'the statement to insert before is no longer in the function')
 
 
 def insert_after(nodes, anchor, fresh):
@@ -292,9 +297,8 @@ def insert_after(nodes, anchor, fresh):
         if n is anchor:
             nodes.insert(j + 1, fresh)
             return True
-    raise SystemExit('the statement to insert after is no longer in the '
-                     'function; appending past EndOfScript would emit code '
-                     'the game never reaches')
+    raise buildmessage.internal('writing the waves',
+                                'the statement to insert after is no longer in the function')
 
 
 def break_import(pkg, names, fn_name):
@@ -477,7 +481,8 @@ def copy_spawn(mm, node):
     """A standalone copy of a spawn statement, for a door a wave never used."""
     import copy
     if node is None:
-        raise SystemExit('this coordinator has no spawn statement to copy')
+        raise buildmessage.internal('writing the waves',
+                                    'this coordinator has no spawn statement to copy')
     return copy.deepcopy(node)
 
 
@@ -598,6 +603,224 @@ def host_waits(mm, indices, resolve, shared=()):
     return out
 
 
+#: The case of a `GetGameDifficulty` Switch, by EGameDifficulty value.
+GAME_DIFFICULTY = {0: 'apprentice', 1: 'warMage', 2: 'riftLord', 3: 'endless'}
+
+#: The values a per-difficulty pause can hold, in the order the editor lists them.
+#: `all` is every difficulty and the first Endless loop; `endless` the first Endless
+#: loop, `endlessLater` every loop after it.
+PAUSE_SLOTS = ('all', 'apprentice', 'warMage', 'riftLord', 'endless', 'endlessLater')
+
+#: Statements that end a straight run of code.
+FLOW_OPS = ('Jump', 'JumpIfNot', 'PushExecutionFlow', 'PopExecutionFlow', 'Return',
+            'EndOfScript', 'ComputedJump')
+
+
+def _var_key(node):
+    """A variable reference's identity: its property path, name number included."""
+    return tuple(v for _k, v in node.ops)
+
+
+def _setter(mm, at, var, names):
+    """The statement before `at` in the same straight run that sets `var`, or None."""
+    for k in range(at - 1, -1, -1):
+        node = mm[k][2]
+        if node.name in FLOW_OPS:
+            return None
+        if node.name in ('Let', 'LetBool'):
+            dest = next((v for kind, v in node.ops if kind == 'expr'), None)
+            if dest is not None and _var_key(dest) == _var_key(var):
+                return k
+    return None
+
+
+def _set_value(mm, k):
+    """The value expression of the Let at statement `k`."""
+    return [v for kind, v in mm[k][2].ops if kind == 'expr'][-1]
+
+
+def _endless_split(mm, at, switch, names, resolve):
+    """{False: FloatConst, True: FloatConst, 'from': loop} of a SwitchValue on the Endless
+    loop, or None. True holds from Endless loop `from` on.
+
+    The shipped pattern selects on a bool copied from
+    `Greater_IntInt(GetEndlessIteration(), n)`, both set in the run in front of `at`:
+    n is 0 (from loop 2) except on Sand_04, where it is 1 (from loop 3).
+    """
+    parts = [v for kind, v in switch.ops if kind == 'expr']
+    if len(parts) != 6 or parts[0].name not in ('LocalVariable', 'InstanceVariable'):
+        return None
+    k = _setter(mm, at, parts[0], names)
+    src = _set_value(mm, k) if k is not None else None
+    if src is not None and src.name in ('LocalVariable', 'InstanceVariable'):
+        k = _setter(mm, k, src, names)
+        src = _set_value(mm, k) if k is not None else None
+    if src is None or src.name != 'CallMath' or str(resolve(src.ops[0][1])) != 'Greater_IntInt':
+        return None
+    args = [v for kind, v in src.ops if kind == 'expr']
+    loop = _setter(mm, k, args[0], names) if args and args[0].name in (
+        'LocalVariable', 'InstanceVariable') else None
+    call = _set_value(mm, loop) if loop is not None else None
+    if call is None or 'GetEndlessIteration' not in str(resolve(call.ops[0][1])):
+        return None
+    if len(args) < 2 or args[1].name not in ('IntZero', 'IntOne', 'IntConst'):
+        return None
+    # GetEndlessIteration is 0 on the first loop, so "> n" holds from loop n + 2
+    out = {'from': {'IntZero': 0, 'IntOne': 1}.get(args[1].name,
+                                                    args[1].ops and args[1].ops[0][1]) + 2}
+    for case, value in ((parts[1], parts[2]), (parts[3], parts[4])):
+        if case.name not in ('True', 'False'):
+            return None
+        if value.name in ('LocalVariable', 'InstanceVariable'):
+            s = _setter(mm, at, value, names)
+            value = _set_value(mm, s) if s is not None else None
+        if value is None or value.name != 'FloatConst':
+            return None
+        out[case.name == 'True'] = value
+    return out
+
+
+def _difficulty_case(mm, k, names, resolve):
+    """The EGameDifficulty a Switch on `GetGameDifficulty` takes to the run holding `k`."""
+    start = k
+    while start > 0 and mm[start - 1][2].name not in FLOW_OPS:
+        start -= 1
+    mem = mm[start][0]
+    for j, (_m, _s, node) in enumerate(mm):
+        if node.name != 'JumpIfNot' or node.ops[0][1] != mem or not j:
+            continue
+        test = _set_value(mm, j - 1) if mm[j - 1][2].name == 'LetBool' else None
+        if test is None or test.name != 'CallMath' or \
+                str(resolve(test.ops[0][1])) != 'NotEqual_ByteByte':
+            continue
+        args = [v for kind, v in test.ops if kind == 'expr']
+        if len(args) < 2 or args[1].name != 'ByteConst' or \
+                'GetGameDifficulty' not in bppatch._varname(args[0], names):
+            continue
+        return args[1].ops[0][1]
+    return None
+
+
+def delay_sites(mm, names, resolve):
+    """Every `OnslaughtDelay` whose length is chosen at run time, in layout order.
+
+    Seven coordinators (Scenario11, Scenario13, Ice_01, Sand_01, Sand_03..05) set an
+    instance variable `Delay` in each case of a Switch on `GetGameDifficulty`, the Endless
+    case selecting again on the Endless loop; Scenario02 selects inline on the loop
+    alone. Each site is {'statement': i, 'slots': {slot: FloatConst}, 'laterFrom': loop},
+    slots from PAUSE_SLOTS, `endlessLater` playing from Endless loop `laterFrom`. A delay
+    read from anything else (Sand_04 opens on one with no setter) is left out.
+    """
+    out = []
+    for i, (_m, _s, node) in enumerate(mm):
+        for call in bppatch.calls_named(node, 'OnslaughtDelay', resolve):
+            arg = next((v for kind, v in call.ops if kind == 'expr'), None)
+            if arg is None or arg.name == 'FloatConst':
+                continue
+            slots, later = {}, None
+            if arg.name == 'SwitchValue':
+                split = _endless_split(mm, i, arg, names, resolve)
+                if split:
+                    slots = {'all': split[False], 'endlessLater': split[True]}
+                    later = split['from']
+            elif arg.name in ('LocalVariable', 'InstanceVariable'):
+                for k, (_m2, _s2, other) in enumerate(mm[:-1]):
+                    if other.name != 'Let' or _var_key(
+                            next(v for kind, v in other.ops if kind == 'expr')) != _var_key(arg):
+                        continue
+                    nxt = mm[k + 1][2]
+                    if k + 1 != i and not (nxt.name == 'Jump' and nxt.ops[0][1] == mm[i][0]):
+                        continue
+                    case = _difficulty_case(mm, k, names, resolve)
+                    value = _set_value(mm, k)
+                    if case not in GAME_DIFFICULTY:
+                        slots = {}
+                        break
+                    if value.name == 'FloatConst':
+                        slots[GAME_DIFFICULTY[case]] = value
+                    elif value.name == 'SwitchValue' and case == 3:
+                        split = _endless_split(mm, k, value, names, resolve)
+                        if not split:
+                            slots = {}
+                            break
+                        slots['endless'], slots['endlessLater'] = split[False], split[True]
+                        later = split['from']
+                    else:
+                        slots = {}
+                        break
+            if slots:
+                out.append({'statement': i, 'laterFrom': later,
+                            'slots': {s: slots[s] for s in PAUSE_SLOTS if s in slots}})
+    return out
+
+
+def site_values(site):
+    """{slot: seconds} of a delay site, rounded as the editor shows them."""
+    return {s: round(f.ops[0][1], 1) for s, f in site['slots'].items()}
+
+
+def write_site(site, values):
+    """Set a delay site's values in place. A slot whose value reads the same is left
+    alone, so an unedited site keeps its exact bytes."""
+    for s, f in site['slots'].items():
+        want = float((values or {}).get(s) or 0.0)
+        if round(f.ops[0][1], 1) != round(want, 1):
+            f.ops[0] = (f.ops[0][0], want)
+
+
+def site_pause(site, ordinal, home):
+    """A row pause holding a delay site's values: {kind, value, byDifficulty, site}, or
+    None when every value is 0. `value` is the largest, for anything that reads one."""
+    values = site_values(site)
+    if not any(values.values()):
+        return None
+    out = {'kind': 'wait', 'value': max(values.values()), 'byDifficulty': values,
+           'site': dict(home, n=ordinal)}
+    if site.get('laterFrom'):
+        out['endlessLaterFrom'] = site['laterFrom']
+    return out
+
+
+def settle_pauses(spec):
+    """A copy of `spec` whose per-difficulty pauses each stand where they were read.
+
+    The values live in the host's own statements, which stay where they are, so a
+    pause read in front of a door's spawn n has to stay in front of spawn n of that wave
+    and door. One that has moved (its row dragged, copied or deleted) becomes a flat
+    wait of its largest value; its site is then written as no pause.
+    """
+    import copy
+    spec = copy.deepcopy(spec)
+    for w, wave in enumerate(spec.get('waves') or []):
+        for door, rows in (wave.get('spawns') or {}).items():
+            # positions among the rows that are written, as door_rows numbers them
+            for k, row in enumerate(r for r in rows if r.get('unit')):
+                for side, at in (('before', k), ('after', k + 1)):
+                    p = row.get(side)
+                    if not isinstance(p, dict) or not p.get('byDifficulty'):
+                        continue
+                    home = p.get('site') or {}
+                    if (home.get('wave'), str(home.get('door')), home.get('at')) != \
+                            (w + 1, str(door), at) or (side == 'before' and k):
+                        row[side] = {'kind': 'wait',
+                                     'value': max(float(v or 0) for v in
+                                                  p['byDifficulty'].values())}
+    return spec
+
+
+def door_sites(spec_rows, number, spawner):
+    """{site ordinal: byDifficulty} of the per-difficulty pauses a door's rows hold at home."""
+    out = {}
+    for row in spec_rows:
+        for side in ('before', 'after'):
+            p = row.get(side)
+            home = (p or {}).get('site') if isinstance(p, dict) else None
+            if home and p.get('byDifficulty') and home.get('wave') == number \
+                    and str(home.get('door')) == str(spawner):
+                out[home['n']] = p['byDifficulty']
+    return out
+
+
 def write_pause(nodes, mm, resolve, anchor, pause, ahead):
     """Put a pause beside a spawn statement.
 
@@ -611,7 +834,8 @@ def write_pause(nodes, mm, resolve, anchor, pause, ahead):
     pause first. Inserted before it, the pause was skipped: a mission's opening waits
     on such doors were lost on every save.
     """
-    if not pause or not pause.get('value'):
+    if not pause or not pause.get('value') or pause.get('site'):
+        # a per-difficulty pause is written into its own statements (write_site)
         return anchor
     if pause.get('kind') == 'gate':
         node = clone_group(mm, resolve, float(pause['value']))
@@ -735,6 +959,46 @@ def close_clone(nodes, mm, clones, at):
     return 1
 
 
+#: Statements control never falls through.
+NO_FALL_THROUGH = ('Jump', 'Return', 'PopExecutionFlow', 'EndOfScript', 'ComputedJump')
+
+
+def clone_with_branches(nodes, mm, idx, src, others):
+    """Copy a block into `nodes`: its statements in execution order (`idx`, from
+    block_sequence), closed as its donor was, then the statements it reaches only on a
+    JumpIfNot's taken side. Returns (clones, entry clone).
+
+    block_sequence never takes a JumpIfNot, so a Switch's other cases (Sand_01 sets its
+    per-difficulty `Delay` there) were left out, and the copy's branches ran the donor's
+    own statements and on through the donor's spawns: an appended wave declared 62 spawns
+    for 51 rows. Each run of side statements that would fall through is given a Jump to
+    what followed it.
+    """
+    seen = set(idx)
+    side = [i for i in bppatch.block_statements(mm, src, others) if i not in seen]
+    clones, entry = bppatch.clone_block(mm, idx + side, src)
+    seq, extra = clones[:len(idx)], clones[len(idx):]
+    copy_of = dict(zip(idx + side, clones))
+    at = len(nodes) - 1
+    for k, c in enumerate(seq):
+        nodes.insert(at + k, c)
+    closed = close_clone(nodes, mm, seq, idx)
+    after = nodes[nodes.index(seq[-1]) + closed]
+    jumps = []
+    for k, (i, c) in enumerate(zip(side, extra)):
+        insert_after(nodes, after, c)
+        after = c
+        nxt = i + 1
+        if c.name in NO_FALL_THROUGH or (k + 1 < len(side) and side[k + 1] == nxt) \
+                or nxt >= len(mm):
+            continue
+        jump = bppatch.clone_jump(mm, copy_of.get(nxt) or mm[nxt][0])
+        insert_after(nodes, after, jump)
+        after = jump
+        jumps.append(jump)
+    return seq + extra + jumps, entry
+
+
 def add_spawner_arms(bp_name, wanted, protos, note=lambda _s: None, only_waves=None):
     """A mutate giving a coordinator an arm for each spawner in `wanted`.
 
@@ -790,9 +1054,9 @@ def add_spawner_arms(bp_name, wanted, protos, note=lambda _s: None, only_waves=N
                     clone_break_in(nodes, mm, clones, resolve,
                                    'OnslaughtWaveBreak', 10.0, keep=False)
                     if block_entry is None:
-                        raise SystemExit(
-                            'wave %d spawner %d: the copied block lost its entry '
-                            'statement' % (number, spawner))
+                        raise buildmessage.internal(
+                            'writing the waves', 'wave %d spawner %d: the copied block lost '
+                            'its entry statement' % (number, spawner))
                     head = bppatch.append_wave(nodes, mm, names, resolve,
                                                head or entry, number, spawner,
                                                block_entry, entry)
@@ -827,6 +1091,7 @@ def author(spec, sh, protos, note=lambda _s: None):
     `sh` is the source coordinator's `shape`, read before the edit because the
     wave and close numbers are what the edit is expressed in.
     """
+    spec = settle_pauses(spec)
     waves = spec['waves']
     want = len(waves)
     live = sh['waves']
@@ -845,8 +1110,8 @@ def author(spec, sh, protos, note=lambda _s: None):
         if settings:
             cdo_at, _cdo = class_default(pkg, names, resolve)
             if cdo_at is None:
-                raise SystemExit('the coordinator has no class default object to take '
-                                 'the mission settings')
+                raise buildmessage.internal('writing the waves', 'the coordinator has no '
+                                            'class default object for the mission settings')
             write_settings(pkg, names, cdo_at, settings, note)
         eps = bppatch.entry_points(pkg, names, resolve)
         entry = eps['Onslaught_Start']
@@ -881,10 +1146,9 @@ def author(spec, sh, protos, note=lambda _s: None):
                               if nm not in taken
                               and vars_[nm]['proto'] not in wanted), None)
                 if spare is None:
-                    raise SystemExit(
-                        'this map names its units through %d Blueprint '
-                        'variables, so it can field at most that many distinct '
-                        'units; the onslaught asks for %d'
+                    raise buildmessage.Refusal(
+                        'This map\'s onslaught can send at most %d different unit types, and '
+                        'the waves ask for %d. Use fewer unit types in the Onslaught Editor.'
                         % (len(vars_), len(wanted)))
                 set_var_proto(pkg, cdo_index, vars_[spare], protos[unit])
                 note('  variable %s now holds %s' % (spare, unit))
@@ -903,6 +1167,11 @@ def author(spec, sh, protos, note=lambda _s: None):
             wmap, _seen = bppatch.wave_map(mm, entry, names, resolve)
             blocks = set(wmap.values())
             head = None
+            # the host's per-difficulty waits, {statement: (ordinal, site)}
+            sites = {s['statement']: (n, s)
+                     for n, s in enumerate(delay_sites(mm, names, resolve))}
+            # statements step 1 turned into a row's pause ahead of its spawn
+            written = set()
 
             # What each wave declares through each spawner, read once. This is
             # the truth about a wave; the ladder's block is not.
@@ -927,11 +1196,13 @@ def author(spec, sh, protos, note=lambda _s: None):
                     continue
                 for i, _c in spawn_statements(mm, idx, resolve):
                     if i in owner and owner[i] != (number, spawner):
-                        raise SystemExit(
-                            'this coordinator shares spawn statement %d between '
-                            'wave %d spawner %d and wave %d spawner %d, so its '
-                            'waves cannot be authored independently'
-                            % (i, owner[i][0], owner[i][1], number, spawner))
+                        raise buildmessage.Refusal(
+                            'This map\'s onslaught uses one spawn for wave %d spawner %d and '
+                            'wave %d spawner %d, so those cannot be changed apart. Change '
+                            'them the same way in the Onslaught Editor, or leave them as they '
+                            'ship.'
+                            % (owner[i][0], owner[i][1], number, spawner),
+                            'shared spawn statement %d' % i)
                     owner[i] = (number, spawner)
 
             # {(wave, spawner): statements another wave or spawner also runs}
@@ -969,8 +1240,9 @@ def author(spec, sh, protos, note=lambda _s: None):
                     # An untouched door keeps the host's statements as they are: its
                     # waits, groups and a block it runs twice (Scenario04 wave 5 door 2)
                     # are then exactly the host's, which rewriting cannot promise.
+                    host_rows = door_rows(mm, idx, resolve, lookup, sites, (i + 1, spawner))
                     if entries and spawn_statements(mm, idx, resolve) and untouched(
-                            entries, door_rows(mm, idx, resolve, lookup)):
+                            entries, host_rows):
                         kept.add((number, spawner))
                         note('  wave %d spawner %d: unchanged (%d spawns)'
                              % (i + 1, spawner, len(entries)))
@@ -1002,10 +1274,10 @@ def author(spec, sh, protos, note=lambda _s: None):
                                             resolve)),
                                        None)
                             if src is None:
-                                raise SystemExit(
-                                    'wave %d sends nothing through any door in '
-                                    'this map, so there is no block to copy'
-                                    % (i + 1))
+                                raise buildmessage.fault(
+                                    'add enemies to wave %d on this map: the map\'s '
+                                    'wave %d sends none through any door to copy from'
+                                    % (i + 1, i + 1))
                             # clone_block keys its entry by memory offset, not
                             # by statement index
                             clones, block_entry = bppatch.clone_block(
@@ -1035,9 +1307,9 @@ def author(spec, sh, protos, note=lambda _s: None):
                             opened.setdefault(number, []).append(clones)
                             doors.setdefault(number, []).append(clones)
                             if block_entry is None:
-                                raise SystemExit(
-                                    'wave %d door %d: the copied block lost its '
-                                    'entry statement' % (i + 1, spawner))
+                                raise buildmessage.internal(
+                                    'writing the waves', 'wave %d door %d: the copied block '
+                                    'lost its entry statement' % (i + 1, spawner))
                             head = bppatch.append_wave(
                                 nodes, mm, names, resolve, head or entry,
                                 number, spawner, block_entry, entry)
@@ -1049,8 +1321,16 @@ def author(spec, sh, protos, note=lambda _s: None):
                         donor = fresh
                     # the host's own waits go: the rows carry them, as read, and
                     # write_pause puts each back beside its row
-                    for node in host_waits(mm, idx, resolve, shared_by[(number, spawner)]):
+                    for node in host_waits(mm, idx, resolve,
+                                           shared_by[(number, spawner)] | set(sites)):
                         drop(nodes, node)
+                    # per-difficulty waits stay where they are, given the rows' values
+                    wanted = door_sites(entries, i + 1, spawner)
+                    for n in {p['site']['n'] for r in host_rows
+                              for p in (r.get('before'), r.get('after'))
+                              if p and p.get('site')}:
+                        site = next(s for _j, (k, s) in sites.items() if k == n)
+                        write_site(site, wanted.get(n))
                     got = write_spawns(nodes, mm, idx, entries, protos,
                                        donor=donor, resolve=resolve,
                                        retarget_var=retarget_var,
@@ -1061,8 +1341,12 @@ def author(spec, sh, protos, note=lambda _s: None):
                         anchor = got['nodes'].get(k)
                         if anchor is None:
                             continue
+                        held = anchor
                         anchor = write_pause(nodes, mm, resolve, anchor,
                                              paced.get('before'), ahead=True)
+                        if anchor is not held:
+                            # the spawn's old statement now holds the pause
+                            written.add(id(held))
                         write_pause(nodes, mm, resolve, anchor,
                                     paced.get('after'), ahead=False)
                     note('  wave %d spawner %d: %d set, %d added, %d dropped'
@@ -1075,13 +1359,16 @@ def author(spec, sh, protos, note=lambda _s: None):
             #     previous group dying rather than on the clock. A wave whose
             #     previous group was emptied by authoring can sit on such a
             #     gate, so they are cleared and the author's delay is a real
-            #     OnslaughtDelay in front of the wave's first spawn.
+            #     OnslaughtDelay in front of the wave's first spawn. A gate a
+            #     row asks for was written in step 1 and stays.
             for i, wave in enumerate(waves[:len(live)]):
                 number = live[i]
                 for spawner in spawners:
                     if (number, spawner) in kept:
                         continue
                     for j in plan.get((number, spawner)) or []:
+                        if id(mm[j][2]) in written:
+                            continue
                         for call in bppatch.calls_named(mm[j][2],
                                                         'OnslaughtStartGroup',
                                                         resolve):
@@ -1132,11 +1419,8 @@ def author(spec, sh, protos, note=lambda _s: None):
                     for spawner in arms:
                         src = wmap.get((donor_wave, spawner)) or fallback
                         idx = bppatch.block_sequence(mm, src, blocks - {src})
-                        clones, block_entry = bppatch.clone_block(mm, idx, src)
-                        at = len(nodes) - 1
-                        for k, c in enumerate(clones):
-                            nodes.insert(at + k, c)
-                        close_clone(nodes, mm, clones, idx)
+                        clones, block_entry = clone_with_branches(
+                            nodes, mm, idx, src, blocks - {src})
                         entries = [e for e in (wave.get('spawns') or {})
                                    .get(str(spawner), []) if e.get('unit')]
                         calls = [c for node in clones
@@ -1150,8 +1434,9 @@ def author(spec, sh, protos, note=lambda _s: None):
                             got = clone_break_home(nodes, mm, clones, resolve, kind,
                                                    seconds, index=fn_index.get(kind))
                             if got is None:
-                                raise SystemExit('wave %d: its block has no break and '
-                                                 'no spawn to hang one on' % number)
+                                raise buildmessage.fault(
+                                    'give wave %d its break on this map' % number,
+                                    'its block has no break and no spawn to hang one on')
                             # one coin, in the block that holds the break
                             coin_at = next((n for n in clones if bppatch.calls_named(
                                 n, 'OnslaughtGiveCoin', resolve)), None)
@@ -1192,15 +1477,14 @@ def author(spec, sh, protos, note=lambda _s: None):
                                 fresh = clone_action(mm, resolve, name)
                                 anchor = last_clone_spawn(nodes, clones, resolve)
                                 if fresh is None or anchor is None:
-                                    raise SystemExit('wave %d: the event %r has nothing '
-                                                     'to copy or hang off'
-                                                     % (number, name))
+                                    buildmessage.warn(EVENT_LEFT_OUT % (name, number))
+                                    continue
                                 insert_after(nodes, anchor, fresh)
                                 clones.insert(clones.index(anchor) + 1, fresh)
                         if block_entry is None:
-                            raise SystemExit(
-                                'wave %d spawner %d: the cloned block lost its '
-                                'entry statement' % (number, spawner))
+                            raise buildmessage.internal(
+                                'writing the waves', 'wave %d spawner %d: the cloned block '
+                                'lost its entry statement' % (number, spawner))
                         close_block = wmap.get((sh['close'], spawner),
                                                wmap[(sh['close'],
                                                      sh['base_spawner'])])
@@ -1265,15 +1549,17 @@ def author(spec, sh, protos, note=lambda _s: None):
                         got = clone_break_home(nodes, mm, clones, resolve, kind,
                                                seconds, index=fn_index.get(kind))
                         if got is None:
-                            raise SystemExit('wave %d: its copied door block spawns '
-                                             'nothing to hang a break on' % (i + 1))
+                            raise buildmessage.fault(
+                                'give wave %d its break on this map' % (i + 1),
+                                'its copied door block spawns nothing to hang a break on')
                         break_home[number] = (got, clones)
                         note('  wave %d: %s (in a copied door block)'
                              % (i + 1, kind.replace('Onslaught', '')))
                         continue
                     if anchor is None:
-                        raise SystemExit('wave %d has no surviving spawn to '
-                                         'hang a break on' % (i + 1))
+                        raise buildmessage.fault(
+                            'give wave %d its break on this map' % (i + 1),
+                            'no surviving spawn to hang a break on')
                     insert_after(nodes, anchor, fresh)
                     note('  wave %d: %s added' % (i + 1,
                                                   kind.replace('Onslaught', '')))
@@ -1341,8 +1627,9 @@ def author(spec, sh, protos, note=lambda _s: None):
                         insert_after(nodes, anchor, fresh)
                         note('  wave %d: %d coin added' % (i + 1, int(amount)))
                     elif not last_of(i):
-                        raise SystemExit('wave %d has nowhere to put its %d coin'
-                                         % (i + 1, int(amount)))
+                        buildmessage.warn('Rift Lord could not give wave %d its %d coin on '
+                                          'this map, so the wave plays without it.'
+                                          % (i + 1, int(amount)))
 
             # 3b. wave events. An action the author did not ask for is
             #     dropped, so a map's own boss does not turn up uninvited.
@@ -1367,8 +1654,8 @@ def author(spec, sh, protos, note=lambda _s: None):
                         continue
                     fresh = clone_action(mm, resolve, name)
                     if fresh is None:
-                        raise SystemExit('this coordinator fires no named event, '
-                                         'so %r cannot be added' % name)
+                        buildmessage.warn(EVENT_LEFT_OUT % (name, i + 1))
+                        continue
                     # right after the wave's first spawn, so the event fires as the
                     # wave starts (after the last spawn it came late in the wave, in
                     # game 2026-10-17; before the first, the read-back finds it in no
@@ -1388,8 +1675,8 @@ def author(spec, sh, protos, note=lambda _s: None):
                                        for a in [first_clone_spawn(nodes, c, resolve)]
                                        if a is not None), None)
                     if anchor is None:
-                        raise SystemExit('wave %d has no spawn to hang the event '
-                                         '%r off' % (i + 1, name))
+                        buildmessage.warn(EVENT_LEFT_OUT % (name, i + 1))
+                        continue
                     insert_after(nodes, anchor, fresh)
                     note('  wave %d: event %s' % (i + 1, name))
 
@@ -1540,8 +1827,8 @@ def fresh_break(mm, resolve, kind, seconds, index=None):
     other = next(f for f in BREAK_FNS if f != kind)
     fresh = bppatch.clone_break(mm, resolve, other, seconds=seconds)
     if fresh is None:
-        raise SystemExit('this coordinator calls no break at all, so there is none '
-                         'to copy')
+        raise buildmessage.fault('give the waves breaks on this map',
+                                 'this coordinator calls no break at all')
     call = bppatch.calls_named(fresh, other, resolve)[0]
     bppatch.set_break_kind(mm, call, kind, resolve, seconds, index=index)
     return fresh
@@ -2058,7 +2345,8 @@ def validate(spec, protos=None, flags=None, note=lambda _s: None):
             if int(spawner) not in pathing and any(e.get('unit') for e in entries):
                 raise SystemExit(
                     'wave %d sends units through spawner %s, which this map does '
-                    'not have (it has %s)'
+                    'not have (it has %s); move them to one of its spawners in the '
+                    'Onslaught Editor'
                     % (i + 1, spawner,
                        ', '.join(str(x) for x in sorted(pathing)) or 'none'))
             path = pathing.get(int(spawner), 'none')
@@ -2067,7 +2355,8 @@ def validate(spec, protos=None, flags=None, note=lambda _s: None):
                 if not unit:
                     continue
                 if unit not in protos:
-                    raise SystemExit('wave %d, spawner %s: unknown unit %r'
+                    raise SystemExit('wave %d, spawner %s: the unit %r is not installed; '
+                                     'pick another unit for that row in the Onslaught Editor'
                                      % (i + 1, spawner, unit))
                 # a spawner offers a walking start point, a flyer one or both,
                 # and a unit sent down a path it cannot use has nowhere to go
@@ -2075,11 +2364,13 @@ def validate(spec, protos=None, flags=None, note=lambda _s: None):
                 if flies and path == 'walk':
                     raise SystemExit(
                         'wave %d: %s flies, but spawner %s has only a walking '
-                        'path' % (i + 1, unit, spawner))
+                        'path; give the spawner a flyer route in the Map Editor, or send '
+                        'a walking unit' % (i + 1, unit, spawner))
                 if not flies and path == 'fly':
                     raise SystemExit(
                         'wave %d: %s walks, but spawner %s has only a flyer '
-                        'path' % (i + 1, unit, spawner))
+                        'path; give the spawner a ground route in the Map Editor, or send '
+                        'a flying unit' % (i + 1, unit, spawner))
 
     # Two protos have no diorama mesh anywhere in the shipped previews, so a
     # roster containing them silently loses one. Say so rather than let the
@@ -2843,9 +3134,9 @@ def bundle(spec, note=lambda _s: None):
     note('bundling into %s' % os.path.basename(target['pak']))
     coord_asset = _inner(target['coordinator'], '.uasset')
     if coord_asset not in files:
-        raise SystemExit('%s has no coordinator at %s, so it was not built by these '
-                         'tools' % (os.path.basename(target['pak']),
-                                    target['coordinator']))
+        raise buildmessage.internal('writing the waves', '%s has no coordinator at %s'
+                                    % (os.path.basename(target['pak']),
+                                       target['coordinator']))
 
     protos = onslaught.protos()
     _path, coord_name = makelevel.coordinator_of(map_name)
@@ -2899,9 +3190,9 @@ def bundle(spec, note=lambda _s: None):
     if bad:
         #: Name them. "1 check(s) failed" sends the author looking through a log for
         #: something the message already knows.
-        raise SystemExit('nothing written -- %s'
-                         % '; '.join('%s: %s' % (r['name'], r['detail'])
-                                     for r in bad))
+        raise buildmessage.internal('writing the waves', 'nothing written -- %s'
+                                    % '; '.join('%s: %s' % (r['name'], r['detail'])
+                                                for r in bad))
 
     out = os.path.abspath(spec.get('out') or target['pak'])
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -2934,8 +3225,9 @@ def bundle(spec, note=lambda _s: None):
                                                       in loops[:4]))
                              if loops else 'every wave and spawner ends'})
     if loops:
-        raise SystemExit('the bundled coordinator does not terminate: %s'
-                         % loops[:4])
+        raise buildmessage.fault(
+            'write waves that finish; the mission would hang on loading',
+            'the bundled coordinator does not terminate: %s' % loops[:4])
     note('done')
     return {'pak': out, 'checks': checks, 'bundled_into': target['mod'],
             'events': events_view(events),
@@ -3071,7 +3363,8 @@ def build(spec, note=lambda _s: None):
         note('  %-4s %-46s %s' % ('OK' if ok else 'FAIL', name, detail))
         failures += 0 if ok else 1
     if failures:
-        raise SystemExit('%d check(s) failed; nothing written' % failures)
+        raise buildmessage.internal('writing the waves',
+                                    '%d check(s) failed; nothing written' % failures)
 
     common = {'checks': checks, 'events': events_view(events),
               'report': {k: str(v) for k, v in report.items()},
@@ -3223,12 +3516,14 @@ def unit_lookup(pkg, names, resolve):
     return lookup
 
 
-def door_rows(mm, indices, resolve, lookup):
+def door_rows(mm, indices, resolve, lookup, sites=None, home=None):
     """The spec rows one wave sends through one door, read from its declaration.
 
     Group gates and waits are attached to the spawn they precede; waits in a row add up.
+    `sites` is {statement: (ordinal, site)} from `delay_sites`: such a wait is read as a
+    per-difficulty pause (`site_pause`), at home in (wave, door) `home`.
     """
-    rows, gate, wait = [], None, None
+    rows, gate, wait, sited = [], None, None, None
     for i in indices:
         node = mm[i][2]
         # a group started with no gate after a gated one does not undo the gate: the
@@ -3237,7 +3532,10 @@ def door_rows(mm, indices, resolve, lookup):
         for call in bppatch.calls_named(node, 'OnslaughtStartGroup', resolve):
             gate = _literal(call, 'FloatConst') or gate
         for call in bppatch.calls_named(node, 'OnslaughtDelay', resolve):
-            wait = (wait or 0.0) + (_literal(call, 'FloatConst') or 0.0)
+            if sites and i in sites and _literal(call, 'FloatConst') is None:
+                sited = sites[i]
+            else:
+                wait = (wait or 0.0) + (_literal(call, 'FloatConst') or 0.0)
         for got in spawn_calls(node, resolve):
             call = got['call']
             kids = [v for k, v in call.ops if k == 'expr']
@@ -3252,6 +3550,8 @@ def door_rows(mm, indices, resolve, lookup):
             pause = None
             if gate:
                 pause = {'kind': 'gate', 'value': round(gate, 1)}
+            elif sited:
+                pause = {'_site': sited}
             elif wait:
                 pause = {'kind': 'wait', 'value': round(wait, 1)}
             rows.append({
@@ -3273,16 +3573,26 @@ def door_rows(mm, indices, resolve, lookup):
             # the pause that follows the spawn before it
             if len(rows) > 1 and rows[-1]['_lead']:
                 rows[-2]['after'] = rows[-1]['_lead']
-            gate, wait = None, None
+            gate, wait, sited = None, None, None
     rows = [r for r in rows if r['unit']]
-    for r in rows:
+    for k, r in enumerate(rows):
         r.pop('_lead', None)
+        for side, at in (('before', k), ('after', k + 1)):
+            p = r.get(side)
+            if p and '_site' in p:
+                n, site = p['_site']
+                r[side] = site_pause(site, n, {'wave': home[0], 'door': str(home[1]),
+                                               'at': at}) if home else None
     return rows
 
 
 def _row_key(row):
     """A row as it is written, for telling an untouched door from an edited one."""
     def pause(p):
+        if p and p.get('byDifficulty'):
+            return ('wait', tuple(sorted((s, round(float(v or 0), 1))
+                                         for s, v in p['byDifficulty'].items())),
+                    (p.get('site') or {}).get('n'))
         return (p.get('kind') or 'wait', round(float(p['value']), 1)) \
             if p and p.get('value') else None
     return (row['unit'], row_count(row), int(row.get('difficulty', ALL)),
@@ -3311,6 +3621,7 @@ def read_onslaught(map_name):
     sh = shape(coord)
 
     lookup = unit_lookup(pkg, names, resolve)
+    sites = {s['statement']: (n, s) for n, s in enumerate(delay_sites(mm, names, resolve))}
 
     # every spawner the coordinator dispatches, including ones holding only a break or coin
     wmap, _seen = bppatch.wave_map(mm, entry, names, resolve)
@@ -3321,7 +3632,7 @@ def read_onslaught(map_name):
                 'coin': None, 'actions': [], 'spawns': {}}
         for spawner in readable:
             idx = declared(mm, entry, names, resolve, number, spawner)
-            rows = door_rows(mm, idx, resolve, lookup)
+            rows = door_rows(mm, idx, resolve, lookup, sites, (len(waves) + 1, spawner))
             for i in idx:
                 node = mm[i][2]
                 for call in bppatch.calls_named(node, 'OnslaughtAction',

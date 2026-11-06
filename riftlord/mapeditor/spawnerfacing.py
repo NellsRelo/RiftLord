@@ -154,17 +154,19 @@ def read_level(ua, ux):
     return out
 
 
-def warnings(source):
+def warnings(source, plan=None):
     """level_warnings for a written mission (a loose build folder or a pak)."""
     got = _umap(source)
-    return level_warnings(*got) if got else []
+    return level_warnings(*got, plan=plan) if got else []
 
 
-def level_warnings(ua, ux):
+def level_warnings(ua, ux, plan=None):
     """[text] for each added spawner of a written level facing more than WARN_OFF degrees
-    away from its route's first leg."""
-    return ['added spawner %s (spawner %s) faces %.0f degrees away from its route\'s first '
-            'point; units it sends walk backwards' % (r['name'], r['index'], r['off'])
+    away from its route's first leg, named as the Map Editor names it for `plan`."""
+    from riftlord.core import buildmessage
+    return ['%s faces %.0f degrees away from its route\'s first point, so the enemies it '
+            'sends walk backwards. Turn it toward that point.'
+            % (buildmessage.where(buildmessage.editor_name(r['name'], plan), r['at']), r['off'])
             for r in read_level(ua, ux) if r['off'] > WARN_OFF]
 
 

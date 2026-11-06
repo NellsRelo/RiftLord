@@ -3,8 +3,8 @@
 // brings and its floating crystal, /api/crystal `parts`; a stand-in until they load), with
 // a panel editing its Rift Groups: entry.crystal.groups = [{name, rifts: [{spawner}], ...}]
 // (riftlord/mapeditor/rifttear.py). `spawner` is the id of a plan spawner with `unstable`.
-// Everything else on the entry (health per difficulty, each group's triggers, rows and
-// chances) is the Onslaught Editor's, kept here as it comes.
+// Everything else on the entry (Map Difficulty and the rift point overrides, each group's
+// triggers, rows and chances) is the Onslaught Editor's, kept here as it comes.
 import * as THREE from 'three'
 
 export const CRYSTAL_KIND = 'crystal'
@@ -25,9 +25,8 @@ const GROUP_RIFTS_MAX = 32
 //: EOnslaughtDifficulty Any, and players Any (rifttear.py ANY, PLAYERS)
 const ANY = 5
 const ANY_PLAYERS = 0
-//: crystal.py HEALTH_DIFFICULTIES and RANGES health
-const HEALTH_DIFFICULTIES = ['Apprentice', 'War Mage', 'Rift Lord', 'Endless']
-const HEALTH_RANGE = [0, 10000000]
+//: plan keys of the health models before rift point health (crystal.py OLD_HEALTH_KEYS)
+const OLD_HEALTH_KEYS = ['difficultyHealth', 'healthPerRiftPoint', 'minHealth']
 
 let cache = null
 
@@ -181,20 +180,11 @@ const unstableRifts = (plan) => (plan.spawners || []).filter(sp => sp.unstable)
 
 /** A crystal entry's settings, the defaults filled in. */
 function settings (entry, got) {
-  const base = (got && got.defaults) ||
-    { difficultyHealth: [1000, 1000, 1000, 1000], bobHeight: 25, bobSeconds: 4 }
+  const base = (got && got.defaults) || { mapDifficulty: 0, bobHeight: 25, bobSeconds: 4 }
   entry.crystal = Object.assign({ bobHeight: base.bobHeight, bobSeconds: base.bobSeconds,
-    groups: [] }, entry.crystal || {})
+    mapDifficulty: base.mapDifficulty, groups: [] }, entry.crystal || {})
   const c = entry.crystal
-  //: entries saved before difficultyHealth: their minHealth at every difficulty
-  if (!Array.isArray(c.difficultyHealth) || c.difficultyHealth.length !== HEALTH_DIFFICULTIES.length) {
-    const old = Number(c.minHealth)
-    c.difficultyHealth = Number.isFinite(old) && c.minHealth !== undefined && c.minHealth !== null
-      ? HEALTH_DIFFICULTIES.map(() => Math.max(HEALTH_RANGE[0], Math.min(HEALTH_RANGE[1], old)))
-      : [...base.difficultyHealth]
-  }
-  delete c.healthPerRiftPoint
-  delete c.minHealth
+  for (const key of OLD_HEALTH_KEYS) delete c[key]
   //: rows of plans made before groups: each a group of one rift (rifttear.from_rows)
   if ((!c.groups || !c.groups.length) && (c.rifts || []).length) {
     c.groups = c.rifts.filter(r => r.spawner !== null && r.spawner !== undefined).map((r, i) => ({

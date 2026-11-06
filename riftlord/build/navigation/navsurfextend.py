@@ -24,6 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 from riftlord.build.navigation import navpatch  # noqa: E402
 from riftlord.build.navigation import navsurf  # noqa: E402
 from riftlord.build.navigation import navsurfgen  # noqa: E402
+from riftlord.core import buildmessage  # noqa: E402
 
 #: How far above and below a polygon's plane a point may sit and still count as on
 #: it. Shipped spawners stand 30-207 uu above their floor and route points -14..73 uu
@@ -47,6 +48,10 @@ POINT_ABOVE_FLOOR = 10.8
 #: Corridor width per agent graph: the ordinary agent (radius 42) and the large one
 #: (radius 80), with room either side.
 CORRIDOR_WIDTH = (400.0, 480.0)
+
+#: The ordinary agent's radius (uu): a point moved onto the floor lands this far in from
+#: the floor's edge.
+AGENT_RADIUS = 42.0
 
 #: The shortest boundary edge a corridor may join, per agent: wider than the agent.
 MIN_JOIN_EDGE = (120.0, 200.0)
@@ -182,27 +187,50 @@ def _slope_ok(a, b):
     return run > 0 and math.degrees(math.atan2(abs(b[2] - a[2]), run)) <= MAX_SLOPE_DEG
 
 
-def corridor(polys, ids, run, before, after, agent, used):
-    """Quads for one off-floor run, plus the join edges. Raises ValueError with a
-    plain reason when the run cannot be joined to the floor."""
+class BadJoin(Exception):
+    """A join edge a corridor cannot use (`edge`, (polygon, vertex)); `problem` is the
+    Problem to raise when no other edge serves."""
+
+    def __init__(self, edge, problem):
+        Exception.__init__(self, problem.plain)
+        self.edge, self.problem = edge, problem
+
+
+def _problem(plain, detail, p):
+    """A Problem about the route point at `p`, with its Checks target and position."""
+    return buildmessage.Problem(plain, detail, target=_target_of(p), at=p)
+
+
+def corridor(polys, ids, run, before, after, agent, used, skip=frozenset()):
+    """Quads for one off-floor run, plus the join edges, joining no edge in `skip`.
+    Raises a Problem (ValueError) with a plain reason when the run cannot be joined to the
+    floor, and BadJoin when the nearest usable edge is too steep to reach or folds the
+    corridor (join_run tries the next one)."""
     width = CORRIDOR_WIDTH[agent]
     edges = {}
     for end, neighbour in (('start', before), ('end', after)):
         if neighbour is None:
             continue
         p = run[0] if end == 'start' else run[-1]
-        edge = join_edge(polys, ids, p, p, agent, used)
+        edge = join_edge(polys, ids, p, p, agent, set(used) | set(skip))
         if edge is None:
-            raise ValueError('%s is off the walkable floor and no edge of the floor '
-                             'within %d uu can be joined to it'
-                             % (_fmt(p), MAX_JOIN_DISTANCE))
+            raise _problem(
+                '%s is not on floor enemies can walk, and no floor edge wide enough for '
+                'enemies is within %d units. Move it onto floor or put a floor piece under '
+                'it.'
+                % (_subject(p), MAX_JOIN_DISTANCE),
+                'no boundary edge of agent %d within %d uu of %s'
+                % (agent, MAX_JOIN_DISTANCE, _fmt(p)), p)
         i, k = edge
         a, b = polys[i][k], polys[i][(k + 1) % len(polys[i])]
         if not (_slope_ok(p, a) and _slope_ok(p, b)):
-            raise ValueError('%s is too far above or below the floor it would join'
-                             % _fmt(p))
+            raise BadJoin(edge, _problem(
+                '%s is too far above or below the nearest floor for enemies to reach it. '
+                'Move it to the height of the floor beside it, or put a floor piece under '
+                'it.' % _subject(p),
+                'join edge (%.0f, %.0f, %.0f)-(%.0f, %.0f, %.0f) steeper than %.0f degrees '
+                'from %s' % (tuple(a[:3]) + tuple(b[:3]) + (MAX_SLOPE_DEG, _fmt(p))), p))
         edges[end] = (i, k, a, b)
-        used.add(edge)
     # the join edges' midpoints steer the corridor's ends
     mid = lambda e: ((e[2][0] + e[3][0]) / 2, (e[2][1] + e[3][1]) / 2,
                      (e[2][2] + e[3][2]) / 2)
@@ -226,11 +254,19 @@ def corridor(polys, ids, run, before, after, agent, used):
     quads, joins = [], []
     for i in range(len(run) - 1):
         if not _slope_ok(run[i], run[i + 1]):
-            raise ValueError('the slope between %s and %s is steeper than an enemy '
-                             'can walk' % (_fmt(run[i]), _fmt(run[i + 1])))
+            raise _problem(
+                'The route from %s to %s climbs more steeply than enemies can walk '
+                '(%.0f degrees at most). Move one of the points so the climb is gentler, '
+                'or put stairs or a ramp between them.'
+                % (_named(run[i]), _named(run[i + 1]), MAX_SLOPE_DEG),
+                'off-floor leg slope over MAX_SLOPE_DEG, agent %d' % agent, run[i + 1])
         q = _quad(sides[i][0], sides[i][1], sides[i + 1][0], sides[i + 1][1])
         if q is None:
-            raise ValueError('the route turns too sharply at %s' % _fmt(run[i + 1]))
+            raise _problem(
+                'The route turns too sharply at %s, where it is not on floor enemies can '
+                'walk. Move the point so the route bends less there, or put a floor piece '
+                'under it.' % _named(run[i + 1]),
+                'corridor quad %d not convex, agent %d' % (i, agent), run[i + 1])
         quads.append(q)
     for end, (i, k, a, b) in edges.items():
         p = run[0] if end == 'start' else run[-1]
@@ -243,12 +279,42 @@ def corridor(polys, ids, run, before, after, agent, used):
                 q = cand
                 break
         if q is None:
-            raise ValueError('%s cannot be joined to the floor without the corridor '
-                             'folding; move it so open floor is in front of it'
-                             % _fmt(p))
+            raise BadJoin((i, k), _problem(
+                '%s is not on floor enemies can walk, and the route bends back on itself '
+                'wherever it would meet the floor. Move the point so there is open floor in '
+                'front of it.' % _subject(p),
+                'corridor folds at every join edge tried, agent %d' % agent, p))
         joins.append((len(quads), 0, i, k))
         quads.append(q)
+    for _end, (i, k, _a, _b) in edges.items():
+        used.add((i, k))
     return quads, joins
+
+
+def join_run(polys, ids, run, before, after, agent, used, fixed=None):
+    """corridor() for one off-floor run, trying the next nearest floor edge each time the
+    nearest usable one is too steep to reach or folds the corridor, until one serves or no
+    edge within MAX_JOIN_DISTANCE is left (then the first edge's Problem). Each run joined
+    past its nearest edge is a line in `fixed`."""
+    skip, first = set(), None
+    while True:
+        try:
+            got = corridor(polys, ids, run, before, after, agent, used, frozenset(skip))
+        except BadJoin as bad:
+            first = first or bad.problem
+            skip.add(bad.edge)
+            continue
+        except buildmessage.Problem:
+            if first is not None:
+                raise first
+            raise
+        if skip and fixed is not None and agent == 0:
+            p = run[0] if before is not None else run[-1]
+            line = ('Joined the ground route at %s to the next floor edge, since the nearest '
+                    'one was too steep or faced away from it.' % _named(p))
+            if line not in fixed:
+                fixed.append(line)
+        return got
 
 
 #: {(x, y) rounded: [(z, label)]} for the route points of the current extend() call;
@@ -260,6 +326,72 @@ def _key(p):
     return tuple(int(round(v)) for v in p[:2])
 
 
+#: [(label, lo, hi)]: world boxes of the pieces the plan placed or moved that nothing
+#: collides with (navregen.walkless_pieces), for the current extend() call.
+_GHOSTS = []
+
+
+def _ghosts_in(pts):
+    """', where <label> stands with collision off ...' for the pieces of _GHOSTS whose box
+    meets the box of `pts` (a gap's corners), within SURFACE_BELOW and SURFACE_ABOVE of
+    their heights; '' for none."""
+    if not _GHOSTS:
+        return ''
+    lo = [min(p[k] for p in pts) for k in range(3)]
+    hi = [max(p[k] for p in pts) for k in range(3)]
+    lo[2] -= SURFACE_BELOW
+    hi[2] += SURFACE_ABOVE
+    got = [label for label, glo, ghi in _GHOSTS
+           if all(glo[k] <= hi[k] and ghi[k] >= lo[k] for k in range(3))]
+    if not got:
+        return ''
+    return ('; %s %s in it with collision off, so nothing stands on %s'
+            % (', '.join(got), 'stands' if len(got) == 1 else 'stand',
+               'it' if len(got) == 1 else 'them'))
+
+
+#: {(x, y) rounded: [(z, Checks target)]} for the route points, as _NAMES.
+_TARGETS = {}
+#: What the current extend() call fixed, one line each (buildmessage A).
+_FIXED = []
+
+
+def _target_of(p):
+    got = _TARGETS.get(_key(p))
+    return min(got, key=lambda zt: abs(zt[0] - p[2]))[1] if got else None
+
+
+def nearest_floor(polys, p, reach):
+    """(x, y, z of the floor, distance) of the floor point of `polys` nearest `p` in 3D,
+    within `reach`, or None. A point moved by less than its Reach Radius is still reached
+    where it stood, so a route point's reachRadius bounds the move."""
+    best = None
+    for verts in polys:
+        if navsurf._inside_xy(verts, p[0], p[1]):
+            q = (p[0], p[1])
+        else:
+            q, dq = None, None
+            n = len(verts)
+            for k in range(n):
+                a, b = verts[k], verts[(k + 1) % n]
+                d, c = _dist_point_segment((p[0], p[1], 0.0), (a[0], a[1], 0.0),
+                                           (b[0], b[1], 0.0))
+                if dq is None or d < dq:
+                    q, dq = (c[0], c[1]), d
+            # in from the edge by the ordinary agent's radius, toward the centre
+            cx = sum(v[0] for v in verts) / n
+            cy = sum(v[1] for v in verts) / n
+            gap = math.hypot(cx - q[0], cy - q[1])
+            if gap > 0:
+                step = min(AGENT_RADIUS, gap)
+                q = (q[0] + (cx - q[0]) / gap * step, q[1] + (cy - q[1]) / gap * step)
+        z = navsurfgen.plane_z(verts, q[0], q[1])
+        d = math.dist((q[0], q[1], z + POINT_ABOVE_FLOOR), p[:3])
+        if d <= reach and (best is None or d < best[1]):
+            best = ((q[0], q[1], z + POINT_ABOVE_FLOOR), d)
+    return best
+
+
 def _name_of(p):
     got = _NAMES.get(_key(p))
     return min(got, key=lambda zl: abs(zl[0] - p[2]))[1] if got else None
@@ -269,6 +401,17 @@ def _fmt(p):
     at = '(%.0f, %.0f, %.0f)' % tuple(p[:3])
     name = _name_of(p)
     return '%s at %s' % (name, at) if name else at
+
+
+def _named(p):
+    """_fmt(p), or 'the route point at (x, y, z)' when unnamed."""
+    return _fmt(p) if _name_of(p) else 'the route point at %s' % _fmt(p)
+
+
+def _subject(p):
+    """_named(p) at the start of a sentence."""
+    got = _named(p)
+    return got[:1].upper() + got[1:]
 
 
 def runs_off_floor(polys, chain):
@@ -301,9 +444,11 @@ def extend_graph(secs, chains, agent):
     for chain in chains:
         for run, before, after in runs_off_floor(polys, chain):
             if after is None and before is None:
-                raise ValueError('the route from %s never reaches the walkable floor'
-                                 % _fmt(run[0]))
-            quads, joins = corridor(polys, ids, run, before, after, agent, used)
+                raise _problem(
+                    'The route from %s never reaches floor enemies can walk. Move its points '
+                    'onto floor, or put floor pieces under them.' % _named(run[0]),
+                    'every point of the chain is off agent %d\'s graph' % agent, run[0])
+            quads, joins = join_run(polys, ids, run, before, after, agent, used, _FIXED)
             q_ids, next_id = _link_by_geometry(quads, next_id)
             for qi, vk, pi, pk in joins:
                 ids[pi][pk] = next_id
@@ -321,8 +466,8 @@ def extend_graph(secs, chains, agent):
         if got is None:
             unbridged.add((a, b))
             notes.append('the route from %s to %s crosses a gap in the walkable floor '
-                         'that could not be joined; enemies stop at it'
-                         % (_fmt(a), _fmt(b)))
+                         'that could not be joined; enemies stop at it%s'
+                         % (_fmt(a), _fmt(b), _ghosts_in([a, b])))
             continue
         quad, joins = got
         q_ids, next_id = _link_by_geometry([quad], next_id)
@@ -333,7 +478,7 @@ def extend_graph(secs, chains, agent):
         polys.append(quad)
         ids.extend(q_ids)
         notes.append('floor joined between %s and %s, where the level\'s walkable '
-                     'floor had a gap' % (_fmt(a), _fmt(b)))
+                     'floor had a gap%s' % (_fmt(a), _fmt(b), _ghosts_in(quad)))
     if len(polys) == first_new:
         return polys, ids, flags, heads, nbrs, notes
     # pointers for the new records and the polygons they join
@@ -513,20 +658,33 @@ def bridge(polys, ids, a, b, agent, used):
     return quad, [(0, 0, i, k), (0, 2, j, m)]
 
 
-def extend(uasset, uexp, chains, names=None):
+def extend(uasset, uexp, chains, names=None, ghosts=(), targets=None, fixed=None):
     """(uasset, uexp, notes) with the walkable graph extended to cover `chains`.
 
     Returns the package unchanged, with no notes, when every point is already on the
     floor. Raises ValueError with a plain reason when a stretch cannot be joined; a
-    point in `names` ({(x, y, z): label}) is named by its label in that reason.
+    point in `names` ({(x, y, z): label}) is named by its label in that reason. A gap's
+    note names the pieces of `ghosts` ([(label, lo, hi)], navregen.walkless_pieces)
+    standing in it.
     """
     _NAMES.clear()
+    _TARGETS.clear()
+    del _FIXED[:]
     for k, v in (names or {}).items():
         _NAMES.setdefault(_key(k), []).append((k[2], v))
+    for k, v in (targets or {}).items():
+        _TARGETS.setdefault(_key(k), []).append((k[2], v))
+    _GHOSTS[:] = list(ghosts)
     try:
-        return _extend(uasset, uexp, chains)
+        got = _extend(uasset, uexp, chains)
+        if fixed is not None:
+            fixed.extend(_FIXED)
+        return got
     finally:
         _NAMES.clear()
+        _TARGETS.clear()
+        del _FIXED[:]
+        del _GHOSTS[:]
 
 
 def _extend(uasset, uexp, chains):
@@ -538,13 +696,15 @@ def _extend(uasset, uexp, chains):
     out = navsurfgen.buffer_per_agent(per_agent, list(heads[0]['bbox']))
     problems = check_buffer(out, chains)
     if problems:
-        raise ValueError('the extended walkable graph failed its checks: %s'
-                         % '; '.join(problems))
+        raise buildmessage.fault(
+            'add floor under the ground routes',
+            'the extended walkable graph failed its checks: %s' % '; '.join(problems))
     ua, ux, checks = navsurfinject.set_surface_bytes(uasset, uexp, out)
     bad = [name for name, ok in checks if not ok]
     if bad:
-        raise ValueError('writing the extended walkable graph failed: %s'
-                         % '; '.join(bad))
+        raise buildmessage.fault(
+            'write the floor added under the ground routes into the level',
+            'writing the extended walkable graph failed: %s' % '; '.join(bad))
     return ua, ux, notes
 
 

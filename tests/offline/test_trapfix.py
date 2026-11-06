@@ -131,6 +131,20 @@ check('the piece panel has the Collision switch',
       'collisionSection()' in src and 'id="piececollision"' in src
       and 'a.collision = false' in src and 'delete a.collision' in src, '')
 
+# 5. a Map Editor save keeps the switch (leveldata.save_plan), into a scratch plans folder
+import json  # noqa: E402
+import tempfile  # noqa: E402
+from riftlord.mapeditor import leveldata  # noqa: E402
+leveldata.PLANS = tempfile.mkdtemp(prefix='trapfix-plans-')
+ident = [1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 1.0]
+leveldata.save_plan('Scenario_01', {'added': [
+    {'kind': 'mesh', 'name': '1M_Cube', 'matrix': ident, 'collision': False},
+    {'kind': 'mesh', 'name': '1M_Cube', 'matrix': ident}]})
+with open(os.path.join(leveldata.PLANS, os.listdir(leveldata.PLANS)[0])) as fh:
+    saved = json.load(fh).get('added') or []
+check('a save keeps collision off, and adds nothing to pieces that collide',
+      [a.get('collision') for a in saved] == [False, None], saved)
+
 bad = [c for c in checks if not c[1]]
 for name, ok, detail in checks:
     print('%s %s%s' % ('ok  ' if ok else 'FAIL', name, '' if ok else ': %s' % (detail,)))

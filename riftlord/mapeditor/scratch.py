@@ -13,13 +13,16 @@ A scratch level is an ordinary Map Editor mission over a shipped host level, wit
   rift, the exit point and the three player starts, which the plan moves;
 * the walkable navgraph is generated from the kit floors the plan places;
 * KillZ goes below the lowest floor;
-* the MapData gets a minimap drawn from the floors, and the level names that MapData.
+* the MapData gets a minimap drawn from the floors, and the level names that MapData;
+* a light bake (lightbake, lightalloc) bakes the persistent level's added pieces and the
+  Static lights placed in it, and nothing of the host's (streamed_scene).
 
 Plan block: {"scratch": {"version": 1, "base": "Scenario_01", "name": "..."}}.
 """
 
 import copy
 import functools
+import json
 import math
 import os
 import re
@@ -90,6 +93,11 @@ SQUARE_TOLERANCE = 0.5
 NEAR_SQUARE = 10.0
 #: Walkable-cover lattice lines closer than this (uu) are joined into one.
 LINE_MERGE = 30.0
+#: Floor edges within this (uu) of the same offset on the GRID_CELL lattice share a phase.
+PHASE_TOLERANCE = 1.0
+#: A floor kit piece's stair part whose rise leans off its main axis by more than this
+#: share of it (a corner flight) is left to the floor around it.
+RAMP_AXIS_LEAN = 0.5
 #: The walkable cover on a lattice through the floors' edges with per-part obstacles;
 #: False is the cover before 2026-10-21 (whole world-grid cells, whole-piece boxes).
 COVER_LATTICE = True
@@ -231,8 +239,8 @@ def _skies(base):
 
 def skies(base=DEFAULT_BASE):
     """[{material, home, title, default}] for the New Level dialog: every shipped sky
-    material, titled by its name and the level it comes from (its lighting comes with it,
-    riftlord.skyfog), the host's own first."""
+    material, titled by its name and the level it comes from (riftlord.skyfog), the host's
+    own first. The sky is the dome's material only; the light rig keeps its lighting."""
     return copy.deepcopy(_skies(base))
 
 
@@ -438,25 +446,26 @@ def _piece_box(item, cat):
 
 
 def _turned_cells(item, cat, box):
-    """[(lo, hi)] one per grid cell a floor turned off the grid axes covers whole."""
+    """[(lo, hi)] one per GRID_CELL cell, on a grid through the piece's origin, that a floor
+    turned off the grid axes covers whole."""
     (llo, lhi), rot, t = _piece_local(item, cat)
     inv = _inverse(rot)
     lo, hi = box
     out = []
-    i0, i1 = int(math.floor(lo[0] / GRID_CELL)), int(math.ceil(hi[0] / GRID_CELL))
-    j0, j1 = int(math.floor(lo[1] / GRID_CELL)), int(math.ceil(hi[1] / GRID_CELL))
+    i0, i1 = int(math.floor((lo[0] - t[0]) / GRID_CELL)), int(math.ceil((hi[0] - t[0]) / GRID_CELL))
+    j0, j1 = int(math.floor((lo[1] - t[1]) / GRID_CELL)), int(math.ceil((hi[1] - t[1]) / GRID_CELL))
     for i in range(i0, i1):
         for j in range(j0, j1):
             inside = True
             for cx in (i * GRID_CELL + CELL_TOLERANCE, (i + 1) * GRID_CELL - CELL_TOLERANCE):
                 for cy in (j * GRID_CELL + CELL_TOLERANCE,
                            (j + 1) * GRID_CELL - CELL_TOLERANCE):
-                    p = _apply(inv, (cx - t[0], cy - t[1], hi[2] - t[2]))
+                    p = _apply(inv, (cx, cy, hi[2] - t[2]))
                     if not (llo[0] <= p[0] <= lhi[0] and llo[1] <= p[1] <= lhi[1]):
                         inside = False
             if inside:
-                out.append(([i * GRID_CELL, j * GRID_CELL, lo[2]],
-                            [(i + 1) * GRID_CELL, (j + 1) * GRID_CELL, hi[2]]))
+                out.append(([t[0] + i * GRID_CELL, t[1] + j * GRID_CELL, lo[2]],
+                            [t[0] + (i + 1) * GRID_CELL, t[1] + (j + 1) * GRID_CELL, hi[2]]))
     return out
 
 
@@ -532,8 +541,71 @@ def walk_box(item, box):
     return list(box[0]), [box[1][0], box[1][1], z]
 
 
+#: _walk_parts of an added kit piece over its own translation, by its piece and turn
+_WALK_PARTS = {}
+
+
+def _walk_parts(item):
+    """(flat, ramps) of a floor kit piece with stair parts (recastgen.is_ramp) rising along
+    one axis, or None: flat = (lo, hi) XY of its upward faces within navregen.CELL_HEIGHT of
+    the height a walker stands on it (navregen.walk_top), or None; ramps = [(lo, hi, yaw,
+    falling)], one per such stair part: the box of its upward faces, yaw 90 for a rise
+    along x and 0 along y, and falling True where it drops as that coordinate grows."""
+    import numpy as np
+    from riftlord.build.navigation import navregen
+    from riftlord.build.navigation import recastgen
+    m = item.get('matrix')
+    if not m or item.get('kind') != 'kit':
+        return None
+    key = json.dumps([item.get(k) for k in ('name', 'collision')]
+                     + [round(v, 6) for v in m[:12]], default=str)
+    if key not in _WALK_PARTS:
+        at = dict(item, matrix=list(m[:12]) + [0.0, 0.0, 0.0, 1.0])
+        pieces = navregen.added_meshes(at)
+        got = None
+        if any(recastgen.is_ramp(name) for name, _M in pieces):
+            top = navregen.walk_top(pieces)
+            faces = [(name, navregen._up_faces(name, np.asarray(M, np.float64)))
+                     for name, M in pieces]
+            ramps = []
+            for name, f in faces:
+                if not recastgen.is_ramp(name) or not len(f):
+                    continue
+                #: the faces' plane z = a + gx x + gy y, weighted by each face's area from above
+                c = f.mean(axis=1)
+                w = np.abs(np.cross(f[:, 1] - f[:, 0], f[:, 2] - f[:, 0])[:, 2]) / 2.0
+                A = np.c_[np.ones(len(c)), c[:, 0], c[:, 1]] * np.sqrt(w)[:, None]
+                g = np.linalg.lstsq(A, c[:, 2] * np.sqrt(w), rcond=None)[0][1:]
+                axis = 0 if abs(g[0]) >= abs(g[1]) else 1
+                if abs(g[axis]) < 1e-6 or abs(g[1 - axis]) > RAMP_AXIS_LEAN * abs(g[axis]):
+                    continue
+                lo, hi = f.min(axis=(0, 1)), f.max(axis=(0, 1))
+                ramps.append((lo.tolist(), hi.tolist(), 90.0 if axis == 0 else 0.0,
+                              bool(g[axis] < 0)))
+            if ramps:
+                flat = None
+                if top is not None:
+                    every = np.vstack([f for _n, f in faces])
+                    near = every[(np.abs(every[:, :, 2] - top) <= navregen.CELL_HEIGHT).all(axis=1)]
+                    if len(near):
+                        flat = (near[:, :, :2].min(axis=(0, 1)).tolist(),
+                                near[:, :, :2].max(axis=(0, 1)).tolist())
+                got = (flat, ramps)
+        _WALK_PARTS[key] = got
+    got = _WALK_PARTS[key]
+    if got is None:
+        return None
+    t = m[12:15]
+    flat, ramps = got
+    if flat is not None:
+        flat = ([flat[0][0] + t[0], flat[0][1] + t[1]], [flat[1][0] + t[0], flat[1][1] + t[1]])
+    return flat, [([lo[k] + t[k] for k in range(3)], [hi[k] + t[k] for k in range(3)], yaw, falling)
+                  for lo, hi, yaw, falling in ramps]
+
+
 def floor_boxes(plan):
-    """[(lo, hi, sloped, yaw)] for the plan's added walkable kit and Fab pieces."""
+    """[(lo, hi, sloped, yaw[, falling])] for the plan's added walkable kit and Fab pieces;
+    `falling` on the stair parts of a floor kit piece (_walk_parts)."""
     return _boxes(plan, obstacles=False)[0]
 
 
@@ -579,6 +651,15 @@ def _boxes(plan, obstacles=True):
             lo, hi = _inscribed(item, cat, box)
             if lo is not None:
                 floors.append((lo, hi, False, yaw))
+        elif kind == 'floor' and (parts := _walk_parts(item)):
+            flat, ramps = parts
+            if flat is None:
+                floors.append((list(box[0]), list(box[1]), False, yaw))
+            else:
+                floors.append(([flat[0][0], flat[0][1], box[0][2]],
+                               [flat[1][0], flat[1][1], box[1][2]], False, yaw))
+            floors.extend((lo, hi, True, ramp_yaw, falling)
+                          for lo, hi, ramp_yaw, falling in ramps)
         elif kind:
             floors.append((list(box[0]), list(box[1]), kind == 'slope', yaw))
         elif not obstacles:
@@ -687,14 +768,25 @@ def _clip(poly, x0, y0, x1, y1):
     return pts
 
 
+def _phase(edges):
+    """The floor edge the most floor edges lie on the GRID_CELL lattice of, within
+    PHASE_TOLERANCE; of equal counts, the lowest edge."""
+    import numpy as np
+    e = np.sort(np.asarray(edges, np.float64))
+    d = (e[None, :] - e[:, None] + GRID_CELL / 2.0) % GRID_CELL - GRID_CELL / 2.0
+    return float(e[int(np.argmax((np.abs(d) <= PHASE_TOLERANCE).sum(axis=1)))])
+
+
 def _lattice(floors):
-    """(xs, ys): ascending lines through every floor edge and every GRID_CELL multiple
-    between them, lines closer than LINE_MERGE joined (a floor edge wins over a grid line)."""
+    """(xs, ys): ascending lines through every floor edge and every GRID_CELL step from the
+    floors' own lattice phase (_phase) between them, lines closer than LINE_MERGE joined (a
+    floor edge wins over a grid line)."""
     out = []
     for axis in (0, 1):
         edges = [b[0][axis] for b in floors] + [b[1][axis] for b in floors]
-        first = GRID_CELL * math.floor(min(edges) / GRID_CELL)
-        last = GRID_CELL * math.ceil(max(edges) / GRID_CELL)
+        origin = _phase(edges)
+        first = origin + GRID_CELL * math.floor((min(edges) - origin) / GRID_CELL)
+        last = origin + GRID_CELL * math.ceil((max(edges) - origin) / GRID_CELL)
         grid = [first + GRID_CELL * k for k in range(int(round((last - first) / GRID_CELL)) + 1)]
         values = sorted([(v, True) for v in edges] + [(v, False) for v in grid])
         groups = []
@@ -720,11 +812,12 @@ def _snapped(floors, lines):
         k = bisect.bisect_left(ls, v)
         return min(ls[max(0, k - 1):k + 1], key=lambda line: abs(line - v))
     out = []
-    for lo, hi, sloped, yaw in floors:
+    for box in floors:
+        lo, hi = box[0], box[1]
         lo2 = [near(lo[0], lines[0]), near(lo[1], lines[1]), lo[2]]
         hi2 = [near(hi[0], lines[0]), near(hi[1], lines[1]), hi[2]]
         if hi2[0] - lo2[0] > 1e-6 and hi2[1] - lo2[1] > 1e-6:
-            out.append((lo2, hi2, sloped, yaw))
+            out.append((lo2, hi2) + tuple(box[2:]))
     return out
 
 
@@ -853,8 +946,8 @@ def park_host(builder, plan, level_name, by_name, report):
 
 def streams(level_name, mod, plan=None):
     """(sublevels remap, keep_sublevels, extra_files, report) for makemod.build. The
-    plan's sky (`look.sky`) and scene settings are written into the light rig, with its
-    home level's lighting (riftlord.skyfog, riftlord.skymirror)."""
+    plan's sky (`look.sky`), lighting (riftlord.build.world.lighting) and scene settings
+    are written into the light rig."""
     from riftlord.build import authorlevel
     from riftlord.build.minimap import mapdata
     host = mapdata.map_path(level_name)
@@ -869,21 +962,35 @@ def streams(level_name, mod, plan=None):
     return remap, keep, extra, {'lighting': report, 'streams': sorted(keep)}
 
 
+def streamed_scene(plan):
+    """What a bake of the plan's level keeps of its host (lightbaker.bake spec keys): {}
+    for a level that streams its host whole; for a level from scratch, no host package's
+    Static lights (`streamed` []), none of its pieces (`host` False, park_host parks the
+    persistent level's), no Static sky (the light rig is authorlevel's, all Movable) and
+    no host lava (`lava_emitters` False)."""
+    if not is_scratch(plan):
+        return {}
+    return {'streamed': [], 'host': False, 'static_sky': False, 'lava_emitters': False}
+
+
 def _look_onto(blobs, object_name, plan):
     """((uasset, uexp), report) of the light rig with the plan's sky painted on its skybox
-    and its home's lighting and the plan's scene settings written in."""
-    look = (plan or {}).get('look') or {}
+    and the plan's lighting (riftlord.build.world.lighting) and scene settings written in."""
     from riftlord.build.world import levelfx
-    if not look.get('sky') and not levelfx.clean((plan or {}).get('world')):
+    from riftlord.build.world import lighting
+    plan = lighting.migrated(plan)
+    look = (plan or {}).get('look') or {}
+    if not look.get('sky') and not levelfx.clean((plan or {}).get('world')) and \
+            not lighting.edits_for(lighting.rig(), lighting.RIG_TAG, plan):
         return blobs, {}
     from riftlord.build import levelbuild
     from riftlord.build import apply
-    from riftlord.build.world import skyfog
     builder = levelbuild.Builder.around(blobs[0], blobs[1], name=object_name)
     got = {'notes': [], 'skipped': []}
     if look.get('sky'):
         apply.paint_look(builder, {'look': {'sky': look['sky']}}, got)
-    got['scene'] = levelfx.apply(builder, skyfog.world_with_sky(plan), got)
+    got['lighting'] = lighting.write_rig(builder, plan, got)
+    got['scene'] = levelfx.apply(builder, (plan or {}).get('world') or {}, got)
     return builder.write(), got
 
 

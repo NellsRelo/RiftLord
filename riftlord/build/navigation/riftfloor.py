@@ -26,6 +26,7 @@ import threading
 
 from riftlord.build.navigation import navsurf
 from riftlord.build.navigation import navsurfgen
+from riftlord.core import buildmessage
 
 #: Highest a shipped rift stands over the floor under it, per agent graph (uu):
 #: Scenario_18's 11 red rifts (BP_OMDAISpawner_VorwickRift_C) stand 61.5 to 102.8 uu over
@@ -121,19 +122,25 @@ def _enemies(graphs):
     return ' and '.join(GRAPH_ENEMIES[min(g, len(GRAPH_ENEMIES) - 1)] for g in graphs)
 
 
-def describe(label, rows, sunk=None):
-    """[text] refusing a rift labelled `label` ("Unstable Rift 7") that has no walkable
-    floor under it in one or more agent graphs (rows of check_rift); `sunk`, the depth
-    sunk_depth measured on graph 0, says it lies under the floor instead."""
+def _named(label, at):
+    return '%s at (%.0f, %.0f, %.0f)' % ((label,) + tuple(at[:3])) if at else label
+
+
+def describe(label, rows, sunk=None, at=None):
+    """[text] refusing a rift labelled `label` ("Unstable Rift 7"), at `at` when given,
+    that has no walkable floor under it in one or more agent graphs (rows of check_rift);
+    `sunk`, the depth sunk_depth measured on graph 0, says it lies under the floor instead."""
     missing = [g for g, poly, _z, _d, _ok in rows if poly is None]
     if not missing:
         return []
     if sunk is not None and 0 in missing:
-        return ['%s is %.0f uu under the walkable floor; raise it above the floor'
-                % (label, sunk)]
+        return ['%s is %.0f units under the floor enemies walk on. Raise it above the floor.'
+                % (_named(label, at), sunk)]
     if len(missing) == len(rows):
-        return ['%s has no walkable floor under it' % label]
-    return ['%s has no walkable floor under it for %s' % (label, _enemies(missing))]
+        return ['%s has no floor enemies can walk under it. Move it over floor, or put a '
+                'floor piece under it.' % _named(label, at)]
+    return ['%s has no floor under it that %s can walk on. Move it over wider open floor, '
+            'or put a floor piece under it.' % (_named(label, at), _enemies(missing))]
 
 
 def high_notes(label, rows):
@@ -141,9 +148,9 @@ def high_notes(label, rows):
     DROP_LIMITS allows on some agent graph (rows of check_rift), with the shipped highest."""
     for g, poly, _z, drop, _ok in rows:
         if poly is not None and drop > limit_of(g):
-            return ['%s stands %.0f uu above the floor, higher than any shipped rift (%.0f '
-                    'uu); its enemies should still land, but test it in game'
-                    % (label, drop, shipped_max_of(g))]
+            return ['%s stands %.0f units above the floor, higher than any shipped rift '
+                    '(%.0f units). Its enemies should still land; test it in game, or lower '
+                    'it.' % (label, drop, shipped_max_of(g))]
     return []
 
 
@@ -276,11 +283,13 @@ def assess(files, plan, level_name):
     for _name, index, at in sorted(rifts, key=lambda r: r[1]):
         label = rift_label(index)
         if at is None:
-            floor_bad.append('%s could not be read from the built level' % label)
+            print('riftfloor: %s has no location in the built level' % label)
+            notes.append('Rift Lord could not find %s in the built level, so its floor is '
+                         'not checked.' % label)
             continue
         rows = check_rift(graphs, at)
         sunk = sunk_depth(graphs[0], at) if graphs and rows[0][1] is None else None
-        floor_bad += describe(label, rows, sunk)
+        floor_bad += describe(label, rows, sunk, at)
         notes += high_notes(label, rows)
         g0 = rows[0] if rows else None
         if g0 and g0[1] is not None:
@@ -295,8 +304,10 @@ def assess(files, plan, level_name):
             except Exception as exc:                 # noqa: BLE001
                 hit, solid_note = None, 'not checked: %s' % exc
             if hit:
-                solid_bad.append('%s has a solid piece (%s, at z %.0f) between it and the '
-                                 'floor under it' % (label, hit[0], hit[1]))
+                solid_bad.append('%s has a solid piece (%s, at height %.0f) between it and '
+                                 'the floor under it. Move the piece or the rift, or turn '
+                                 'the piece\'s Collides off.'
+                                 % (_named(label, at), hit[0], hit[1]))
     return {'floor': floor_bad, 'solid': solid_bad, 'notes': notes, 'seen': seen,
             'solid_note': solid_note, 'count': len(rifts)}
 
@@ -604,9 +615,10 @@ def spawner_heights(graph, spawners, labels=None):
     for name, index, at in spawners:
         got = floor_under(graph, at)
         if got is not None and got[2] > SPAWNER_DROP_MAX:
-            out.append('%s stands %.0f uu above the floor, higher than any shipped ground '
-                       'spawner (%.0f uu)' % ((labels or {}).get(index, name), got[2],
-                                              SPAWNER_DROP_MAX))
+            out.append('%s stands %.0f units above the floor, higher than any shipped '
+                       'ground spawner (%.0f units). Lower it toward the floor, or test it '
+                       'in game.' % ((labels or {}).get(index, name), got[2],
+                                     SPAWNER_DROP_MAX))
     return out
 
 

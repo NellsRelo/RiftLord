@@ -33,7 +33,7 @@ def piece_arrays(cls):
     """{array property: ARRAYS kind} a built piece of class `cls` is read with."""
     if cls == crystal.CLASS:
         from riftlord.mapeditor import rifttear
-        return dict(rifttear.ARRAYS, **{crystal.DIFFICULTY_HEALTH: 'float'})
+        return dict(rifttear.ARRAYS)
     return {name: 'int' for name in PIECES.get(cls, (None, ()))[1]}
 
 
@@ -41,7 +41,9 @@ def piece_scalars(cls):
     """{scalar property: (tag type, struct format)} a built piece of class `cls` is read with."""
     if cls == crystal.CLASS:
         from riftlord.mapeditor import rifttear
-        return {rifttear.WAVE_COUNT: ('IntProperty', '<i'), 'RiftGap': ('FloatProperty', '<f')}
+        out = {rifttear.WAVE_COUNT: ('IntProperty', '<i'), 'RiftGap': ('FloatProperty', '<f')}
+        out.update({prop: ('FloatProperty', '<f') for prop in crystal.HEALTH_KEYS.values()})
+        return out
     return {}
 
 

@@ -27,7 +27,7 @@ from riftlord.core import gamepath  # noqa: E402
 #: The on-disk cache, one JSON file for every class read so far.
 CACHE = os.path.join(gamepath.scratch('cache', gamepath.CODE_ROOT), 'omd3-component-templates.json')
 #: Bumped when the record shape changes, so an old cache is discarded.
-CACHE_VERSION = 3
+CACHE_VERSION = 4
 
 #: Component suffix the cooker adds to a component promoted to a variable.
 GEN_SUFFIX = '_GEN_VARIABLE'
@@ -59,11 +59,28 @@ def save():
         if not _dirty:
             return
         os.makedirs(os.path.dirname(CACHE), exist_ok=True)
-        tmp = CACHE + '.tmp'
+        tmp = '%s.%d.tmp' % (CACHE, os.getpid())
         with open(tmp, 'w') as fh:
             json.dump({'version': CACHE_VERSION, 'classes': _own}, fh)
         os.replace(tmp, CACHE)
         _dirty = False
+
+
+def body_fields(raw, names):
+    """{CollisionEnabled, CollisionProfileName: FName} stated by a BodyInstance struct's
+    tagged properties `raw`; `names` the package's name table."""
+    import struct
+    from riftlord.formats.omd3 import meshcat
+    names = [n[0] if isinstance(n, (list, tuple)) else n for n in names]
+    body = meshcat._walk(raw, names, 0, len(raw))
+    out = {}
+    for field in ('CollisionEnabled', 'CollisionProfileName'):
+        if field in body and body[field][2] >= 8:
+            _kind, at, size = body[field]
+            k = struct.unpack_from('<i', raw, at + size - 8)[0]
+            if 0 <= k < len(names):
+                out[field] = str(names[k])
+    return out
 
 
 def _read_own(class_name):
@@ -111,6 +128,15 @@ def _read_own(class_name):
         mat = omd3actors._override_material(props, import_name)
         if mat:
             rec['material'] = mat
+        #: a box's half size, and the collision its BodyInstance states
+        if 'BoxExtent' in props:
+            v = onslaught.as_vec(props['BoxExtent'][2])
+            if v:
+                rec['extent'] = list(v)
+        if isinstance((props.get('BodyInstance') or (0, 0, None))[2], (bytes, bytearray)):
+            body = body_fields(bytes(props['BodyInstance'][2]), info.get('names') or [])
+            if body:
+                rec['body'] = body
         for field, key in (('bVisible', 'visible'), ('bHiddenInGame', 'hidden')):
             if field in props and isinstance(props[field][2], int):
                 rec[key] = bool(props[field][2])

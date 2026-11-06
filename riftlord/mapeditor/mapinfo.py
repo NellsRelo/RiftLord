@@ -82,8 +82,9 @@ def mission_rows(mission):
             for r, t, g in bucket._mission_rows(path)]
 
 
-def info(level, mission=None):
-    """Everything the map settings panel shows for one level."""
+def info(level, mission=None, scratch=False):
+    """Everything the map settings panel shows for one level (`scratch`: a level from
+    scratch on it, lit by its own light rig)."""
     out = {'level': level, 'world': {}, 'editable': list(WORLD_FIELDS),
            'readonly': list(WORLD_READONLY), 'mission': [], 'guid': ''}
     try:
@@ -98,6 +99,18 @@ def info(level, mission=None):
     except (Exception, SystemExit) as exc:           # noqa: BLE001
         out['introFilter'] = []
         out['sceneError'] = '%s: %s' % (type(exc).__name__, exc)
+    try:
+        from riftlord.build.world import lighting
+        out['lighting'] = lighting.shown(level, scratch)
+    except (Exception, SystemExit) as exc:           # noqa: BLE001
+        out['lighting'] = None
+        out['lightingError'] = '%s: %s' % (type(exc).__name__, exc)
+    try:
+        from riftlord.build.world import moons
+        out['moons'] = moons.shown(level, scratch)
+    except (Exception, SystemExit) as exc:           # noqa: BLE001
+        out['moons'] = None
+        out['moonsError'] = '%s: %s' % (type(exc).__name__, exc)
     try:
         from riftlord.build.world import storyvo
         out['storyDialog'] = storyvo.survey(level)

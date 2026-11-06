@@ -1,5 +1,5 @@
-// A level from scratch (riftlord/scratch.py): the New Level dialog, the ground grid a
-// new level is built on, and the snapping that keeps placed pieces on the trap grid.
+// A level from scratch (riftlord/scratch.py): the New Level dialog and the ground grid a
+// new level is built on.
 
 import * as THREE from 'three'
 
@@ -10,9 +10,6 @@ const MAJOR_COLOUR = 0x56607a
 //: The grid sits this far under the ground height, so a floor laid on it is not
 //: z-fighting with its lines.
 const GRID_SINK = 1
-//: A piece lands on the grid level at or below where it was dropped, unless it was
-//: dropped within this many uu under the next one up.
-const Z_TOLERANCE = 30
 
 const ground = new THREE.Group()
 ground.name = 'scratch-ground'
@@ -68,36 +65,9 @@ export function hide () {
 
 export const active = () => !!info
 
-/** {grid: cell, ground: z} of the open scratch level's lattice, or null. */
-export const lattice = () => info ? { grid: info.grid, ground: info.ground } : null
-
 /** What a click may land on: the ground plane while a scratch level is open. */
 export function pickables () {
   return info ? ground.children.filter(c => c.userData.scratchGround) : []
-}
-
-/** [dx, dy, dz] that puts a placed piece on the grid, or null: its footprint's cells on
- * the trap grid (a mesh overhangs its cells by a few uu, shared out on both sides) and
- * its origin on the whole number of cells above the ground at or below it. `originZ` is the piece's. */
-export function snapDelta (meshes, originZ) {
-  if (!info || !meshes.length) return null
-  const box = new THREE.Box3()
-  for (const m of meshes) {
-    m.updateMatrix()
-    if (!m.geometry.boundingBox) m.geometry.computeBoundingBox()
-    box.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrix))
-  }
-  if (box.isEmpty()) return null
-  const cell = info.grid
-  const axis = (lo, hi) => {
-    const size = hi - lo
-    const over = (size - Math.max(1, Math.round(size / cell)) * cell) / 2
-    const from = lo + over
-    return Math.round(from / cell) * cell - from
-  }
-  const z = originZ - info.ground
-  return [axis(box.min.x, box.max.x), axis(box.min.y, box.max.y),
-          Math.floor((z + Z_TOLERANCE) / cell) * cell - z]
 }
 
 //: what the last plan save said a scratch level still needs

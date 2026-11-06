@@ -468,7 +468,9 @@ def apply(builder, level, plan, report):
         return 0
     mod = (plan or {}).get('_modKey')
     if not mod:
-        report['skipped'].append('Mission Events: no mod name for the piece')
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out('the Mission Events piece',
+                                                       'no _modKey in the plan'))
         return 0
     place_actor(builder, item['matrix'], package_path(mod), class_name(mod), PLACED_NAME)
     work = duties(level, plan)
@@ -596,8 +598,10 @@ def rift_problems(plan, spec=None):
     eventful = {int(ev.get('rift') or 0) for ev in events}
     need = [n for n in rifts if n not in by_crystal or n in eventful]
     if need and piece(plan) is None:
-        out.append('unstable rift(s) %s need the Mission Events piece'
-                   % ', '.join(map(str, need)))
+        out.append('Unstable Rift%s %s open%s through mission events, which need the '
+                   'Mission Events piece: place one from New Object'
+                   % ('s' if len(need) > 1 else '', ', '.join(map(str, need)),
+                      '' if len(need) > 1 else 's'))
     for n in rifts:
         if n in by_crystal:
             continue
@@ -606,10 +610,12 @@ def rift_problems(plan, spec=None):
         closes = sorted(int(ev.get('wave') or 0) for ev in events
                         if int(ev.get('rift') or 0) == n and not ev.get('open', True))
         if not opens:
-            out.append('unstable rift %d never opens' % n)
+            out.append('Unstable Rift %d never opens: give it an open event in the Mission '
+                       'Events list' % n)
             continue
         if closes and closes[0] <= opens[0]:
-            out.append('unstable rift %d closes at wave %d, not after it opens (wave %d)'
+            out.append('Unstable Rift %d closes at wave %d, before it opens at wave %d: move '
+                       'its close event later in the Mission Events list'
                        % (n, closes[0], opens[0]))
         last = closes[0] - 1 if closes else None
         for i, wave in enumerate((spec or {}).get('waves') or []):
@@ -617,7 +623,9 @@ def rift_problems(plan, spec=None):
             if not (wave.get('spawns') or {}).get(str(n)):
                 continue
             if number < opens[0] or (last is not None and number > last):
-                out.append('wave %d spawns through unstable rift %d while it is closed'
+                out.append('wave %d sends enemies through Unstable Rift %d while it is '
+                           'closed: open the rift by that wave in the Mission Events list, '
+                           'or move those enemies to another spawner in the Onslaught Editor'
                            % (number, n))
     return out
 

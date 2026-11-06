@@ -22,9 +22,11 @@ import { sendable } from '../../shared/LoadPicture.svelte'
 import { mapSettingsHtml, wireMapSettings, newMissionWorld } from './mapsettings.js'
 import { levelFxHtml, wireLevelFx, removable, isWeatherItem } from './levelfxui.js'
 import * as scratchUi from './scratch.js'
-import { kitGrids, placeMatrix, snapGrid, cachedGrids } from './kitplace.js'
+import { kitGrids, placeMatrix, cachedGrids, latticeDelta, footprintDelta, gridPlace,
+  piecePlaces, quarterTurned, mainGrid, rooms, roomAt, standHeight } from './kitplace.js'
 import { TrapGridLayer, trapGridHtml, SYNC_INTERVAL as TRAP_GRID_SYNC } from './trapgrids.js'
 import * as fab from './fabui.js'
+import * as fabGrids from './fabgrids.js'
 import { minimapOffered, minimapHtml, wireMinimap, previewCache, minimapPreviewed } from './minimapui.js'
 import { createTrace } from './traceui.js'
 import { levelPicker } from './levelpicker.js'
@@ -34,6 +36,9 @@ import { useMarquee, inRect } from './marquee.js'
 import { useVolumes, drawVolumes, applyVolumes, recordVolumeMove, removeVolume,
          showVolumeProps, addVolume } from './volumes.js'
 import { installHeightFog, setHeightFog, updateHeightFog } from './heightfog.js'
+import * as lit from './lightingui.js'
+import { SunHandle, MOON_COLOUR } from './sunhandle.js'
+import * as moonui from './moonsui.js'
 import { eventsHtml, wireEvents, needsPiece } from './eventsui.js'
 import { CRYSTAL_KIND, CRYSTAL_CLASS, CRYSTAL_LABEL, CRYSTAL_CARD_COLOUR, CRYSTAL_THUMB, crystalInfo,
   crystalKnown, isCrystal, planCrystal, crystalModel, crystalHtml, wireCrystal, crystalFit,
@@ -42,6 +47,9 @@ import * as compounds from './compounds.js'
 import * as decor from './decortools.js'
 import { useControllers, controllersHtml, wireControllers, plateHidden,
          drawsPart } from './controllers.js'
+import { seamState, seamsHtml, wireSeams, takeAnswer, acceptedItems,
+         openProposals, seamById } from './coverseams.js'
+import { checksHtml, wireChecks, targetOf } from './checks.js'
 
 installHeightFog()
 import { PHASES, migratePlan, asRef, exitName, shippedNext, wiringOf, nextOf, isGone,
@@ -181,9 +189,10 @@ for (const type of ['pointerdown', 'pointermove', 'keydown', 'keyup']) {
   addEventListener(type, (ev) => { shiftDown = !!ev.shiftKey; altDown = !!ev.altKey }, true)
 }
 
-/** The gizmo's move step in uu, or 0 while snapping is off or shift is held. */
+/** The gizmo's move step in uu, or 0 while snapping is off, shift is held or the move
+ * snaps to the lattice instead (latticeMove). */
 function snapStep () {
-  if (!snapToGrid || shiftDown) return 0
+  if (!snapToGrid || shiftDown || latticeDrag) return 0
   return ((level && level.scratch && level.scratch.grid) || TRAP_CELL) * SNAP_SHARE
 }
 
@@ -423,6 +432,9 @@ sun.castShadow = false
 //: sky light strengths (applySky).
 const sunFrom = new THREE.Vector3(8000, 14000, 10000).normalize()
 const levelRig = { sun: 1.6, fill: 2.2 }
+//: View light per unit of a sun's and the sky light's Intensity (applySky's).
+const SUN_GAIN = 1.3
+const SKY_GAIN = 2.4
 
 /** An OMD3 FLinearColor as a three.js colour. */
 function linear (rgba, fallback) {
@@ -450,16 +462,101 @@ function applySky (sky) {
   sun.intensity = Math.max(0.3, (dir.Intensity ?? 1.25) * 1.3)
   // An Unreal rotator points the light along its own +X; three.js wants the place it
   // shines from, and this group's up is +Z, so the swizzle is (x, z, -y).
-  const [pitch, yaw] = dir.RelativeRotation || [-45, 45]
-  const p = pitch * Math.PI / 180, y = yaw * Math.PI / 180
-  const d = [Math.cos(p) * Math.cos(y), Math.cos(p) * Math.sin(y), Math.sin(p)]
-  sun.position.set(-d[0] * 20000, -d[2] * 20000, d[1] * 20000)
-  sunFrom.copy(sun.position).normalize()
+  sunFrom.copy(sceneFrom(lit.forward(dir.RelativeRotation || [-45, 45, 0])))
+  sun.position.copy(sunFrom).multiplyScalar(SUN_DISTANCE)
   fill.color.copy(linear(amb.LightColor, 0xbcd2ff))
   fill.groundColor.copy(linear(amb.LowerHemisphereColor, 0x202430))
   fill.intensity = Math.max(0.4, (amb.Intensity ?? 0.65) * 2.4)
   levelRig.sun = sun.intensity
   levelRig.fill = fill.intensity
+}
+
+/** Where a light shining along level direction `d` comes from, in scene space (unit
+ * length): level (x, y, z) is scene (x, z, y), as `world` turns it. */
+function sceneFrom (d) {
+  return new THREE.Vector3(-d[0], -d[2], -d[1]).normalize()
+}
+
+//: The level's suns after the brightest (which `sun` draws), drawn without shadows.
+const moreSuns = []
+//: The most suns drawn.
+const MAX_SUNS = 6
+//: The height fog the view draws (heightfog.js keys), from the map's lighting.
+let fogView = {}
+//: The Map Settings sun whose direction handle shows ('sun:<key>', 'added:<n>'), or null.
+let selectedSun = null
+//: The Map Settings moon whose direction handle shows ('moon:<key>', 'addedmoon:<n>'), or
+//: null (moonsui.js).
+let selectedMoon = null
+//: The Light section's values of added light actors, by class (/api/lightvalues): an
+//: array once known, null while asked.
+const kitLightValues = new Map()
+
+/** [{kind, values}] of the lights an added `cls` brings ([] until known; the panel
+ * redraws when they arrive). */
+function kitLights (cls) {
+  if (!cls) return []
+  if (!kitLightValues.has(cls)) {
+    kitLightValues.set(cls, null)
+    json('api/lightvalues/' + encodeURIComponent(cls)).then((got) => {
+      kitLightValues.set(cls, got || [])
+      applyLighting()
+      if (level) showProps()
+    }).catch(() => kitLightValues.set(cls, []))
+  }
+  return kitLightValues.get(cls) || []
+}
+
+/** An added sun's values as it ships (the DirectionalLight the build lifts). */
+const kitSunValues = () => ((kitLights(lit.SUN_CLASS)[0] || {}).values) || null
+
+/** Light the view with the map's lighting as the plan has it (lightingui.sceneLighting):
+ * its suns, sky light and height fog. Without the level's lighting read yet, the sky's
+ * look (applySky) stays. */
+function applyLighting () {
+  const s = lit.sceneLighting(mapInfo, plan, kitSunValues())
+  if (!s) return
+  const suns = s.suns.slice().sort((a, b) => b.intensity - a.intensity)
+  const main = suns[0]
+  if (main) {
+    sun.color.setRGB(main.colour[0], main.colour[1], main.colour[2])
+    sun.intensity = Math.max(0, main.intensity * SUN_GAIN)
+    sunFrom.copy(sceneFrom(main.dir))
+    sun.position.copy(sunFrom).multiplyScalar(SUN_DISTANCE)
+  } else {
+    sun.intensity = 0
+  }
+  while (moreSuns.length < MAX_SUNS - 1) {
+    const extra = new THREE.DirectionalLight(0xffffff, 0)
+    moreSuns.push(extra)
+    scene.add(extra)
+  }
+  moreSuns.forEach((extra, i) => {
+    const one = suns[i + 1]
+    extra.intensity = one ? one.intensity * SUN_GAIN : 0
+    if (!one) return
+    extra.color.setRGB(one.colour[0], one.colour[1], one.colour[2])
+    extra.position.copy(sceneFrom(one.dir)).multiplyScalar(SUN_DISTANCE)
+  })
+  if (s.sky) {
+    fill.color.setRGB(s.sky.colour[0], s.sky.colour[1], s.sky.colour[2])
+    const lower = s.sky.lowerBlack ? [0, 0, 0] : s.sky.lower
+    fill.groundColor.setRGB(lower[0], lower[1], lower[2])
+    fill.intensity = Math.max(0, s.sky.intensity * SKY_GAIN)
+  }
+  if (s.fog) {
+    const horizon = new THREE.Color(s.fog.colour[0], s.fog.colour[1], s.fog.colour[2])
+    scene.background = horizon
+    if (scene.fog) scene.fog.color.copy(horizon)
+    fogView = { fogDensity: s.fog.density, fogFalloff: s.fog.falloff, fogOpacity: s.fog.opacity,
+                fogStart: s.fog.start, fogHeight: s.fog.height }
+  } else {
+    fogView = {}
+  }
+  levelRig.sun = sun.intensity
+  levelRig.fill = fill.intensity
+  syncSunHandle()
+  applyMoons()
 }
 
 const world = new THREE.Group()
@@ -584,9 +681,13 @@ gizmo.addEventListener('dragging-changed', (ev) => {
   if (gizmo.object === handle) {
     //: the outlines ride with the handle during a drag and are rebuilt when it ends
     outlineFrom = handle.matrix.clone()
-    if (ev.value && gizmo.mode === 'translate') edgeSnapBegin()
+    if (ev.value && gizmo.mode === 'translate') {
+      latticeBegin()
+      if (!latticeDrag) edgeSnapBegin()
+    }
     if (ev.value && gizmo.mode === 'scale') scaleSnapBegin()
     if (!ev.value) {
+      latticeEnd()
       edgeSnapEnd()
       groups.outline.matrix.identity()
       groups.outline.matrixAutoUpdate = true
@@ -620,7 +721,10 @@ gizmo.addEventListener('dragging-changed', (ev) => {
 })
 gizmo.addEventListener('objectChange', () => {
   if (gizmo.object === handle) {
-    if (gizmo.mode === 'translate') edgeSnapMove()
+    if (gizmo.mode === 'translate') {
+      if (latticeDrag) latticeMove()
+      else edgeSnapMove()
+    }
     movePicked()
     //: the trap grids layer follows the drag
     trapGridAt = 0
@@ -644,6 +748,9 @@ let level = null
 let units = []
 let plan = { level: null, version: 2, rifts: [], doors: [], spawners: [], points: [],
              playerStarts: [], wiring: [], removed: [], waves: [], edits: [], added: [] }
+//: Each laid Fab grid's pieces as entries, so deleting or reordering pieces cannot point a
+//: grid at the wrong one (fabgrids.js); rebound whenever `plan` is replaced
+let fabOwners = new Map()
 
 //: What each kind of object carries, fetched from the server so the panel and the
 //: emitter cannot disagree about a property the game reads.
@@ -1219,18 +1326,18 @@ function syncLamps () {
   const rows = []
   for (const l of lightRig || []) {
     const at = actorPlace(l.key, l.position)
-    const hex = (plan.lightColours || {})[l.key]
-    const lit = hex ? { ...l, colour: hexRgb(hex).map(srgbToLinear) } : l
-    if (at) rows.push({ l: lit, at, d: at.distanceToSquared(eye) })
+    const shown = lit.lampValues(l, l.values, (plan.lights || {})[l.key])
+    if (at) rows.push({ l: shown, at, d: at.distanceToSquared(eye) })
   }
   //: lights the plan places (torches, braziers, lights from New Object), at the actor
   for (const e of plan.added || []) {
     if (e.kind !== 'kit') continue
     const row = catalogue.find(r => r.name === e.name)
-    for (const l of (row && row.lights) || []) {
+    ;((row && row.lights) || []).forEach((l, i) => {
       const at = new THREE.Vector3(e.matrix[12], e.matrix[13], e.matrix[14])
-      rows.push({ l, at, d: at.distanceToSquared(eye) })
-    }
+      const base = (kitLights(e.name)[i] || {}).values
+      rows.push({ l: lit.lampValues(l, base, e.light), at, d: at.distanceToSquared(eye) })
+    })
   }
   if (!lightRig) {
     for (const m of groups.lights.children) {
@@ -1267,10 +1374,10 @@ const rgbHex = (rgb) => '#' + rgb.slice(0, 3).map(v =>
 /** One sRGB channel (0-1) as linear light. */
 const srgbToLinear = (c) => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
 
-/** A level light's colour (0-1, sRGB): the plan's (`lightColours`, riftlord/build/world/
- * levelretint.py) or its own `colour`. */
+/** A level light's colour (0-1, sRGB): the plan's (`lights[key].LightColor`,
+ * riftlord/build/world/lighting.py) or its own `colour`. */
 function lightColour (key, colour) {
-  const hex = key && (plan.lightColours || {})[key]
+  const hex = key && ((plan.lights || {})[key] || {}).LightColor
   return hex ? hexRgb(hex) : colour
 }
 
@@ -2327,9 +2434,82 @@ const HISTORY_MAX = 60
 
 function snapshot () {
   changes += 1
+  fabGrids.sync(plan, fabOwners)
   history.push(JSON.stringify(plan))
   if (history.length > HISTORY_MAX) history.shift()
+  scheduleChecks()
 }
+
+// -- Checks (checks.js, riftlord/mapeditor/checks.py) -------------------------------
+
+//: the Checks rows for the open plan, and the pending refresh
+let checkRows = []
+let checksTimer = null
+//: how long after the last change the Checks list is asked again (ms)
+const CHECKS_DELAY = 800
+
+/** Ask for the Checks list once changes settle: a change is made just after snapshot(). */
+function scheduleChecks () {
+  clearTimeout(checksTimer)
+  checksTimer = setTimeout(() => refreshChecks().catch(err => report('checks', err)),
+                           CHECKS_DELAY)
+}
+
+/** Ask the server for the open plan's Checks list and show it. */
+async function refreshChecks () {
+  if (!level) return
+  const asked = level.level
+  fabGrids.sync(plan, fabOwners)
+  const got = await json('api/checks/' + encodeURIComponent(asked), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Rift-Lord': '1' },
+    body: JSON.stringify({ plan, mission: editing }),
+  })
+  if (!level || level.level !== asked) return
+  checkRows = got.checks || []
+  const box = el('checks')
+  if (!box) return
+  box.innerHTML = checksHtml(checkRows)
+  wireChecks(box, checkRows, focusCheck)
+}
+
+/** Select what a Checks row names and frame it in the viewport. */
+function focusCheck (row) {
+  const t = targetOf(row)
+  if (!t) return
+  picked = []
+  selected = null
+  wiringPick = null
+  gizmo.detach()
+  let at = t.at
+  if (t.plan) {
+    const m = groups.added.children.find(c =>
+      c.userData.plan && c.userData.kind === t.plan.kind && c.userData.id === t.plan.id)
+    if (m) {
+      selected = { kind: m.userData.kind, id: m.userData.id, index: m.userData.index }
+      attachTo(selected)
+      const p = m.position
+      at = at || [p.x, p.y, p.z]
+    }
+    drawPlan()
+  } else if (t.wiring) {
+    const m = groups.wiring.children.find(c => c.userData.wiring && c.userData.name === t.wiring)
+    if (m) {
+      wiringPick = m
+      const p = m.position
+      at = at || [p.x, p.y, p.z]
+    }
+  } else if (Number.isInteger(t.added) && (plan.added || [])[t.added]) {
+    const entry = plan.added[t.added]
+    picked = [addedRecord(entry)]
+    if (!at && entry.matrix) at = entry.matrix.slice(12, 15)
+  }
+  refreshPicked()
+  showProps()
+  if (at) frameOn([at.map(v => v - CHECK_FRAME), at.map(v => v + CHECK_FRAME)], CHECK_FRAME * 2)
+}
+//: half the box a Checks row frames round what it names (uu)
+const CHECK_FRAME = 600
 
 function undo () {
   if (!history.length) {
@@ -2337,12 +2517,14 @@ function undo () {
     return
   }
   plan = JSON.parse(history.pop())
+  fabOwners = fabGrids.bind(plan)
   fxPick = null
   selected = null
   picked = []
   gizmo.detach()
   drawPlan()
   showProps()
+  applyMoons()
   // The level's own geometry has to be put back too: moving and removing map assets
   // are undoable edits like any other, and restoring only the plan left the level
   // looking however the undone edit had left it.
@@ -2350,6 +2532,7 @@ function undo () {
   refreshPicked()
   redrawAdded()
   previewPlanes().catch(err => report('liquid', err))
+  scheduleChecks()
   flash('Undone.')
 }
 
@@ -3102,6 +3285,7 @@ function showPickedProps () {
     crystalHtml(picked.length === 1 ? one : null, plan) +
     trapGridSection() +
     (picked.some(p => isCrystal(p.added)) ? '' : flipSection()) +
+    lightSection() +
     levelActorSection() +
     (teleportPartners(picked.filter(p => !p.added)).length
       ? '<div class="hint">A teleporter end: removing it also removes the end it links ' +
@@ -3141,12 +3325,13 @@ function showPickedProps () {
   for (const b of body.querySelectorAll('[data-flip]')) {
     b.addEventListener('click', () => flipPicked(b.dataset.flip))
   }
-  if (el('lightcolour')) {
-    el('lightcolour').addEventListener('change', (ev) => setLightColour(ev.target.value))
-  }
-  if (el('lightcolourreset')) {
-    el('lightcolourreset').addEventListener('click', () => { setLightColour(null); showProps() })
-  }
+  lit.wireTargets(body, lightTargets(), (fn) => {
+    snapshot()
+    fn()
+    applyActorEdits()
+    applyLighting()
+    showProps()
+  })
   if (el('lightsame')) el('lightsame').addEventListener('click', () => pickMarkers(sameLights(one)))
   if (el('levelfxkind')) {
     el('levelfxkind').addEventListener('change', (ev) => { setEffectTemplate(ev.target.value); showProps() })
@@ -3190,6 +3375,7 @@ function trapGridSection () {
         if (got.every(Boolean) && pickedFab().length) showProps()
       })
     }
+    fabGrids.sync(plan, fabOwners)
     return fab.propsHtml(fabs, plan, json)
   }
   const kinds = new Set(picked.filter(p => !p.marker).map(p => p.added
@@ -3923,19 +4109,55 @@ function sameLights (rec) {
     !actorPieces(m.userData.levelActor).length)
 }
 
-/** The sections for picked level lights and effects: a light's colour, an emitter's
- * particle system, and picking or deleting every one like the picked one. */
+//: The Light section's kind of each level light kind.
+const LIGHT_KIND = { PointLight: 'point', SpotLight: 'spot', RectLight: 'rect' }
+
+/** The Light section's targets for the picked lights (lightingui): the level's own point,
+ * spot and rect lights (`plan.lights`) and added light actors (their `light`), or [] when
+ * anything else is picked or they are not all suns or all other lights. */
+function lightTargets () {
+  const fields = ((mapInfo && mapInfo.lighting) || {}).fields
+  if (!fields || !picked.length) return []
+  const out = []
+  for (const p of picked) {
+    if (isLevelLight(p)) {
+      const e = p.obj.userData.entry
+      const row = (lightRig || []).find(l => l.key === p.levelActor)
+      const base = row ? row.values
+        : { LightColor: rgbHex(e.colour), Intensity: e.intensity, AttenuationRadius: e.radius }
+      const choices = String(base.Mobility || '').endsWith('Static') ? [lit.STATIC, lit.MOVABLE]
+        : [base.Mobility, lit.MOVABLE].filter(Boolean)
+      out.push({ id: 'light', kind: LIGHT_KIND[e.kind], fields: fields.light, base, choices,
+                 ...lit.lightsTarget(plan, p.levelActor) })
+    } else if (p.added && p.added.kind === 'kit') {
+      const got = kitLights(p.added.name)[0]
+      if (!got) return []
+      out.push({ id: 'light', kind: got.kind, fields: got.kind === 'sun' ? fields.sun : fields.light,
+                 base: got.values, choices: [lit.STATIC, lit.MOVABLE, got.values.Mobility],
+                 ...lit.addedTarget(p.added) })
+    } else {
+      return []
+    }
+  }
+  const sun = out.map(t => t.kind === 'sun')
+  return sun.every(Boolean) || !sun.some(Boolean) ? out : []
+}
+
+/** The Light section for the picked lights. */
+function lightSection () {
+  const targets = lightTargets()
+  if (!targets.length) return ''
+  const choices = [...new Set(targets.flatMap(t => t.choices).filter(Boolean))]
+  return lit.lightPanelHtml(targets, targets[0].kind, choices)
+}
+
+/** The sections for picked level lights and effects: picking every light like the picked
+ * one, an emitter's particle system, and picking or deleting every effect like it. */
 function levelActorSection () {
   if (!picked.length || !picked.every(p => p.levelActor)) return ''
   const one = picked[0]
   const out = []
   if (picked.every(isLevelLight)) {
-    const now = rgbHex(lightColour(one.levelActor, one.obj.userData.entry.colour))
-    out.push('<h2>Light</h2><label class="pick"><span>Colour</span>' +
-      `<input type="color" id="lightcolour" value="${now}"></label>`)
-    if (picked.some(p => (plan.lightColours || {})[p.levelActor])) {
-      out.push('<button id="lightcolourreset">Reset</button>')
-    }
     const n = picked.length === 1 ? sameLights(one).length : 0
     if (n > 1) out.push(`<button id="lightsame">Select All ${n}</button>`)
   }
@@ -3959,20 +4181,6 @@ function levelActorSection () {
     }
   }
   return out.join('')
-}
-
-/** Set (or with null, reset) the colour of every picked level light; the light's own
- * colour stores nothing. */
-function setLightColour (hex) {
-  snapshot()
-  const colours = { ...(plan.lightColours || {}) }
-  for (const p of picked.filter(isLevelLight)) {
-    if (hex && hex !== rgbHex(p.obj.userData.entry.colour)) colours[p.levelActor] = hex
-    else delete colours[p.levelActor]
-  }
-  if (Object.keys(colours).length) plan.lightColours = colours
-  else delete plan.lightColours
-  applyActorEdits()
 }
 
 /** Play particle system `template` from every picked level emitter; its own stores
@@ -4018,22 +4226,56 @@ const FLIP_SHORT = { mirrorH: 'Left/Right', mirrorV: 'Upside Down', turnH: 'Inve
   turnV: 'Invert Tilt' }
 
 /** The Flip section of the Selected panel, for picked geometry. */
-/** The added kit and mesh pieces picked, once each, or [] when anything else is picked. */
+/** The picked pieces the Collides switch applies to, once each: added kit and mesh pieces
+ * and level pieces with a shipped state (`collides`, riftlord/mapeditor/piececollision.py),
+ * or [] when anything else is picked. */
 function pickedCollisionPieces () {
   const items = new Set()
   for (const p of picked) {
     if (p.marker) continue
-    if (!p.added || (p.added.kind !== 'kit' && p.added.kind !== 'mesh')) return []
-    items.add(p.added)
+    if (p.added && (p.added.kind === 'kit' || p.added.kind === 'mesh')) items.add(p.added)
+    else if (!p.added && !p.levelActor && typeof p.collides === 'boolean') items.add(p)
+    else return []
   }
   return [...items]
 }
 
-/** The Collision switch for picked added pieces (riftlord/mapeditor/piececollision.py). */
+//: Largest matrix entry difference treated as the shipped place (geomedits.SAME_PLACE).
+const SAME_MATRIX = 0.01
+
+/** Whether one picked item collides after the plan: an added item by its `collision`, a
+ * level piece by its edit's `collision`, else as shipped. */
+function collidesNow (x) {
+  if (x.source === undefined) return x.collision !== false
+  const e = plan.edits.find(e => e.id === x.id)
+  return e && typeof e.collision === 'boolean' ? e.collision : x.collides
+}
+
+/** Switch a level piece's collision: its edit carries `collision` only while it differs
+ * from the shipped state, and an edit left at the shipped matrix without it is dropped. */
+function setPieceCollision (p, on) {
+  let e = plan.edits.find(e => e.id === p.id)
+  if (on === p.collides) {
+    if (!e) return
+    delete e.collision
+    const shipped = p.original || p.matrix
+    if (e.matrix.every((v, i) => Math.abs(v - shipped[i]) < SAME_MATRIX)) {
+      plan.edits = plan.edits.filter(x => x !== e)
+    }
+    return
+  }
+  if (!e) {
+    e = { id: p.id, mesh: p.mesh, matrix: p.matrix }
+    plan.edits.push(e)
+  }
+  e.collision = on
+}
+
+/** The Collision switch for picked pieces (riftlord/mapeditor/piececollision.py). */
 function collisionSection () {
   const items = pickedCollisionPieces()
   if (!items.length) return ''
-  const off = items.filter(a => a.collision === false).length
+  const off = items.filter(x => !collidesNow(x)).length
   return '<h2>Collision</h2><label class="row"><span>Collides</span>' +
     `<input id="piececollision" type="checkbox"${off ? '' : ' checked'}` +
     `${off && off < items.length ? ' data-mixed="1"' : ''}></label>`
@@ -4046,7 +4288,8 @@ function wireCollision () {
   box.addEventListener('change', (ev) => {
     snapshot()
     for (const a of pickedCollisionPieces()) {
-      if (ev.target.checked) delete a.collision
+      if (a.source !== undefined) setPieceCollision(a, ev.target.checked)
+      else if (ev.target.checked) delete a.collision
       else a.collision = false
     }
     showProps()
@@ -4211,31 +4454,42 @@ function bandExtreme (tris, d, a, band, hi) {
   return got === null ? null : got + d[a]
 }
 
-/** Start a move: remember the selection's triangles and the neighbours near it, each as
- * {box, pts}: the box around its real triangles and the triangles themselves (a piece
- * whose geometry is not drawn has its box alone). */
+/** A picked record's shape for the edge snap: {box, pts}, the box around its real
+ * triangles and the triangles themselves (a piece whose geometry is not drawn has its box
+ * alone), or null. */
+function edgeShape (p) {
+  const pts = worldTris(p)
+  if (pts) return { box: trisBox(pts), pts }
+  const box = pickedBox(p)
+  return box ? { box, pts: null } : null
+}
+
+/** Start a move: remember the selection's triangles and the neighbours near it
+ * (edgeNeighbours), each as an edgeShape. */
 function edgeSnapBegin () {
   edgeSnap = null
   const mine = picked.filter(p => !p.marker && !p.levelActor)
   if (!mine.length) return
-  const shape = (p) => {
-    const pts = worldTris(p)
-    if (pts) return { box: trisBox(pts), pts }
-    const box = pickedBox(p)
-    return box ? { box, pts: null } : null
-  }
   const box = new THREE.Box3()
   const parts = []
   for (const p of mine) {
-    const s = shape(p)
+    const s = edgeShape(p)
     if (!s) continue
     box.union(s.box)
     parts.push(s)
   }
   if (box.isEmpty()) return
+  const near = edgeNeighbours(box, new Set(mine.filter(p => !p.added).map(p => p.id)),
+    new Set(mine.filter(p => p.added).map(p => p.added)))
+  const pts = parts.every(s => s.pts)
+    ? Float32Array.from(parts.flatMap(s => Array.from(s.pts))) : null
+  edgeSnap = { box, pts, from: handle.position.clone(), near }
+}
+
+/** The edgeShapes of the drawn level pieces and plan entries within EDGE_SNAP_REACH of
+ * `box` (a Box3), but for the level pieces `ids` and plan entries `entries`. */
+function edgeNeighbours (box, ids, entries) {
   const reach = box.clone().expandByScalar(EDGE_SNAP_REACH)
-  const ids = new Set(mine.filter(p => !p.added).map(p => p.id))
-  const entries = new Set(mine.filter(p => p.added).map(p => p.added))
   const gone = new Set(plan.removed || [])
   const near = []
   const size = box.getSize(new THREE.Vector3())
@@ -4249,18 +4503,16 @@ function edgeSnapBegin () {
           (reach.max.x - reach.min.x) / 2 + 20 * size.x + 20000) continue
       const b = pickedBox(piece)
       if (!b || !b.intersectsBox(reach)) continue
-      const s = shape(piece)
+      const s = edgeShape(piece)
       if (s && s.box.intersectsBox(reach)) near.push(s)
     }
   }
   for (const entry of plan.added || []) {
     if (entries.has(entry)) continue
-    const s = shape(addedRecord(entry))
+    const s = edgeShape(addedRecord(entry))
     if (s && s.box.intersectsBox(reach)) near.push(s)
   }
-  const pts = parts.every(s => s.pts)
-    ? Float32Array.from(parts.flatMap(s => Array.from(s.pts))) : null
-  edgeSnap = { box, pts, from: handle.position.clone(), near }
+  return near
 }
 
 /** The level axes (0 x, 1 y, 2 z) the gizmo is dragging along. */
@@ -4286,11 +4538,31 @@ function edgeSnapMove () {
   if (!along.size) return
   const d = handle.position.clone().sub(edgeSnap.from)
   const moved = edgeSnap.box.clone().translate(d)
-  const offset = [d.x, d.y, d.z]
+  const best = edgeGaps(moved, edgeSnap.pts, [d.x, d.y, d.z], edgeSnap.near, along)
+  const shift = new THREE.Vector3()
+  const hit = []
+  best.forEach((got, a) => {
+    if (!got) return
+    shift.setComponent(a, got.gap)
+    hit.push(got.box)
+  })
+  if (!hit.length) return
+  handle.position.add(shift)
+  handle.updateMatrix()
+  gizmo.pull()
+  for (const b of hit) edgeCue.add(boxLines(b, EDGE_CUE_COLOUR))
+  edgeCue.add(boxLines(moved.translate(shift), EDGE_CUE_COLOUR))
+}
+
+/** For each level axis in `along`, the nearest gap within EDGE_SNAP_RANGE that puts a
+ * shape whose box is `moved` (a Box3) and whose triangles are `pts` moved by `offset`
+ * ([x, y, z]) against a neighbour of `near` (edgeShapes): faces meeting or edges lined
+ * up, as [{gap, box} or null] per axis. */
+function edgeGaps (moved, pts, offset, near, along) {
   const none = [0, 0, 0]
   const keys = ['x', 'y', 'z']
   const best = [null, null, null]
-  for (const n of edgeSnap.near) {
+  for (const n of near) {
     const b = n.box
     for (const a of along) {
       const k = keys[a]
@@ -4305,11 +4577,11 @@ function edgeSnapMove () {
       //: faces that meet: each side's surface facing the other, taken only across the
       //: other side's extent, so the empty corners of a box never count
       const meet = []
-      if (n.pts && edgeSnap.pts) {
+      if (n.pts && pts) {
         const theirsHi = bandExtreme(n.pts, none, a, moved, true)
-        const mineLo = bandExtreme(edgeSnap.pts, offset, a, b, false)
+        const mineLo = bandExtreme(pts, offset, a, b, false)
         const theirsLo = bandExtreme(n.pts, none, a, moved, false)
-        const mineHi = bandExtreme(edgeSnap.pts, offset, a, b, true)
+        const mineHi = bandExtreme(pts, offset, a, b, true)
         if (theirsHi !== null && mineLo !== null) meet.push(theirsHi - mineLo)
         if (theirsLo !== null && mineHi !== null) meet.push(theirsLo - mineHi)
       } else {
@@ -4321,19 +4593,7 @@ function edgeSnapMove () {
       }
     }
   }
-  const shift = new THREE.Vector3()
-  const hit = []
-  best.forEach((got, a) => {
-    if (!got) return
-    shift.setComponent(a, got.gap)
-    hit.push(got.box)
-  })
-  if (!hit.length) return
-  handle.position.add(shift)
-  handle.updateMatrix()
-  gizmo.pull()
-  for (const b of hit) edgeCue.add(boxLines(b, EDGE_CUE_COLOUR))
-  edgeCue.add(boxLines(moved.translate(shift), EDGE_CUE_COLOUR))
+  return best
 }
 
 /** End a move: the cue goes. */
@@ -4353,6 +4613,160 @@ function boxLines (box, colour) {
   geo.dispose()
   lines.renderOrder = 4
   return lines
+}
+
+// -- snapping a piece with a trap grid to the lattice ---------------------------
+
+//: How far around a piece its neighbours' trap grids are looked for, in uu.
+const LATTICE_REACH = 4 * TRAP_CELL
+//: A level piece's grid counts as on the world lattice within this many uu on an axis.
+const ON_LATTICE = 1
+//: The move under way of a selection led by a trap grid: {grids, matrix (Matrix4), from
+//: (the handle's position), phase, near} (null otherwise).
+let latticeDrag = null
+//: The level whose kit pieces' grids have been asked for.
+let gridsAskedFor = null
+
+/** The world box around every grid of `grids` under `matrix` (a Matrix4) that has one. */
+function gridsBox (grids, matrix) {
+  const box = new THREE.Box3()
+  for (const g of grids) if (g.min && g.max && g.normal) box.union(gridPlace(g, matrix).box)
+  return box
+}
+
+/** The trap grids of the pieces near `box` (a Box3) as kitplace gridPlaces, from the trap
+ * grids layer's items that `skip(item)` does not name. */
+function gridNeighbours (items, box, skip) {
+  const reach = box.clone().expandByScalar(LATTICE_REACH)
+  const out = []
+  for (const item of items) {
+    if (skip(item)) continue
+    const m = new THREE.Matrix4().fromArray(item.matrix)
+    if (!quarterTurned(m)) continue
+    for (const place of piecePlaces(item.grids, m)) {
+      if (place.box.intersectsBox(reach)) out.push(place)
+    }
+  }
+  return out
+}
+
+/** The picked piece a move snaps by, from the trap grids layer's items: the first picked
+ * floor, else the first picked piece with a trap grid; null when none is turned by
+ * quarter turns only. */
+function latticeLead (items) {
+  const led = items.filter(i => i.selected && quarterTurned(new THREE.Matrix4().fromArray(i.matrix)))
+  return led.find(i => i.grids.every(g => g.surface !== 'Wall')) || led[0] || null
+}
+
+/** Ask for the grids of the open level's kit pieces once, so a move can snap to them. */
+function askLevelGrids () {
+  if (!level || gridsAskedFor === level) return
+  gridsAskedFor = level
+  trapGridItems()
+}
+
+/** The rooms (kitplace rooms) of the trap grids layer's items that `skip(item)` does not
+ * name, turned by quarter turns only. */
+function levelRooms (items, skip) {
+  const places = []
+  for (const item of items) {
+    if (skip(item)) continue
+    const m = new THREE.Matrix4().fromArray(item.matrix)
+    if (!quarterTurned(m)) continue
+    for (const g of item.grids) if (g.min && g.max && g.normal) places.push(gridPlace(g, m))
+  }
+  return rooms(places)
+}
+
+/** The room of `found` (levelRooms) under or around grids `grids` under `matrix` (a
+ * Matrix4), by their main grid; null when none. */
+function roomUnder (found, grids, matrix) {
+  const place = gridPlace(mainGrid(grids), matrix)
+  return roomAt(found, place.box, standHeight(place), LATTICE_REACH)
+}
+
+/** Start a move: a selection with a picked piece that has a trap grid snaps by that piece
+ * (latticeMove), on the lattice of the room it starts in, else on the world lattice. A
+ * level piece off the world lattice keeps its own in the room it starts in. */
+function latticeBegin () {
+  latticeDrag = null
+  if (!snapToGrid) return
+  const items = trapGridItems()
+  const lead = latticeLead(items)
+  if (!lead) return
+  const matrix = new THREE.Matrix4().fromArray(lead.matrix)
+  const found = levelRooms(items, i => i.selected)
+  const room = roomUnder(found, lead.grids, matrix)
+  let phase = room ? room.phase : [0, 0, 0]
+  if (lead.host) {
+    phase = [0, 0, 0]
+    latticeDelta(lead.grids, matrix).delta.forEach((d, a) => {
+      if (Math.abs(d) > ON_LATTICE) phase[a] = -d
+    })
+  }
+  latticeDrag = { grids: lead.grids, matrix, from: handle.position.clone(), phase, rooms: found, room,
+                  near: gridNeighbours(items, gridsBox(lead.grids, matrix), i => i.selected) }
+}
+
+/** Snap the handle so the lead piece's grid meets a neighbour or the lattice along the
+ * axes being dragged; alt held leaves the neighbours out, shift every snap. */
+function latticeMove () {
+  clear(edgeCue)
+  if (shiftDown) return
+  const along = draggedAxes()
+  if (!along.size) return
+  const d = handle.position.clone().sub(latticeDrag.from)
+  const moved = latticeDrag.matrix.clone().premultiply(new THREE.Matrix4().makeTranslation(d.x, d.y, d.z))
+  const room = roomUnder(latticeDrag.rooms, latticeDrag.grids, moved)
+  const phase = room && room !== latticeDrag.room ? room.phase : latticeDrag.phase
+  const got = latticeDelta(latticeDrag.grids, moved, { axes: [...along],
+    near: altDown ? [] : latticeDrag.near, phase })
+  handle.position.add(new THREE.Vector3(...got.delta))
+  handle.updateMatrix()
+  gizmo.pull()
+  for (const b of got.hits) edgeCue.add(boxLines(b, EDGE_CUE_COLOUR))
+}
+
+/** End a move. */
+function latticeEnd () {
+  latticeDrag = null
+}
+
+/** True when plan entry `entry` is a mesh on the New Object library's decor shelf. */
+const isDecor = (entry) => entry.kind === 'mesh' &&
+  catalogue.some(r => r.kind === 'mesh' && r.name === entry.name && r.category === 'decoration')
+
+/** True when plan entry `entry` is a mesh whose footprint lands on the lattice (catalogue
+ * `lattice`: floor tiles, stairs, the crenellation shelf). */
+const onLattice = (entry) => entry.kind === 'mesh' &&
+  catalogue.some(r => r.kind === 'mesh' && r.name === entry.name && r.lattice)
+
+/** [dx, dy, dz] that lands a new plan entry with trap grids `grids` ([] for none): by its
+ * grid against its neighbours or on the lattice; a floor tile, stair or shelf mesh by its
+ * footprint on the lattice; any other mesh but decor against a neighbour's face or edge
+ * across the plan (edgeGaps), else where it is dropped; a decor mesh not at all (null).
+ * The lattice is the room's under or around the entry (levelRooms), else the world's. */
+function landing (entry, grids) {
+  const matrix = new THREE.Matrix4().fromArray(entry.matrix)
+  const items = trapGridItems()
+  const skip = (i) => i.entry === entry
+  if (grids.length) {
+    const near = gridNeighbours(items, gridsBox(grids, matrix), skip)
+    const room = roomUnder(levelRooms(items, skip), grids, matrix)
+    return latticeDelta(grids, matrix, { near, phase: room ? room.phase : undefined }).delta
+  }
+  if (isDecor(entry)) return null
+  const box = pickedBox({ added: entry })
+  if (!box) return null
+  if (onLattice(entry)) {
+    const room = roomAt(levelRooms(items, skip), box, box.min.z, LATTICE_REACH)
+    return footprintDelta(box, room ? room.phase : undefined)
+  }
+  if (altDown) return null
+  const shape = edgeShape(addedRecord(entry))
+  if (!shape) return null
+  const best = edgeGaps(shape.box, shape.pts, [0, 0, 0], edgeNeighbours(shape.box, new Set(), new Set([entry])), [0, 1])
+  return [best[0] ? best[0].gap : 0, best[1] ? best[1].gap : 0, 0]
 }
 
 // -- resizing a kit piece by its trap grid --------------------------------------
@@ -5055,11 +5469,9 @@ async function addPiece (row, at) {
   if (row.kind === 'fx') showEffects()
   plan.added.push(entry)
   await drawAdded(entry)
-  //: on a scratch level a piece lands with its footprint on the trap grid, unless
-  //: Snap to Grid is off or shift is held
-  const nudge = !snapToGrid || shiftDown ? null : grids.length
-    ? snapGrid(grids, new THREE.Matrix4().fromArray(entry.matrix), scratchUi.lattice())
-    : scratchUi.snapDelta(addedMeshes(entry), entry.matrix[14])
+  //: a piece lands on the lattice and against its neighbours, unless Snap to Grid is
+  //: off or shift is held
+  const nudge = !snapToGrid || shiftDown ? null : landing(entry, grids)
   if (nudge) {
     entry.matrix[12] += nudge[0]
     entry.matrix[13] += nudge[1]
@@ -5924,8 +6336,10 @@ function wireFabProps (body) {
       plan.fabGrids = plan.fabGrids || []
       const id = plan.fabGrids.reduce((m, g) => Math.max(m, g.id || 0), 0) + 1
       const used = [...new Set(got.used.map(u => u.entry))]
-      plan.fabGrids.push({ ...got.grid, id,
-                           pieces: used.map(e => plan.added.indexOf(e)).filter(i => i >= 0) })
+      const grid = { ...got.grid, id,
+                     pieces: used.map(e => plan.added.indexOf(e)).filter(i => i >= 0) }
+      plan.fabGrids.push(grid)
+      fabGrids.own(fabOwners, grid, used)
       for (const u of got.used) u.entry.grids = (u.entry.grids || []).filter(g => g !== u.id)
       trapGridAt = 0
       flash(`Laid one ${2 * got.grid.extent[1] / 300} × ${2 * got.grid.extent[2] / 300} ` +
@@ -5945,11 +6359,11 @@ function wireFabProps (body) {
 
 // -- loading and saving ------------------------------------------------------
 
-function frameOn (bounds) {
+function frameOn (bounds, least = 6000) {
   const [lo, hi] = bounds
   const mid = new THREE.Vector3((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2,
                                 (lo[2] + hi[2]) / 2)
-  const span = Math.max(hi[0] - lo[0], hi[1] - lo[1], 6000)
+  const span = Math.max(hi[0] - lo[0], hi[1] - lo[1], least)
   const at = world.localToWorld(mid.clone())
   controls.target.copy(at)
   camera.position.copy(at).add(
@@ -6087,26 +6501,11 @@ async function previewLook () {
   if (words.length) flash(words.join(' \u00b7 '))
 }
 
-/** The horizon and distance tint of a chosen sky: its home level's fog colour, which
- * the build writes too unless Map Settings sets a fog colour. No sky: the level's own. */
+/** The horizon and distance tint: the map's height fog as the plan has it (a sky is the
+ * dome's material only, so `material` changes nothing here). */
 async function previewSkyFog (material) {
-  const own = ((plan.world || {}).fogColour)
-  let rgba = own || null
-  if (!rgba && material) {
-    try {
-      const got = await json('api/look/' + encodeURIComponent(material))
-      rgba = (got && got.fog && got.fog.fogColour) || null
-    } catch (err) {
-      rgba = null
-    }
-  }
-  if (!rgba) {
-    if (level && level.sky) applySky(level.sky)
-    return
-  }
-  const horizon = linear(rgba, 0x0d1016)
-  scene.background = horizon
-  if (scene.fog) scene.fog.color.copy(horizon)
+  if (lit.sceneLighting(mapInfo, plan, kitSunValues())) applyLighting()
+  else if (level && level.sky) applySky(level.sky)
 }
 
 //: /api/mapinfo for the open level: world settings, the mission's rows and Guid.
@@ -6146,14 +6545,17 @@ async function loadMapInfo () {
   mapInfo = null
   let got
   try {
-    got = await json('api/mapinfo/' + encodeURIComponent(name) +
-      (editing ? '?mission=' + encodeURIComponent(editing) : ''))
+    const query = [editing ? 'mission=' + encodeURIComponent(editing) : '',
+      level.scratch ? 'scratch=1' : ''].filter(Boolean).join('&')
+    got = await json('api/mapinfo/' + encodeURIComponent(name) + (query ? '?' + query : ''))
   } catch (err) {
     got = { worldError: err.message }
   }
   if (!level || level.level !== name) return
   mapInfo = got
   takeNewMissionDefaults()
+  applyLighting()
+  applyMoons()
   if (!findObject(selected) && !wiringPick && !picked.length) showProps()
 }
 
@@ -6185,6 +6587,12 @@ function showMapSettings () {
           levelTitle: title || (own && own.title) || level.level,
           source: { title: (own && own.title) || '', name: level.level } }
       : { level, plan, info: mapInfo, levelTitle: own && own.title }
+  const targets = lit.mapTargets(mapInfo, plan, kitSunValues())
+  if (selectedSun && !targets.some(t => t.id === selectedSun)) selectedSun = null
+  const moonTargets = moonui.moonTargets(mapInfo, plan)
+  if (selectedMoon && !moonTargets.some(t => t.id === selectedMoon)) selectedMoon = null
+  const moonHtml = moonui.moonsHtml(moonTargets, mapInfo, selectedMoon)
+  ctx.lightingHtml = lit.mapLightingHtml(targets, selectedSun, moonHtml) || moonHtml
   body.innerHTML = mapSettingsHtml(ctx)
   wireMapSettings(body, ctx, {
     onWorld: (world, events) => {
@@ -6195,9 +6603,126 @@ function showMapSettings () {
       previewSkyFog((plan.look || {}).sky).catch(err => report('fog', err))
     },
   })
+  lit.wireMapLighting(body, targets, {
+    change: (fn) => { snapshot(); fn(); showProps(); applyLighting() },
+    pickSun: (id) => { selectedSun = selectedSun === id ? null : id; showProps(); syncSunHandle() },
+    deleteSun: (id) => deleteSun(id),
+    addSun: () => addSun().catch(err => report('add sun', err)),
+  })
+  moonui.wireMoons(body, moonTargets, mapInfo, {
+    change: (fn) => { snapshot(); fn(); showProps(); applyMoons() },
+    pick: (id) => { selectedMoon = selectedMoon === id ? null : id; showProps(); syncMoonHandle() },
+    del: (id) => {
+      snapshot()
+      moonui.deleteMoon(plan, id)
+      if (selectedMoon === id) selectedMoon = null
+      showProps()
+      applyMoons()
+    },
+    add: () => {
+      snapshot()
+      selectedMoon = moonui.addMoon(plan)
+      showProps()
+      applyMoons()
+    },
+  })
+  syncSunHandle()
+  syncMoonHandle()
   reconnectSection(body, true)
   minimapSection(body)
   levelFxSection(body)
+  coverSeamsSection(body)
+}
+
+// -- Cover Seams (coverseams.js, riftlord/mapeditor/coverseams.py) --------------------
+
+//: the Cover Seams command's state, for the level it was run on
+let seams = seamState()
+let seamsLevel = null
+//: the picked proposal's covers, drawn over the level
+const seamGhost = new THREE.Group()
+world.add(seamGhost)
+//: how the picked proposal's covers are drawn
+const SEAM_GHOST = { color: 0xffc247, opacity: 0.6 }
+
+/** Append Map Settings' Seams section. */
+function coverSeamsSection (body) {
+  if (seamsLevel !== level.level) {
+    seams = seamState()
+    seamsLevel = level.level
+    drawSeamGhost()
+  }
+  const box = document.createElement('div')
+  box.innerHTML = seamsHtml(seams)
+  body.appendChild(box)
+  wireSeams(box, seams, {
+    find: () => findSeams().catch(err => report('cover seams', err)),
+    pick: (id) => {
+      seams.picked = seams.picked === id ? null : id
+      drawSeamGhost(true).catch(err => report('cover seams', err))
+      showProps()
+    },
+    accept: (ids) => acceptSeams(ids).catch(err => report('cover seams', err)),
+    skip: (id) => {
+      seams.skipped.add(id)
+      if (seams.picked === id) seams.picked = null
+      drawSeamGhost().catch(err => report('cover seams', err))
+      showProps()
+    },
+  })
+}
+
+/** Ask the server for the open map's seams and their covers. */
+async function findSeams () {
+  seams.busy = true
+  seams.error = ''
+  showProps()
+  try {
+    const got = await json('api/coverseams/' + encodeURIComponent(level.level), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Rift-Lord': '1' },
+      body: JSON.stringify({ plan }),
+    })
+    takeAnswer(seams, got)
+  } catch (err) {
+    seams.busy = false
+    seams.error = 'Cover Seams: ' + err.message
+  }
+  await drawSeamGhost()
+  if (showingMapSettings()) showProps()
+}
+
+/** Add the covers of proposals `ids` to the plan as ordinary added meshes. */
+async function acceptSeams (ids) {
+  snapshot()
+  const made = acceptedItems(seams, ids)
+  for (const item of made) plan.added.push(item)
+  await redrawAdded()
+  await drawSeamGhost()
+  refreshPicked()
+  flash(`Added ${made.length} cover${made.length === 1 ? '' : 's'}.`)
+  showProps()
+}
+
+/** Draw the picked proposal's covers, and look at them when `look`. */
+async function drawSeamGhost (look) {
+  for (const c of [...seamGhost.children]) seamGhost.remove(c)
+  const p = seams.picked && seamById(seams, seams.picked)
+  if (!p) return
+  for (const item of p.items || []) {
+    const mesh = await partMesh({ mesh: item.name, loc: [0, 0, 0], rot: [0, 0, 0], scale: [1, 1, 1] }, false)
+    if (!mesh) continue
+    mesh.material = new THREE.MeshBasicMaterial({ color: SEAM_GHOST.color, transparent: true,
+      opacity: SEAM_GHOST.opacity, depthWrite: false, clippingPlanes: CUT_PLANES })
+    new THREE.Matrix4().fromArray(item.matrix).decompose(mesh.position, mesh.quaternion, mesh.scale)
+    mesh.raycast = () => {}
+    seamGhost.add(mesh)
+  }
+  if (look) {
+    const at = p.seam.where
+    const half = p.seam.run / 2
+    frameOn([[at[0] - half, at[1] - half, at[2] - half], [at[0] + half, at[1] + half, at[2] + half]])
+  }
 }
 
 //: the weather presets (riftlord/weather.py), fetched once; null until asked
@@ -6352,9 +6877,9 @@ function closeLevel () {
   level = null
   mapInfo = null
   editing = null
-  plan = { level: null, version: 2, look: {}, world: {}, rifts: [], doors: [], spawners: [],
-           points: [], playerStarts: [], wiring: [], removed: [], waves: [], edits: [],
-           added: [] }
+  plan = { level: null, version: 2, look: {}, world: {}, lighting: {}, moons: {}, rifts: [], doors: [],
+           spawners: [], points: [], playerStarts: [], wiring: [], removed: [], waves: [],
+           edits: [], added: [] }
   history.length = 0
   changes = savedChanges = 0
   selected = null
@@ -6411,8 +6936,8 @@ async function readLevel (name, fromScratch) {
   // A clean slate. The plan file is how the packager receives the work, not a document
   // the tool reopens: a level that came back with yesterday's edits already in it read
   // as though the level itself had been changed.
-  plan = { level: name, version: 2, look: {}, world: {}, rifts: [], doors: [], spawners: [],
-           points: [], playerStarts: [], wiring: [], removed: [], waves: [], edits: [],
+  plan = { level: name, version: 2, look: {}, world: {}, lighting: {}, moons: {}, rifts: [], doors: [],
+           spawners: [], points: [], playerStarts: [], wiring: [], removed: [], waves: [], edits: [],
            //: the Crystal a built level places, as its plan item (crystal.adopt)
            added: level.crystal ? [structuredClone(level.crystal)] : [] }
   newMissionFor = name
@@ -6703,7 +7228,7 @@ async function buildMod () {
       ((got.not_applied || []).length
         ? '<br>Not applied to the level yet:' +
           got.not_applied.map(n => `<br>&bull; ${escapeText(n)}`).join('')
-        : '') + warningsHtml()
+        : '')
   } catch (err) {
     el('saved').className = 'hint bad'
     el('saved').textContent = 'Not saved: ' + err.message
@@ -7304,12 +7829,14 @@ async function resumePlan (given) {
   const look = got.look || {}
   const world = got.world || {}
   if (!n && !look.sky && !look.liquid && !Object.keys(look.planes || {}).length &&
-      !Object.keys(world).length) {
+      !Object.keys(world).length && !Object.keys(got.lighting || {}).length &&
+      !Object.keys(got.lights || {}).length) {
     flash('Nothing saved for ' + level.level + ' yet.')
     return
   }
   snapshot()
   plan = got
+  fabOwners = fabGrids.bind(plan)
   plan.level = level.level
   for (const k of KEYS) plan[k] = plan[k] || []
   plan.look = look
@@ -7334,39 +7861,29 @@ async function resumePlan (given) {
   showProps()
   if (look.sky || look.liquid) await previewLook()
   await previewPlanes()
+  scheduleChecks()
 }
 
 async function save () {
+  fabGrids.sync(plan, fabOwners)
   try {
     const got = await json('api/plan/' + encodeURIComponent(level.level), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Rift-Lord': '1' },
       body: JSON.stringify({ ...plan, mission: missionFields() }),
     })
-    saveWarnings = got.warnings || []
+    scheduleChecks()
     el('saved').innerHTML =
       `${got.rifts} rift &middot; ${got.doors} door &middot; ` +
       `${got.spawners} spawner &middot; ${got.points} point &middot; ` +
       `${got.added} added &middot; ${got.edits} moved &middot; ` +
-      `${got.removed} removed` + warningsHtml() + scratchUi.neededHtml(got.needed)
+      `${got.removed} removed` + scratchUi.neededHtml(got.needed)
     return true
   } catch (err) {
-    saveWarnings = []
     el('saved').className = 'hint bad'
     el('saved').textContent = 'Not saved: ' + err.message
     return false
   }
-}
-
-//: What the last plan save warned about (planactors.check errors, then warnings).
-let saveWarnings = []
-
-/** The last save's warnings as lines for the notice under Save Mission. */
-function warningsHtml () {
-  return saveWarnings.length
-    ? '<br><span style="color:#ffb03a">Check before playing:</span>' +
-      saveWarnings.map(w => `<br>&bull; ${escapeText(w)}`).join('')
-    : ''
 }
 
 /** A checkbox per drawable layer, and one per streaming sublevel the level has. */
@@ -7472,6 +7989,7 @@ const partsAsked = new Set()
 /** Ask for the parts and trap grids of every picked kit piece, so flipping, resizing by
  * the grid and the Material section know them. */
 function askPickedParts () {
+  askLevelGrids()
   for (const p of picked) {
     const cls = p.added ? (p.added.kind === 'kit' ? p.added.name : null)
       : (p.source === 'blueprint' ? p.actor : null)
@@ -7522,17 +8040,18 @@ function trapGridItems () {
     const part = parts.find(pt => pt.mesh === p.mesh)
     if (!part) continue
     const actor = new THREE.Matrix4().fromArray(p.matrix).multiply(partLocal(part).invert())
-    out.push({ key, matrix: actor.toArray(), grids, selected: chosen.has(key) })
+    out.push({ key, matrix: actor.toArray(), grids, selected: chosen.has(key), host: true })
   }
   ;(plan.added || []).forEach((e, i) => {
     if (e.kind !== 'kit') return
     const grids = cachedGrids(e.name)
     if (!grids) { kitGrids(e.name, json); return }
     if (grids.length) {
-      out.push({ key: 'added|' + i, matrix: e.matrix, grids, selected: chosen.has(e) })
+      out.push({ key: 'added|' + i, matrix: e.matrix, grids, selected: chosen.has(e), entry: e })
     }
   })
   //: Fab pieces' chosen suggested grids and the grids laid across runs (fabui.js)
+  fabGrids.sync(plan, fabOwners)
   out.push(...fab.layerItems(plan, chosen, json))
   return out
 }
@@ -7545,15 +8064,80 @@ function syncTrapGrids () {
   trapGridLayer.sync(trapGridItems())
 }
 
-//: The plan's world keys the view's height fog follows; the colour goes through
-//: previewSkyFog with the sky's.
-const FOG_VIEW_KEYS = ['fogDensity', 'fogFalloff', 'fogOpacity', 'fogStart']
+//: The selected sun's direction handle (sunhandle.js); a drag turns the sun.
+const sunHandle = new SunHandle(world, camera, renderer.domElement, controls, (rot) => {
+  const target = lit.mapTargets(mapInfo, plan, kitSunValues()).find(t => t.id === selectedSun)
+  if (!target) return
+  snapshot()
+  lit.setProp(target, 'RelativeRotation', rot)
+  applyLighting()
+  if (showingMapSettings()) showProps()
+})
 
-/** The fog values a plan's `world` sets, for setHeightFog. */
-function fogOverrides (w) {
-  const out = {}
-  for (const k of FOG_VIEW_KEYS) if (w && typeof w[k] === 'number') out[k] = w[k]
-  return out
+/** Show the handle on the selected sun while Map Settings shows, else hide it. */
+function syncSunHandle () {
+  const target = selectedSun && showingMapSettings()
+    ? lit.mapTargets(mapInfo, plan, kitSunValues()).find(t => t.id === selectedSun) : null
+  sunHandle.show(target ? (lit.shown(target).RelativeRotation || [0, 0, 0]) : null)
+}
+
+//: The selected moon's direction handle (sunhandle.js); a drag moves the moon round the sky.
+const moonHandle = new SunHandle(world, camera, renderer.domElement, controls, (rot) => {
+  const target = moonui.moonTargets(mapInfo, plan).find(t => t.id === selectedMoon)
+  if (!target) return
+  snapshot()
+  const d = moonui.fromHandle(rot)
+  const now = moonui.direction(moonui.shown(target).RelativeLocation || [0, 0, 1])
+  moonui.setLocation(target, moonui.locationOf(d.pitch, d.yaw, now.distance))
+  applyMoons()
+  if (showingMapSettings()) showProps()
+}, MOON_COLOUR)
+
+/** Show the handle on the selected moon while Map Settings shows, else hide it. */
+function syncMoonHandle () {
+  const target = selectedMoon && showingMapSettings()
+    ? moonui.moonTargets(mapInfo, plan).find(t => t.id === selectedMoon) : null
+  moonHandle.show(target ? moonui.handleRotator(moonui.shown(target)) : null)
+}
+
+//: The moons drawn on the sky (moonsui.MoonView).
+const moonView = new moonui.MoonView(groups.sky)
+
+/** Draw the plan's moons on the sky and keep the moon handle on its moon. */
+function applyMoons () {
+  const m = mapInfo && mapInfo.moons
+  moonView.sync(m ? moonui.sceneMoons(mapInfo, plan) : [], m ? m.looks : {})
+  syncMoonHandle()
+}
+
+/** Map Settings' Add Sun: a DirectionalLight added to the plan, its handle shown. */
+async function addSun () {
+  if (!level) return
+  snapshot()
+  const at = world.worldToLocal(controls.target.clone())
+  await addPiece({ name: lit.SUN_CLASS, kind: 'kit' }, [at.x, at.y, at.z])
+  selectedSun = 'added:' + (plan.added.length - 1)
+  picked = []
+  selected = null
+  gizmo.detach()
+  refreshPicked()
+  showProps()
+  applyLighting()
+}
+
+/** Map Settings' Delete on a sun: a level sun goes off (`removedFx`), an added one goes. */
+function deleteSun (id) {
+  snapshot()
+  if (id.startsWith('sun:')) {
+    plan.removedFx = [...new Set((plan.removedFx || []).concat([id.slice(4)]))].sort()
+  } else if (id.startsWith('added:')) {
+    const item = plan.added[+id.slice(6)]
+    plan.added = plan.added.filter(e => e !== item)
+    redrawAdded()
+  }
+  if (selectedSun === id) selectedSun = null
+  showProps()
+  applyLighting()
 }
 
 //: openings an ogre fits through on placed Fab pieces (fabui.js), re-read like the grids
@@ -7581,8 +8165,11 @@ function tick () {
   effectClock.value += Math.min((now - lastFrame) / 1000, 0.1)
   lastFrame = now
   controls.update()
-  //: the level's height fog with the plan's changes over it (riftlord/levelfx.py keys)
-  setHeightFog({ ...((mapInfo && mapInfo.scene) || {}), ...fogOverrides(plan.world) })
+  //: the level's height fog with the plan's changes over it (applyLighting)
+  setHeightFog(fogView)
+  sunHandle.follow(world.worldToLocal(controls.target.clone()))
+  moonHandle.follow(world.worldToLocal(controls.target.clone()))
+  moonView.follow(world.worldToLocal(camera.position.clone()))
   updateHeightFog(world, groups.fog.visible && !!scene.fog && !!mapInfo)
   renderer.render(scene, camera)
   requestAnimationFrame(tick)
@@ -8085,6 +8672,78 @@ window.__rl_edgeSnapTry = (dx, shift) => {
   gizmo.controls.axis = null
   return { moved, cue }
 }
+//: A gizmo move of the picked selection by `d` uu along level axis `axis` (0 x, 1 y, 2 z),
+//: through the controls' drag events as a mouse drag sends them (shift held when
+//: `shift`): the handle's move [x, y, z].
+window.__rl_dragPicked = (axis, d, shift) => {
+  const c = gizmo.controls
+  gizmo.setMode('translate')
+  gizmo.pull()
+  const from = handle.position.clone()
+  const letter = ['X', 'Y', 'Z'].find((l, i) => Math.abs(new THREE.Vector3().setComponent(i, 1)
+    .applyQuaternion(handle.quaternion).getComponent(axis)) > EDGE_AXIS_COS)
+  world.updateMatrixWorld(true)
+  const step = new THREE.Vector3().setComponent(axis, 1).transformDirection(world.matrixWorld)
+    .multiplyScalar(d)
+  shiftDown = !!shift
+  c.axis = letter
+  c.dispatchEvent({ type: 'mouseDown', mode: 'translate' })
+  c.dragging = true
+  gizmo.proxy.position.add(step)
+  c.dispatchEvent({ type: 'objectChange' })
+  c.dragging = false
+  c.dispatchEvent({ type: 'mouseUp', mode: 'translate' })
+  shiftDown = false
+  c.axis = null
+  return handle.position.clone().sub(from).toArray()
+}
+//: A kitplace gridPlace as plain data: {min, max, surface, foot}.
+const placeData = (place) => ({ min: place.box.min.toArray(), max: place.box.max.toArray(),
+  surface: place.surface, foot: place.foot })
+//: Each trap grid of plan `added` entry `i` in world space, as placeData.
+window.__rl_addedGrids = (i) => {
+  const e = (plan.added || [])[i]
+  const grids = e && (e.kind === 'kit' ? cachedGrids(e.name) : null)
+  if (!grids) return null
+  const m = new THREE.Matrix4().fromArray(e.matrix)
+  return grids.map(g => placeData(gridPlace(g, m)))
+}
+//: The box around plan `added` entry `i`'s drawn parts, as {min, max}, or null.
+window.__rl_addedBox = (i) => {
+  const e = (plan.added || [])[i]
+  const box = e && pickedBox({ added: e })
+  return box && { min: box.min.toArray(), max: box.max.toArray() }
+}
+//: The main grid of the piece a move of the selection snaps by, as placeData, or null.
+window.__rl_pickedGrid = () => {
+  const lead = latticeLead(trapGridItems())
+  return lead && placeData(gridPlace(mainGrid(lead.grids), new THREE.Matrix4().fromArray(lead.matrix)))
+}
+//: Pick the whole of one of the level's own kit floors turned by quarter turns, off the
+//: world lattice when one is, once the level's grids have stopped arriving (within
+//: `seconds`): its key, or null.
+window.__rl_pickHostFloor = async (seconds = 60) => {
+  askLevelGrids()
+  let floors = []
+  for (let t = 0, still = 0; t < seconds * 4 && still < 8; t++) {
+    await new Promise(resolve => setTimeout(resolve, 250))
+    const now = trapGridItems().filter(i => i.host && i.grids.every(g => g.surface === 'Floor') &&
+      quarterTurned(new THREE.Matrix4().fromArray(i.matrix)))
+    still = now.length && now.length === floors.length ? still + 1 : 0
+    floors = now
+  }
+  const off = (i) => latticeDelta(i.grids, new THREE.Matrix4().fromArray(i.matrix)).delta
+    .some(d => Math.abs(d) > ON_LATTICE)
+  const found = floors.find(off) || floors[0]
+  if (!found) return null
+  picked = (level.pieces || []).filter(p => p.export !== undefined &&
+    (p.sub || 'persistent') + '|' + p.export === found.key)
+  selected = null
+  wiringPick = null
+  refreshPicked()
+  showProps()
+  return found.key
+}
 //: The opacity of each door box marker of the level's own and the plan's doors.
 window.__rl_doorBoxOpacity = () => groups.wiring.children.concat(groups.added.children)
   .filter(c => c.geometry && c.geometry.type === 'BoxGeometry' && c.material &&
@@ -8135,7 +8794,8 @@ window.__rl_levelActorMarks = (kind) => {
 //: The plan fields this round's tools write.
 window.__rl_planBits = () => JSON.parse(JSON.stringify({
   removedFx: plan.removedFx || [], actorMoves: plan.actorMoves || {},
-  lightColours: plan.lightColours || {}, fxSwaps: plan.fxSwaps || {},
+  lights: plan.lights || {}, lighting: plan.lighting || {}, fxSwaps: plan.fxSwaps || {},
+  moons: plan.moons || {}, addedMoons: plan.addedMoons || [],
   events: plan.events || [], added: (plan.added || []).map(a => ({ kind: a.kind, name: a.name,
     paints: a.paints || null })), paints: (plan.look || {}).paints || {} }))
 //: Nothing picked or selected, the handles away, as Escape leaves it
@@ -8162,6 +8822,12 @@ window.__rl_cutShares = () => {
            tops: [0.5, 0.9, 0.95, 0.98, 0.99, 0.995, 1].map(q => Math.round(quantile(tops, q))) }
 }
 window.__rl_planWorld = () => Object.assign({}, plan.world || {})
+//: The view's lighting (applyLighting): the sun's and sky light's strengths, the height
+//: fog drawn, the sun handle and the sun it is on
+window.__rl_lightingView = () => ({ sun: sun.intensity, fill: fill.intensity, fog: { ...fogView },
+  handle: sunHandle.group.visible, selectedSun, moonHandle: moonHandle.group.visible, selectedMoon,
+  moons: moonView.sprites.filter(s => s.visible && s.parent).map(s => ({ size: s.scale.x,
+    textured: !!s.material.map })) })
 window.__rl_planMinimap = () => JSON.parse(JSON.stringify(plan.minimap || {}))
 window.__rl_planLook = () => JSON.parse(JSON.stringify(plan.look || {}))
 window.__rl_levelOpen = () => !!level
@@ -8177,6 +8843,20 @@ window.__rl_pickPiece = (id) => {
   wiringPick = null
   refreshPicked()
   showProps()
+}
+//: the Collides switch on level pieces (riftlord/mapeditor/piececollision.py): the first
+//: piece shipped off, one shipped on, and one with no switch (a Blueprint part)
+window.__rl_collisionIds = () => ({
+  off: (level.pieces.find(p => p.collides === false) || {}).id,
+  on: (level.pieces.find(p => p.collides === true) || {}).id,
+  none: (level.pieces.find(p => p.source === 'blueprint') || {}).id,
+})
+window.__rl_pieceCollision = (id) => {
+  const p = level.pieces[id]
+  const e = plan.edits.find(e => e.id === id)
+  const box = el('piececollision')
+  return { shipped: p.collides, now: typeof p.collides === 'boolean' ? collidesNow(p) : null,
+    edit: e ? { collision: e.collision } : null, box: box ? box.checked : null }
 }
 window.__rl_doorAxes = () => Object.fromEntries(doorAxes)
 window.__rl_planCounts = () => {
@@ -8252,6 +8932,14 @@ window.__rl_pickVolume = (name) => {
 }
 window.__rl_removeWiringPick = () => removeWiringPick()
 window.__rl_undo = () => undo()
+//: the Cover Seams command (ui_smoke case coverseams)
+window.__rl_seams = () => JSON.parse(JSON.stringify({
+  asked: seams.asked, busy: seams.busy, error: seams.error, problems: seams.problems,
+  proposals: seams.proposals, open: openProposals(seams).map(p => p.id),
+  accepted: [...seams.accepted], skipped: [...seams.skipped], picked: seams.picked,
+  ghosts: seamGhost.children.length,
+  added: (plan.added || []).map(a => ({ kind: a.kind, name: a.name, collision: a.collision, matrix: a.matrix })),
+}))
 window.__rl_dropPicked = () => dropPicked()
 window.__rl_levelDoorNames = () => Object.keys((level && level.doors) || {})
 window.__rl_wiringVisible = (name) => {

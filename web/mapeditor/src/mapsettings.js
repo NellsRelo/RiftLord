@@ -2,8 +2,8 @@
 //
 // Reads /api/mapinfo (riftlord/mapinfo.py). World settings the plan changes are kept
 // in `plan.world` ({killZ, warScenario, intro, introFilter, storyDialog, riftWarning, music}
-// and the fog and post-process keys of riftlord/levelfx.py); the emitter writes them into
-// the level. The music change is the `music` event of `plan.events` (riftlord/hostevents.py).
+// and the wind keys of riftlord/levelfx.py); the emitter writes them into the level. The
+// lighting sections are lightingui.js's (`ctx.lightingHtml`). The music change is the `music` event of `plan.events` (riftlord/hostevents.py).
 // Mission details (Hub, Guid) are in the Details dialog, not here.
 
 //: Whether the War Scenario switch may be changed. The emitter writes it to the
@@ -11,6 +11,9 @@
 export const WAR_SCENARIO_EDITABLE = true
 
 import { music, bindMusicButton } from '../../shared/musicpreview.js'
+
+//: Whether the Lighting section is open; kept across redraws, closed when the editor starts.
+let lightingOpen = false
 
 const esc = (text) => String(text ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -150,8 +153,8 @@ export function mapSettingsHtml (ctx) {
     if (set.riftWarning) out.push('<button id="riftwarnreset">Reset</button>')
   }
 
-  // fog and post process (riftlord/levelfx.py SCENE_FIELDS); only what the level sets:
-  // numbers two to a row, the colours on one row
+  // wind (riftlord/levelfx.py SCENE_FIELDS); only what the level sets: numbers two to a
+  // row, the colours on one row
   if (info && info.sceneFields) {
     const shipped = info.scene || {}
     const shown = info.sceneFields.filter(f => f.key in shipped)
@@ -176,6 +179,12 @@ export function mapSettingsHtml (ctx) {
       }
     }
     if (shown.some(f => f.key in set)) out.push('<button id="scenereset">Reset</button>')
+  }
+
+  // the map's lighting (lightingui.js), drawn by the Map Editor
+  if (ctx.lightingHtml) {
+    out.push(`<details id="lightingbox"${lightingOpen ? ' open' : ''}><summary>Lighting</summary>` +
+      ctx.lightingHtml + '</details>')
   }
 
   // what the level holds
@@ -248,6 +257,8 @@ function ownMusic (info) {
 /** Wire the panel's controls. `onWorld(world, events)` gets the new `plan.world`, and
  * the new `plan.events` when they change (undefined otherwise). */
 export function wireMapSettings (body, ctx, { onWorld }) {
+  const lightingBox = body.querySelector('#lightingbox')
+  if (lightingBox) lightingBox.addEventListener('toggle', () => { lightingOpen = lightingBox.open })
   const world = Object.assign({}, (ctx.plan && ctx.plan.world) || {})
   const shipped = (ctx.info && ctx.info.world) || {}
   const kz = body.querySelector('#worldkillz')

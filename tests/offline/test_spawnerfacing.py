@@ -196,10 +196,12 @@ check('the build counts the spawners it faced', report.get('spawners_faced') == 
 before, after = own_rotations(ua, ux), own_rotations(ua2, ux2)
 check('the level\'s own spawners keep their rotation (%d)' % len(before),
       before and before == after, (before, after))
-warned = sf.level_warnings(ua2, ux2)
+warned = sf.level_warnings(ua2, ux2, plan)
 want_off = round(sf.off(135.0, back.get('RiftLordSpawner2', {}).get('want') or 0.0))
-check('one warning, naming the spawner turned away from its route and its angle (%d)'
-      % want_off, len(warned) == 1 and 'RiftLordSpawner2' in warned[0]
+check('one warning, naming the spawner turned away from its route as the editor does, with '
+      'its angle (%d)' % want_off, len(warned) == 1
+      and warned[0].startswith('Spawner %s at (' % plan['spawners'][2]['id'])
+      and 'RiftLordSpawner' not in warned[0]
       and ('%d degrees' % want_off) in warned[0], warned)
 
 bad = [c for c in checks if not c[1]]

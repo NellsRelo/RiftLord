@@ -269,12 +269,6 @@
     "crystal": {
      "bobHeight": 40.0,
      "bobSeconds": 6.0,
-     "difficultyHealth": [
-      800.0,
-      1500.0,
-      2500.0,
-      3000.0
-     ],
      "groups": [
       {
        "difficulty": 5,
@@ -312,6 +306,8 @@
        ]
       }
      ],
+     "mapDifficulty": 1.5,
+     "pointHealth": 250.0,
      "riftGap": 3.0
     },
     "kind": "crystal",

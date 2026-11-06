@@ -93,15 +93,24 @@ def find(*bits, ext=None):
     return sorted(out)
 
 
+def stored(name):
+    """The pak-internal path `name` is indexed under, or None. Some files are stored with
+    a doubled slash before the file name (the Ice maps, some Onslaughts and FX)."""
+    if name in index():
+        return name
+    head, _, tail = name.rpartition('/')
+    doubled = head + '//' + tail
+    return doubled if doubled in index() else None
+
+
 def package(game_path):
     """(uasset, uexp) for a `/Game/...` package, or a pak path without extension."""
     stem = ('../../../OMD/Content' + game_path[len('/Game'):]
             if game_path.startswith('/Game/') else game_path)
-    #: some packages are stored with a doubled slash before the file name (Ice maps)
     if stem + '.uasset' not in index() and stem + '.umap' not in index():
-        head, _, tail = stem.rpartition('/')
-        if head + '//' + tail + '.umap' in index() or head + '//' + tail + '.uasset' in index():
-            stem = head + '//' + tail
+        found = stored(stem + '.umap') or stored(stem + '.uasset')
+        if found:
+            stem = found.rsplit('.', 1)[0]
     body = b''
     try:
         body = read(stem + '.uexp')

@@ -37,6 +37,11 @@ Rift Lord before it became part of this app.
     The build Python needs them installed; without them the app builds anyway and its
     missions keep the shipped light maps (`dist/RiftLordServer[.exe].baker.txt` says
     which). Windows has no CUDA under Wine, so a Windows bake is unproven there.
+    `lightbake.baker_missing` looks for the baker by its package path
+    (`riftlord.build.lighting.lightbaker`); from the 2026-10-23 restructure until
+    2026-11-04 it looked for a top-level `lightbaker`, so the frozen app never baked and
+    said `not baking (this Rift Lord build carries no light baker)` in server.log
+    (tests/offline/test_lightbake_needs.py).
   - The page asks the window for native dialogs through `window.ipc.postMessage`
     (`workshop/web/src/lib/native.js`); the window answers through
     `window.__riftlordReply`. On Linux the dialogs are GTK's own, opened on the window's

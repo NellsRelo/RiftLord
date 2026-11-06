@@ -227,8 +227,9 @@ crystal's box; a stand-in until they load; `web/src/crystalui.js`); it is moved 
 never sized. Its panel holds only its **Rift Groups**: add, rename and delete a group, add
 and remove its Unstable Rifts (the plan's, and a built level's own). Health, triggers,
 enemy rows and chances are the Onslaught Editor's (`riftlord/mapeditor/rifttear.py`). Plan
-item `{kind: 'crystal', name, matrix, crystal: {difficultyHealth, riftGap, waveCount,
-groups}}`. A built level that places a Crystal (opened with no record) opens with it as the
+item `{kind: 'crystal', name, matrix, crystal: {mapDifficulty, [pointHealth],
+[pointDifficultyShare], riftGap, waveCount, groups}}`; `difficultyHealth`,
+`healthPerRiftPoint` and `minHealth` of older plans are dropped on load and save. A built level that places a Crystal (opened with no record) opens with it as the
 plan's item (`crystal.adopt`: transform and groups read back from its arrays, its rifts as
 the level's own, `-indexInLevel`, and `level` naming it); the build then writes that actor in
 place. A property is written only when it differs from the class default. The build copies
@@ -298,6 +299,242 @@ placed actor's components. The Map Editor's Material section shows one field per
 and slot for one piece (up to 24), one field for everything when several pieces are
 picked, and only when every picked thing takes a material.
 
+## Collides
+
+The Selected panel's **Collision** section has a **Collides** toggle for added kit and
+mesh pieces (`added[n].collision: false`) and for the level's own pieces, moved or not
+(`edits[n].collision`: true or false, stored only while it differs from the shipped
+state; an edit may carry it with the piece's shipped matrix, and switching back drops an
+edit that holds nothing else). It is hidden for Blueprint parts, foliage and instanced
+pieces, and meshes with no collision shape (no simple collision element and not
+complex-as-simple: `riftlord/data/omd3-mesh-collision.json`, rebuilt with
+`python3 -m riftlord.mapeditor.piececollision --meshes`).
+
+A level piece's shipped state (`collides` on `/api/level` pieces) is read as the engine
+resolves it: with `bUseDefaultCollision` (stored, else true on a StaticMeshActor's
+component) the mesh's own profile, else the component's `BodyInstance`. The build writes
+off as shipped decor is switched off (`bUseDefaultCollision` false, BodyInstance
+NoCollision); on as a colliding StaticMeshActor is (both properties removed, so the mesh's
+profile applies), or `bUseDefaultCollision` false with a BodyInstance naming BlockAll
+when the mesh's own profile is NoCollision. The walkable-graph rebuild takes switched
+pieces in or out (`navregen.placed_collides`); an edit that only switches collision is
+not a move for precomputed visibility or the light bake (`piececollision.moving_edits`).
+
+The rebuild resolves every other mesh component by the same rule
+(`navregen.component_flags` takes `piececollision.level_collides`, which applies
+`piececollision.resolved` to every mesh component of every package). Before 2026-11-05 it
+read the BodyInstance alone, so 135 pieces on 18 shipped levels that collide in game (a
+StaticMeshActor whose BodyInstance says NoCollision while `bUseDefaultCollision`, unstored,
+takes the mesh's BlockAll) were left out of regenerated graphs. Taking them in changes the
+regenerated graph of those levels (`navregen --level`; polygons of agent 0, then agent 1):
+
+| level | pieces | polygons before | after |
+|---|---|---|---|
+| Scenario_06 | 4 | 769 / 670 | 804 / 675 |
+| Scenario_08 | 5 | 672 / 613 | 633 / 574 |
+| Scenario_Other_02 | 4 | 306 / 287 | 307 / 304 |
+| ScenarioDLC_01 | 3 | 196 / 189 | 204 / 192 |
+| Scenario_Ice_02 | 10 | 377 / 288 | 382 / 290 |
+| Scenario_18 | 15 | 1,802 / 1,512 | 1,795 / 1,512 |
+| ScenarioDLC_04, Scenario_04, 07, 10, Ice_01, Ice_03 | 1 to 28 | | 1 to 3 polygons either way |
+| ScenarioDLC_02, Scenario_01, 09, Other_03 | 1 to 11 | | unchanged |
+| Scenario_Sand_01, Sand_02 | 1, 19 | no polygons | no polygons (both rebuild since 2026-11-05: "What the walkable-graph rebuild reads") |
+
+No route leg is joined or cut by it on any of them, nor on the Missions records on those
+levels (Repaired Mine, Raid, Pier Pressure, Beset; North Wings does not regenerate).
+
+## Volumes in sublevels
+
+The level's blocking, kill, camera and trap volumes are read from every package of the level
+(`volumes.level_volumes`: the persistent level, then each sublevel of `omd3level.packages`).
+141 of the shipped levels' volumes sit in sublevels, on 15 levels: 45 stop players, 17
+stop everyone (all on Scenario_18), 30 the camera, 43 trap placement and 6 kill
+(Scenario_09 has 46, Repaired Mine's Scenario_Ice_02 16 trap blocking volumes). A
+persistent-level volume keeps its export name as its plan name; a sublevel's is
+`'<sublevel tag>|<export index>'` (as the level's own lights and effects are keyed), and
+`/api/level` volumes carry `sub` (the package tag) and `title` (the export name, which the
+volume's card shows).
+
+They are shown, moved, turned, resized, removed and given Blocks or kill switches like the
+persistent level's. `volumes.writes` sorts the plan's edits, and the in-the-way volumes a
+ground route crosses, by the package holding each: `volumes.apply` writes the persistent
+level's, and `apply.sublevel_edits` hands each sublevel's rows (`'volumes'`) to its copy,
+where `volumes.write_package` writes them (`apply.apply_to_sublevel`). A sublevel volume
+given the other Blocks is parked in its copy and its stand-in lifted into the persistent
+level as `RiftLordVolumeR<tag><export index>`. The walkable-graph rebuild reads the blocking
+volumes of every package (`navregen.blocking_volumes`) and leaves out those the plan
+removes or the build parks for a route. The probe's kill-switch gate reads the sublevel
+copies (`controllers.gates`). A level from scratch keeps none of its host's volumes, in any
+package. Test: `tests/offline/test_sublevel_volumes.py`.
+
+What blocks players at a shipped decor piece with collision off (2026-11-05, 33 shipped
+levels, 42,057 visible non-foliage pieces whose mesh has a collision shape): 36,269 stand
+nowhere near the walkable floor enemies and players use; of the 5,788 that do, 3,778 sit
+at least half inside colliding pieces (the walls and column blocks they decorate), 172
+inside blocking volumes, 126 inside hidden colliding pieces, 1,245 partly inside, and 467
+in nothing (flush floor tiles, sunk stones and crystals). Blocking volumes are area
+walls, not per-piece: 7 of 839 (players or everyone) are filled at least half by one
+piece, none of them decor with collision off. So a moved decor piece leaves nothing
+invisible behind; at its new place it blocks only with Collides on.
+
+## What the walkable-graph rebuild reads
+
+The rebuild (`navregen.graphs_for`, Recast through `recastgen`) takes the level's pieces
+after the plan (`navregen.final_pieces`), its blocking volumes (`navregen.blocking_volumes`)
+and its box components that stop walkers (`navregen.collision_boxes`), inside the gathering
+region (`navregen.gather_region`). What it got wrong before 2026-11-05:
+
+* **Geometry far outside the region.** A piece reaching into the region was taken whole,
+  and Recast's grid spans every vertex it is given. Untrained Grounds' (Scenario_Sand_01)
+  landscape reaches 201,600 uu from the origin (a 20,160-cell square grid) and Sand Sea
+  Castle's (Sand_02) as far; Recast returned no polygons and exited cleanly, and the build
+  stopped on `min() iterable argument is empty`. Triangles wholly outside the region are
+  now left out (`recastgen.inside_region`, blocking volumes and boxes too). 23 of the 33
+  levels have such triangles.
+* **Landscapes.** A landscape is taken by its own settings (`navregen.component_flags`,
+  `navregen.landscape_flag`): left out when its `BodyInstance` collides with nothing (Sand
+  Sea Castle: NoCollision), left out of the walkable geometry when `bUsedForNavigation` is
+  false (Untrained Grounds; `NOT_NAVIGATION`), floor otherwise (Desert Wall, Cliffside,
+  Aqueducts, Order Enclave, Frostbitten: OMDBlockAllNoTrap or the default). Measured
+  against the shipped graphs (IoU of agent 0): Untrained Grounds 0.16 with its landscape
+  as floor, 0.72 as an obstacle (leg 11 and MobSpawnerDoor2's walk cut), 0.75 left out
+  (every leg joined); Sand Sea Castle 0.12 as floor, 0.81 / 0.80; Desert Wall 0.41 as
+  floor, 0.28 / 0.32; Cliffside 0.76 as floor, 0.49 / 0.49.
+* **Box components.** Sandstorm Shelter (Sand_04) and Oasis Outpost (Sand_05) have no kit
+  floors: what enemies stand on is `Box_FloorCollision_*` and `Box_FloorRampCollision_*`
+  box components on `BP_Scenario_DLC_Sand_0x_TrapGrid`, a level Blueprint with no mesh.
+  `omd3level.boxes` reads every box component of a package (its half size and BodyInstance
+  from the placement, else the class template, `omd3templates` fields `extent` and `body`,
+  else UBoxComponent's 32 uu and UShapeComponent's OverlapAllDynamic), and a box stops
+  walkers when its collision profile has query collision and Blocks the Pawn channel
+  (`navregen.walker_profiles`, from the engine's and the game's `+Profiles` and
+  `+EditProfiles`): BlockAll, OMDBlockAllNoTrap, OMDTrapGridMesh, OMDTrapMesh do;
+  OMDCameraBlockingVolume, OMDTrap, OMDTriggerVolume, OverlapAllDynamic and NoCollision do
+  not. A box goes with its actor: removed when the plan removes every piece of that actor
+  or wires it gone, moved by its first moved piece's move. Door actors' boxes are left out,
+  as their meshes are (`navregen.SKIP_ACTOR_PREFIXES`). The 25,292 `OMDTrapGridBoxComponent`
+  trap-grid boxes state no profile and are taken as OverlapAllDynamic; their native class
+  default is not readable offline.
+* **Hidden pieces.** A piece hidden in game (`hidden`: a Blueprint part with bVisible or
+  bHiddenInGame off) was always left out, though hiding does not turn collision off. Now
+  one stays in when its collision stops walkers (`navregen.hidden_walls`: the component's
+  profile from the placement, else the class template, else the mesh's own for a
+  component taking its mesh's collision, else UStaticMeshComponent's BlockAllDynamic; a
+  mesh with a collision shape). On the 33 levels that is 121 pieces: the
+  `Castle_2x2_Short_Tower` collision of the castle tower kits (OMDTrapGridMesh),
+  `Cube1` of the grinder pits (the mesh's BlockAll) and Desert Wall's
+  `Scenario_Sand_03_Ground` (OMDTrapGridMesh); the lightning spheres and a brazier
+  (NoCollision) stay out. It joins Desert Wall's leg 23 and moves agent 0's IoU by 0.01 or
+  less elsewhere.
+* **Exclusion volumes in sublevels.** `NavPowerExclusionVolume`s were read from the
+  persistent level only; `navregen.exclusion_volumes` reads every package (18 more: 5 on
+  Front Lawn, 10 on Canyon Keep, 2 on Northern Rampart, 1 on Icebound Mine). No shipped
+  polygon has its centre inside any of them.
+
+Rebuilt with an empty plan, then the user's Missions records (read only), against each
+level's shipped graph (polygons of agent 0 / agent 1; IoU of agent 0, `navregen.coverage`;
+legs: route legs and spawner-to-exit walks the shipped graph joins, after the corridors
+`navsurfextend` lays under off-floor routes). Before is the code as it was with the
+previous worker's changes of the same day:
+
+| level | polygons before | after | shipped | IoU before | after | legs joined before | after |
+|---|---|---|---|---|---|---|---|
+| Scenario_Sand_01 | none (no polygons) | 459 / 420 | 636 / 275 | - | 0.74 | no graph | all |
+| Scenario_Sand_02 | none (no polygons) | 360 / 349 | 300 / 165 | - | 0.80 | no graph | all |
+| Scenario_Sand_03 | none (no polygons) | 2,723 / 2,151 | 2,316 / 954 | - | 0.42 | no graph | 6 legs, 2 spawner walks cut |
+| Scenario_Sand_04 | 68 / 73 | 171 / 174 | 208 / 113 | 0.37 | 0.87 | 9 legs, 3 spawner walks cut | all |
+| Scenario_Sand_05 | 55 / 51 | 193 / 221 | 454 / 185 | 0.24 | 0.67 | 7 legs, 2 spawner walks cut | all |
+| Scenario_01 | 209 / 152 | 199 / 144 | 117 / 65 | 0.67 | 0.67 | 1 leg, 1 spawner walk cut | 1 leg, 1 spawner walk cut |
+| Scenario_02 | 200 / 183 | 183 / 152 | 404 / 174 | 0.66 | 0.68 | all | all |
+| Scenario_03 | 383 / 326 | 373 / 306 | 521 / 214 | 0.60 | 0.60 | 1 leg, 1 spawner walk cut | 1 leg, 1 spawner walk cut |
+| Scenario_04 | 321 / 290 | 324 / 292 | 553 / 249 | 0.67 | 0.67 | all | all |
+| Scenario_05 | 526 / 421 | 514 / 401 | 473 / 154 | 0.84 | 0.84 | all | all |
+| Scenario_06 | 804 / 675 | 800 / 643 | 1,003 / 401 | 0.63 | 0.63 | all | all |
+| Scenario_07 | 416 / 376 | 354 / 316 | 240 / 143 | 0.87 | 0.87 | 1 leg, 2 spawner walks cut | all |
+| Scenario_08 | 633 / 574 | 643 / 554 | 564 / 201 | 0.78 | 0.76 | all | all |
+| Scenario_09 | 1,362 / 1,333 | 1,354 / 1,317 | 1,028 / 473 | 0.71 | 0.71 | all | all |
+| Scenario_10 | 735 / 635 | 667 / 598 | 510 / 271 | 0.83 | 0.82 | all | all |
+| Scenario_11 | 544 / 497 | 492 / 407 | 593 / 250 | 0.86 | 0.86 | all | all |
+| Scenario_12 | 1,466 / 1,206 | 1,368 / 1,131 | 1,986 / 675 | 0.74 | 0.74 | all | all |
+| Scenario_13 | 451 / 429 | 419 / 395 | 459 / 235 | 0.87 | 0.86 | all | all |
+| Scenario_14 | 418 / 342 | 411 / 339 | 521 / 248 | 0.56 | 0.56 | all | all |
+| Scenario_15 | 1,925 / 1,511 | 1,897 / 1,498 | 2,404 / 1,126 | 0.65 | 0.65 | all | all |
+| Scenario_16 | 571 / 520 | 488 / 430 | 755 / 321 | 0.87 | 0.87 | all | all |
+| Scenario_17 | 895 / 765 | 726 / 598 | 873 / 455 | 0.71 | 0.71 | all | all |
+| Scenario_18 | 1,795 / 1,512 | 1,686 / 1,426 | 2,448 / 1,254 | 0.71 | 0.71 | 5 legs, 2 spawner walks cut | 5 legs, 2 spawner walks cut |
+| ScenarioDLC_01 | 204 / 192 | 200 / 184 | 292 / 119 | 0.70 | 0.70 | all | all |
+| ScenarioDLC_02 | 215 / 184 | 211 / 165 | 515 / 189 | 0.52 | 0.52 | 4 legs, 2 spawner walks cut | 4 legs, 2 spawner walks cut |
+| ScenarioDLC_03 | 1,329 / 1,086 | 1,375 / 1,095 | 2,019 / 666 | 0.62 | 0.69 | 3 legs, 1 spawner walk cut | 3 legs, 1 spawner walk cut |
+| ScenarioDLC_04 | 359 / 336 | 338 / 306 | 478 / 155 | 0.75 | 0.75 | 2 legs, 2 spawner walks cut | 2 legs, 2 spawner walks cut |
+| ScenarioDLC_05 | 455 / 408 | 377 / 328 | 342 / 176 | 0.82 | 0.82 | all | all |
+| Scenario_Ice_01 | 509 / 407 | 388 / 333 | 395 / 194 | 0.80 | 0.81 | all | all |
+| Scenario_Ice_02 | 382 / 290 | 379 / 288 | 301 / 130 | 0.26 | 0.26 | all | all |
+| Scenario_Ice_03 | 1,567 / 986 | 1,523 / 1,134 | 2,995 / 1,476 | 0.18 | 0.19 | 9 legs, 3 spawner walks cut | 7 legs, 3 spawner walks cut |
+| Scenario_Other_02 | 307 / 304 | 305 / 305 | 377 / 130 | 0.89 | 0.89 | all | all |
+| Scenario_Other_03 | 149 / 145 | 140 / 132 | 138 / 81 | 0.65 | 0.65 | 1 leg, 1 spawner walk cut | 1 leg, 1 spawner walk cut |
+| 900_Arena_P (Scenario_01), a level from scratch: not rebuilt in its build | 481 / 458 | 466 / 455 | 117 / 65 | 0.00 | 0.00 | all | all |
+| 900_Beset_Alpha_3_P (Scenario_09) | 395 / 378 | 424 / 356 | 1,028 / 473 | 0.20 | 0.20 | all | all |
+| 900_Cellar_Alpha_1_P (Scenario_16) | 591 / 538 | 522 / 466 | 755 / 321 | 0.73 | 0.73 | all | all |
+| 900_North_Wings_P (Scenario_01), not rebuilt in its build | 209 / 152 | 199 / 144 | 117 / 65 | 0.67 | 0.67 | 1 leg, 1 spawner walk cut | 1 leg, 1 spawner walk cut |
+| 900_Pier_Pressure_Noboss_P (Scenario_06) | 410 / 341 | 414 / 326 | 1,003 / 401 | 0.31 | 0.32 | all | all |
+| 900_Pier_Pressure_P (Scenario_06) | 410 / 341 | 414 / 326 | 1,003 / 401 | 0.31 | 0.32 | all | all |
+| 900_Raid_P (Scenario_04) | 310 / 306 | 359 / 338 | 553 / 249 | 0.57 | 0.58 | all | all |
+| 900_Repaired_Mine_P (Scenario_Ice_02) | 339 / 298 | 333 / 303 | 301 / 130 | 0.24 | 0.24 | all | all |
+| 900_The_Hallway_Aligned_P (Scenario_01), a level from scratch: not rebuilt in its build | 475 / 363 | 461 / 360 | 117 / 65 | 0.32 | 0.32 | all | all |
+| 900_The_Hallway_P (Scenario_01), a level from scratch: not rebuilt in its build | 441 / 328 | 419 / 320 | 117 / 65 | 0.31 | 0.31 | all | all |
+| 900_Fixture_Edit_P (Scenario_01) | 209 / 152 | 199 / 144 | 117 / 65 | 0.67 | 0.67 | 1 leg, 1 spawner walk cut | 1 leg, 1 spawner walk cut |
+
+Far from the shipped graph after this, all as before it: Icebound Mine (Scenario_Ice_02,
+0.26): 70% of its shipped floor lies outside the gathering region (to y -20,547 where the
+NavMeshBoundsVolume ends at -9,200); against the shipped floor inside it, IoU 0.80.
+Frostbitten (Scenario_Ice_03, 0.19): the shipped graph has floor over the water at
+z -1,471 west of x -11,000 and over areas east of x 6,000 that no piece Rift Lord reads
+covers (its two landscapes span x -4,650..2,790 and -22,525..-13,150); 7 legs and 3
+spawner walks the shipped graph joins stay cut. Desert Wall (Scenario_Sand_03, 0.42): its
+landscape crosses the hidden `Scenario_Sand_03_Ground` slope and rises 60 uu in 50 uu
+along x -12,600 (beyond the 48 uu step), which cuts legs 1, 4, 5, 7, 16 and 20 and two
+spawner walks. Records on these levels: Repaired Mine (Icebound Mine) joins every leg it
+joined before. Test: `tests/offline/test_sandnav.py`.
+
+### When a rebuild cannot finish
+
+`navregen.install` sorts a failed rebuild in two:
+
+* **The map stops it**: no ground spawner, door or route point stands on floor an enemy
+  can walk (`recastgen.graphs_for`, after the polygons no route reaches are dropped). The
+  build stops with `navregen.RebuildFailed` (a `buildmessage.Problem`), naming the places
+  and what to change: "The walkable floor for Sandstorm Shelter (Scenario_Sand_04) could
+  not be rebuilt: Spawner MobSpawnerDoor1 at (-1690, -3850, -200), ... and 3 more stand on
+  no floor the ordinary enemies can walk. Your plan is unchanged; move them onto the
+  floor, or put floor under them." (`navregen.places` names three, then counts the rest.)
+* **Anything else** (Recast finds no floor at all, the navigation builder is missing or
+  stops, the rebuilt graph fails `navregen.check` or cannot be written, any other error,
+  a level with no NavMeshBoundsVolume): the build goes on with the level's shipped walkable
+  graph (`navregen.kept`, then the corridors `navsurfextend` lays under off-floor routes)
+  and says so as a console warning and a build note: "The walkable floor for <title>
+  (<level>) could not be rebuilt, so enemies walk the floor the level shipped with, plus
+  the floor laid under their routes, and floor the plan removes, moves or adds does not
+  change where they walk." (with no NavMeshBoundsVolume: "<title> (<level>) has no
+  navigation area, so its walkable floor cannot be rebuilt; enemies walk ..."). The
+  technical detail goes to the console at debug level.
+
+No message sends the designer elsewhere. Test: `tests/offline/test_sandnav.py`.
+
+## Piece ids
+
+A level piece's `id` is its place in the level's piece list (`omd3level.read`), and plans
+store ids (`removed`, `edits`, `look.paints`). Pieces a later reader adds go after the rest
+(`late`): further instances of an instanced component, spline meshes, landscapes, extra
+sublevels, and the parts of a class whose asset differs from it in case
+(`omd3actors.found_by_case_only`, `late_parts`). Sludge Shelves' (Scenario_14) eight
+`Wall_RB_MT_v3_1x4_Angle_C` walls (asset `Wall_RB_MT_v3_1x4_angle`) were missing from the
+editor because the stored part index (`riftlord/data/omd3-actor-parts.json`) was built with
+a case-sensitive lookup; their 40 parts are now read and appended, so every id read before
+keeps its piece. Of the 124 Blueprint classes the 33 shipped levels place with no stored
+parts, this is the only one with parts (the rest are spawners, rifts, coordinators,
+level scripts, lights and grid-only actors), and the stored parts of the other 516 classes
+match a fresh read. No Missions record is on Scenario_14. Test: `tests/offline/test_sandnav.py`.
+
 ## The level's own lights and effects
 
 The effects and lights layers are off when a level opens; placing an effect (New Object, or
@@ -309,18 +546,17 @@ moved with the gizmo (`plan.actorMoves`, `{'<sublevel>|<actor export>': [dx, dy,
 written by `apply.sublevel_edits` as a move of the actor's root) and removed with Delete
 (`plan.removedFx`, the same keys, parked by the build). Effects draw as drifting point
 clouds in their group's colour and shape; glow meshes (light beams, rays, glow cones:
-`leveldata.GLOW_MESH`) draw additive and soft. A move of a Static light does not change
-the baked light maps unless the build bakes (`lightbake.needs`: a sky or liquid change).
+`leveldata.GLOW_MESH`) draw additive and soft. The build bakes the light maps when they are
+stale (`lightbake.stale`: a sky, liquid or plane look, a Sky Light value, a Static light
+changed, moved or removed, or pieces removed, moved or added as meshes or kit pieces, on any
+level, one from scratch too). Only the Missions page's builds bake (Build, Install,
+Package); an editor's build leaves it pending (docs/SAVE-MODEL.md). The build's console
+line `lightbake: <kind of build>: ...` says whether it bakes and why.
 
-A picked level light (a PointLight, SpotLight or RectLight actor of its own) has a **Colour**
-(`plan.lightColours`, `{'<sublevel>|<actor export>': '#rrggbb'}`, sRGB as the level stores
-it; the shipped colour stores nothing) and **Select All N**, which picks every light still in
-the level shipped in the same colour and kind, so one change recolours them all. The build
-writes `LightColor` on every point, spot and rect light component of the actor, adding the
-property where a Blueprint leaves it to its class (`riftlord/build/world/levelretint.py`,
-`apply.retint`, after the liquid lights' colours so the plan's win). Static lights reach the
-game through the light maps, so a recolour makes the build bake (`lightbake.needs`), and the
-bake spec carries the colour by light component. A picked level emitter (an `Emitter` actor)
+A picked light (a PointLight, SpotLight or RectLight actor of the level's own, or an added
+light actor) has a **Light** section (see Lighting below) and, for a level light, **Select
+All N**, which picks every light still in the level shipped in the same colour and kind, so
+one change sets them all. A picked level emitter (an `Emitter` actor)
 has an **Effect** list of the surveyed Cascade systems (`fx-donors.json` rows whose donor is
 an Emitter): the build points its ParticleSystemComponent's `Template`, and the same entry of
 its preload list, at the chosen system (`plan.fxSwaps`, `{key: template}`), and the viewport
@@ -348,19 +584,171 @@ also chooses a track, the edits are written into the music copy of `_Audio` (`em
 A liquid surface is not in front of a marker: a click on a light, effect or sound under a
 pool picks it (the marker click lets through only markers behind solid geometry).
 
-A sky from another home parks the level's own sky pieces (its moon,
-`skyfog.own_extras`), as the home's are lifted in. The moon stands far beyond the
-editor's camera range (Scenario_06's at 891,000 uu up), so the editor never draws it.
+A level's moon is the Moon section of Map Settings (see Moons, under Lighting): a sky no
+longer brings or parks one. It stands far beyond the editor's camera range (Scenario_06's
+1,229,626 uu out, 891,226 uu up), so the view draws it on the sky around the camera.
+
+## Lighting
+
+A map's lighting is the designer's to set, the same on an edited shipped level and a level
+from scratch (`riftlord/build/world/lighting.py`, `web/src/lightingui.js`). Map Settings
+shows it with the engine's names, at the level's real values (a level from scratch: its
+light rig's), each field with Reset once the plan stores it; a value set back to the
+shipped one stores nothing. A section the level has no component for is not shown.
+
+The sections sit in one collapsible **Lighting** section of Map Settings (`#lightingbox`,
+`mapsettings.js`): Sun, Moon, Sky Light, Atmospheric Fog, Height Fog, Post Process. It is
+closed when the editor starts and stays as the designer left it while Map Settings redraws.
+
+| section | fields | plan data |
+|---|---|---|
+| Sun (one per DirectionalLight; Add Sun, Delete) | Light Color, Intensity, Pitch, Yaw (its RelativeRotation), Cast Shadows | `lights['<sublevel>\|<actor export>']`; an added sun is an `added` kit item `DirectionalLight` with its `light`; a deleted level sun goes into `removedFx` and the build turns it off (`bVisible` false) |
+| Sky Light | Light Color, Lower Hemisphere Color, Intensity, Indirect Lighting Intensity, Lower Hemisphere Is Black | `lighting.skyLight` |
+| Atmospheric Fog (where the level has one) | Default Light Color, Default Brightness, Sun Multiplier, Fog Multiplier, Density Multiplier, Density Offset | `lighting.atmosphere` |
+| Height Fog | Fog Inscattering Color, Directional Inscattering Color, Fog Density, Fog Height Falloff, Fog Max Opacity, Start Distance, Fog Height (the components' Z) | `lighting.heightFog` |
+| Post Process (the unbound volumes' Settings) | Exposure Compensation, Bloom Intensity, Saturation, Contrast, Gamma, Gain (R, G, B, Y) | `lighting.postProcess`; a value turns its `bOverride_` on |
+| Moon (one per moon; Add Moon, Delete; after Sun) | Pitch, Yaw, Distance (its RelativeLocation's direction and length from the level's origin), Scale (RelativeScale3D), Material | `moons['<sublevel>\|<actor export>']`; an added moon is an entry of `addedMoons`; a deleted level moon goes into `removedFx` and the build parks it (see Moons) |
+| Light (a picked light) | Light Color, Intensity, Attenuation Radius, Inner and Outer Cone Angle (spot), Mobility, Cast Shadows | `lights[key]`, or an added actor's `light` |
+
+Values are engine property names: numbers, bools, `'#rrggbb'` for an FColor (sRGB),
+`[r, g, b, a]` for a LinearColor, `[x, y, z, w]` for a Vector4, `[pitch, yaw, roll]` for a
+Rotator, enum names; `null` removes the property (the class default). Every component of
+a section's class in the level takes the section's values; every light component of an
+actor takes its `lights` values. Mobility offers Static (baked) and Movable (drawn every
+frame); a level light shipped Movable or Stationary has no light build data, so it may only
+become Movable. Selecting a sun's name shows its **direction handle** in the viewport: a
+ball on a sphere around where the camera looks with an arrow the way the sun shines;
+dragging the ball turns the sun (`web/src/sunhandle.js`).
+
+**A sky is the sky dome's material only** (since 2026-11-05). Before, choosing a sky
+brought its home level's fog colours, suns, sky light, atmosphere and colour grade
+(`skyfog.world_with_sky`, `skymirror`), and Map Settings showed the level's own fog while
+the build wrote the home's. The home's moon came with its sky (`skyfog.lift_extras`) and
+the level's own was parked (`skyfog.own_extras`) until the same day; moons are now their
+own plan data (Moons, below).
+
+**Older plans** (no `lighting`) are migrated on load, on save, in the Missions page's
+editor view and in the build (`riftlord/build/world/lightmigrate.py`): the old writers run
+over the level's packages in memory and every property they changed becomes an explicit
+value (`lighting` sections and sun `lights`); the old `world` keys fogDensity, fogFalloff,
+fogOpacity, fogStart, fogColour, fogSunColour, bloom, exposure and `lightColours` go.
+A value no field shows (an older plan's film curve, say) is listed under its section by
+its engine name, with Reset. `python3 -m riftlord.build.world.lightmigrate RECORD.json`
+prints what a record migrates to and checks that the values write the old lighting. Every
+plan saved since stores `lighting` (empty when nothing is set).
+
+**The view** previews the suns (the brightest with shadows, up to five more without), the
+sky light as the ambient (its colour, lower hemisphere and intensity), the height fog
+(colour, density, falloff, opacity, start, height) and each light's colour, intensity and
+radius as you edit them.
+
+**The bake** takes the plan's Sky Light values (`bake_spec` `sky_light_edit`) and its lights'
+values, moves and removals by actor key (`light_edits`, `light_moves`, `light_removed`,
+over the liquid lights' colours) into `lightscene.sky_light` and `lightscene.lights`; a light
+made Movable leaves the bake. Suns, fog and post process are drawn every frame and never
+baked, so they do not make the light maps stale. Test: `tests/offline/test_lighting.py`,
+UI case `lighting`.
+
+### Moons
+
+A moon is a `StaticMeshActor` whose root `StaticMeshComponent` draws
+`/Engine/BasicShapes/Plane` (100 uu square) with a moon material, far out in the sky with
+its face toward the level (`riftlord/build/world/moons.py`, `web/mapeditor/src/moonsui.js`).
+Measured on every shipped level (2026-11-05): 11 have one, each a single component with
+`StaticMesh`, `OverrideMaterials` (one material), `VisibilityId` and the transform; no
+`Mobility` stored (Static, the class default); `bNeverDistanceCull` on Scenario_06,
+Scenario_Ice_01 and Scenario_Sand_05; `ForcedLodModel` 1 on Scenario_08, Scenario_Ice_01
+and Scenario_Sand_05. "Face off" is the angle between the plane's face (its Z axis) and
+the way to the level's origin; "across" is the plane's width seen from the origin.
+
+| level | key | material | pitch | yaw | distance (uu) | scale | across | face off |
+|---|---|---|---|---|---|---|---|---|
+| Scenario_03 | Lighting\|782 | Moon_01_Inst | 40.61 | -116.29 | 1,499,463 | 5000 | 18.93 deg | 12.65 deg |
+| Scenario_06 | Lighting\|1179 | Moon_Lava_01_Inst | 46.45 | 95.44 | 1,229,626 | 5000 | 22.98 deg | 8.65 deg |
+| Scenario_07 | persistent\|431 | Moon_01_Inst | 83.50 | 176.89 | 982,323 | 5000 | 28.56 deg | 6.50 deg |
+| Scenario_08 | Lighting\|684 | Moon_01_Inst | 79.56 | 76.30 | 939,539 | 6000 | 35.42 deg | 10.44 deg |
+| Scenario_12 | Lighting\|2547 | Moon_Lava_01_Inst | 46.45 | 95.44 | 1,229,626 | 5000 | 22.98 deg | 8.65 deg |
+| Scenario_14 | Lighting\|685 | Moon_01_Inst | 83.86 | 139.83 | 981,627 | 5000 | 28.58 deg | 6.14 deg |
+| Scenario_16 | Environment\|191 | Moon_01_Inst | 83.50 | 176.89 | 982,323 | 5000 | 28.56 deg | 6.50 deg |
+| Scenario_Ice_01 | Environment\|694 | Moon_Snow_01_Inst | 16.54 | 95.49 | 911,634 | 4000 | 24.75 deg | 17.40 deg |
+| Scenario_Sand_05 | Lighting\|869 | Moon_Snow_01_Inst | 19.20 | 71.01 | 306,084 | 1500 | 27.54 deg | 26.03 deg |
+| Scenario_Other_02 | Environment\|181 | Moon_01_Inst | 69.11 | -107.36 | 1,044,643 | 5000 | 26.92 deg | 7.76 deg |
+| Scenario_Other_03 | Lighting\|660 | Moon_Lava_01_Inst | 41.09 | 18.45 | 1,930,005 | 5000 | 14.76 deg | 2.34 deg |
+
+The moon materials are four `MaterialInstanceConstant`s of `Master_SkyObjects` in
+`/Game/Environments/Sky/Mat`, all over the texture `Sky_Moon2_df` (a full disc with a glow),
+differing in `EM_Color` (linear) and `EM_Brightness`: Moon_01_Inst (0.048, 0.352, 0.515) 15,
+Moon_Lava_01_Inst (0.133, 0.366, 0.791) 15, Moon_Snow_01_Inst (0.063, 0.297, 0.250) 25,
+Moon_MainUI_Inst (0.045, 0.132, 0.791) 15 (placed by no level). The sky dome around them
+is `SM_Skybox_Mesh` (extent 4,096 uu) at scale 5,000 on 10 of the 11, a 20,480,000 uu
+radius, which is Distance's limit; Scenario_Ice_01's is `SM_SkySphere` at scale 400.
+
+**Plan data.** `moons` {'<sublevel>|<actor export>': {Property: value}} holds what the
+plan changes on the level's own moons; `addedMoons` [{Property: value}] the moons it adds;
+properties `RelativeLocation`, `RelativeRotation`, `RelativeScale3D` and `Material`. An
+added moon is lifted from Scenario_12's `Plane_Moon2` (`moons.DONOR`, the moon a sky
+brought until 2026-11-05) as `RiftLordSky_Plane_Moon2` (then `...A`, `...B`), made Movable
+(a lifted mesh keeps its donor's MapBuildDataId) and given `VisibilityId` -1; a property
+its entry does not set is the donor's, so Add Moon starts as that moon. A level moon the
+plan moves gets `VisibilityId` -1 and keeps its mobility. Every plan saved since stores
+`moons` (empty when nothing is set). The same on an edited shipped level and a level from
+scratch: a level from scratch has no moon of its own (its light rig has none; a host's
+persistent moon is parked with its decoration) and takes added ones in its persistent
+level.
+
+**The fields.** Pitch and Yaw are the direction of `RelativeLocation` from the level's
+origin (`FVector::Rotation`), Distance its length, Scale `RelativeScale3D` on every axis
+(the shipped value shows X). A Pitch, Yaw or Distance change also stores the
+`RelativeRotation` that keeps the face the moon showed the level: its turn carried by the
+least rotation from its old direction to the new one (`moons.carried_rotation`; the build
+does the same for a plan that sets a location alone). Pitch, Yaw and Distance set back to
+what the shipped moon shows store nothing. Selecting a moon's name shows its direction
+handle, the sun's in pale blue with its ball the way the moon is; dragging it moves the
+moon round the sky at its distance. The view draws each moon on the sky around the camera
+(280,000 uu out, inside the view's 300,000 uu sky dome) at the width it spans from the
+level, its texture tinted by `EM_Color` times `EM_Brightness`, added.
+
+**Older plans** (no `moons`) are migrated with the lighting (`lighting.migrated`, so on
+load, on save, in the Missions page's editor view and in the build): when the plan's sky
+came from another home, that home's moons become `addedMoons` entries (the values that
+differ from the donor's) and, on an edited shipped level whose own sky is another, the
+level's own moons go into `removedFx`. The user's records on 2026-11-05: Beset Alpha 3
+(Scenario_09 under Night_Sky_Lava_INST1, home Scenario_12) gets one added moon, `{}`;
+Cellar Alpha 1 (Scenario_16, Dawn) gets `Environment|191` in `removedFx`; Pier Pressure and
+Pier Pressure Noboss (Scenario_06, Stormy) get `Lighting|1179`; the others have no moon to
+bring or park. Their persistent levels and sublevels (apply.apply_plan, apply_to_sublevel)
+built byte for byte the same as the old code's, checked 2026-11-05. Test: `tests/offline/test_moons.py`, UI
+case `moons`.
 
 ## Placeable actors
 
 New Object's **actors** filter lists shipped actors beyond the kit
-(`leveldata.ACTOR_GROUPS`): lights (PointLight, SpotLight, RectLight), torches, braziers
+(`leveldata.ACTOR_GROUPS`): lights (PointLight, SpotLight, RectLight, DirectionalLight), torches, braziers
 and chandeliers, banners, AmbientSound, the environmental traps (cauldron, falling boom
 barrel, grinder pits) and the rain-level lightning.
 They are plan `added` items of kind `kit`, lifted whole from a level that places them
 (`apply._add`), drawn as their Blueprint's meshes, or as a marker when they have none.
-Every light in them is Static as shipped, so it lights the level only through a bake.
+Every light in them except the SpotLight (Stationary) is Static as shipped, so it lights the
+level only through a bake.
+
+### Light maps for added pieces
+
+A build that bakes gives every added mesh and kit piece light maps of its own
+(`riftlord/build/lighting/lightalloc.py`), on a shipped level and a level from scratch
+alike: each static mesh part (`lightalloc.receivers`: an added mesh's root, a kit piece's
+parts by component name) keeps Static mobility and its LODData names a MapBuildDataId of
+its own; the bake adds atlas pairs to the persistent level's BuiltData, copied blank from
+the level's own first pair (Scenario_01: 1024), one LightMapResolution square per part
+(`lightalloc.pack`), and bakes each part there as a receiver and an occluder. A part whose
+lifted component states another mobility, or whose LODData carries painted vertex colours,
+keeps what it was lifted with. The Static light components of added actors (PointLight,
+RectLight, torches, braziers, chandeliers) get LightGuids of their own and a LightBuildData
+entry, and light the bake where the build places them (`lightalloc.added_lights`). Fab pieces
+stay Movable with no light map. Without a bake (an editor's build) added meshes are Movable
+with no LODData, as before. A level from scratch bakes its persistent level only: its host's
+geometry sublevels are not streamed, its host pieces are parked, and its light rig's sky is
+Movable, so no host light, piece, lava or sky goes into the bake
+(`scratch.streamed_scene`). Test: `tests/offline/test_lightalloc.py`.
 
 ### Controller settings
 
@@ -511,6 +899,19 @@ hulls, else render triangles) over each `navregen.CELL` (20 uu) column, then the
 `BP_Scenario_06_CornerFloor` has its box top 117 uu over its slabs (z 267 against 153). Kept
 per piece and turn (`navregen.item_walk_top`).
 
+A floor kit piece with stair parts (`recastgen.is_ramp`: the rift platforms, Scenario_06's
+bridge) is its flat top (the XY box of its upward faces within `CELL_HEIGHT` of the walk height)
+plus one slope per stair flight rising along one axis (the box of the flight's upward faces;
+its rise read from their plane), so the cover joins it to the floor through its stairs
+(`scratch._walk_parts`; corner flights, leaning off one axis by more than `RAMP_AXIS_LEAN`, are
+left to the floor around them). Before 2026-11-05 such a piece was one flat box at its top:
+Proving Grounds' rift platform, 90 uu over the floor, joined it only where
+`navsurfextend.bridge` happened to find facing edges, and moving the map by (72, -66) cut it off.
+The cover's lattice lines are every floor edge plus `GRID_CELL` steps from the floors' own phase
+(`scratch._phase`: the edge the most floor edges share an offset on the 300 uu lattice with), and
+a turned floor's cells run from its own origin, so moving a whole map moves its cover with it
+and joins nothing new and cuts nothing (`tests/offline/test_scratch_translate.py`).
+
 On a shipped level the regenerated walkable graph takes added kit pieces as geometry, each
 static mesh at its part transform and then the piece's, as the level's own Blueprint actors
 (`navregen.added_meshes`); before 2026-10-30 it left them out, so added kit floor was walkable
@@ -528,23 +929,47 @@ still answers on the level's own graph. Offline: `tests/offline/test_riftfloor.p
 A build warns in the console (not a failure) for each added ground spawner standing
 more than `riftfloor.SPAWNER_DROP_MAX` (206.6 uu, the shipped maximum) over graph 0 of the
 written level's walkable graph (`riftfloor.spawner_warnings`, in `bucket.bake`), named as
-the editor names it ("Spawner 30 stands 240 uu above the floor, ...").
+the editor names it ("Spawner 30 stands 240 units above the floor, higher than any shipped
+ground spawner (207 units). Lower it toward the floor, or test it in game.").
 
 ## Unstable rift height
 
 A new Unstable Rift is put `riftfloor.SHIPPED_OFFSET` (90.7 uu) over the walkable floor
 under it; a move or a typed position leaves it where it is put. A build
 (`riftfloor.build_report`, in `bucket.bake`; probe gate `riftfloor.gates`) refuses an
-unstable rift with no walkable floor under it ("Unstable Rift 7 has no walkable floor under
-it", "... for large enemies" when only graph 1 lacks it, "... is 40 uu under the walkable
-floor" when sunk into it) or with a solid level piece between it and that floor. One higher
-over its floor than `DROP_LIMITS` (116 / 132 uu, the shipped highest `SHIPPED_DROP_MAX`
-102.8 / 118.3 plus 13) builds with a console warning: "Unstable Rift 7 stands 163 uu above
-the floor, higher than any shipped rift (103 uu); its enemies should still land, but test
-it in game". BP_Crystal spawns a rift's units at the rift's own location
+unstable rift with no walkable floor under it ("Unstable Rift 7 at (x, y, z) has no floor
+enemies can walk under it. Move it over floor, or put a floor piece under it.", "... has no
+floor under it that large enemies can walk on ..." when only graph 1 lacks it, "... is 40
+units under the floor enemies walk on. Raise it above the floor." when sunk into it) or with
+a solid level piece between it and that floor ("... Move the piece or the rift, or turn the
+piece's Collides off."). One higher over its floor than `DROP_LIMITS` (116 / 132 uu, the
+shipped highest `SHIPPED_DROP_MAX` 102.8 / 118.3 plus 13) builds with a console warning:
+"Unstable Rift 7 stands 163 units above the floor, higher than any shipped rift (103 units).
+Its enemies should still land; test it in game, or lower it.". BP_Crystal spawns a rift's units at the rift's own location
 (SpawnEntityForEntity, AdjustIfPossibleButAlwaysSpawn), so no height refuses a spawn. The
 probe gate's third row, `unstable rift heights over their floor (a note)`, always passes
 and carries the warnings.
+
+## Checks
+
+Under Save Mission, **Checks** lists what the open plan needs before it builds
+(`POST /api/checks/<level>` with `{plan, mission}`, `riftlord/mapeditor/checks.py`;
+`web/mapeditor/src/checks.js`). It is asked again 800 ms after each change (`snapshot`),
+on undo, on opening a level and after a save, and hidden when empty. Rows, in order:
+
+- **error**: `planactors.check` errors, the Crystal (`crystal.problems`), unstable rift
+  events (`missionevents.rift_problems`), supported mods not detected;
+- **build**: what the last build of the open mission stopped on (the record's
+  `buildChecks`, else its `bakeError`);
+- **warning**: `planactors.check` warnings and a spawner turned by hand more than
+  `spawnerfacing.WARN_OFF` degrees from its route;
+- **fixed**: what the build will fix itself, such as an added spawner's taken index.
+
+Each row names the piece, route point or spawner as the editor shows it. Clicking a row
+selects that thing (a plan marker, the level's own marker, or an added piece) and frames
+it. `checks.locate` finds the target from the text: "Path Point N", "Spawner N", "Unstable
+Rift N" (by index in level), "Rift N", "Door N", or a level actor's name. The save notice
+no longer lists the plan's warnings; Checks does.
 
 ## Spawner facing
 
@@ -628,12 +1053,200 @@ parts wear their override materials the same way: `/api/kit/<class>` gives each 
 
 ## Snapping a move
 
-A move snaps in grid steps (Snap to Grid) and to a neighbour's face or edge within 37.5 uu
-(`edgeSnapMove`). Faces that meet are measured on the real triangles: each side's surface
-facing the other, clipped to the other side's extent across the move, so the empty corners
-of a turned or hollow piece's box never count; lining edges up uses the box around the real
-triangles. Shift held while moving, turning or sizing takes every snap away; alt takes the
-edge snap away.
+**Pieces with a trap grid** (kit pieces, Fab pieces with suggested grids) snap by their
+grid, on every map, when placed and when moved with Snap to Grid on (`web/mapeditor/src/
+kitplace.js` `latticeDelta`; main.js `landing`, `latticeBegin`/`latticeMove`). The rules
+are the shipped levels', as the kit placement census measured them
+(`docs/research/kit-placement-census.md`). Snapping only ever moves the piece being placed
+or moved: it never changes a piece already in a plan or the level, and nothing a build
+reads or checks depends on it.
+
+| piece | x, y | z |
+|---|---|---|
+| floor | grid start on the lattice | grid plane on a 50 uu step |
+| ceiling | grid start on the lattice | grid plane 20 over a 50 uu step (50 over a wall grid's top) |
+| wall, column | grid start along it on the lattice; its line across it on the lattice | grid bottom 20 over a 50 uu step |
+
+Each wall grid's rules come from its own class's meshes (`/api/kit` grid `fit`, measured by
+`riftlord/mapeditor/kitfit.py` on the real vertices, as the census measures them):
+
+- **Skirted** (meshes reaching 20 uu or more below the grid's bottom: `_MT`, `_Trim`,
+  `_WDMT`, `_WD`, `_MetalTrim`): stands 20 over the floor under it; its line is its foot
+  (the actor origin); the floor in front stops at the origin when the skirting reaches it
+  (within 0.5 uu), else at the skirting's reach rounded down to 2.5 uu (37.5 in front of
+  the face for `Wall_RB_WDMTL_v1_1x2`, 40 for `Wall_RB_WDMT_v1_2x2` and `_2x3`, 42.5 for
+  `_2x4`).
+- **Plain** (nothing that far below: `Wall_RB`, `Wall_FB`, `_Dry`, columns): stands on the
+  floor with its grid's bottom; its line is its face (the grid's plane), and the floor in
+  front stops on the face.
+- **Grid only** (the actor origin behind the face: towers, archways, `Castle_*`): its face
+  on the lattice; no floor joins.
+
+The lattice is the room's under or around the piece, else the 150 uu world lattice (and
+multiples of 50 in height). A room is floor grids chained edge to edge, as the research
+counts them (kitplace.js `rooms`): planes within 25 uu, facing edges within 1 uu, 150 uu
+or more of shared edge, three grids or more. Its phase is measured from its own grids:
+on x and y the value mod 150 that most of its grid edges lie within 1 uu of, on z its
+middle grid's plane mod 50, so a floor dropped on or beside it takes its plane. The room
+is the one with a grid within 1,200 uu (four trap cells, the neighbour reach) of the
+piece's main grid, nearest across the plan, then nearest in height (`roomAt`). The level's
+own floors, the plan's and Fab grids all count; the piece being placed or moved does not.
+
+Within 37.5 uu of a neighbour's grid the join wins over the lattice:
+
+- grids edge to edge or lined up; coplanar floors and walls;
+- a wall's stop on the edge of the floor in front of it, its grid bottom its lift over that
+  floor's plane (also over a floor running under it); a floor's edge on the stop of a wall
+  standing on it;
+- an upper floor (its plane -10 to 300 over the top of a wall's meshes, behind the wall):
+  its edge on the wall's origin line;
+- a column (wall grids facing three ways or more) at a wall's end: its grid facing the
+  same way edge to edge with the wall's grid, on a skirted wall's origin line, 50 in front
+  of a plain wall's face.
+
+A Fab grid has no fit data and keeps the rules from before fit data (20 over a floor, the
+actor origin as its line and stop). A move snaps only the axes being dragged, by the picked
+floor (else the first picked piece with a grid), and only a piece turned by quarter turns.
+A level's own piece off the world lattice moves on its own (its offset at the start of the
+move is kept), so a move never jumps it off it; any other piece moves on the lattice of the
+room it starts in. A move that ends by a different room takes that room's lattice. The
+joined neighbour is outlined during the move.
+
+**Other pieces** move in quarter-cell steps (75 uu) counted from where the move began, and
+snap to a neighbour's face or edge within 37.5 uu (`edgeSnapMove`, `edgeGaps`). Faces that
+meet are measured on the real triangles: each side's surface facing the other, clipped to
+the other side's extent across the move, so the empty corners of a turned or hollow piece's
+box never count; lining edges up uses the box around the real triangles. Placed, a floor
+tile, stair or crenellation shelf mesh (catalogue `lattice`, `meshcat.FOOTPRINT_LATTICE`:
+the `CastleOrder/Floors` and `Stairs` folders and `Cren_Shelf_1x1`) lands with its footprint
+on the lattice (`footprintDelta`; the room's or the world's, as above); any other mesh
+(trims, wall sections, columns, beams) lands against a neighbour's face or edge across the
+plan within 37.5 uu, else where it is dropped; its height as clicked. Decor (meshes on New
+Object's decor shelf, catalogue category `decoration`) lands where it is dropped.
+
+Shift held while placing, moving, turning or sizing takes every snap away; alt takes the
+neighbour joins and edge snap away. A new scratch level's ground grid, rift, exit point and
+player starts are on the lattice at ground height 0 (`tests/offline/test_kit_snap.py`, with
+a case per census rule on the class geometry it relies on; UI smoke case `lattice`, which
+also drags a plain wall, a short-skirted wall and a column to their joins, places a ceiling,
+builds an off-lattice room of three floors and drops a floor, a floor tile mesh, two column
+meshes and a decor mesh by it, and drags a floor to it).
+
+A kit class's trap grids (`/api/kit` `grids`, from `riftlord/data/kit-geometry.json`, written
+by `python3 -m riftlord.mapeditor.kitgeom --build`) are in the actor's space: each grid's
+transform is composed up its Simple Construction Script parents to the root component, over
+the class and its Blueprint ancestors merged by component name (`kitgeom.grids`). Before
+2026-11-05 a grid's own RelativeLocation was taken alone, which put 32 grids of
+`Trapezoid_Landing` and `Stairs_MultiTiered` 170 to 2,676 uu off. The table also measures the
+Blueprint classes the shipped levels place outside the kit catalogue (grid-only actors:
+`BP_OMDTrapGrid_Blank`, `Scenario_03_Ground1..4`), and a class is looked up whatever the case
+of its name (`Wall_RB_MT_v3_1x4_Angle_C` is the asset `Wall_RB_MT_v3_1x4_angle`). Checked
+against the kit placement census (`docs/research/kit-placement-census.md`): 11,872 placements
+agree on count, centre, normal and size; 41 state their own grid transform; the 8
+`Wall_RB_MT_v3_1x4_Angle` placements on Scenario_14 differ only because the census read
+them without their class template (the same case mismatch). Test:
+`tests/offline/test_kitgeom_grids.py`.
+
+## Cover seams
+
+Map Settings' **Seams** section has **Cover Seams**: it finds the seams of the open map (an
+edited shipped level or a scratch map, the same way) that shipped levels hide with a static
+mesh, and proposes that mesh for each (`riftlord/mapeditor/coverseams.py`, `POST
+/api/coverseams/<level>` with the plan; `web/mapeditor/src/coverseams.js`). Shipped levels
+hide seams with geometry, not by stretching pieces: walls carry their own skirting, and
+trims, columns and wall sections straddle the rest (research:
+`docs/research/kit-placement-census.md`, `kit-seams-and-trap-grids.md` section 3).
+
+A seam is an opening between two kit pieces turned by quarter turns, measured on their real
+vertices with the census's junction windows (its `junctions.py`):
+
+| seam | what is open |
+|---|---|
+| Wall top | an upper floor's surface edge short of the back face of the wall top under it (the hole seen from above; a floor edge over the wall top is the shipped ledge, not a seam) |
+| Wall foot | a floor's surface edge short of the foot of the wall standing on it: the floor stops short, or the wall's skirting is buried |
+| Skirting | a wall standing on a floor with its lowest part above the floor's surface |
+| Wall end | a wall's mesh end short of the column, or the wall beside it on the same plane, that it ends against (measured in the band 100 uu in from each end) |
+| Floor join | two floors of different families edge to edge whose surfaces do not meet |
+
+A seam another piece or mesh already covers (its box spans the opening and runs along at
+least half the seam, as the census counts covers) is left alone, and so is one shipped levels
+leave open: of the 10 shipped seams of its type nearest it in width (`shipped_widths` in the
+data file), more open than covered (the 1 to 2 uu slivers between plain walls and their
+floors, for one).
+
+**The panel.** Under Cover Seams, the counts on a line of their own (`N to cover · N accepted
+· N not placed`), Accept All, then one row per proposal: the seam's kind and width
+(`Wall end · 4 uu`) with Accept and Skip. Picking a row draws its cover over the level and
+looks at it; the picked row names the cover mesh and how many pieces. The seams no cover
+suits are under **Not Placed** (collapsed): each row the seam's kind and width, and under it
+what stops it, one sentence: what is wrong with the seam when no shipped cover suits it
+(`Floor stops short of the wall`, `Wall stands above the floor`, `Wall ends short of its
+neighbour`, `Floor surfaces do not meet`), or `A cover would block trap cells`, `No cover
+closes it`, `Too wide to cover`. Picking one looks at it, so it can be fixed by hand.
+
+An accepted cover is an ordinary added mesh (`added[n]`, `kind: mesh`) with
+`collision: false`, as shipped decor: it can be moved, resized or deleted like any other, and
+the build reads it like any other added mesh. Nothing happens at build time and no hidden data
+is kept.
+
+**The covers** are `riftlord/data/seam-covers.json`, mined from the 33 shipped levels with the
+same seam finders (`/mnt/2tb_pro_a/tmp/coverseams/calibrate.py`, then `covermine2.py`). Each
+covered shipped seam's main cover (of the meshes with an axis along the seam, the one running
+furthest along it, then the tightest across it) counts only when it closes the seam alone
+(below). A cover entry is one **placement**: one cover family (the mesh name without its
+length: `ColumnTrim_CastStone_600W/900W/1800W` are one family) turned one way in the seam's
+frame, turns that differ only by the mesh's own symmetry counted as one. Its box offsets from
+the seam (median, plus every offset a case sat at) and its scale across come from that
+placement's own cases; its stretch along the seam is the family's, which no turn changes. A
+placement is a cover when it has 10 shipped cases on 3 levels (the census's rule, section 9).
+
+Counting a family across its placements (as the first catalogue did) put one placement's turn
+at another's offsets: on Proving Grounds the wall-top trims came out turned 45 degrees and
+beside the opening. By placement the shipped data has covers for Stone wall ends only:
+
+| seam | style | cover | turn (rows: run, gap, depth) | cases | levels | stretch along |
+|---|---|---|---|---|---|---|
+| Wall end | Stone | Column_Sec_RB (1_2, 1_4) | [0,0,1] [-1,0,0] [0,-1,0] | 18 | 9 | 1.0 to 1.25 |
+| Wall end | Stone | Column_Sec_RB | [0,0,1] [0,-1,0] [-1,0,0] | 13 | 8 | 1.0 to 1.25 |
+| Wall end | Stone | Column_Sec_RB | [0,0,1] [-1,0,0] [0,1,0] | 12 | 6 | 1.0 to 1.25 |
+| Wall end | Stone | ColumnTrim_CastStone (600W to 1800W) | [0,0,1] [1,0,0] [0,-1,0] | 10 | 6 | 0.77 to 1.5 |
+| Wall end | Stone | Column_Sec_RB | [0,0,1] [0,-1,0] [1,0,0] | 10 | 7 | 1.0 to 1.25 |
+
+Below the rule (the file's `below`): every Wall top placement (the 45-degree
+`ColumnTrim_CastStone` on the wall top is 7 cases, all on Scenario_14; shipped wall-top seams
+are 33 on 8 levels, median 12 uu wide, because shipped upper floors end on the wall's origin
+line), every Wall foot, Skirting and Floor join placement, and the other trim placements at
+wall ends (9, 8, 6 cases).
+
+**Closing.** A cover is proposed only when it closes 95% of its opening (`closes()`):
+sightlines along the seam's depth axis (the way one looks through it: down through a wall top,
+wall foot or floor join, across through a wall end or a skirting) at points 25 uu apart along
+each open stretch and 5 across the gap, each closed when a cover triangle crosses it within
+150 uu of the seam's depth band. Boxes are not enough: a trim turned 45 degrees spans the
+opening with its box and covers none of it. Measured on the shipped levels' own covered seams
+(508): all their covers together close 95% in 93% of wall tops, 84% of wall feet, 78% of wall
+ends; the 95% bar is what the catalogue's cases met alone.
+
+**Placing a cover.** For each open stretch of a seam, the family's member and count that keep
+every piece within the shipped stretch (fewest pieces, then the stretch nearest 1), laid end to
+end, turned and scaled across as the placement was shipped, its box at the placement's offset
+from the seam (the median, else the nearest other offset of the placement that still spans the
+opening); a stretch shorter than the shortest member at its least stretch takes that member
+squeezed to fit. Placements are tried most cases first; one is skipped when the seam is wider
+than any it covered, when it does not close the opening, or when it would enter a trap cell.
+Trap cells are checked as the trap-grid audit checks a blocker
+(`/mnt/2tb_pro_a/tmp/tg900/tg.py`): every 300 uu cell of every kit and Fab grid, its slab 15 to
+75 uu in front of the grid inset 30 uu, against the cover's box by separating axes.
+
+Proving Grounds (900_Arena_P, a copy; 2026-11-05, by placement): 1 proposal (the Wall end
+`#207`/`#69`, 4.4 uu, a `ColumnTrim_CastStone_600W` upright in the corner, closing all of it),
+25 not placed: the 7 Wall tops (`#421/#495/#496/#497` under floors `#500/#503/#502/#507`,
+38.7 uu, and `#252/#413/#414` under `#198/#253/#255`, 74.1 uu: `Floor stops short of the
+wall`), the 3 Skirtings of `#625` to `#627` (7.5 uu), 4 Wood wall ends, and 11 Wall ends where
+every placement would take a trap cell. On the 33 shipped levels unedited: 672 seams, 11
+proposals (all Stone wall ends: 8 trims, 3 column sections; none on 25 levels, at most 2),
+105 not placed. Offline: `python3 tests/offline/test_coverseams.py`; UI
+smoke case `coverseams`.
 
 ## Compound kits, decoration tools and added foliage
 

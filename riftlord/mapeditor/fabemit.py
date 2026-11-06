@@ -86,6 +86,59 @@ def clean_grids(raw):
     return out
 
 
+#: A Fab piece is under a laid grid when its drawing's centre lies inside the grid's
+#: rectangle and within this of its plane (uu): a floor tile's centre sits half its
+#: thickness below the grid laid on its top.
+UNDER_PLANE = 150.0
+
+
+def mend_grids(grids, added, saved_at=None, notes=None):
+    """Point each laid grid's `pieces` at Fab pieces of the saved `added` (marker: fabgrids).
+
+    `grids` are clean_grids output, their indices into the raw list the editor sent;
+    `saved_at[i]` is where raw item i landed in `added` (None when the save dropped it).
+    An index past the end or at a piece that is not a Fab piece is dropped. A grid left with
+    none is pointed at the Fab pieces under it, and dropped when there are none: it floats
+    where deleted pieces used to be. Returns the grids kept."""
+    notes = notes if notes is not None else []
+    out, under_cache = [], {}
+    for g in grids:
+        got = []
+        for i in g.get('pieces') or []:
+            j = i if saved_at is None else (saved_at[i] if 0 <= i < len(saved_at) else None)
+            if j is not None and 0 <= j < len(added) and \
+                    (added[j] or {}).get('kind') == 'fab' and j not in got:
+                got.append(j)
+        if not got:
+            got = _pieces_under(g, added, under_cache)
+            if not got:
+                notes.append('Trap grid %s has no Fab piece left under it, so it was left '
+                             'out; place it over a Fab piece, or remove it' % g.get('id'))
+                continue
+        out.append(dict(g, pieces=got))
+    return out
+
+
+def _pieces_under(grid, added, cache):
+    """Indices of the Fab pieces whose drawing's centre lies under `grid`."""
+    if 'placed' not in cache:
+        cache['placed'] = resolve({'added': added})[0]
+    ax = grid['axes']
+    n, u, v = ax['x'], ax['y'], ax['z']
+    c = grid['center']
+    out = []
+    for i, _e, entry, matrix in cache['placed']:
+        b = entry.get('bounds') or {}
+        lo, hi = b.get('min'), b.get('max')
+        mid = [(lo[k] + hi[k]) / 2 for k in range(3)] if lo and hi else [0.0, 0.0, 0.0]
+        d = [p - q for p, q in zip(_apply(matrix, mid), c)]
+        dot = lambda a: sum(x * y for x, y in zip(a, d))  # noqa: E731
+        if abs(dot(n)) <= UNDER_PLANE and abs(dot(u)) <= grid['extent'][1] + 1 and \
+                abs(dot(v)) <= grid['extent'][2] + 1:
+            out.append(i)
+    return out
+
+
 # -- transforms --------------------------------------------------------------------------------
 
 def _columns(matrix):
@@ -174,19 +227,21 @@ def world_grids(plan, placed=None, notes=None):
         if not wanted:
             continue
         if not is_unscaled(matrix):
-            notes.append('%s is rescaled, so its suggested trap grids are left out'
-                         % entry['name'])
+            notes.append('%s is rescaled, so its suggested trap grids are left out; set its '
+                         'scale back to 1 to keep them' % entry['name'])
             continue
         by_id = {g['id']: g for g in entry.get('grids') or []}
         for gid in wanted:
             g = by_id.get(gid)
             if g is None:
-                notes.append('%s has no suggested grid %s (library rebuilt?)'
+                notes.append('%s no longer has suggested trap grid %s (its Fab library was '
+                             'rebuilt), so it was left out; pick its trap grids again'
                              % (entry['name'], gid))
                 continue
             if not fablibrary.grid_allowed(entry, g):
-                notes.append('%s grid %s is not allowed on a %s' % (entry['name'], gid,
-                                                                     entry.get('role')))
+                notes.append('%s cannot take trap grid %s as a %s, so it was left out; pick '
+                             'another trap grid for it' % (entry['name'], gid,
+                                                           entry.get('role')))
                 continue
             ax = g['axes']
             axes = [_turn(matrix, ax['x']), _turn(matrix, ax['y']), _turn(matrix, ax['z'])]

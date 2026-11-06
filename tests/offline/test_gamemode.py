@@ -61,7 +61,7 @@ check('Crystal Defense is keyed CrystalDefense and hides rift points',
       and cd['hide'] == ['riftPoints'], cd)
 
 # 2. a plan with Rift Tear groups: the rifts of every group
-groups = {crystal.HEALTH_KEY: [800.0, 1500.0, 2500.0, 3000.0],
+groups = {'mapDifficulty': 1.0,
           'groups': [{'name': 'North', 'difficulty': 5, 'players': 0,
                       'rifts': [{'spawner': 7, 'difficulty': 5, 'players': 0}],
                       'minions': [], 'triggers': []},
@@ -92,6 +92,11 @@ check('no plan: Rift Defense', gamemode.of_plan(None) == rd)
 check('a built Crystal with groups opens its members',
       gamemode.of_level([{'cls': crystal.CLASS, 'arrays': {'GroupMembers': [5, 4, 4]}}])['opens']
       == [4, 5])
+check('a built Crystal reads MapDifficulty, PointHealth and PointDifficultyShare, not '
+      'DifficultyHealth',
+      {'MapDifficulty', 'PointHealth', 'PointDifficultyShare'} <= set(
+          gamemode.piece_scalars(crystal.CLASS))
+      and 'DifficultyHealth' not in gamemode.piece_arrays(crystal.CLASS))
 check('a built level without a game-type piece: Rift Defense',
       gamemode.of_level([]) == rd and gamemode.of_level(None) == rd)
 
@@ -107,7 +112,7 @@ check('Rift Defense refuses no wave', gamemode.spec_problems(spec, rd) == [])
 #     the built arrays read back as the editor's view, and the view saved again writes them
 from riftlord.mapeditor import rifttear  # noqa: E402
 guids = crystal.unit_guids()
-waved = {crystal.HEALTH_KEY: [900.0, 1200.0, 1500.0, 2000.0], 'waveCount': 3,
+waved = {'mapDifficulty': 0.5, 'pointHealth': 300.0, 'waveCount': 3,
          'groups': [{'name': 'West', 'difficulty': 5, 'players': 0,
                      'rifts': [{'spawner': 7, 'difficulty': 5, 'players': 0,
                                 'chances': [100.0, 0.0, 60.0]},
@@ -148,14 +153,15 @@ check('per-wave arrays: slots, rows, the three pause kinds, chances (100 past a 
 check('no wave count writes no per-wave arrays',
       not any(k in rifttear.arrays(dict(waved, waveCount=0), plan_w, guids)
               for k in rifttear.PER_WAVE + (rifttear.WAVE_COUNT,)))
-back = rifttear.level_view(dict(a, DifficultyHealth=waved[crystal.HEALTH_KEY]),
-                           {'WaveCount': 3, 'RiftGap': 2.0})
+back = rifttear.level_view(a, {'WaveCount': 3, 'RiftGap': 2.0, 'MapDifficulty': 0.5,
+                               'PointHealth': 300.0})
 again = rifttear.arrays(dict(back, groups=[dict(g, rifts=[dict(r, spawner={4: 7, 5: 8}[r['spawner']])
                                                            for r in g['rifts']])
                                            for g in back['groups']]), plan_w, guids)
 check('arrays read back as the editor\'s view write the same arrays',
       {k: again[k] for k in a} == a and back['groups'][0]['name'] == 'West'
-      and back['health']['values'] == waved[crystal.HEALTH_KEY],
+      and back['health']['values'] == {'mapDifficulty': 0.5, 'pointHealth': 300.0,
+                                        'pointDifficultyShare': None},
       {k: (a[k], again.get(k)) for k in a if again.get(k) != a[k]})
 check('a read-back trigger keeps Repeat Every (Waves); a Crystal without RiftRepeat reads 0',
       back['groups'][0]['triggers'][0]['repeat'] == 3
@@ -167,7 +173,7 @@ for text in ('West', 'Ost-Süd'):
     check('GroupName %r round-trips as an FString array' % text,
           rifttear.decode('str', payload) == [text, 'B'])
 #: the view as the Onslaught Editor saves it: rows and chances per wave, onto the plan
-saved_plan = plan_with({crystal.HEALTH_KEY: [1000.0] * 4,
+saved_plan = plan_with({'difficultyHealth': [1000.0] * 4,
                         'groups': [{'name': 'West', 'rifts': [{'spawner': 7}, {'spawner': 8}],
                                     'minions': [{'unit': 'OrcLight', 'count': 1}],
                                     'triggers': []}]},
@@ -175,14 +181,16 @@ saved_plan = plan_with({crystal.HEALTH_KEY: [1000.0] * 4,
 view = rifttear.editor_view(saved_plan)
 view['groups'] = waved['groups']
 view['waveCount'] = 3
-view['health']['values'] = [1.0, 2.0, 3.0, 4.0]
+view['health']['values'] = {'mapDifficulty': -1.5, 'pointHealth': None,
+                            'pointDifficultyShare': 0.3}
 check('merge_editor takes rows, chances, wave count and health', rifttear.merge_editor(saved_plan, view))
 got = crystal.piece(saved_plan)[crystal.KEY]
 check('the plan keeps the Map Editor\'s names and rifts with the Onslaught Editor\'s per-wave data',
       got['waveCount'] == 3 and got['groups'][0]['name'] == 'West'
       and got['groups'][0]['waves'][2][0]['count'] == 5
       and got['groups'][0]['rifts'][0]['chances'] == [100.0, 0.0, 60.0]
-      and got[crystal.HEALTH_KEY] == [1.0, 2.0, 3.0, 4.0], got)
+      and got.get('mapDifficulty') == -1.5 and got.get('pointDifficultyShare') == 0.3
+      and 'pointHealth' not in got and 'difficultyHealth' not in got, got)
 
 # 6b2. an older Crystal's rift (RiftIndex) sends its spawner's own units
 older = rifttear.level_view({'RiftIndex': [3], 'RiftAt': [75.0]}, {},

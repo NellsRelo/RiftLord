@@ -228,7 +228,11 @@ def apply(builder, plan, report):
         report['notes'].append('intro card removed')
     elif not got['skipped']:
         report['notes'].append('this level has no intro card to remove')
-    report['skipped'] += ['intro: %s' % s for s in got['skipped']]
+    if got['skipped']:
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'the intro card', '; '.join(got['skipped']), effect='it may still show',
+            verb='remove'))
 
 
 def check(pkg, level):

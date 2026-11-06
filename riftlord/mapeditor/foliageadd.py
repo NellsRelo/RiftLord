@@ -277,7 +277,10 @@ def apply(builder, plan, report, free_name=None):
                 mesh = chunk[j]
                 info = cat.get(mesh)
                 if not info:
-                    report['skipped'].append('no foliage mesh %s' % mesh)
+                    from riftlord.core import buildmessage
+                    report['skipped'].append(buildmessage.left_out(
+                        'added foliage %s' % mesh, 'not in the mesh catalogue',
+                        'Pick another foliage type for it.'))
                     _fill(builder, comp, None, [], (0, 0))
                     continue
                 mats = meshes[mesh][:MAX_INSTANCES]

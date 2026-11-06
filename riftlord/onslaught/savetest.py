@@ -43,7 +43,10 @@ MISSIONS = ('900_Beset_Alpha_3_P', '900_Cellar_Alpha_1_P')
 #: Shipped maps tested by default.
 #: Scenario_12 and Scenario_18 have waves that leave a ground spawner unused (addmove).
 #: Scenario_08 fires a music change its level never hears, and replays door 3's spawns.
-MAPS = ('Scenario_02', 'Scenario_08', 'Scenario_09', 'Scenario_12', 'Scenario_18')
+#: Scenario_Sand_01 and _03 wait 12 and 7 times for a pause set per difficulty
+#: (wavespec.delay_sites); Sand_01's waves set it in Switch cases an appended copy must take.
+MAPS = ('Scenario_02', 'Scenario_08', 'Scenario_09', 'Scenario_12', 'Scenario_18',
+        'Scenario_Sand_01', 'Scenario_Sand_03')
 CASES = ('resave', 'add', 'addmove', 'remove', 'events', 'par')
 #: The par time the par case sets, in seconds (no shipped row uses it).
 PAR_CASE = 345.0
@@ -98,14 +101,19 @@ def _coordinator_as(name, ua, ux):
 def pacing(rows):
     """A door's rows as they play: units and waits in order. A pause before a row and one
     after the row ahead of it are the same wait (and read back as the latter); waits in a
-    row add up; nothing after the last unit counts."""
+    row add up; nothing after the last unit counts. A per-difficulty wait is its values,
+    slot by slot, and adds up with nothing."""
     out = []
 
     def pause(p):
         if not p or not p.get('value'):
             return
+        if p.get('byDifficulty'):
+            out.append(('wait', tuple(sorted((s, round(float(v or 0), 1))
+                                             for s, v in p['byDifficulty'].items()))))
+            return
         kind, value = p.get('kind') or 'wait', round(float(p['value']), 1)
-        if kind == 'wait' and out and out[-1][0] == 'wait':
+        if kind == 'wait' and out and out[-1][0] == 'wait' and not isinstance(out[-1][1], tuple):
             out[-1] = ('wait', round(out[-1][1] + value, 1))
         else:
             out.append((kind, value))
@@ -153,7 +161,8 @@ def expected(spec, map_name, bundled=False):
         caps = wavespec.bundle_caps(map_name, caps)
     if 'events' not in spec:
         spec = wavespec.split_events(spec, caps)[0]
-    return wavespec.apply_events(spec, caps)[0]
+    # a per-difficulty pause moved off its home is written as a flat wait
+    return wavespec.apply_events(wavespec.settle_pauses(spec), caps)[0]
 
 
 def compare(spec, got):

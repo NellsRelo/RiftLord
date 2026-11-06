@@ -1,10 +1,14 @@
 """The level's collision and kill volumes: what they block, where they are, and edits.
 
-`level_volumes(level)` reads the volumes of a level's persistent level with their
-world boxes. `crossed(level, chains)` names the ones a ground route walks through.
-`clean(raw)` validates a plan's `volumes` edits and `apply(builder, plan, level, report)`
-writes them, and moves out of play any volume a ground route crosses that the plan
-leaves alone.
+`level_volumes(level)` reads the volumes of every package of a level (the persistent
+level and its sublevels, omd3level.packages) with their world boxes. A persistent-level
+volume is named by its export name, a sublevel's by `'<sublevel tag>|<export index>'`
+(the key the level's own lights and effects use). `crossed(level, chains)` names the ones
+a ground route walks through. `clean(raw)` validates a plan's `volumes` edits;
+`apply(builder, plan, level, report)` writes them into the persistent level and
+`sublevel_writes(level, plan)` / `write_package(builder, rows, report)` into the
+sublevel copies, and every in-the-way volume a ground route crosses that the plan leaves
+alone is moved out of play in whichever package holds it.
 """
 
 import functools
@@ -128,14 +132,31 @@ KILL_FLAGS = {'killMinions': 'bKillMinions', 'killPlayers': 'bKillPlayers'}
 KILL_CLASS = 'OMDCharacterKillVolume'
 
 
-def _package(level):
+#: The persistent level's package tag (omd3level.packages).
+PERSISTENT = 'persistent'
+
+
+def _package(level, path=None):
+    """The level's persistent package, or the package at `path`."""
     from riftlord.core import gamefiles
     from riftlord.build.navigation import navpatch
     from riftlord.formats.ue.uassetio import Package
-    ua, ux = gamefiles.package(navpatch.map_path(level))
+    ua, ux = gamefiles.package(path or navpatch.map_path(level))
     pkg = Package(ua, ux)
     pkg.load_payloads()
     return pkg
+
+
+def sub_key(tag, index):
+    """The plan name of a sublevel's volume: '<sublevel tag>|<export index>'."""
+    return '%s|%d' % (tag, index)
+
+
+def level_packages(level):
+    """[(tag, package path or None for the persistent level)] of the level's packages."""
+    from riftlord.formats.omd3 import omd3level
+    return [(PERSISTENT, None)] + [(tag, path) for tag, path, _x in omd3level.packages(level)
+                                   if tag != PERSISTENT]
 
 
 def _convex_points(pkg, names, index):
@@ -166,17 +187,49 @@ def _convex_points(pkg, names, index):
 
 @functools.lru_cache(maxsize=8)
 def level_volumes(level):
-    """[{index, name, cls, label, stops, stopsText, profile, location, rotation, scale,
-    min, max (local box), matrix (column-major 4x4), worldMin, worldMax}] for the
-    volumes of CLASSES in the level's persistent level."""
+    """[{index, name, sub, title, cls, label, stops, stopsText, profile, location,
+    rotation, scale, min, max (local box), matrix (column-major 4x4), worldMin,
+    worldMax}] for the volumes of CLASSES in every package of the level, the persistent
+    level's first. `sub` is the package's tag, `title` the export name."""
+    out = []
+    for tag, path in level_packages(level):
+        try:
+            out += package_volumes(level, tag, path)
+        except Exception:                            # noqa: BLE001
+            if tag == PERSISTENT:
+                raise
+    return out
+
+
+def _spelled(pkg, i):
+    """Export `i`'s name as the game spells it (with the FName number)."""
+    from riftlord.build import levelbuild
+    shown = levelbuild._name_of(pkg, i)
+    number = struct.unpack_from('<i', pkg.exports[i]['meta'], levelbuild.NAME_AT + 4)[0]
+    return '%s_%d' % (shown, number - 1) if number else shown
+
+
+@functools.lru_cache(maxsize=32)
+def package_volumes(level, tag=PERSISTENT, path=None):
+    """level_volumes of one package: the persistent level's (`path` None), or the
+    sublevel `tag` at `path`."""
+    from riftlord.onslaught import onslaught
+    pkg = _package(level, path)
+    #: export names as the game spells them (with the FName number)
+    shown = ([str(e.get('name')) for e in onslaught.load_map(level)[0]['exports']]
+             if tag == PERSISTENT else None)
+    return volumes_of(pkg, tag, shown)
+
+
+def volumes_of(pkg, tag=PERSISTENT, shown=None):
+    """level_volumes of one loaded package (uassetio.Package) holding the sublevel or
+    persistent level `tag`; `shown`: export names as the game spells them, else read
+    from the package."""
     from riftlord.build import levelbuild
     from riftlord.formats.omd3 import meshcat
     from riftlord.formats.omd3 import omd3level
-    from riftlord.onslaught import onslaught
-    pkg = _package(level)
     names = [n for n, _h in pkg.names]
-    #: export names as the game spells them (with the FName number)
-    shown = [str(e.get('name')) for e in onslaught.load_map(level)[0]['exports']]
+    shown = shown or [_spelled(pkg, i) for i in range(len(pkg.exports))]
     out = []
     for i, ex in enumerate(pkg.exports):
         cls = levelbuild.resolve(pkg, struct.unpack_from('<i', ex['meta'], 0)[0])[1]
@@ -232,7 +285,8 @@ def level_volumes(level):
         corners = [_apply(m, (x, y, z)) for x in (lo[0], hi[0]) for y in (lo[1], hi[1])
                    for z in (lo[2], hi[2])]
         out.append({
-            'index': i + 1, 'name': shown[i], 'cls': cls,
+            'index': i + 1, 'name': shown[i] if tag == PERSISTENT else sub_key(tag, i + 1),
+            'sub': tag, 'title': shown[i], 'cls': cls,
             'label': label, 'stops': stops, 'stopsText': STOPS_TEXT[stops],
             'profile': profile, 'location': [round(v, 3) for v in loc],
             'rotation': [round(v, 3) for v in rot], 'scale': [round(v, 4) for v in scale],
@@ -284,6 +338,17 @@ def leg_crosses(vol, a, b, location=None):
     return False
 
 
+def _near(vol, a, b):
+    """False when no body sample of the leg a..b can reach `vol`'s world box as shipped
+    (padded by twice BODY_RADIUS, which holds a turned volume's padded box)."""
+    pad = 2 * BODY_RADIUS
+    lo = [min(a[k], b[k]) - pad for k in range(3)]
+    hi = [max(a[k], b[k]) + pad for k in range(3)]
+    lo[2] += min(BODY_HEIGHTS)
+    hi[2] += max(BODY_HEIGHTS)
+    return all(lo[k] <= vol['worldMax'][k] and hi[k] >= vol['worldMin'][k] for k in range(3))
+
+
 def crossed(level, chains, skip=()):
     """[(volume, a, b)] for each in-the-way volume a chain leg crosses, first leg only."""
     out = []
@@ -295,7 +360,7 @@ def crossed(level, chains, skip=()):
             continue
         for chain in chains:
             hit = next(((a, b) for a, b in zip(chain, chain[1:])
-                        if leg_crosses(vol, a, b)), None)
+                        if _near(vol, a, b) and leg_crosses(vol, a, b)), None)
             if hit:
                 out.append((vol, hit[0], hit[1]))
                 break
@@ -374,7 +439,7 @@ SWAPPED_PREFIX = 'RiftLordVolumeR'
 def donor(blocks='everyone'):
     """The level_volumes entry of the donor of kind `blocks` (BLOCKS), or None."""
     level, name = BLOCKS[blocks]
-    return next((v for v in level_volumes(level) if v['name'] == name
+    return next((v for v in package_volumes(level) if v['name'] == name
                  and v['cls'] == 'BlockingVolume' and v['blocks'] == blocks), None)
 
 
@@ -412,8 +477,10 @@ def _lift_donor(builder, name, blocks, loc, rot, scale, lo, hi, report):
     from riftlord.build import apply as _apply
     d = donor(blocks)
     if not d:
-        report['skipped'].append('%s: no %s donor volume %s in %s'
-                                 % ((name, blocks) + BLOCKS[blocks][::-1]))
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'volume %s' % name, 'no %s donor volume %s in %s'
+            % ((blocks,) + BLOCKS[blocks][::-1]), verb='place'))
         return None
     return _apply._add(builder, d['cls'], loc, name, rot, report,
                        scale=_donor_scale(scale, lo, hi, d),
@@ -464,7 +531,10 @@ def _write_kill_flags(builder, index, vol, edit, report):
         if key not in edit:
             continue
         if vol['cls'] != KILL_CLASS:
-            report['skipped'].append('%s is not a kill volume' % vol['name'])
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the kill settings of volume %s' % vol['name'], '',
+                'It is not a kill volume, so it has none.'))
             return
         if edit[key]:
             builder.clear_property(index, prop)
@@ -479,29 +549,130 @@ def _fmt(p):
     return '(%.0f, %.0f, %.0f)' % tuple(p[:3])
 
 
-def apply(builder, plan, level_name, report):
-    """Write the plan's volume edits, then move out of play every in-the-way volume a
-    ground route crosses that the plan does not edit."""
+def _export_of(builder, vol):
+    """`vol`'s export index in the package `builder` writes, or None when the export there
+    is not of its class."""
     from riftlord.build import levelbuild
-    edits = {e['name']: e for e in clean((plan or {}).get('volumes'))}
-    vols = {v['name']: v for v in level_volumes(level_name)}
     pkg = builder.pkg
-
-    def export_of(vol):
-        i = vol['index']
-        cls = levelbuild.resolve(
-            pkg, struct.unpack_from('<i', pkg.exports[i - 1]['meta'], 0)[0])[1] \
-            if i <= len(pkg.exports) else None
-        if cls == vol['cls']:
-            return i
+    i = vol['index']
+    if not 0 < i <= len(pkg.exports):
         return None
+    cls = levelbuild.resolve(pkg, struct.unpack_from('<i', pkg.exports[i - 1]['meta'], 0)[0])[1]
+    return i if cls == vol['cls'] else None
 
-    added = {name: e for name, e in edits.items() if e.get('added')}
-    edits = {name: e for name, e in edits.items() if not e.get('added')}
+
+def _plan_edits(plan):
+    """({name: edit} of the level's own volumes, {name: edit} of added ones)."""
+    edits = {e['name']: e for e in clean((plan or {}).get('volumes'))}
+    return ({n: e for n, e in edits.items() if not e.get('added')},
+            {n: e for n, e in edits.items() if e.get('added')})
+
+
+def _swapped(vol, e):
+    """True when the plan makes `vol` stop the other Blocks kind."""
+    return bool(e.get('blocks') and vol.get('blocks') and e['blocks'] != vol['blocks'])
+
+
+def _swap_name(vol):
+    """Export name of the volume standing in for `vol` when the plan swaps its Blocks."""
+    return SWAPPED_PREFIX + (str(vol['index']) if vol['sub'] == PERSISTENT
+                             else '%s%d' % (vol['sub'], vol['index']))
+
+
+def _chains(level_name, plan):
+    from riftlord.mapeditor import planactors
+    return planactors.ground_chains(plan, planactors.level_actors(level_name))
+
+
+def writes(level_name, plan, chains):
+    """{package tag: [(vol, edit)]}: the plan's edits of the level's own volumes in plan
+    order, then {'crossed': (a, b)} for each in-the-way volume a ground route in `chains`
+    crosses that the plan leaves alone (`chains` None: none checked). Empty for a level
+    from scratch, which keeps none of its host's volumes."""
+    from riftlord.mapeditor import scratch
+    if not scratch.streamed_scene(plan).get('host', True):
+        return {}
+    edits, _added = _plan_edits(plan)
+    vols = {v['name']: v for v in level_volumes(level_name)}
+    out = {}
+    for name, e in edits.items():
+        if name in vols:
+            out.setdefault(vols[name]['sub'], []).append((vols[name], e))
+    for vol, a, b in crossed(level_name, chains, skip=set(edits)) if chains else ():
+        out.setdefault(vol['sub'], []).append((vol, {'crossed': (a, b)}))
+    return out
+
+
+def sublevel_writes(level_name, plan):
+    """writes() for the sublevels only, {tag: rows}, with the ground routes checked."""
+    edits, _added = _plan_edits(plan)
+    if not edits and not any(v['sub'] != PERSISTENT and v['stops'] in IN_THE_WAY
+                             for v in level_volumes(level_name)):
+        return {}
+    try:
+        chains = _chains(level_name, plan)
+    except Exception:                                # noqa: BLE001
+        chains = None
+    return {tag: rows for tag, rows in writes(level_name, plan, chains).items()
+            if tag != PERSISTENT}
+
+
+def write_package(builder, rows, report, lift=None):
+    """Write one package's rows (writes): park removed, crossed and Blocks-swapped
+    volumes, move, turn and resize the rest, and set kill switches. `lift(vol, e)` lifts
+    the stand-in of a Blocks-swapped volume (persistent level only)."""
+    for vol, e in rows:
+        index = _export_of(builder, vol)
+        if index is None:
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the change to volume %s' % vol['name'], '',
+                'It is not in this level any more; undo the change to it.'))
+            continue
+        if e.get('crossed'):
+            a, b = e['crossed']
+            builder.place(index, location=PARKED)
+            report['notes'].append('%s moved out of play: it %s and the ground route from %s '
+                                   'to %s crosses it' % (vol['name'], vol['stopsText'],
+                                                         _fmt(a), _fmt(b)))
+            continue
+        if e.get('gone'):
+            builder.place(index, location=PARKED)
+            report['notes'].append('%s removed (%s)' % (vol['name'], vol['stopsText']))
+            continue
+        #: made to stop the other kind: parked, and that kind's donor stands in its place,
+        #: its brush the same box
+        if _swapped(vol, e):
+            builder.place(index, location=PARKED)
+            if lift:
+                lift(vol, e)
+            continue
+        if 'matrix' in e:
+            from riftlord.build import apply as _apply
+            loc, rot, scale = edited_transform(vol, e)
+            _apply.place_whole(builder, index, location=tuple(loc), rotation=tuple(rot),
+                               scale=tuple(scale))
+            report['notes'].append('%s placed at %s, turned (%.1f, %.1f, %.1f), scale '
+                                   '(%.3f, %.3f, %.3f)' % ((vol['name'], _fmt(loc))
+                                                           + tuple(rot) + tuple(scale)))
+        elif 'at' in e:
+            builder.place(index, location=tuple(e['at']))
+            report['notes'].append('%s moved to %s' % (vol['name'], _fmt(e['at'])))
+        _write_kill_flags(builder, index, vol, e, report)
+
+
+def apply(builder, plan, level_name, report):
+    """Write the plan's volume edits into the persistent level, then move out of play
+    every in-the-way persistent volume a ground route crosses that the plan does not
+    edit. The stand-ins of Blocks-swapped sublevel volumes are lifted here too; the
+    sublevels' own rows are written by write_package on their copies."""
+    edits, added = _plan_edits(plan)
     for name, e in sorted(added.items()):
         vol = added_volume(e)
         if not vol:
-            report['skipped'].append('%s: no %s donor volume' % (name, e.get('blocks')))
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'volume %s' % name, 'no %s donor volume' % e.get('blocks'), verb='place'))
             continue
         got = _lift_donor(builder, name, vol['blocks'], vol['location'], vol['rotation'],
                           vol['scale'], vol['min'], vol['max'], report)
@@ -511,54 +682,39 @@ def apply(builder, plan, level_name, report):
                                       + (' x '.join('%.0f' % ((vol['max'][a] - vol['min'][a])
                                                               * vol['scale'][a])
                                                     for a in range(3)), vol['stopsText'])))
-    for name, e in edits.items():
-        vol = vols.get(name)
-        index = export_of(vol) if vol else None
-        if index is None:
-            report['skipped'].append('volume %s is not in this level' % name)
-            continue
-        if e.get('gone'):
-            builder.place(index, location=PARKED)
-            report['notes'].append('%s removed (%s)' % (name, vol['stopsText']))
-            continue
-        #: made to stop the other kind: parked, and that kind's donor stands in its place,
-        #: its brush the same box
-        if e.get('blocks') and vol.get('blocks') and e['blocks'] != vol['blocks']:
-            loc, rot, scale = edited_transform(vol, e)
-            builder.place(index, location=PARKED)
-            got = _lift_donor(builder, SWAPPED_PREFIX + str(vol['index']), e['blocks'], loc,
-                              rot, scale, vol['min'], vol['max'], report)
-            if got:
-                report['notes'].append('%s now %s (replaced by %s%d)' % (
-                    name, STOPS_TEXT[e['blocks']], SWAPPED_PREFIX, vol['index']))
-            continue
-        if 'matrix' in e:
-            from riftlord.build import apply as _apply
-            loc, rot, scale = edited_transform(vol, e)
-            _apply.place_whole(builder, index, location=tuple(loc), rotation=tuple(rot),
-                               scale=tuple(scale))
-            report['notes'].append('%s placed at %s, turned (%.1f, %.1f, %.1f), scale '
-                                   '(%.3f, %.3f, %.3f)' % ((name, _fmt(loc)) + tuple(rot)
-                                                           + tuple(scale)))
-        elif 'at' in e:
-            builder.place(index, location=tuple(e['at']))
-            report['notes'].append('%s moved to %s' % (name, _fmt(e['at'])))
-        _write_kill_flags(builder, index, vol, e, report)
+
+    def lift(vol, e):
+        loc, rot, scale = edited_transform(vol, e)
+        if _lift_donor(builder, _swap_name(vol), e['blocks'], loc, rot, scale, vol['min'],
+                       vol['max'], report):
+            report['notes'].append('%s now %s (replaced by %s)' % (
+                vol['name'], STOPS_TEXT[e['blocks']], _swap_name(vol)))
     try:
-        from riftlord.mapeditor import planactors
-        chains = planactors.ground_chains(plan, planactors.level_actors(level_name))
+        chains = _chains(level_name, plan)
     except Exception as exc:                         # noqa: BLE001
-        report['skipped'].append('could not check volumes against the routes: %s: %s'
-                                 % (type(exc).__name__, exc))
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'the blocking volumes against the routes', '%s: %s' % (type(exc).__name__, exc),
+            effect='a blocking volume may stand across a route', verb='check'))
+        chains = None
+    rows = writes(level_name, plan, chains)
+    vols = {vol['name']: vol for tag_rows in rows.values() for vol, _e in tag_rows}
+    for name in edits:
+        if name not in vols:
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the change to volume %s' % name, '',
+                'It is not in this level any more; undo the change to it.'))
+    #: the plan's edits, then the crossed volumes, each in the order writes() gives
+    mine = rows.get(PERSISTENT) or []
+    write_package(builder, [r for r in mine if not r[1].get('crossed')], report, lift)
+    for vol, e in (r for tag, tag_rows in rows.items() if tag != PERSISTENT
+                   for r in tag_rows):
+        if not e.get('crossed') and _swapped(vol, e):
+            lift(vol, e)
+    write_package(builder, [r for r in mine if r[1].get('crossed')], report)
+    if chains is None:
         return
-    for vol, a, b in crossed(level_name, chains, skip=set(edits)):
-        index = export_of(vol)
-        if index is None:
-            continue
-        builder.place(index, location=PARKED)
-        report['notes'].append('%s moved out of play: it %s and the ground route from %s '
-                               'to %s crosses it' % (vol['name'], vol['stopsText'],
-                                                     _fmt(a), _fmt(b)))
     for name, e in edits.items():
         vol = vols.get(name)
         #: one the plan sets Blocks on is in a route's way only when it stops enemies

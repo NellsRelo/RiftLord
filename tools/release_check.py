@@ -710,6 +710,12 @@ def ui_smoke(report, srv, ident, run_dir, cases=None, exclude=(), name='ui_smoke
 # -- 5. bake and pak diff ----------------------------------------------------------------
 
 def bake_frozen(srv, ident, run_dir):
+    from riftlord.core import gpulock
+    with gpulock.turn('release check bake', lambda m: print('  ' + m, flush=True)):
+        return _bake_frozen(srv, ident, run_dir)
+
+
+def _bake_frozen(srv, ident, run_dir):
     srv.post('/api/bucket/build', {'ids': [ident]})
     t0 = time.time()
     stages, last = [], None
@@ -1073,6 +1079,12 @@ def main(argv=None):
             # the UI case `fab` against the stand-in converter, never the real one
             trace_env['RIFTLORD_FABCONVERT'] = FAKE_FAB
             trace_env['RIFTLORD_TERRAINKIT'] = FAKE_TERRAIN
+            #: the frozen servers run inside this check's GPU turn: a light bake a UI case
+            #: asks for (a Missions build) would otherwise wait for the turn the UI suite
+            #: holds until the suite ends; outside the suites the check takes the turn
+            #: around the step that bakes (bake_frozen)
+            from riftlord.core import gpulock
+            trace_env[gpulock.ENV] = 'release check'
             t = time.time()
             types = os.environ.get('RIFTLORD_TYPES') or prepare_types()   # the gate's, or ours
             report.add('types: test servers\' type data', bool(types), types or 'prepare failed',

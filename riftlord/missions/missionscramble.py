@@ -714,19 +714,24 @@ def describe(report):
             ' (tier from %s)' % got['mod'] if got.get('mod') else '')))
     for tier, got in info.items():
         if got.get('clash'):
-            lines.append((True, 'Scramble: %s is also a row of %s; ProtoRegistry leaves this '
-                          'mission out of that tier' % (tier, ', '.join(got['clash']))))
+            lines.append((True, 'Scramble: %s is also a tier of %s, so this mission is left out '
+                          'of that tier. Pick another tier in its Scramble settings.'
+                          % (tier, ', '.join(got['clash']))))
         elif not got.get('live') and got.get('mod'):
-            lines.append((True, 'Scramble: %s waits for %s, which is %s' % (
-                tier, got['mod'], 'switched off' if not got.get('enabled')
-                else 'not the live tier table')))
+            lines.append((True, 'Scramble: %s waits for %s, which is %s. The mission joins '
+                          'that tier once %s is in use.' % (
+                              tier, got['mod'], 'switched off' if not got.get('enabled')
+                              else 'not the tier table in use', got['mod'])))
         elif not got.get('live') and got.get('shipped'):
-            lines.append((True, 'Scramble: %s is not in the live tier table (from %s); it '
-                          'waits for the shipped table' % (tier, report.get('scramble_source'))))
+            lines.append((True, 'Scramble: %s is not in the tier table in use (from %s). The '
+                          'mission joins that tier once the game\'s shipped table is in use.'
+                          % (tier, report.get('scramble_source'))))
         elif not got.get('live'):
-            lines.append((True, 'Scramble: %s waits for a tier mod; no installed mod defines it%s'
-                          % (tier, ' (live table from %s)' % report['scramble_source']
-                             if report.get('scramble_source') else '')))
+            lines.append((True, 'Scramble: %s waits for a tier mod; no installed mod defines '
+                          'it%s. Install the mod that adds it, or pick another tier.'
+                          % (tier, ' (the tier table in use is from %s)'
+                             % report['scramble_source'] if report.get('scramble_source')
+                             else '')))
     return lines
 
 

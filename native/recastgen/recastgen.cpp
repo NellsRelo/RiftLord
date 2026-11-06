@@ -33,11 +33,62 @@
 #if __has_include("Recast/Recast.h")
 static int spanMin(const rcSpan* s) { return (int)s->data.smin; }
 static int spanMax(const rcSpan* s) { return (int)s->data.smax; }
+static unsigned char spanArea(const rcSpan* s) { return (unsigned char)s->data.area; }
+static void setSpanArea(rcSpan* s, unsigned char a) { s->data.area = a; }
 #else
 static int spanMin(const rcSpan* s) { return (int)s->smin; }
 static int spanMax(const rcSpan* s) { return (int)s->smax; }
+static unsigned char spanArea(const rcSpan* s) { return (unsigned char)s->area; }
+static void setSpanArea(rcSpan* s, unsigned char a) { s->area = a; }
 #endif
+#include <utility>
 #include <vector>
+
+// True when a span stands at a ledge: a neighbour with headroom drops more than `climb`
+// below it, or lies outside the heightfield (rcFilterLedgeSpans' ledge test, without its
+// steep-slope test).
+static bool atLedge(const rcHeightfield& hf, int x, int z, const rcSpan* s, int height, int climb)
+{
+	const int MAX_HEIGHT = 0xffff;
+	const int bot = spanMax(s);
+	const int top = s->next ? spanMin(s->next) : MAX_HEIGHT;
+	for (int dir = 0; dir < 4; ++dir)
+	{
+		const int dx = x + rcGetDirOffsetX(dir), dz = z + rcGetDirOffsetY(dir);
+		if (dx < 0 || dz < 0 || dx >= hf.width || dz >= hf.height)
+			return true;
+		const rcSpan* n = hf.spans[dx + dz * hf.width];
+		const int firstTop = n ? spanMin(n) : MAX_HEIGHT;
+		if (rcMin(top, firstTop) - rcMax(bot, -climb) > height && bot > 0)
+			return true;
+		for (; n; n = n->next)
+		{
+			const int nbot = spanMax(n);
+			const int ntop = n->next ? spanMin(n->next) : MAX_HEIGHT;
+			if (rcMin(top, ntop) - rcMax(bot, nbot) > height && nbot - bot < -climb)
+				return true;
+		}
+	}
+	return false;
+}
+
+// rcFilterLedgeSpans, less its steep-slope test on ramp (RC_WALKABLE_AREA) spans: a stair's
+// treads differ from the cells on either side by two risers where a tread is one cell deep,
+// which that test reads as a slope steeper than the step.
+static void filterLedges(rcContext& ctx, int height, int climb, rcHeightfield& hf)
+{
+	std::vector<std::pair<rcSpan*, int>> ramps;
+	for (int z = 0; z < hf.height; ++z)
+		for (int x = 0; x < hf.width; ++x)
+			for (rcSpan* s = hf.spans[x + z * hf.width]; s; s = s->next)
+				if (spanArea(s) == RC_WALKABLE_AREA)
+					ramps.push_back(std::make_pair(s, x + z * hf.width));
+	rcFilterLedgeSpans(&ctx, height, climb, hf);
+	for (const std::pair<rcSpan*, int>& r : ramps)
+		if (spanArea(r.first) == RC_NULL_AREA
+			&& !atLedge(hf, r.second % hf.width, r.second / hf.width, r.first, height, climb))
+			setSpanArea(r.first, RC_WALKABLE_AREA);
+}
 
 enum { CS, CH, SLOPE, HEIGHT, CLIMB, RADIUS, MAX_ERROR, MAX_EDGE, MIN_REGION, MERGE_REGION,
        DETAIL_DIST, DETAIL_ERROR, DECOR_MODE, DECOR_PROUD, DECOR_CLEAR, PARAMS };
@@ -108,7 +159,7 @@ int main(int argc, char** argv)
 	else
 		rcRasterizeTriangles(&ctx, verts.data(), nv, tris.data(), areas.data(), nt, *hf, climb);
 	rcFilterLowHangingWalkableObstacles(&ctx, climb, *hf);
-	rcFilterLedgeSpans(&ctx, height, climb, *hf);
+	filterLedges(ctx, height, climb, *hf);
 	rcFilterWalkableLowHeightSpans(&ctx, height, *hf);
 
 	rcCompactHeightfield* chf = rcAllocCompactHeightfield();

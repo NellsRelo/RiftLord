@@ -6,8 +6,8 @@ build finds the level by its shape (leveltitle.level_entry, level_files, is_leve
 `_Map01`. The test missions' pinned builds (Fixture Edit; Fixture Scratch, taken out of its
 pinned campaign pak) are retitled to `RL_Scen_...`, and each gate the probe runs on a built
 pak gives the same rows on both: kit actors, Crystal, Chandelier, controllers, foliage, Fab,
-the rift floor and spawner heights, vertex fans, the walkable graph read (navstrict) and
-spawner facings.
+the rift floor and spawner heights, vertex fans, the walkable graph read (navstrict),
+spawner facings and every BuiltData reading back (its textures' absolute offsets).
 
     python3 tests/offline/test_retitled_gates.py
 
@@ -83,6 +83,17 @@ def run_gates(files, src, rec):
         'walkable graph read (navstrict)': len(list(navstrict.pak_buffers(src))),
         'spawner facings: the level read': spawnerfacing._umap(src) is not None,
     }
+    from riftlord.build.lighting import lightmaps
+    built = sorted(n[:-len('.uasset')] for n in files if n.endswith('_BuiltData.uasset'))
+    read = 0
+    for stem in built:
+        try:
+            lightmaps.BuiltData(files[stem + '.uasset'], files[stem + '.uexp'],
+                                files.get(stem + '.ubulk', b''))
+            read += 1
+        except (Exception, SystemExit):              # noqa: BLE001
+            pass
+    out['baked lighting reads back (%d BuiltData)' % len(built)] = read == len(built)
     if foliageadd.items(plan):
         out['foliage'] = foliageadd.gates(files, plan)
     if fabemit.uses_fab(plan) or any(n.startswith('OMD/Content/Mods/Fab/') for n in files):

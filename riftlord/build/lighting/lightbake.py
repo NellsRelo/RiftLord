@@ -12,12 +12,16 @@ encoded (proven in game 2026-10-16).
 
 Step 3: with `BAKE` on, the BAKE_SUBLEVELS' light maps are baked from the level's
 Static lights and sky light (lightbaker.py, run in the render venv as a subprocess),
-with the plan's removed, moved and added pieces, its liquid lights recoloured
-(riftlord.liquidlights), its own light colours (`lightColours`, levelretint) and the
-chosen sky's home sky light (riftlord.skyfog). Bakes are cached by their inputs.
+with the plan's removed, moved and added pieces (added meshes and kit pieces get light
+maps of their own in the persistent level, and their Static lights light the bake:
+lightalloc.py), its liquid lights recoloured
+(riftlord.liquidlights), its own lights' values, moves and removals and its Sky Light
+values (riftlord.build.world.lighting), and the chosen sky's texture. Bakes are cached by
+their inputs.
 
-Switches: `lightbake.PATTERN=true` (default off), `lightbake.BAKE=true|false|auto` (auto by default: proven on Beset);
-`lightbake.QUALITY="preview"` for a quick bake.
+Switches: `lightbake.PATTERN=true` (default off), `lightbake.BAKE=true|false|auto` (auto by
+default: bakes when needs() finds the shipped light maps stale); `lightbake.QUALITY="preview"`
+for a quick bake.
 """
 
 import colorsys
@@ -28,6 +32,7 @@ import shutil
 import struct
 import subprocess
 import sys
+import threading
 
 import numpy as np
 from riftlord.core import gamepath
@@ -38,9 +43,10 @@ ROOT = os.path.dirname(HERE)
 #: Replace the copied sublevels' light maps with the probe pattern.
 PATTERN = False
 #: Bake the copied sublevels' light maps from the level's lights (step 3): True, False, or
-#: 'auto' (the default since Beset Bake C-F, 2026-10-16) = when the plan changes the sky or
-#: a liquid, which is when the shipped light maps go wrong (a night sky over day light,
-#: blue light around lava).
+#: 'auto' (the default) = when needs() finds the shipped light maps stale: a sky, liquid or
+#: light colour of the plan's own (since Beset Bake C-F, 2026-10-16), or pieces removed,
+#: moved or added (since 2026-11-04: the lighting is baked from the final geometry, user
+#: 2026-10-15).
 BAKE = 'auto'
 #: The decision for the build under way (decide()).
 _bake_now = False
@@ -81,26 +87,149 @@ SUFFIX = '_BuiltData'
 
 #: {shipped BuiltData path: (uasset, uexp, ubulk)} baked by prepare() for this build
 _baked = {}
+#: Per thread: the kind of build under way (build_as) and the reasons the light maps were
+#: stale that its decide() left unbaked (pending).
+_BUILD = threading.local()
+#: The console's name for a build no build_as block names (the command line, probes).
+DEFAULT_KIND = 'build'
+
+
+class build_as:
+    """Name the builds this thread runs in the block (`kind`, said on the console) and
+    whether they may bake. An editor's build (`bake=False`: opening a mission in the
+    Onslaught Editor, saving waves into it) needs the level's actors and waves, not its
+    lighting, so it keeps the shipped light maps and leaves pending() for the Missions
+    page's Build, Install and Package to bake."""
+
+    def __init__(self, kind, bake=True):
+        self.kind, self.bake = kind, bake
+
+    def __enter__(self):
+        self.before = getattr(_BUILD, 'kind', None), getattr(_BUILD, 'bake', True)
+        _BUILD.kind, _BUILD.bake = self.kind, self.bake
+        return self
+
+    def __exit__(self, *exc):
+        _BUILD.kind, _BUILD.bake = self.before
+
+
+def pending():
+    """[reason] the last decide() of this thread found the light maps stale and left to a
+    build that may bake (build_as); [] when it baked, nothing was stale, or this program
+    carries no baker (baker_missing), which no later build of it would change."""
+    return list(getattr(_BUILD, 'pending', None) or [])
+
+
+def stale(plan):
+    """[reason] the shipped light maps no longer match a plan's level, [] when they do:
+    a sky, liquid or plane look, the Sky Light's values, the level's own Static lights
+    changed, moved or removed (riftlord.build.world.lighting), and pieces removed, moved
+    or added (the kinds a bake lays in: lightscene.OCCLUDING_KINDS and
+    lightalloc.RECEIVE_KINDS). Suns, fog and post process are drawn every frame and
+    never baked."""
+    from riftlord.build.lighting import lightalloc
+    from riftlord.build.lighting import lightscene
+    from riftlord.build.world import lighting
+    from riftlord.mapeditor import scratch
+    plan = lighting.migrated(plan or {}) or {}
+    look = plan.get('look') or {}
+    #: a sky reaches the light maps through a Static sky light (scratch.streamed_scene)
+    static_sky = scratch.streamed_scene(plan).get('static_sky', True)
+    baked = ('sky', 'liquid', 'planes') if static_sky else ('liquid', 'planes')
+    out = [what for what in baked if look.get(what)]
+    if static_sky and (lighting.clean(plan.get(lighting.PLAN_KEY)).get('skyLight')):
+        out.append('sky light')
+    changed = baked_lights_changed(plan)
+    if changed:
+        out.append('%d changed light%s' % (changed, '' if changed == 1 else 's'))
+    removed = len(plan.get('removed') or [])
+    #: an edit that only switches collision is no move (piececollision)
+    from riftlord.mapeditor import piececollision
+    moved = len(piececollision.moving_edits(plan))
+    kinds = set(lightscene.OCCLUDING_KINDS) | set(lightalloc.RECEIVE_KINDS)
+    added = sum(1 for a in plan.get('added') or []
+                if a.get('kind', 'mesh') in kinds and a.get('name'))
+    for count, what in ((removed, 'removed'), (moved, 'moved'), (added, 'added')):
+        if count:
+            out.append('%d %s piece%s' % (count, what, '' if count == 1 else 's'))
+    return out
+
+
+def baked_lights_changed(plan):
+    """How many of the level's own lights the plan changes (`lights`), moves
+    (`actorMoves`) or removes (`removedFx`) that are, or become, Static. With no level
+    named, every `lights` entry counts."""
+    from riftlord.build.world import lighting
+    plan = plan or {}
+    edits = lighting.clean_lights(plan.get(lighting.LIGHTS_KEY))
+    level = plan.get('level')
+    if not level:
+        return len(edits)
+    from riftlord.mapeditor import scratch
+    if scratch.is_scratch(plan):
+        return 0
+    from riftlord.mapeditor import leveldata
+    try:
+        rig = {l['key']: l for l in leveldata.light_rig(level) if l.get('key')}
+    except Exception:                                # noqa: BLE001
+        return len(edits)
+    moved = set(leveldata.clean_actor_moves(plan.get('actorMoves')))
+    gone = {str(k) for k in plan.get('removedFx') or []}
+    count = 0
+    for key, light in rig.items():
+        static = str(light.get('mobility') or '').endswith('Static')
+        made = (edits.get(key) or {}).get('Mobility')
+        if (key in edits and (static or made == lighting.STATIC)) or \
+                (static and (key in moved or key in gone)):
+            count += 1
+    return count
+
+
+def receives(plan):
+    """Whether a plan's level has anything to bake into: the host's own light-mapped
+    pieces (scratch.streamed_scene keeps them), or added pieces (lightalloc.receivers,
+    with BAKE_PERSISTENT)."""
+    from riftlord.build.lighting import lightalloc
+    from riftlord.mapeditor import scratch
+    if scratch.streamed_scene(plan).get('host', True):
+        return True
+    return bool(BAKE_PERSISTENT and lightalloc.receivers(plan))
 
 
 def needs(plan):
-    """Whether a plan changes what the shipped light maps were baked for: a sky, a
-    liquid, or a light's colour."""
-    look = (plan or {}).get('look') or {}
-    from riftlord.build.world import levelretint
-    return bool(look.get('sky') or look.get('liquid') or look.get('planes')
-                or levelretint.clean_colours((plan or {}).get('lightColours')))
+    """Whether BAKE 'auto' bakes a plan's build: stale() finds its light maps out of date
+    and it has something to bake into (receives)."""
+    return bool(stale(plan)) and receives(plan)
 
 
 def decide(plan):
-    """Settle BAKE for one build; returns whether it bakes."""
+    """Settle BAKE for one build and say on the console which kind of build it is
+    (build_as) and why it bakes or not; returns whether it bakes."""
     global _bake_now
-    _bake_now = BAKE is True or (BAKE == 'auto' and needs(plan))
-    if _bake_now:
-        why = baker_missing()
-        if why:
-            print('lightbake: not baking (%s); the build keeps the shipped light maps' % why)
-            _bake_now = False
+    kind = getattr(_BUILD, 'kind', None) or DEFAULT_KIND
+    _bake_now, _BUILD.pending = False, []
+    if not receives(plan):
+        print('lightbake: %s: not baking: no piece of the level takes a light map'
+              % kind)
+        return _bake_now
+    reasons = stale(plan) or (['lightbake.BAKE is on'] if BAKE is True else [])
+    if BAKE is False or not reasons:
+        print('lightbake: %s: not baking: %s' % (kind,
+              'switched off (lightbake.BAKE)' if BAKE is False else
+              'the plan changes nothing the shipped light maps hold'))
+        return _bake_now
+    if not getattr(_BUILD, 'bake', True):
+        _BUILD.pending = reasons
+        print('lightbake: %s: not baking; Build, Install or Package on the Missions page '
+              'bakes the light maps, which the plan changes: %s' % (kind, ', '.join(reasons)))
+        return _bake_now
+    why = baker_missing()
+    if why:                          # no later build of this program could bake it either
+        print('lightbake: %s: NOT baking (%s); the build keeps the shipped light maps, '
+              'though the plan changes them: %s' % (kind, why, ', '.join(reasons)))
+        return _bake_now
+    print('lightbake: %s: bakes its light maps: %s' % (kind, ', '.join(reasons)))
+    _bake_now = True
     return _bake_now
 
 
@@ -109,8 +238,10 @@ FROZEN_SWITCH = '--lightbake'
 
 
 #: The baker's native packages (Mitsuba, Dr.Jit, moderngl), zipped into a frozen Rift
-#: Lord beside its modules by workshop/build_app.py.
+#: Lord beside its modules by tools/build.py.
 FROZEN_PACKAGES = 'baker-packages.zip'
+#: The baker's module, which a frozen Rift Lord must carry.
+BAKER_MODULE = 'riftlord.build.lighting.lightbaker'
 
 
 def baker_missing():
@@ -120,7 +251,7 @@ def baker_missing():
     from riftlord.core import gamepath
     if not gamepath.frozen():
         return None
-    if importlib.util.find_spec('lightbaker') is None:
+    if importlib.util.find_spec(BAKER_MODULE) is None:
         return 'this Rift Lord build carries no light baker'
     if not os.path.exists(os.path.join(getattr(sys, '_MEIPASS', ROOT), FROZEN_PACKAGES)):
         return 'this Rift Lord build carries neither Mitsuba nor moderngl'
@@ -174,6 +305,13 @@ def active():
     return bool(PATTERN or _bake_now)
 
 
+def give_up():
+    """Stop this build's bake (its bake failed): it keeps the level's shipped light maps."""
+    global _bake_now
+    _bake_now = False
+    _baked.clear()
+
+
 def _tags():
     return BAKE_SUBLEVELS if _bake_now else PATTERN_SUBLEVELS
 
@@ -182,16 +320,20 @@ def built_data_path(level_path):
     return level_path + SUFFIX
 
 
-def sublevel_tags(level_name):
-    """The sublevels the active mode rewrites that this level has, each with a BuiltData
-    package."""
+def sublevel_tags(level_name, plan=None):
+    """The sublevels the active mode rewrites that this level has and the plan's level
+    streams (scratch.streamed_scene), each with a BuiltData package."""
     from riftlord.core import gamefiles
     from riftlord.build.navigation import navpatch
+    from riftlord.mapeditor import scratch
+    streamed = scratch.streamed_scene(plan).get('streamed')
     base = navpatch.map_path(level_name)
     out = []
     for tag in _tags():
+        if streamed is not None and tag not in streamed:
+            continue
         stem = '../../../OMD/Content' + built_data_path('%s_%s' % (base, tag))[len('/Game'):]
-        if stem + '.uasset' in gamefiles.index():
+        if gamefiles.stored(stem + '.uasset'):
             out.append(tag)
     return out
 
@@ -343,42 +485,57 @@ def imports_resolve(level_files, built_files, new_level_path):
 # ------------------------------------------------------------------ step 3: bake
 
 def bake_spec(level_name, plan):
-    """What lightbaker.bake needs from a plan: its piece edits, the liquid lights' and
-    the plan's own new light colours ({'<tag>|<export>': rgb}) and the chosen sky's home
-    level."""
+    """What lightbaker.bake needs from a plan: its piece edits, the liquid lights' new
+    colours ({'<tag>|<export>': rgb}), the plan's own lights' values, moves and removals
+    and its Sky Light values (riftlord.build.world.lighting.bake_inputs), and its sky."""
+    from riftlord.build.world import lighting
     from riftlord.build.world import liquidlights
-    from riftlord.build.world import skyfog
-    plan = plan or {}
+    plan = lighting.migrated(plan or {}, level_name) or {}
     colours = {}
-    from riftlord.build.world import levelretint
-    #: the plan's own light colours win over the liquid lights' (apply.retint)
-    for edits in (liquidlights.edits(level_name, plan), levelretint.light_edits(level_name, plan)):
-        for tag, lights in (edits or {}).items():
-            for export, rgb in lights.items():
-                colours['%s|%d' % (tag, int(export))] = [float(v) for v in rgb]
+    for tag, lights in (liquidlights.edits(level_name, plan) or {}).items():
+        for export, rgb in lights.items():
+            colours['%s|%d' % (tag, int(export))] = [float(v) for v in rgb]
     sky = ((plan.get('look') or {}).get('sky')) or None
-    #: the same home the build's lighting comes from, `look.skyHome` included
-    world = skyfog.world_with_sky(plan) if sky else {}
-    home = world.get('_skyHome')
+    inputs = lighting.bake_inputs(level_name, plan)
     sub = {k: plan.get(k) or [] for k in ('removed', 'edits', 'added')}
     sub['look'] = plan.get('look') or {}
-    return {'plan': sub, 'light_colours': colours, 'sky_level': home, 'sky': sky,
-            'sky_fog': sky_fog(home, world) if sky else None,
-            'lava_lights': lava_light_points(level_name, plan)}
+    from riftlord.build.lighting import lightalloc
+    from riftlord.mapeditor import scratch
+    scene = scratch.streamed_scene(plan)
+    out = {'plan': sub, 'light_colours': colours, 'sky_level': None, 'sky': sky,
+           'light_edits': {k: v for k, v in inputs['lights'].items()},
+           'light_moves': inputs['moves'], 'light_removed': inputs['removed'],
+           'sky_light_edit': inputs['sky_light'],
+           'sky_fog': sky_fog(level_name, plan) if sky else None,
+           'lava_lights': lava_light_points(level_name, plan) if scene.get('host', True)
+           else []}
+    out.update(scene)
+    if BAKE_PERSISTENT:
+        out['receivers'] = lightalloc.receivers(plan)
+        out['added_lights'] = lightalloc.added_lights(plan)
+    return out
 
 
-def sky_fog(home, world):
-    """{'colour': linear rgb, 'opacity'} of the height fog the chosen sky is seen
-    through: the build's fog colour (world fogColour, the sky's home fog unless the plan
-    sets one) and the home level's FogMaxOpacity."""
-    from riftlord.formats.omd3 import omd3sky
-    fog = ((omd3sky.load().get(home) or {}).get('look') or {}).get(
-        'ExponentialHeightFogComponent') or {}
-    colour = world.get('fogColour') or fog.get('FogInscatteringColor')
-    if not colour:
+def sky_fog(level_name, plan):
+    """{'colour': linear rgb, 'opacity'} of the height fog the sky is seen through: the
+    level's fog with the plan's Height Fog values, or None when the level has no fog."""
+    from riftlord.build.world import lighting
+    from riftlord.mapeditor import scratch
+    plan = lighting.migrated(plan or {}, level_name) or {}
+    try:
+        state = lighting.shown(level_name, scratch.is_scratch(plan))
+    except Exception:                                # noqa: BLE001
         return None
+    fog = (state.get('stored') or {}).get('heightFog')
+    if fog is None:
+        return None
+    fog = dict(fog)
+    fog.update(lighting.clean(plan.get(lighting.PLAN_KEY)).get('heightFog') or {})
+    colour = fog.get('FogInscatteringColor') or \
+        lighting.DEFAULTS['ExponentialHeightFogComponent']['FogInscatteringColor']
+    opacity = fog.get('FogMaxOpacity')
     return {'colour': [float(v) for v in colour[:3]],
-            'opacity': float(fog.get('FogMaxOpacity', DEFAULT_FOG_MAX_OPACITY))}
+            'opacity': float(DEFAULT_FOG_MAX_OPACITY if opacity is None else opacity)}
 
 
 def lava_light_points(level_name, plan):
@@ -496,9 +653,16 @@ def prepare(level_name, plan, log=print):
     from riftlord.build.navigation import navpatch
     spec = bake_spec(level_name, plan)
     spec['quality'] = QUALITY
-    tags = list(sublevel_tags(level_name))
+    tags = list(sublevel_tags(level_name, plan))
     if BAKE_PERSISTENT and _has_built_data(navpatch.map_path(level_name)):
         tags.append('persistent')
+    if not tags:
+        raise SystemExit('lightbake: %s has no lighting data in the game files to bake into'
+                         % level_name)
+    from riftlord.build.lighting import lightalloc
+    if 'persistent' not in tags or not lightalloc.active(level_name, plan):
+        spec.pop('receivers', None)
+        spec.pop('added_lights', None)
     key = bake_key(level_name, tags, spec)
     out = os.path.join(_bake_cache(), '%s-%s' % (level_name, key))
     report_path = os.path.join(out, 'report.json')
@@ -526,11 +690,19 @@ def prepare(level_name, plan, log=print):
         from riftlord.core import gpulock
         with heavyslot.slot('light bake %s' % level_name), \
                 gpulock.turn('light bake %s' % level_name, log):
-            got = subprocess.run(cmd, cwd=gamepath.REPO_ROOT, env=env, timeout=BAKE_TIMEOUT, **kw)
+            got = subprocess.run(cmd, cwd=gamepath.REPO_ROOT, env=env, timeout=BAKE_TIMEOUT,
+                                 stderr=subprocess.PIPE, text=True, errors='replace', **kw)
+        if got.stderr:
+            print(got.stderr.rstrip())
         if got.returncode != 0 or not os.path.exists(os.path.join(part, 'report.json')):
             shutil.rmtree(part, ignore_errors=True)
-            raise SystemExit('lightbake: the bake of %s failed (exit %d)'
-                             % (level_name, got.returncode))
+            #: the baker's last error line, for the console
+            last = [ln for ln in (got.stderr or '').splitlines() if ln.strip()][-1:]
+            from riftlord.core import buildmessage
+            raise buildmessage.fault(
+                'bake the light maps',
+                'lightbake: the bake of %s failed (exit %d)%s'
+                % (level_name, got.returncode, ': ' + last[0] if last else ''))
         shutil.rmtree(out, ignore_errors=True)
         os.replace(part, out)
     base = navpatch.map_path(level_name)
@@ -549,7 +721,7 @@ def prepare(level_name, plan, log=print):
 def _has_built_data(level_path):
     from riftlord.core import gamefiles
     stem = '../../../OMD/Content' + built_data_path(level_path)[len('/Game'):]
-    return stem + '.uasset' in gamefiles.index()
+    return bool(gamefiles.stored(stem + '.uasset'))
 
 
 def persistent_files(files, level_name, mod, report=None):

@@ -1,20 +1,22 @@
-"""Offline checks on the level's own lights recoloured and effects swapped (plan
-`lightColours`, `fxSwaps`: riftlord/build/world/levelretint.py), on The Cellar (Scenario_16).
+"""Offline checks on the level's own lights recoloured and effects swapped (plan `lights`
+LightColor, riftlord/build/world/lighting.py, from an older plan's `lightColours`;
+`fxSwaps`: riftlord/build/world/levelretint.py), on The Cellar (Scenario_16).
 
     python3 test_levelretint.py
 
-- The plan's fields are checked: colours '#rrggbb' on actor keys, swaps to a surveyed
-  Emitter system only (a Niagara one or an unknown one is refused); save_plan keeps both.
-- `lightColours` reaches every point and rect light component of the actor, never a
-  DirectionalLight; `fxSwaps` reaches the Emitter's ParticleSystemComponent; a swap back to
-  the shipped system writes nothing.
+- The plan's fields are checked: an old plan's colours '#rrggbb' on actor keys, swaps to a
+  surveyed Emitter system only (a Niagara one or an unknown one is refused); save_plan turns
+  `lightColours` into `lights` and keeps `fxSwaps`.
+- A light colour reaches every light component of the actor; an old `lightColours` entry on
+  a DirectionalLight is dropped; `fxSwaps` reaches the Emitter's ParticleSystemComponent; a
+  swap back to the shipped system writes nothing.
 - apply.sublevel_edits hands them to the sublevel that holds them; the written Lighting
   copy stores the new LightColor (bytes BGRA) on a light that states one and on a torch
   that leaves it to its class, and leaves other lights alone; the written Environment copy's
   emitter names the new system (a ParticleSystem import under its package) in Template and
   in its preload list in place of the old one, and pkgcheck passes both.
 - A recolour makes the build bake (lightbake.needs), and the bake spec carries the plan's
-  colour by light component, over the liquid lights' colour for the same light.
+  colour by light actor (the baker puts it over the liquid lights' colour).
 
 Reads the game's packages only. Exit 0 when every check passes.
 """
@@ -31,6 +33,7 @@ from riftlord.build import levelbuild  # noqa: E402
 from riftlord.build.lighting import lightbake  # noqa: E402
 from riftlord.build.navigation import navpatch  # noqa: E402
 from riftlord.build.world import levelretint  # noqa: E402
+from riftlord.build.world import lighting  # noqa: E402
 from riftlord.build.world import liquidlights  # noqa: E402
 from riftlord.core import gamefiles  # noqa: E402
 from riftlord.core import pkgcheck  # noqa: E402
@@ -106,10 +109,11 @@ def run():
     rec = {'level': LEVEL, 'plan': {'level': LEVEL, 'lightColours': {key(light): GREEN},
                                     'fxSwaps': {key(pool): TEMPLATE}}}
     _warnings, cleaned = records.validate_plan(rec)
-    check('save_plan keeps lightColours and fxSwaps',
-          cleaned.get('lightColours') == {key(light): GREEN}
+    check('save_plan turns lightColours into lights and keeps fxSwaps',
+          cleaned.get('lights') == {key(light): {'LightColor': GREEN}}
+          and 'lightColours' not in cleaned
           and cleaned.get('fxSwaps') == {key(pool): TEMPLATE},
-          {k: cleaned.get(k) for k in ('lightColours', 'fxSwaps')})
+          {k: cleaned.get(k) for k in ('lights', 'lightColours', 'fxSwaps')})
 
     # -- what they reach ----------------------------------------------------------------
     base = navpatch.map_path(LEVEL)
@@ -120,21 +124,23 @@ def run():
     plan = {'lightColours': {key(light): GREEN, key(rect): GREEN, key(sun): GREEN,
                              key(torch): GREEN},
             'fxSwaps': {key(pool): TEMPLATE, key(other): other['template']}}
-    lights = levelretint.light_edits(LEVEL, plan)
+    migrated = lighting.migrated(dict(plan, level=LEVEL))
+    lights = {t: {i: e['props'] for i, e in rows.items()}
+              for t, rows in lighting.package_edits(LEVEL, migrated).items()}
     torch_parts = {l['export'] for l in lv['lights']
                    if l['sub'] == 'Lighting' and l.get('actor') == torch['actor']}
     want = {light['export'], rect['export']} | torch_parts
-    check('light_edits: the point and rect lights\' components and every one of the '
+    check('lights: the point and rect lights\' components and every one of the '
           'torch\'s (%d), not the sun' % len(torch_parts),
           set(lights.get('Lighting') or {}) == want, lights)
-    check('light_edits: the colour as FColor / 255',
-          (lights.get('Lighting') or {}).get(light['export']) == levelretint.hex_rgb(GREEN))
+    check('lights: the colour as the level stores it',
+          (lights.get('Lighting') or {}).get(light['export']) == {'LightColor': GREEN})
     swaps = levelretint.swap_edits(LEVEL, plan)
     check('swap_edits: the emitter\'s component, not one swapped to its own system',
           swaps == {'Environment': {pool['export']: TEMPLATE}}, swaps)
     edits = apply.sublevel_edits(LEVEL, plan)
     check('sublevel_edits hands the colours to Lighting',
-          set((edits.get('Lighting') or {}).get('lightColours') or {}) == want)
+          set((edits.get('Lighting') or {}).get('lighting') or {}) == want)
     check('sublevel_edits hands the swap to Environment',
           (edits.get('Environment') or {}).get('fxSwaps') == {pool['export']: TEMPLATE})
 
@@ -153,7 +159,7 @@ def run():
     check('a light left alone keeps its colour',
           colour_of(back, untouched['export']) == colour_of(shipped, untouched['export']))
     check('Lighting copy passes pkgcheck', not problems, problems[:3])
-    check('the report counts them', '%d light(s) recoloured' % len(want) in report['notes'],
+    check('the report counts them', 'lighting: %d component(s) set' % len(want) in report['notes'],
           report['notes'])
 
     ua, ux = gamefiles.package(base + '_Environment')
@@ -192,12 +198,13 @@ def run():
     owner = next(l for l in lv['lights'] if l['sub'] == 'Lighting' and l['export'] == over)
     spec = lightbake.bake_spec(LEVEL, {'look': {'liquid': 'Acid_Surface_Inst'},
                                        'lightColours': {key(light): GREEN, key(owner): GREEN}})
-    colours = spec['light_colours']
-    check('the bake spec carries the plan\'s colour by component',
-          colours.get('Lighting|%d' % light['export']) == levelretint.hex_rgb(GREEN))
-    check('over the liquid light\'s colour for the same light',
-          colours.get('Lighting|%d' % over) == levelretint.hex_rgb(GREEN),
-          (pools['Lighting'][over], colours.get('Lighting|%d' % over)))
+    edits = spec['light_edits']
+    check('the bake spec carries the plan\'s colour by light actor',
+          edits.get(key(light)) == {'LightColor': GREEN}, edits.get(key(light)))
+    check('beside the liquid light\'s colour for the same light, which the baker puts under it',
+          edits.get(key(owner)) == {'LightColor': GREEN}
+          and 'Lighting|%d' % over in spec['light_colours'],
+          (pools['Lighting'][over], edits.get(key(owner))))
 
     bad = [c for c in checks if not c[1]]
     print('%d of %d checks pass' % (len(checks) - len(bad), len(checks)))

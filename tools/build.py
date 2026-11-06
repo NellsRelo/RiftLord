@@ -216,6 +216,10 @@ DATA = ['kit-catalogue.json', 'omd3-actor-meshes.json', 'omd3-actor-parts.json',
         # navregen's walkable-graph regeneration (omd3 collision hulls), navsurffloors'
         # mesh roles and stairfit's measured stair ascents
         'omd3-hulls.json', 'mesh-map.json', 'stair-ascent.json',
+        # each mesh's collision shape and profile (riftlord/mapeditor/piececollision.py)
+        'omd3-mesh-collision.json',
+        # Cover Seams' shipped cover catalogue (riftlord/mapeditor/coverseams.py)
+        'seam-covers.json',
         # the effects New Object offers (riftlord/fxsurvey.py) and kit pieces as their
         # donor placements build them (riftlord/kitdonors.py)
         'riftlord/fx-donors.json', 'kit-donor-parts.json',

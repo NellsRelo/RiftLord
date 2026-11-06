@@ -334,6 +334,21 @@ DEFAULT_CATEGORY = 'decoration'
 #: effects (under a '/fx/' folder) 'effect', whatever the asset is named.
 ARSENAL_ROOTS = ('/weapons/', '/trinkets/')
 
+#: The meshes whose footprint goes on the trap-grid lattice when placed in the Map Editor:
+#: floor tiles and stairs by their folder, the crenellation shelf by its name. Kit
+#: placement census section 6 (docs/research/kit-placement-census.md), footprint on the
+#: 150 uu lattice: 1,063 of 1,824 shipped placements under Floors, 201 of 489 under
+#: Stairs, 302 of 671 of Cren_Shelf_1x1; every other castle folder 26% or less.
+FOOTPRINT_LATTICE = ('/castleorder/floors/', '/castleorder/stairs/', 'cren_shelf_1x1')
+
+
+def footprint_on_lattice(path, name=''):
+    """True when a mesh's footprint snaps to the lattice (FOOTPRINT_LATTICE): a folder
+    needle (leading '/') matched in its path, else a needle in its name."""
+    low = str(path).lower()
+    leaf = str(name or path.rsplit('/', 1)[-1]).lower()
+    return any(n in low if n.startswith('/') else n in leaf for n in FOOTPRINT_LATTICE)
+
 
 def category_of(path, name=''):
     """Which shelf of the kit one asset belongs on.

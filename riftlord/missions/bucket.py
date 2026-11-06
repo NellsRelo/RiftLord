@@ -35,6 +35,7 @@ import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
+from riftlord.core import buildmessage  # noqa: E402
 from riftlord.core import gamepath  # noqa: E402
 from riftlord.core import paksource  # noqa: E402
 
@@ -189,17 +190,24 @@ def _source(ident):
 def item(ident, built=False):
     """A record as an editor reopens it, with the map its build carries filled in and
     the mission's details in its wave spec. With `built`, a Map Editor mission whose
-    build is missing or out of date is baked first, so its map can be opened."""
+    build is missing or out of date is baked first, so its map can be opened: an editor's
+    build, which leaves its light bake to the Missions page (_bake_if_stale)."""
     rec = load(ident)
     if rec is None:
         return None
     if built and is_stale(rec):
-        _bake_if_stale(ident)
+        _bake_if_stale(ident, 'opening it in an editor')
         rec = load(ident)
     path = _source(ident)
     if path is None and not _editable(rec):
         return None
     rec['map'] = rec.get('map') or (_map_in(path) if path else None)
+    #: a plan saved before the Lighting section, as the Map Editor edits it
+    #: (riftlord.build.world.lightmigrate); the record itself changes on the next save
+    if _editable(rec) and isinstance(rec.get('plan'), dict):
+        from riftlord.build.world import lighting
+        rec['plan'] = lighting.migrated(dict(rec['plan'], level=rec['plan'].get('level')
+                                             or rec.get('level')))
     #: the editors' Campaign picker shows a mission placed in Endless as Endless
     if _editable(rec):
         rec['placement'] = _placement_view(rec)
@@ -277,11 +285,12 @@ def item(ident, built=False):
 def target(ident):
     """(build path, mod name) of a mission, so an editor can save into it again --
     the same folder, mod and Guids -- whichever editor made it. A Map Editor mission
-    whose build is missing or out of date is baked first. The mod is read off its
-    mission row (`<mod>_Mission01`), which both editors name the same way."""
+    whose build is missing or out of date is baked first, as an editor's build
+    (_bake_if_stale). The mod is read off its mission row (`<mod>_Mission01`), which both
+    editors name the same way."""
     rec = load(ident)
     if rec is not None and is_stale(rec):
-        _bake_if_stale(ident)
+        _bake_if_stale(ident, 'saving into it from an editor')
     path = _source(ident)
     if path is None:
         raise SystemExit('%s is not in Missions' % ident)
@@ -607,22 +616,34 @@ def is_stale(rec):
                                or bool(kits_changed(rec)))
 
 
+def light_pending(rec):
+    """[reason] the light maps of a Map Editor mission's current build are still to bake:
+    an editor built it (lightbake.build_as) after a change to its lighting; [] when they
+    are baked or nothing needs them."""
+    return list(rec.get('lightPending') or []) if _editable(rec) else []
+
+
 def needs_build(rec):
     """True for a Map Editor mission that Install and Package must not take: never
-    built, edited since its last build, or its last build failed."""
-    return _editable(rec) and (is_stale(rec) or bool(rec.get('bakeError')))
+    built, edited since its last build, its last build failed, or its light maps are
+    still to bake (light_pending)."""
+    return _editable(rec) and (is_stale(rec) or bool(rec.get('bakeError'))
+                               or bool(light_pending(rec)))
 
 
 def build_state(rec, path):
-    """'built', 'stale', 'unbuilt' or 'failed' for a mission's record and build path.
-    A mission without a Map Editor record is built: its build is all there is."""
+    """'built', 'unlit' (built, its light maps still to bake: light_pending), 'stale',
+    'unbuilt' or 'failed' for a mission's record and build path. A mission without a Map
+    Editor record is built: its build is all there is."""
     if not _editable(rec):
         return 'built'
     if rec.get('bakeError'):
         return 'failed'
     if path is None:
         return 'unbuilt'
-    return 'stale' if is_stale(rec) else 'built'
+    if is_stale(rec):
+        return 'stale'
+    return 'unlit' if light_pending(rec) else 'built'
 
 
 #: Detail fields a dialog's choice always sets, even to '' (Automatic).
@@ -1083,34 +1104,55 @@ _JOB = None
 _JOB_LOCK = threading.Lock()
 
 
-def bake(ident, note=None):
+#: The console's name for a build of the Missions page (Build, Install, Package) and the
+#: command line: one that bakes the light maps (lightbake.build_as).
+MISSIONS_BUILD = 'Missions build'
+
+
+def bake(ident, note=None, editor=None):
     """Build a Map Editor mission's cooked files from its record, into its folder in
     Missions: the level from the plan, then the record's waves onto that level. The
-    record is left as it is, apart from its bake stamp. Returns the build path."""
+    record is left as it is, apart from its bake stamp. `editor` names an editor's build
+    ('opening it in an editor'), which skips the light bake and notes it as pending
+    (light_pending) for a later build to do. Returns the build path."""
     from riftlord.core import console
-    with _BAKE_LOCK, console.working_as(console.MAP_COOKER):
+    from riftlord.build.lighting import lightbake
+    kind = 'editor build (%s)' % editor if editor else MISSIONS_BUILD
+    with _BAKE_LOCK, console.working_as(console.MAP_COOKER), \
+            lightbake.build_as(kind, bake=not editor):
         _PROGRESS[ident] = 'building'
         from riftlord.core import buildstage
         try:
             with buildstage.listen(lambda name: _STAGE.__setitem__(ident, name)):
                 return _bake(ident, note or console.notes(console.MAP_COOKER))
         except (Exception, SystemExit) as exc:       # noqa: BLE001
-            why = str(exc) or type(exc).__name__
-            _note_failure(ident, why)
-            title = (load(ident) or {}).get('title') or ident
-            console.error(why if title in why else '%s was not built: %s' % (title, why),
-                          console.MAP_COOKER)
-            raise
+            shown, rows = _say_failure(exc, ident, (load(ident) or {}).get('title') or ident)
+            _note_failure(ident, shown, rows)
+            raise _failed(exc, shown, rows) from exc
         finally:
             _PROGRESS.pop(ident, None)
             _STAGE.pop(ident, None)
 
 
-def _bake_if_stale(ident):
-    """Bake a mission unless it is current by the time no other bake is running."""
+def _failed(exc, shown, rows):
+    """What a failed build raises on: a Fault for Rift Lord's own (C), else a Refusal with
+    its Checks rows (B)."""
+    if buildmessage.is_fault(exc):
+        return buildmessage.Fault(shown, buildmessage.technical(exc))
+    return buildmessage.Refusal(shown, buildmessage.technical(exc), rows)
+
+
+def reports_dir():
+    """Where a failed build's report file goes (buildmessage.save_report)."""
+    return os.path.join(root(), '.riftlord', 'reports')
+
+
+def _bake_if_stale(ident, editor):
+    """Bake a mission unless it is current by the time no other bake is running: an
+    editor's build (`editor` says what for), without its light bake."""
     with _BAKE_LOCK:
         if is_stale(load(ident)):
-            bake(ident)
+            bake(ident, editor=editor)
 
 
 def build_skip(rec):
@@ -1138,7 +1180,8 @@ def rebuild(ident, note=None):
         return bake(ident, note)
     why = build_skip(rec)
     if why:
-        raise SystemExit(why)
+        raise buildmessage.Refusal('%s was not built: %s.' % (rec.get('title') or ident, why)
+                                   if rec else '%s is not in Missions.' % ident)
     from riftlord.core import console
     from riftlord.onslaught import buildjob
     with _BAKE_LOCK, console.working_as(console.MAP_COOKER):
@@ -1148,10 +1191,8 @@ def rebuild(ident, note=None):
             with buildstage.listen(lambda name: _STAGE.__setitem__(ident, name)):
                 got = buildjob.resave(ident, note or console.notes(console.MAP_COOKER))
         except (Exception, SystemExit) as exc:       # noqa: BLE001
-            why = str(exc) or type(exc).__name__
-            console.error('%s was not built: %s' % (rec.get('title') or ident, why),
-                          console.MAP_COOKER)
-            raise
+            shown, rows = _say_failure(exc, ident, rec.get('title') or ident)
+            raise _failed(exc, shown, rows) from exc
         finally:
             _PROGRESS.pop(ident, None)
             _STAGE.pop(ident, None)
@@ -1185,7 +1226,7 @@ def build(ids):
                 out['built'].append(ident)
             except (Exception, SystemExit) as exc:   # noqa: BLE001
                 out['failed'].append({'id': ident, 'title': title,
-                                      'error': str(exc) or type(exc).__name__})
+                                      'error': buildmessage.explain(exc)[0]})
     finally:
         for ident in todo:
             _PROGRESS.pop(ident, None)
@@ -1217,9 +1258,12 @@ def _run_build(ids):
     try:
         got = build(ids)
     except (Exception, SystemExit) as exc:           # noqa: BLE001
+        shown, detail = buildmessage.explain(exc)
         got = {'built': [], 'skipped': [], 'failed': [
-            {'id': '', 'title': 'Build', 'error': str(exc) or type(exc).__name__}]}
-        console.error('build stopped: %s' % got['failed'][0]['error'], console.MAP_COOKER)
+            {'id': '', 'title': 'Build', 'error': shown}]}
+        if detail:
+            console.debug('build stopped: %s' % detail, console.MAP_COOKER)
+        console.error('The build stopped: %s' % shown, console.MAP_COOKER)
     with _JOB_LOCK:
         _JOB.update(got, running=False, finished=time.time())
 
@@ -1276,33 +1320,46 @@ def _bake(ident, note):
     from riftlord.core import pakspelling
     stuck += pakspelling.plan_problems(rec['plan'])
     if stuck:
-        raise SystemExit('%s could not be built: %s.' % (title, '; '.join(stuck)))
+        from riftlord.mapeditor import checks
+        level = planactors.level_actors(rec['level'])
+        raise buildmessage.Refusal(
+            '%s could not be built: %s. %s' % (title, '; '.join(stuck), buildmessage.CHECKS),
+            checks=[checks.row('error', text, rec['plan'], level) for text in stuck])
     details = dict(rec.get('details') or {}, endless=bool(rec.get('endless')),
                    endlessOnly=bool(rec.get('endlessOnly')))
-    from riftlord.missions import missionunlocks
-    report = emit.write(rec['level'], out=out, mod=rec.get('mod'), title=title,
-                        placement=rec.get('placement') or None, details=details,
-                        plan=rec['plan'], guids=guids, fresh_waves=True,
-                        load_picture=load_picture(rec),
-                        portal_picture=load_picture(rec, 'portalPicture'),
-                        scramble=rec.get('scramble'),
-                        #: the heroes and items beating it grants (missionunlocks)
-                        unlocks=missionunlocks.of_record(rec),
-                        #: its place in a shipped campaign (_keep_shipped_index)
-                        into_index=rec.get('campaignIndex'))
-    if not report.get('written'):
-        why = '; '.join(report.get('checks_failed') or []) or 'it did not build'
-        raise SystemExit('%s could not be built: %s. Open it in the Map Editor to fix it.'
-                         % (title, why))
+    plan, fallbacks = rec['plan'], []
+    report = _write_level(rec, out, title, details, guids, plan)
+    while isinstance(report, buildmessage.LeaveOut):
+        #: an added piece Rift Lord could not link: built again without it (C)
+        left = report
+        console.debug('%s: %s' % (title, left.detail), console.MAP_COOKER)
+        plan = dict(plan, added=[a for n, a in enumerate(plan.get('added') or [])
+                                 if n not in left.items])
+        fallbacks.append('Rift Lord could not link %s into the level, so the mission is '
+                         'built without %s.' % (', '.join(left.names),
+                                                'it' if len(left.names) == 1 else 'them'))
+        report = _write_level(rec, out, title, details, guids, plan)
+    _refuse_unwritten(report, title, plan)
+    #: the light maps this build left to a Missions build (lightbake.build_as)
+    from riftlord.build.lighting import lightbake
+    unlit = lightbake.pending()
     #: NavPower's vertex-fan walk closes everywhere on the written level's walkable graph;
-    #: a fan that never closes freezes the game (riftlord.build.navigation.navfan)
+    #: a fan that never closes freezes the game (riftlord.build.navigation.navfan). A
+    #: rebuilt floor that fails it is built again on the level's shipped floor (C).
     from riftlord.build.navigation import navfan
+    from riftlord.build.navigation import navregen
     bad = navfan.build_problems(out)
+    if bad and not plan.get(emit.SHIPPED_FLOOR) and navregen.wanted(rec['level'], plan):
+        console.debug('%s: navfan: %s' % (title, '; '.join(bad[:8])), console.MAP_COOKER)
+        plan = dict(plan, **{emit.SHIPPED_FLOOR: True})
+        report = _write_level(rec, out, title, details, guids, plan)
+        _refuse_unwritten(report, title, plan)
+        bad = navfan.build_problems(out)
     if bad:
-        raise SystemExit('%s could not be built: its walkable graph would freeze the game: %s'
-                         '. Open it in the Map Editor to fix it.'
-                         % (title, '; '.join(bad[:4]) + ('; and %d more' % (len(bad) - 4)
-                                                         if len(bad) > 4 else '')))
+        raise buildmessage.fault('build a floor enemies can walk without freezing the game',
+                                 '; '.join(bad[:8]))
+    report['warnings'] = fallbacks + [w for w in report.get('warnings') or []
+                                      if w not in fallbacks]
     #: each unstable rift stands over walkable floor of the written level, nothing solid
     #: between; one higher over its floor than any shipped rift is a warning
     #: (riftlord.build.navigation.riftfloor)
@@ -1310,8 +1367,11 @@ def _bake(ident, note):
         from riftlord.build.navigation import riftfloor
         bad, high = riftfloor.build_report(out, rec['plan'], rec['level'])
         if bad:
-            raise SystemExit('%s could not be built: %s. Open it in the Map Editor to fix it.'
-                             % (title, '; '.join(bad)))
+            from riftlord.mapeditor import checks
+            level = planactors.level_actors(rec['level'])
+            raise buildmessage.Refusal(
+                '%s could not be built: %s %s' % (title, ' '.join(bad), buildmessage.CHECKS),
+                checks=[checks.row('error', text, rec['plan'], level) for text in bad])
         for line in high:
             console.warn('%s: %s' % (title, line), console.MAP_COOKER)
     #: a ground spawner standing higher over its floor than any shipped one: a warning
@@ -1321,29 +1381,31 @@ def _bake(ident, note):
         for line in riftfloor.spawner_warnings(out, rec['plan']):
             console.warn('%s: %s' % (title, line), console.MAP_COOKER)
     except Exception as exc:                         # noqa: BLE001
-        console.warn('%s: ground spawner heights not checked: %s' % (title, exc),
-                     console.MAP_COOKER)
+        console.debug('%s: ground spawner heights not checked: %s' % (title, exc),
+                      console.MAP_COOKER)
     #: an added spawner facing away from its route's first point: a warning
     #: (riftlord.mapeditor.spawnerfacing.warnings)
     try:
         from riftlord.mapeditor import spawnerfacing
-        for line in spawnerfacing.warnings(out):
+        for line in spawnerfacing.warnings(out, rec['plan']):
             console.warn('%s: %s' % (title, line), console.MAP_COOKER)
     except Exception as exc:                         # noqa: BLE001
-        console.warn('%s: spawner facings not checked: %s' % (title, exc), console.MAP_COOKER)
+        console.debug('%s: spawner facings not checked: %s' % (title, exc), console.MAP_COOKER)
     for line in report.get('not_applied') or []:
-        console.warn('%s: not applied: %s' % (title, line), console.MAP_COOKER)
+        console.warn('%s: %s' % (title, line), console.MAP_COOKER)
     for line in (report.get('fab') or {}).get('notes') or []:
         console.warn('%s: %s' % (title, line), console.MAP_COOKER)
     for line in report.get('warnings') or []:
         console.warn('%s: %s' % (title, line), console.MAP_COOKER)
+    for line in report.get('fixed') or []:
+        console.info('%s: %s' % (title, line), console.MAP_COOKER)
     from riftlord.missions import missionscramble, missionunlocks
     for warn, line in missionscramble.describe(report) + missionunlocks.describe(report):
         (console.warn if warn else console.info)('%s: %s' % (title, line), console.MAP_COOKER)
     applied = report.get('applied') or {}
     dropped = applied.get('preload_dropped') or []
-    console.info('%s: %d placed actor(s) preloaded by the level; %d donor preload '
-                 'dependencies dropped%s' % (
+    console.debug('%s: %d placed actor(s) preloaded by the level; %d donor preload '
+                  'dependencies dropped%s' % (
                      title, applied.get('level_preloads_added') or 0, len(dropped),
                      (' (%s)' % ', '.join(sorted({str(n) for _i, n in dropped})))
                      if dropped else ''), console.MAP_COOKER)
@@ -1357,22 +1419,39 @@ def _bake(ident, note):
             wavespec.bundle(dict(spec, map='%s_Map01' % report['mod'], bundle=True,
                                  out=out, resetDoors=reset), note=note)
         except (Exception, SystemExit) as exc:       # noqa: BLE001
-            why = str(exc) or type(exc).__name__
-            raise SystemExit('%s could not be built: its waves do not fit the level: %s. '
-                             'Open it in the Onslaught Editor to fix them.' % (title, why))
+            if buildmessage.is_fault(exc):
+                raise (exc if isinstance(exc, buildmessage.Fault) else
+                       buildmessage.internal('write the waves',
+                                             buildmessage.technical(exc))) from exc
+            raise buildmessage.Refusal(
+                '%s could not be built: its waves do not fit the level: %s. Open it in the '
+                'Onslaught Editor to change them.' % (title, buildmessage.explain(exc)[0])) \
+                from exc
     elif reset:
         from riftlord.onslaught import wavespec
         try:
             wavespec.reset_doors_bundle('%s_Map01' % report['mod'], out, note)
         except (Exception, SystemExit) as exc:       # noqa: BLE001
-            why = str(exc) or type(exc).__name__
-            raise SystemExit('%s could not be built: Reset door after Onslaught Loop could '
-                             'not be applied: %s' % (title, why))
+            #: the doors behave as the level ships them (C)
+            console.debug('%s: reset doors: %s' % (title, buildmessage.technical(exc)),
+                          console.MAP_COOKER)
+            console.warn('%s: Rift Lord could not apply Reset door after Onslaught Loop to '
+                         'this level, so its doors behave as the level ships them.' % title,
+                         console.MAP_COOKER)
     rec = load(ident)
+    #: what the build fixed that the designer may change, kept in the plan (buildmessage A)
+    take_plan_fixes(rec, report.get('planFixes') or [])
+    rec.pop('buildChecks', None)
     rec['guids'] = {r: g[:16].hex() for r, g in makemod.previous_guids(out).items()}
     rec['placement'] = report.get('placement') or rec.get('placement')
     rec['map'] = '%s_Map01' % report['mod']
     rec.pop('bakeError', None)
+    if unlit:
+        rec['lightPending'] = unlit
+        console.info('%s: built without its light bake (%s); Build, Install or Package '
+                     'bakes it' % (title, ', '.join(unlit)), console.MAP_COOKER)
+    else:
+        rec.pop('lightPending', None)
     rec['baked'] = bake_inputs(rec)
     rec['bakedAt'] = time.time()
     rec['carried'] = carried_mods(out, report['mod'])
@@ -1383,10 +1462,83 @@ def _bake(ident, note):
     return out
 
 
-def _note_failure(ident, why):
+def _write_level(rec, out, title, details, guids, plan):
+    """emit.write for a record with a copy of `plan` (a build writes fixes into the plan it
+    is given); a LeaveOut it raises is returned instead."""
+    import copy
+    from riftlord.build import emit
+    from riftlord.missions import missionunlocks
+    try:
+        return emit.write(rec['level'], out=out, mod=rec.get('mod'), title=title,
+                          placement=rec.get('placement') or None, details=details,
+                          plan=copy.deepcopy(plan), guids=guids, fresh_waves=True,
+                          load_picture=load_picture(rec),
+                          portal_picture=load_picture(rec, 'portalPicture'),
+                          scramble=rec.get('scramble'),
+                          #: the heroes and items beating it grants (missionunlocks)
+                          unlocks=missionunlocks.of_record(rec),
+                          #: its place in a shipped campaign (_keep_shipped_index)
+                          into_index=rec.get('campaignIndex'))
+    except buildmessage.LeaveOut as exc:
+        if not exc.items:
+            raise
+        return exc
+
+
+def _refuse_unwritten(report, title, plan):
+    """Raise for a report emit.write did not write: a Fault for Rift Lord's own (C), else a
+    Refusal naming what to change, with its Checks rows (B)."""
+    from riftlord.core import console
+    if report.get('written'):
+        return
+    for line in report.get('checks_detail') or []:
+        console.debug('%s: failed check: %s' % (title, line), console.MAP_COOKER)
+    detail = '; '.join(report.get('checks_detail') or [])
+    if report.get('faults') or not report.get('checks_failed'):
+        raise buildmessage.Fault(' '.join(report.get('faults') or [])
+                                 or 'Rift Lord could not build this mission.', detail)
+    raise buildmessage.Refusal(
+        '%s could not be built: %s %s' % (title, ' '.join(report['checks_failed']),
+                                          buildmessage.CHECKS),
+        detail, report.get('checks') or [])
+
+
+def take_plan_fixes(rec, fixes):
+    """Store what a build fixed into the record's plan, where the designer can change it:
+    [{'kind': 'point' | 'spawner', 'id', field: value}] (emit.snap_point, planactors.emit)."""
+    plan = rec.get('plan') or {}
+    for fix in fixes:
+        key = {'point': 'points', 'spawner': 'spawners'}.get(fix.get('kind'))
+        for item in plan.get(key) or []:
+            if isinstance(item, dict) and item.get('id') == fix.get('id'):
+                item.update({k: v for k, v in fix.items() if k not in ('kind', 'id')})
+
+
+def _say_failure(exc, ident, title):
+    """(shown, Checks rows) for a failed build (buildmessage.explain), written to the Map
+    Cooker console as '<title> was not built: ...' with the technical detail and traceback
+    at debug level; a fault's report is saved in reports_dir()."""
+    import traceback
+    from riftlord.core import console
+    shown, detail, rows = buildmessage.explain(exc, _STAGE.get(ident), reports_dir(), title)
+    if detail:
+        console.debug('%s: %s' % (title, detail), console.MAP_COOKER)
+    if buildmessage.is_fault(exc):
+        console.debug(''.join(traceback.format_exception(type(exc), exc, exc.__traceback__)),
+                      console.MAP_COOKER)
+    console.error(shown if title in shown else '%s was not built: %s' % (title, shown),
+                  console.MAP_COOKER)
+    return shown, rows
+
+
+def _note_failure(ident, why, rows=()):
     rec = load(ident)
     if rec is not None:
         rec['bakeError'] = why
+        if rows:
+            rec['buildChecks'] = list(rows)
+        else:
+            rec.pop('buildChecks', None)
         _write_json(_record_path(ident), rec)
 
 
@@ -1683,9 +1835,11 @@ def items():
             'editable': {'riftlord': bool(rec.get('level') or (rec.get('spec') or {}).get('map')),
                          'onslaught': bool(_editable(rec) or (path and _map_in(path))
                                            or rec.get('map'))},
-            # 'built', 'stale', 'unbuilt', 'failed' (build_state), or 'queued' and
-            # 'building' while a build works through it
+            # 'built', 'unlit', 'stale', 'unbuilt', 'failed' (build_state), or 'queued'
+            # and 'building' while a build works through it
             'state': _PROGRESS.get(ident) or build_state(rec, path),
+            #: why its light maps are still to bake (light_pending)
+            'lighting': light_pending(rec),
             'error': rec.get('bakeError'),
             'guids': guids, 'rows': [r for r, _t, _g in rows],
             'campaign': member[0]['key'] if member else None,
@@ -2555,10 +2709,11 @@ def refuse_unbuilt(ids, verb):
     console.error('nothing %s: %d mission(s) not built' % (verb, len(unbuilt)),
                   console.PACKAGING)
     if len(unbuilt) == 1:
-        raise SystemExit('Build %s first: it is not built or is out of date. Nothing was %s.'
-                         % (unbuilt[0], verb))
-    raise SystemExit('Build these missions first; they are not built or are out of date: '
-                     '%s. Nothing was %s.' % (', '.join(unbuilt), verb))
+        raise SystemExit('Build %s first: it is not built, is out of date or its lighting is '
+                         'still to bake. Nothing was %s.' % (unbuilt[0], verb))
+    raise SystemExit('Build these missions first; they are not built, are out of date or '
+                     'their lighting is still to bake: %s. Nothing was %s.'
+                     % (', '.join(unbuilt), verb))
 
 
 def export(ids, dest=None, note=None):

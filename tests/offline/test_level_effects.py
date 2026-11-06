@@ -13,8 +13,8 @@
   it when the plan also chooses a track), its AudioComponent has bAutoActivate false and no
   Sound, stands at the park, and the music cues still name the chosen track; a sound
   left alone keeps its Sound.
-- A sky from another home parks the level's own moon (skyfog.own_extras); the level's own
-  sky, or none, parks nothing.
+
+The level's moon: tests/offline/test_moons.py.
 
 Reads the game's packages only. Exit 0 when every check passes.
 """
@@ -30,7 +30,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
 
 from riftlord.build import apply  # noqa: E402
 from riftlord.build.world import levelmusic  # noqa: E402
-from riftlord.build.world import skyfog  # noqa: E402
 from riftlord.core import gamefiles  # noqa: E402
 from riftlord.formats.ue.uheader import parse as parse_header  # noqa: E402
 from riftlord.mapeditor import geomedits  # noqa: E402
@@ -40,8 +39,6 @@ from riftlord.onslaught import onslaught  # noqa: E402
 LEVEL = 'Scenario_06'
 #: The AmbientSounds of Scenario_06_Audio this test removes: the lava bed and one bubbles.
 BED, BUBBLES, WIND = 13, 24, 14
-#: A sky whose home is another level (Scenario_04, no moon).
-OTHER_SKY = 'Stormy_Sky_INST'
 TRACK = 'Battle_03'
 SCRATCH_PARENT = '/mnt/2tb_pro_a/tmp' if os.path.isdir('/mnt/2tb_pro_a/tmp') else None
 
@@ -127,18 +124,6 @@ def run(scratch):
     wind = props(onslaught.as_int(props(WIND)['RootComponent'][2]))
     check('a sound left alone keeps its Sound',
           'Sound' in wind and onslaught.as_int(wind['Sound'][2]) < 0)
-
-    moon = [p for p in lv['pieces'] if 'Moon' in str(p.get('material') or '')]
-    got = skyfog.own_extras(LEVEL, {'look': {'sky': OTHER_SKY}})
-    check('a sky from another home parks the level\'s moon',
-          moon and got == {moon[0]['sub']: [moon[0]['export']]}, got)
-    own = (lv.get('sky') or {}).get('material')
-    check('the level\'s own sky parks nothing',
-          own and skyfog.own_extras(LEVEL, {'look': {'sky': own}}) == {})
-    check('no sky parks nothing', skyfog.own_extras(LEVEL, {'look': {}}) == {})
-    sub = apply.sublevel_edits(LEVEL, {'look': {'sky': OTHER_SKY}})
-    check('the build parks it', moon and moon[0]['export'] in (
-        (sub.get(moon[0]['sub']) or {}).get('parked') or []))
 
     bad = [c for c in checks if not c[1]]
     print('%d of %d checks pass' % (len(checks) - len(bad), len(checks)))

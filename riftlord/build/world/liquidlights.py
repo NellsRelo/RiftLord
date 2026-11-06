@@ -217,7 +217,10 @@ def paint(builder, lights, report):
         data = bytearray(builder.pkg.exports[export - 1]['data'])
         span = builder._tag_span(data, 'LightColor')
         if not span or span[1] - span[2] != 4:
-            report['skipped'].append('light export %d has no colour to repaint' % export)
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'one light by the liquid', 'light export %d has no LightColor' % export,
+                effect='it keeps the colour it ships with', verb='repaint'))
             continue
         b, g, r = (max(0, min(255, int(round(v * 255)))) for v in (rgb[2], rgb[1], rgb[0]))
         alpha = data[span[2] + 3]

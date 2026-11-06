@@ -1,12 +1,12 @@
 {
   "900_Fixture_Edit_P": {
     "mode": "pinned",
-    "digest": "b32f49a0f59e55ee",
-    "what": "the new code's build of 2026-11-02 19:58 (edited doors write only authored pauses (host leftover 50 s wait on door 1 dropped))"
+    "digest": "497a8660c3209945",
+    "what": "the new code's build of 2026-11-05 12:52 (walkable-graph rebuild takes box components that stop walkers (the kit actors trap-grid and blocking boxes): Scenario_01 graph 0 209 to 199, graph 1 152 to 144 polygons, same coverage of the shipped graph and the same route legs (sandnav))"
   },
   "900_Fixture_Scratch_P": {
     "mode": "pinned",
-    "digest": "90ed5085bb905a5e",
-    "what": "the new code's build of 2026-10-30 19:53 (a level from scratch empties the persistent level precomputed visibility (popping))"
+    "digest": "ca14ba8be169aa70",
+    "what": "the new code's build of 2026-11-05 01:20 (scratch cover: stair flights of floor kit pieces, lattice from the floors' own phase)"
   }
 }

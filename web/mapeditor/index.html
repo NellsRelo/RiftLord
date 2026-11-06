@@ -149,6 +149,10 @@
                     color: var(--accent); font-size: 11px; text-decoration: underline; }
   button.iconlink:hover { background: none; color: var(--hot); }
   .hint { font-size: 11px; color: var(--dim); margin: 5px 0; line-height: 1.5; }
+  /* the Checks list under Save Mission (checks.js): one row per thing to change */
+  .checkrow { display: block; width: 100%; text-align: left; font-size: 11px; line-height: 1.4;
+              padding: 4px 6px; margin: 3px 0; white-space: normal; }
+  .checkrow[data-still] { cursor: default; }
   .hint.ok b { color: #3f9f5a; }
   .hint.bad { color: #e05252; }
   .spinner { display: inline-block; width: 11px; height: 11px; vertical-align: -1px;
@@ -168,7 +172,11 @@
   .row { display: flex; justify-content: space-between; align-items: center;
          gap: 8px; padding: 3px 0; border-bottom: 1px solid var(--rule);
          min-height: 22px; }
-  .row > span:first-child { flex: 1; min-width: 0; }
+  .row > span:first-child { flex: 1; min-width: min(50%, 7em); }
+  /* a control beside a row's label takes its own width, never the line (a full-width
+     control squeezed the label to one letter a line) */
+  .row > button, .row > select, .row > input:not([type=checkbox]) { flex: none; width: auto;
+     max-width: 50%; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .grid2.solo { grid-template-columns: 1fr; }
   #closelevel[hidden] { display: none; }
@@ -210,6 +218,26 @@
   .pick > input[type=color] { width: 100%; height: 26px; padding: 1px 2px;
                               background: var(--field); border: 1px solid var(--line);
                               border-radius: 4px; }
+  /* Map Settings' lighting and the Light section (lightingui.js): Reset beside a field's
+     label, a vector's numbers on one row, a sun's name (picks its handle) and Delete. */
+  button.litreset { float: right; width: auto; margin: 0; padding: 0 4px; background: none;
+                    border: none; color: var(--accent); font-size: 10.5px; line-height: 13px; }
+  button.litreset:hover { background: none; color: var(--hot); }
+  label.litbool > span { flex: 1; }
+  .litvec { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
+  .litvec input { min-width: 0; padding: 3px 3px; }
+  .litsun { border-bottom: 1px solid var(--rule); padding-bottom: 4px; }
+  .sunhead { display: flex; gap: 4px; align-items: center; margin-top: 6px; }
+  .sunhead button { margin: 0; }
+  .sunhead button.sunpick { flex: 1; min-width: 0; text-align: left; overflow: hidden;
+                            text-overflow: ellipsis; white-space: nowrap; }
+  .sunhead button[data-sun-del], .sunhead button[data-moon-del] { flex: none; width: auto; }
+  /* Map Settings' Seams (coverseams.js): the counts, a proposal's row, its cover under it,
+     why one is not placed */
+  .seamcount { font-size: 11px; color: var(--dim); margin: 6px 0; }
+  .sunhead button[data-seam-accept], .sunhead button[data-seam-skip] { flex: none; width: auto; }
+  .seamrow .meta, .seamno .meta { font-size: 11px; color: var(--dim); }
+  .seamno .bad, .seamcount.bad, .row .bad { color: #e05252; }
   /* The mission Guid: 32 hex digits on their own line, Generate under them. */
   .guidrow { display: grid; gap: 4px; }
   .guidrow input { width: 100%; box-sizing: border-box; font-size: 10.5px; }
@@ -325,6 +353,7 @@
       <button id="details" disabled>Details&hellip;</button>
       <button id="build" class="go" disabled>Save Mission</button>
       <div id="saved" class="hint"></div>
+      <div id="checks"></div>
     </div>
   </div>
 

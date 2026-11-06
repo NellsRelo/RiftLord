@@ -144,6 +144,91 @@ EXCLUSION = 'NavPowerExclusionVolume'
 BOUNDS = 'NavMeshBoundsVolume'
 
 
+def _problem():
+    from riftlord.core import buildmessage
+    return buildmessage.Problem
+
+
+class RebuildFailed(_problem()):
+    """A walkable-graph rebuild the plan's map stops, said for a map designer (`plain`:
+    which map, what is wrong where, what to change), with its technical `detail`."""
+
+
+class Cause(ValueError):
+    """What in the map stops a rebuild, in plain words, what to change (`action`) and the
+    technical `detail`; install() names the map."""
+
+    def __init__(self, cause, action, detail=''):
+        super().__init__(cause)
+        self.action = action
+        self.detail = detail
+
+
+class NoArea(ValueError):
+    """A level with no NavMeshBoundsVolume: install() keeps its shipped walkable graph."""
+
+
+def map_label(level_name):
+    """'<title> (<level>)', or the level name alone when it has no title."""
+    try:
+        from riftlord.mapeditor import leveldata
+        title = next((lv.get('title') for lv in leveldata.levels()
+                      if lv.get('name') == level_name), None)
+    except Exception:                                # noqa: BLE001
+        title = None
+    return '%s (%s)' % (title, level_name) if title and title != level_name else level_name
+
+
+def failure(level_name, cause, action, detail=''):
+    """RebuildFailed: 'The walkable floor for <map> could not be rebuilt: <cause>. Your plan
+    is unchanged; <action>.'"""
+    return RebuildFailed('The walkable floor for %s could not be rebuilt: %s. Your plan is '
+                         'unchanged; %s.' % (map_label(level_name), cause, action), detail)
+
+
+#: How many spawners and doors a message names.
+PLACES_NAMED = 3
+
+
+def places(level_name, plan):
+    """'Spawner A at (x, y, z), Door B at (...) and 2 more': the final level's ground
+    spawners and their doors (gameplay_points), as a message names them."""
+    from riftlord.core import buildmessage
+    got = gameplay_points(level_name, plan)
+    if not got:
+        return 'The enemy routes'
+    named = [buildmessage.where(label[:1].upper() + label[1:], at)
+             for label, at in got[:PLACES_NAMED]]
+    more = len(got) - len(named)
+    if more:
+        return '%s and %d more' % (', '.join(named), more)
+    return named[0] if len(named) == 1 else '%s and %s' % (', '.join(named[:-1]), named[-1])
+
+
+#: What a build that keeps the shipped walkable graph does, for its note.
+KEPT = ('enemies walk the floor the level shipped with, plus the floor laid under their '
+        'routes, and floor the plan removes, moves or adds does not change where they walk')
+
+
+class KeptNote(str):
+    """A note saying the shipped walkable graph was kept (the rebuild fell back)."""
+
+
+def kept(uasset, uexp, level_name, detail, no_area=False):
+    """(uasset, uexp, [note]) unchanged, the shipped walkable graph kept: the note says so
+    for the designer (console warning) and `detail` goes to the console at debug level."""
+    from riftlord.core import console
+    if no_area:
+        note = ('%s has no navigation area, so its walkable floor cannot be rebuilt; %s.'
+                % (map_label(level_name), KEPT))
+    else:
+        note = 'The walkable floor for %s could not be rebuilt, so %s.' % (
+            map_label(level_name), KEPT)
+    console.warn(note, 'navregen')
+    console.debug('walkable floor rebuild of %s: %s' % (level_name, detail), 'navregen')
+    return uasset, uexp, [KeptNote(note)]
+
+
 def _words(name):
     import re
     return [w.lower() for w in re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+', name or '')]
@@ -165,21 +250,29 @@ OBSTACLE_ONLY = 'obstacle'
 #: North Wing, 50/51 and 46/47 on two more levels (5/5 free-standing in open floor; free-
 #: standing NoCollision pieces: 1/794). Left out, enemies walked through them (Recast R1).
 NAV_FLAG = False
-#: Collision profile names that collide with nothing.
-NO_COLLISION_PROFILES = ('NoCollision',)
+#: component_flags' mark for a landscape with `bUsedForNavigation` false: it collides, and
+#: the walkable-graph geometry leaves it out (docs/MAP-EDITOR.md, What the walkable-graph
+#: rebuild reads).
+NOT_NAVIGATION = 'not navigation'
+#: Landscape actor classes (omd3landscape.landscapes).
+LANDSCAPE_CLASSES = ('Landscape', 'LandscapeProxy', 'LandscapeStreamingProxy')
 
 
 def component_flags(level_name, cache={}):
     """{(sublevel tag, export): False} for every mesh component the navigation build
-    leaves out: `bCanEverAffectNavigation` false, or collision switched off."""
+    leaves out: `bCanEverAffectNavigation` false (with NAV_FLAG), or one that collides
+    with nothing as the engine resolves it (piececollision.level_collides); OBSTACLE_ONLY
+    for a colliding one with `bCanEverAffectNavigation` false (NAV_FLAG off). A landscape
+    actor: False when its BodyInstance collides with nothing, NOT_NAVIGATION when its
+    `bUsedForNavigation` is false."""
     if level_name in cache:
         return cache[level_name]
     from riftlord.core import gamepath
     from riftlord.build import levelbuild
-    from riftlord.formats.omd3 import meshcat
     from riftlord.build.navigation import navpatch
     from riftlord.build.navigation import navvolinject
     from riftlord.mapeditor import leveldata
+    from riftlord.mapeditor import piececollision
     from riftlord.formats.ue.uassetio import Package
     out = {}
     for tag, path in (leveldata.level(level_name).get('subPackages') or {}).items():
@@ -190,36 +283,110 @@ def component_flags(level_name, cache={}):
             pkg.load_payloads()
         except Exception:                            # noqa: BLE001
             continue
-        names = [n for n, _h in pkg.names]
         for i, e in enumerate(pkg.exports):
             cls = levelbuild.resolve(pkg, struct.unpack_from('<i', e['meta'], 0)[0])[1]
+            if cls in LANDSCAPE_CLASSES:
+                got = landscape_flag(pkg, e)
+                if got is not None:
+                    out[(tag, i + 1)] = got
+                continue
             if 'MeshComponent' not in (cls or ''):
                 continue
             d = e['data']
-            for nm, _tp, st, end in navvolinject.walk_properties(d, pkg.names):
+            for nm, _tp, st, _end in navvolinject.walk_properties(d, pkg.names):
                 if nm == 'bCanEverAffectNavigation' and not d[st + 24]:
-                    if NAV_FLAG:
-                        out[(tag, i + 1)] = False
-                    else:
-                        out.setdefault((tag, i + 1), OBSTACLE_ONLY)
-                elif nm == 'BodyInstance':
-                    body = meshcat._walk(d, names, st + 24 + 8 + 17, end)
-                    got = []
-                    for field in ('CollisionProfileName', 'CollisionEnabled'):
-                        if field in body and body[field][2] >= 4:
-                            k = struct.unpack_from('<i', d, body[field][1])[0]
-                            got.append(names[k] if 0 <= k < len(names) else '')
-                    if any(g in NO_COLLISION_PROFILES or g.endswith('::NoCollision')
-                           for g in got):
-                        out[(tag, i + 1)] = False
+                    out[(tag, i + 1)] = False if NAV_FLAG else OBSTACLE_ONLY
+    for key, on in piececollision.level_collides(level_name).items():
+        if not on:
+            out[key] = False
+    for pid in hidden_walls(level_name):
+        out[(HIDDEN, pid)] = True
     cache[level_name] = out
     return out
 
 
-def collides(piece, flags=None):
-    """True for a piece a walker stands on or bumps into."""
+#: component_flags' key head for a hidden piece that stops walkers: (HIDDEN, piece id).
+HIDDEN = 'hidden'
+#: UStaticMeshComponent's own collision profile (StaticMeshComponent.cpp, UE 4.27).
+MESH_COMPONENT_PROFILE = 'BlockAllDynamic'
+
+
+def hidden_walls(level_name):
+    """{piece id} of the level's hidden pieces (not drawn in game) whose collision stops
+    walkers (walker_profiles): the component's BodyInstance profile (placement, else class
+    template; NoCollision when it turns collision off), else the mesh's own profile for a
+    component taking its mesh's collision (piececollision.resolved's bUseDefaultCollision
+    rule), else UStaticMeshComponent's MESH_COMPONENT_PROFILE; and only for a mesh with a
+    collision shape."""
     from riftlord.formats.omd3 import omd3level
-    if piece.get('hidden'):
+    from riftlord.formats.omd3 import omd3templates
+    from riftlord.mapeditor import leveldata
+    from riftlord.mapeditor import piececollision
+    level = leveldata.level(level_name)
+    hidden = [p for p in level['pieces'] if p.get('hidden')]
+    if not hidden:
+        return set()
+    rows = piececollision._level_rows(level_name)
+    names = {}
+
+    def component_name(sub, export):
+        if sub not in names:
+            try:
+                info = omd3level._load(level['subPackages'][sub])[0]
+                names[sub] = [str(e.get('name') or '') for e in info['exports']]
+            except Exception:                        # noqa: BLE001
+                names[sub] = []
+        got = names[sub][export - 1] if 0 < export <= len(names[sub]) else ''
+        return got.replace(omd3templates.GEN_SUFFIX, '')
+
+    out = set()
+    profiles = walker_profiles()
+    for p in hidden:
+        shape = piececollision.mesh_collision(p['mesh']) or {}
+        if not shape.get('shape'):
+            continue
+        sub = p.get('sub') or 'persistent'
+        comp = p.get('component') if p.get('source') == 'blueprint' else p.get('export')
+        udc, body, sma, _mesh = rows.get((sub, comp), (None, None, False, None))
+        body = dict(body or {})
+        if p.get('source') == 'blueprint' and p.get('actor'):
+            templates = omd3templates.templates(p['actor'])
+            name = component_name(sub, comp) if comp else next(
+                (n for n, rec in templates.items() if rec.get('mesh') == p['mesh']), '')
+            body = dict((templates.get(name) or {}).get('body') or {}, **body)
+        if piececollision._off(body):
+            continue
+        if (sma if udc is None else udc) and 'CollisionProfileName' not in body:
+            profile = shape.get('profile')
+        else:
+            profile = body.get('CollisionProfileName') or MESH_COMPONENT_PROFILE
+        if profiles.get(profile):
+            out.add(p['id'])
+    return out
+
+
+def landscape_flag(pkg, export):
+    """component_flags' mark for one landscape actor export of a loaded package: False
+    when its BodyInstance collides with nothing, NOT_NAVIGATION when `bUsedForNavigation`
+    is false, else None."""
+    from riftlord.formats.omd3 import meshcat
+    from riftlord.mapeditor import piececollision
+    names = [n for n, _h in pkg.names]
+    d = export['data']
+    props = meshcat._walk(d, names, 0, len(d))
+    if 'BodyInstance' in props and piececollision._off(
+            piececollision._body(d, names, *props['BodyInstance'][1:])):
+        return False
+    if 'bUsedForNavigation' in props and not d[props['bUsedForNavigation'][1] - 2]:
+        return NOT_NAVIGATION
+    return None
+
+
+def collides(piece, flags=None):
+    """True for a piece a walker stands on or bumps into. A hidden piece only when `flags`
+    (component_flags) marks it as stopping walkers (hidden_walls)."""
+    from riftlord.formats.omd3 import omd3level
+    if piece.get('hidden') and not (flags and flags.get((HIDDEN, piece.get('id')))):
         return False
     if flags and flags.get((piece.get('sub') or 'persistent', piece.get('export'))) is False:
         return False
@@ -233,9 +400,20 @@ def collides(piece, flags=None):
     return True
 
 
+def placed_collides(piece, flags, switched):
+    """collides(), unless the plan's Collides switch (`switched`, piececollision.edited)
+    turns a switchable piece (one with `collides`) away from its shipped state."""
+    want = switched.get(piece['id'])
+    if want is None or piece.get('collides') is None or want == piece['collides']:
+        return collides(piece, flags)
+    return want and not piece.get('hidden')
+
+
 def final_pieces(level_name, plan, walk=False):
-    """[(mesh, 4x4 row-vector matrix)] after the plan's removals, moves and additions; with
-    `walk`, [(mesh, matrix, walkable)], walkable False for an OBSTACLE_ONLY component."""
+    """[(mesh, 4x4 row-vector matrix)] after the plan's removals, moves, Collides switches
+    and additions; with `walk`, [(mesh, matrix, walkable)], walkable False for an
+    OBSTACLE_ONLY component, and leaving out a NOT_NAVIGATION landscape."""
+    from riftlord.mapeditor import piececollision
     from riftlord.mapeditor import leveldata
     level = leveldata.level(level_name)
     edits = {e['id']: e for e in plan.get('edits') or []}
@@ -253,19 +431,63 @@ def final_pieces(level_name, plan, walk=False):
                 gone.add(rec[w['name']]['index'])
     out = []
     flags = component_flags(level_name)
+    switched = piececollision.edited(plan)
     for p in level['pieces']:
-        if p['id'] in removed or not collides(p, flags):
+        if p['id'] in removed or not placed_collides(p, flags, switched):
             continue
         if (p.get('sub') or 'persistent') == 'persistent' and p.get('export') in gone:
             continue
         e = edits.get(p['id'])
         M = np.array((e or p)['matrix'], dtype=np.float64).reshape(4, 4)
         key = (p.get('sub') or 'persistent', p.get('export'))
-        out.append((p['mesh'], M, flags.get(key) != OBSTACLE_ONLY) if walk else (p['mesh'], M))
+        if not walk:
+            out.append((p['mesh'], M))
+        elif flags.get(key) != NOT_NAVIGATION:
+            out.append((p['mesh'], M, flags.get(key) != OBSTACLE_ONLY))
     parts = {}
     for a in plan.get('added') or []:
         for name, M in added_meshes(a, parts):
             out.append((name, M, True) if walk else (name, M))
+    return out
+
+
+def walkless_pieces(level_name, plan):
+    """[(label, lo, hi)]: world boxes of the pieces the plan moves or adds that nothing
+    collides with (collides, piececollision), so the walkable graph leaves them out: a
+    gap the route crosses names them (navsurfextend.extend). Repaired Mine's link down to
+    its lower floor was a moved Stairs_2x_05_SB the shipped level places as decor."""
+    from riftlord.mapeditor import leveldata
+    from riftlord.mapeditor import piececollision
+    out = []
+
+    def box(name, M):
+        got = _mesh(name)
+        if got is None:
+            return None
+        w = (np.c_[got[0], np.ones(len(got[0]))] @ M)[:, :3]
+        return w.min(axis=0).tolist(), w.max(axis=0).tolist()
+    edits = {e['id']: e for e in plan.get('edits') or [] if e.get('matrix')}
+    removed = {r['id'] if isinstance(r, dict) else r for r in plan.get('removed') or []}
+    if edits:
+        flags = component_flags(level_name)
+        switched = piececollision.edited(plan)
+        for p in leveldata.level(level_name)['pieces']:
+            if p['id'] in edits and p['id'] not in removed and \
+                    not placed_collides(p, flags, switched):
+                got = box(p['mesh'], np.array(edits[p['id']]['matrix'],
+                                              dtype=np.float64).reshape(4, 4))
+                if got:
+                    out.append(('%s (level piece %s)' % (p['mesh'], p['id']),) + got)
+    for a in plan.get('added') or []:
+        if not (a.get('matrix') and piececollision.is_off(dict(a, kind=a.get('kind', 'mesh')))):
+            continue
+        #: its meshes as they would collide with the switch on
+        boxes = [b for b in (box(name, M) for name, M in
+                             added_meshes(dict(a, **{piececollision.KEY: True}))) if b]
+        if boxes:
+            out.append(('%s (added piece)' % a.get('name'),
+                        np.min([b[0] for b in boxes], axis=0).tolist(),
+                        np.max([b[1] for b in boxes], axis=0).tolist()))
     return out
 
 
@@ -459,13 +681,14 @@ def item_walk_top(item):
     return None if off is None else off + float(m[14])
 
 
-def nav_volumes(level_name, classes=(EXCLUSION, BOUNDS)):
-    """[{cls, name, min, max, matrix (rows), inverse}] for the level's nav volumes."""
+def nav_volumes(level_name, classes=(EXCLUSION, BOUNDS), path=None):
+    """[{cls, name, index, min, max, elements, matrix (rows), inverse}] for the volumes of
+    `classes` in the level's persistent level, or in the package at `path`."""
     from riftlord.build import levelbuild
     from riftlord.formats.omd3 import meshcat
     from riftlord.formats.omd3 import omd3level
     from riftlord.mapeditor import volumes
-    pkg = volumes._package(level_name)
+    pkg = volumes._package(level_name, path)
     names = [n for n, _h in pkg.names]
     out = []
     for i, ex in enumerate(pkg.exports):
@@ -501,6 +724,14 @@ def nav_volumes(level_name, classes=(EXCLUSION, BOUNDS)):
                     'elements': [np.array(e, dtype=np.float64) for e in elements],
                     'matrix': m, 'inverse': np.linalg.inv(m)})
     return out
+
+
+def exclusion_volumes(level_name):
+    """nav_volumes of class EXCLUSION in every package of the level: the persistent level,
+    then each sublevel (volumes.level_packages)."""
+    from riftlord.mapeditor import volumes
+    return [v for _tag, path in volumes.level_packages(level_name)
+            for v in nav_volumes(level_name, (EXCLUSION,), path)]
 
 
 def _convex_elements(pkg, names, index):
@@ -558,34 +789,50 @@ def inside_volume(vol, pts):
 
 
 def blocking_volumes(level_name, plan):
-    """World triangles of the brushes of the volumes that stop enemies: their convex
-    elements, which a walker stands on like any other collision."""
+    """World triangles of the brushes of the volumes that stop enemies, in every package
+    of the level: their convex elements, which a walker stands on like any other
+    collision. Volumes the plan removes, or the build moves out of play because a ground
+    route crosses them (volumes.writes), are left out."""
     from riftlord.formats.omd3 import omd3level
     from riftlord.mapeditor import leveldata
     from riftlord.mapeditor import volumes
     edits = {v['name']: v for v in volumes.clean(plan.get('volumes'))}
+    try:
+        chains = volumes._chains(level_name, plan)
+    except Exception:                                # noqa: BLE001
+        chains = None
+    parked = {vol['name'] for rows in volumes.writes(level_name, plan, chains).values()
+              for vol, e in rows if e.get('crossed')}
     stops = {}
-    #: export index -> the world matrix the plan's move, turn or resize gives it
+    #: (package tag, export index) -> the world matrix the plan's move, turn or resize
+    #: gives it
     placed = {}
     for v in leveldata.level(level_name).get('volumes') or []:
         e = edits.get(v.get('name')) or {}
-        if not e.get('gone'):
+        key = (v.get('sub') or volumes.PERSISTENT, v['index'])
+        if not e.get('gone') and v.get('name') not in parked:
             #: what the plan's Blocks makes it stop, else what it stops as shipped
-            stops[v['index']] = e['blocks'] if e.get('blocks') and v.get('blocks') \
+            stops[key] = e['blocks'] if e.get('blocks') and v.get('blocks') \
                 else v.get('stops')
             if e.get('at') or e.get('matrix'):
-                placed[v['index']] = np.array(omd3level._matrix(*volumes.edited_transform(v, e)))
+                placed[key] = np.array(omd3level._matrix(*volumes.edited_transform(v, e)))
     out = []
     #: a player blocking volume the plan makes stop everyone blocks too
-    for v in nav_volumes(level_name, tuple(set(BLOCKING_CLASSES) | set(volumes.BLOCK_CLASSES))):
-        if stops.get(v['index']) not in BLOCKING_STOPS:
+    classes = tuple(set(BLOCKING_CLASSES) | set(volumes.BLOCK_CLASSES))
+    tags = {key[0] for key, kind in stops.items() if kind in BLOCKING_STOPS}
+    for tag, path in volumes.level_packages(level_name):
+        if tag not in tags:
             continue
-        matrix = placed.get(v['index'], v['matrix'])
-        for element in v['elements']:
-            tri = hull_triangles(element)
-            if len(tri):
-                w = np.c_[tri.reshape(-1, 3), np.ones(len(tri) * 3)] @ matrix.T
-                out.append(w[:, :3].reshape(-1, 3, 3))
+        for v in nav_volumes(level_name, classes, path):
+            key = (tag, v['index'])
+            if stops.get(key) not in BLOCKING_STOPS:
+                continue
+            matrix = placed.get(key, v['matrix'])
+            for element in v['elements']:
+                tri = hull_triangles(element)
+                if len(tri):
+                    w = np.c_[tri.reshape(-1, 3), np.ones(len(tri) * 3)] @ matrix.T
+                    out.append(w[:, :3].reshape(-1, 3, 3))
     #: the volumes the plan adds that stop enemies: the BlockAll donor's brush where the
     #: plan puts it, sized to the added box
     added = [v for v in (volumes.added_volume(e) for e in edits.values() if e.get('added'))
@@ -603,6 +850,137 @@ def blocking_volumes(level_name, plan):
                 if len(tri):
                     w = np.c_[tri.reshape(-1, 3), np.ones(len(tri) * 3)] @ matrix.T
                     out.append(w[:, :3].reshape(-1, 3, 3))
+    return out
+
+
+#: The collision profile files, engine first (pak paths).
+PROFILE_INIS = ('../../../Engine/Config/BaseEngine.ini', '../../../OMD/Config/DefaultEngine.ini')
+#: Channels a profile must Block for its shapes to stand in a walker's way (a walker's
+#: capsule is a Pawn).
+WALKER_CHANNELS = ('Pawn',)
+#: CollisionEnabled values with query collision on.
+QUERY_ON = ('QueryOnly', 'QueryAndPhysics')
+#: UShapeComponent's own collision profile (ShapeComponent.cpp, UE 4.27).
+SHAPE_PROFILE = 'OverlapAllDynamic'
+
+
+def walker_profiles(cache={}):
+    """{collision profile: True when its shapes stop a walker}: query collision on and
+    Block for a WALKER_CHANNELS channel (default Block), after every +Profiles and
+    +EditProfiles line of PROFILE_INIS."""
+    if 'got' in cache:
+        return cache['got']
+    import re
+    from riftlord.core import gamefiles
+    enabled, responses = {}, {}
+    for path in PROFILE_INIS:
+        try:
+            text = gamefiles.read(path).decode('utf-8', 'replace')
+        except Exception:                            # noqa: BLE001
+            continue
+        for line in text.splitlines():
+            line = line.strip()
+            if not line.startswith(('+Profiles=', '+EditProfiles=')):
+                continue
+            name = re.search(r'Name="([^"]+)"', line)
+            if not name:
+                continue
+            name = name.group(1)
+            got = re.search(r'CollisionEnabled=(\w+)', line)
+            if got:
+                enabled[name] = got.group(1)
+            for channel, response in re.findall(r'Channel="(\w+)",Response=(\w+)', line):
+                responses.setdefault(name, {})[channel] = response
+    out = {}
+    for name, on in enabled.items():
+        mine = responses.get(name, {})
+        out[name] = on in QUERY_ON and any(mine.get(c, 'ECR_Block') == 'ECR_Block'
+                                           for c in WALKER_CHANNELS)
+    cache['got'] = out
+    return out
+
+
+def box_stops_walkers(body):
+    """True when a box component's BodyInstance fields (omd3level.boxes) stop a walker."""
+    profile = (body or {}).get('CollisionProfileName') or SHAPE_PROFILE
+    if profile == 'Custom':
+        return str(body.get('CollisionEnabled', '')).rsplit('::', 1)[-1] in QUERY_ON
+    return bool(walker_profiles().get(profile))
+
+
+#: A box's corners as signs of its half size, and its faces as corner indices.
+BOX_CORNERS = np.array([[x, y, z] for x in (-1, 1) for y in (-1, 1) for z in (-1, 1)],
+                       np.float64)
+BOX_FACES = ((0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4),
+             (1, 5, 7, 3))
+
+
+def box_triangles(extent, matrix):
+    """(12, 3, 3) world triangles of a box of half size `extent` placed by `matrix` (4x4
+    rows), wound as UE render meshes are (clockwise seen from outside)."""
+    local = BOX_CORNERS * np.asarray(extent, np.float64)
+    tris = []
+    for face in BOX_FACES:
+        a, b, c, d = (local[k] for k in face)
+        outward = (a + b + c + d) / 4.0
+        for t in ((a, b, c), (a, c, d)):
+            if np.cross(t[1] - t[0], t[2] - t[0]) @ outward > 0:
+                t = (t[0], t[2], t[1])
+            tris.append(t)
+    tris = np.array(tris)
+    M = np.asarray(matrix, np.float64)
+    w = (np.c_[tris.reshape(-1, 3), np.ones(36)] @ M.T)[:, :3].reshape(-1, 3, 3)
+    return w[:, [0, 2, 1]] if np.linalg.det(M[:3, :3]) < 0 else w
+
+
+def collision_boxes(level_name, plan):
+    """World triangles of the box components that stop walkers (box_stops_walkers) in every
+    package of the level, as their actors stand after the plan: an actor the plan removes
+    whole (every piece of it) or wires gone takes its boxes with it, and one it moves
+    moves them by its first piece's move. Door actors' boxes are left out (collides)."""
+    from riftlord.formats.omd3 import omd3level
+    from riftlord.mapeditor import leveldata
+    level = leveldata.level(level_name)
+    edits = {e['id']: e for e in plan.get('edits') or [] if e.get('matrix')}
+    removed = {r['id'] if isinstance(r, dict) else r for r in plan.get('removed') or []}
+    gone = set()
+    for w in plan.get('wiring') or []:
+        if not w.get('gone'):
+            continue
+        for kind in ('doors', 'spawners', 'teleports'):
+            rec = level.get(kind)
+            rec = dict(rec) if isinstance(rec, list) and rec and isinstance(rec[0], tuple) \
+                else rec
+            if isinstance(rec, dict) and w['name'] in rec and \
+                    isinstance(rec[w['name']].get('index'), int):
+                gone.add(('persistent', rec[w['name']]['index']))
+    by_actor = collections.defaultdict(list)
+    for p in level['pieces']:
+        if p.get('source') == 'blueprint':
+            by_actor[(p.get('sub') or 'persistent', p.get('export'))].append(p)
+    out = []
+    for tag, path in (level.get('subPackages') or {}).items():
+        try:
+            found = omd3level.boxes(path)
+        except Exception:                            # noqa: BLE001
+            continue
+        for box in found:
+            key = (tag, box['actor'])
+            if key in gone or not box_stops_walkers(box['body']):
+                continue
+            parts = by_actor.get(key) or []
+            if parts and str(parts[0].get('actor') or '').startswith(SKIP_ACTOR_PREFIXES):
+                continue
+            if parts and all(p['id'] in removed for p in parts):
+                continue
+            M = np.asarray(box['matrix'], np.float64)
+            moved = next((p for p in parts if p['id'] in edits), None)
+            if moved is not None:
+                was = np.array(moved['matrix'], np.float64).reshape(4, 4)
+                now = np.array(edits[moved['id']]['matrix'], np.float64).reshape(4, 4)
+                #: piece matrices are row-vector (v @ M); box matrices column-vector
+                M = (M.T @ np.linalg.inv(was) @ now).T
+            out.append(box_triangles(box['extent'], M))
     return out
 
 
@@ -1364,15 +1742,37 @@ def region(level_name):
     return np.min(los, axis=0), np.max(his, axis=0)
 
 
+def gather_region(level_name, plan=None):
+    """(lo, hi) the generators gather geometry from: the level's NavMeshBoundsVolume
+    grown to hold every ground route point, spawner and door of the final level, then
+    REGION_MARGIN on every side; None with no bounds and none of those. A plan may build
+    past the shipped bounds: Repaired Mine's added upper floor stands 3,800 uu past them,
+    so it was never gathered and had no floor. Added pieces do not grow it: floor no route
+    reaches is dropped (anchored), and growing to Repaired Mine's pieces (a tower's origin
+    2,800 uu under the floor) kept 356 more polygons of pits under the play area."""
+    plan = plan or {}
+    bounds = region(level_name)
+    legs, _exits = route_legs(level_name, plan)
+    pts = [p for _l, a, b in legs for p in (a, b)]
+    pts += [at for _l, at in gameplay_points(level_name, plan)]
+    if bounds is None and not pts:
+        return None
+    lo, hi = bounds if bounds is not None else (np.full(3, np.inf), np.full(3, -np.inf))
+    if pts:
+        pts = np.asarray(pts, dtype=np.float64)
+        lo, hi = np.minimum(lo, pts.min(axis=0)), np.maximum(hi, pts.max(axis=0))
+    return lo - REGION_MARGIN, hi + REGION_MARGIN
+
+
 def heightfield(level_name, plan, log=print):
     bounds = region(level_name)
     if bounds is None:
-        raise ValueError('%s has no NavMeshBoundsVolume' % level_name)
-    lo, hi = bounds[0] - REGION_MARGIN, bounds[1] + REGION_MARGIN
+        raise NoArea('%s has no NavMeshBoundsVolume' % level_name)
+    lo, hi = gather_region(level_name, plan)
     hf = Heightfield(lo, hi)
     t = time.time()
     pieces = final_pieces(level_name, plan)
-    boxes = blocking_volumes(level_name, plan)
+    boxes = blocking_volumes(level_name, plan) + collision_boxes(level_name, plan)
     box_key = [b.round(1).tobytes() for b in boxes]
     import hashlib
     digest = hashlib.sha1(repr((RASTER_VERSION, NAV_FLAG, level_name, CELL, CELL_HEIGHT,
@@ -1412,7 +1812,7 @@ def floors(hf, level_name, log=print):
     t = time.time()
     min_gap = min(a[2] for a in AGENTS)
     rcol, floor, ceiling, walkable = runs(hf, min_gap)
-    excl = nav_volumes(level_name, (EXCLUSION,))
+    excl = exclusion_volumes(level_name)
     out = []
     for agent in AGENTS:
         fl = Floor(hf, rcol, floor, ceiling, walkable, agent)
@@ -1595,16 +1995,28 @@ def buffer_for(level_name, plan=None, log=print):
 
 
 def install(uasset, uexp, level_name, plan, log=print):
-    """(uasset, uexp, notes) with the walkable graph regenerated."""
+    """(uasset, uexp, notes) with the walkable graph regenerated. RebuildFailed, in words
+    for a map designer, when the plan's map stops it (Cause); the level's shipped graph
+    kept, with a note saying so (kept), when anything else does."""
     from riftlord.build.navigation import navsurfinject
-    buf = buffer_for(level_name, plan, log)
+    try:
+        buf = buffer_for(level_name, plan, log)
+    except Cause as exc:
+        raise failure(level_name, str(exc), exc.action, exc.detail) from exc
+    except NoArea as exc:
+        return kept(uasset, uexp, level_name, str(exc), no_area=True)
+    except (Exception, SystemExit) as exc:           # noqa: BLE001
+        from riftlord.core import buildmessage
+        return kept(uasset, uexp, level_name, buildmessage.technical(exc))
     bad = check(buf)
     if bad:
-        raise ValueError('regenerated graph fails its checks: %s' % '; '.join(bad[:3]))
+        return kept(uasset, uexp, level_name, 'regenerated graph fails its checks: %s'
+                    % '; '.join(bad))
     ua, ux, rows = navsurfinject.set_surface_bytes(uasset, uexp, buf)
     failed = [name for name, ok in rows if not ok]
     if failed:
-        raise ValueError('installing the regenerated graph: %s' % '; '.join(failed))
+        return kept(uasset, uexp, level_name, 'installing the regenerated graph: %s'
+                    % '; '.join(failed))
     counts = '/'.join(str(len(navsurf.sections(buf, h))) for h in navsurf.graphs(buf))
     return ua, ux, ['walkable graph regenerated from the final geometry (%s polygons)'
                     % counts]
@@ -1626,7 +2038,10 @@ def wanted(level_name, plan):
     if not touched:
         return False
     flags = component_flags(level_name)
-    return any(p['id'] in touched and collides(p, flags)
+    #: a Collides switch changes the geometry whichever way it turns (piececollision)
+    from riftlord.mapeditor import piececollision
+    switched = piececollision.edited(plan)
+    return any(p['id'] in touched and (collides(p, flags) or placed_collides(p, flags, switched))
                for p in leveldata.level(level_name)['pieces'])
 
 
@@ -1761,18 +2176,22 @@ def walker(polys, ids):
         k = navsurfextend.on_surface(sub, pt)
         return cand[k] if k is not None else None
 
-    def walk(a, b):
+    def route(a, b):
+        """(distance, [polygon] in walking order), or None."""
         sa, sb = at(a), at(b)
         if sa is None or sb is None:
             return None
         if sa == sb:
-            return math.dist(a[:2], b[:2])
+            return math.dist(a[:2], b[:2]), [sa]
         #: one state per polygon: the cheapest entry point found
-        best, todo = {sa: 0.0}, [(0.0, sa, tuple(a[:2]))]
+        best, todo, came = {sa: 0.0}, [(0.0, sa, tuple(a[:2]))], {}
         while todo:
             d, i, p = heapq.heappop(todo)
             if i == sb:
-                return d + math.dist(p, b[:2])
+                path = [i]
+                while path[-1] in came:
+                    path.append(came[path[-1]])
+                return d + math.dist(p, b[:2]), path[::-1]
             if d > best[i]:
                 continue
             for j, seg in portals[i]:
@@ -1780,9 +2199,15 @@ def walker(polys, ids):
                 nd = d + math.dist(p, q)
                 if nd < best.get(j, 1e18):
                     best[j] = nd
+                    came[j] = i
                     heapq.heappush(todo, (nd, j, q))
         return None
+
+    def walk(a, b):
+        got = route(a, b)
+        return got[0] if got else None
     walk.at = at
+    walk.path = lambda a, b: (route(a, b) or (None, None))[1]
     return walk
 
 

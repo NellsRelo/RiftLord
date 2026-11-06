@@ -251,7 +251,10 @@ export function layerItems (plan, chosen, fetchJson) {
     if (!piece) return
     const on = new Set(e.grids || [])
     const grids = piece.grids.filter(g => on.has(g.id))
-    if (grids.length) out.push({ key: 'fab|' + i + '|' + [...on].join(','), matrix: e.matrix, grids, selected: chosen.has(e) })
+    if (grids.length) {
+      out.push({ key: 'fab|' + i + '|' + [...on].join(','), matrix: e.matrix, grids, selected: chosen.has(e),
+                 entry: e })
+    }
   })
   ;(plan.fabGrids || []).forEach((g, i) => {
     out.push({ key: 'fabgrid|' + i, matrix: new THREE.Matrix4().toArray(), grids: [layerGrid(g)],

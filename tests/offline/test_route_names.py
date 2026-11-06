@@ -29,12 +29,12 @@ def main():
     chain = planactors.ground_chains(plan, level)[0]
     labels = [names.get(tuple(p)) for p in chain[:2]]
     check('the chain\'s spawner and point carry their editor labels',
-          labels == ['Spawner 4', 'Point 1'], labels)
+          labels == ['Spawner 4', 'Path Point 1'], labels)
     level_point = next(iter(level['points']))
     check('a level point is labelled by its name',
           level_point in names.values(), level_point)
     navsurfextend._NAMES.update({navsurfextend._key(chain[0]): [(chain[0][2], 'Spawner 4'),
-                                                                 (2000.0, 'Point 9')]})
+                                                                 (2000.0, 'Path Point 9')]})
     try:
         #: the build drops a point to its floor before joining it, so its height differs
         got = navsurfextend._fmt((-2956.3, -4870.2, 158.0))

@@ -710,14 +710,20 @@ def paint_added(builder, added, placed, report):
             target = builder._root_component(actor) if part == MESH_PART \
                 else applier._child_named(builder, actor, part)
             if not target:
-                report['skipped'].append('added %s has no component %r to paint'
-                                         % (added[n].get('name'), part))
+                from riftlord.core import buildmessage
+                report['skipped'].append(buildmessage.left_out(
+                    'the paint on part %s of the added piece %s'
+                    % (part, buildmessage.piece_label(added[n])), 'no such component',
+                    'Paint another part of it, or clear that paint.'))
                 continue
             slots = value if isinstance(value, dict) else {'0': value}
             refs = {int(k): _material_import(builder, str(v)) for k, v in slots.items() if v}
             if not refs or any(r is None for r in refs.values()):
-                report['skipped'].append('added %s: no asset for a material of %r'
-                                         % (added[n].get('name'), part or 'its mesh'))
+                from riftlord.core import buildmessage
+                report['skipped'].append(buildmessage.left_out(
+                    'the paint on the added piece %s' % buildmessage.piece_label(added[n]),
+                    'no asset for a material of %r' % (part or 'its mesh'),
+                    'Pick another material for it.'))
                 continue
             #: a plain material is slot 0; {slot: material} leaves the other slots to the
             #: mesh (a null entry)
@@ -827,12 +833,17 @@ def apply(builder, level, plan, report):
     for n, (fx, at, rot, scale) in enumerate(listed):
         got = donor(fx)
         if got is None:
-            report['skipped'].append('no donor for the %s effect' % fx)
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the %s effect at %s' % (fx, buildmessage.at(at)), 'no donor', verb='place'))
             continue
         try:
             index = builder.lift_actor(got[0], got[1], rename='RiftLordFx_%s_%d' % (fx, n))
         except Exception as exc:                     # noqa: BLE001
-            report['skipped'].append('%s effect could not be lifted: %s' % (fx, exc))
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'the %s effect at %s' % (fx, buildmessage.at(at)), 'lift failed: %s' % exc,
+                verb='place'))
             continue
         if fx in MESH_FX:
             #: a lifted mesh keeps its donor's MapBuildDataId and would draw North Wing's

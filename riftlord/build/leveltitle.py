@@ -291,10 +291,26 @@ def retitle(files, mod, title):
         if not name.startswith(own) or ext not in ('uasset', 'umap') \
                 or stem + '.uexp' not in files:
             continue
-        pkg = Package(data, files[stem + '.uexp'])
-        pkg.load_payloads()
+        #: a BuiltData's textures record absolute offsets, rewritten by its own writer
+        built = None
+        if stem.endswith('_BuiltData'):
+            from riftlord.build.lighting import lightmaps
+            built = lightmaps.BuiltData(data, files[stem + '.uexp'], files.get(stem + '.ubulk', b''))
+            pkg = built.pkg
+        else:
+            pkg = Package(data, files[stem + '.uexp'])
+            pkg.load_payloads()
         renamed, split = _rename_names(pkg, word, title, base, number)
         if not renamed:
+            continue
+        if built is not None:
+            if split:
+                report['renumbered'] += _renumber(pkg, split, number)
+            out[name], out[stem + '.uexp'], ubulk = built.write()
+            if ubulk != files.get(stem + '.ubulk', b''):
+                raise SystemExit('%s: its .ubulk moved when the level was named %s'
+                                 % (stem.rsplit('/', 1)[-1], title))
+            report['packages'] += 1
             continue
         table = None
         if split and name.endswith('_MissionProtos.uasset'):

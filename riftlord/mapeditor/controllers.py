@@ -422,7 +422,9 @@ def set_wall_plate(builder, actor, on, report):
     each: a bare one has neither component and both properties null; WallBase follows."""
     cls = _class_name(builder.pkg, actor)
     if cls not in WALL_PLATE_CLASSES:
-        report['skipped'].append('export %d is a %s, not a wall torch' % (actor, cls))
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'a wall plate change', 'export %d is a %s, not a wall torch' % (actor, cls)))
         return False
     if has_plate(builder, actor) == on:
         return False
@@ -454,7 +456,11 @@ def _graft_plate(builder, actor, cls, report):
     rec = (load().get('torches') or {}).get(cls) or {}
     got = package_donor(*rec['platedDonor']) if rec.get('platedDonor') else None
     if not got:
-        report['skipped'].append('no plated %s to copy a wall plate from' % cls)
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'the wall plate on a %s' % buildmessage.piece_label({'name': cls}),
+            'no plated %s to copy from' % cls, effect='that torch type has none',
+            verb='add'))
         return False
     src, j = got
     root = builder._root_component(actor)
@@ -465,7 +471,10 @@ def _graft_plate(builder, actor, cls, report):
     src_root = struct.unpack_from('<i', data, top['RootComponent'][1])[0] \
         if 'RootComponent' in top else 0
     if not root or src_root <= 0:
-        report['skipped'].append('%s has no root component to hang a wall plate on' % cls)
+        from riftlord.core import buildmessage
+        report['skipped'].append(buildmessage.left_out(
+            'the wall plate on a %s' % buildmessage.piece_label({'name': cls}),
+            '%s has no root component' % cls))
         return False
     wanted = [k for k, e in enumerate(src.exports)
               if struct.unpack_from('<i', e['meta'], levelbuild.OUTER_AT)[0] == j + 1
@@ -516,7 +525,9 @@ def apply_package(builder, edits, report):
     done = 0
     for actor, on in sorted(((edits or {}).get(PLATES_KEY) or {}).items()):
         if actor > len(builder.pkg.exports):
-            report['skipped'].append('torch export %d is not in this package' % actor)
+            from riftlord.core import buildmessage
+            report['skipped'].append(buildmessage.left_out(
+                'a wall plate change', 'torch export %d is not in this package' % actor))
             continue
         if set_wall_plate(builder, actor, on, report):
             done += 1
@@ -718,23 +729,32 @@ def gates(files, plan):
             if any(k in e for k in volumes.KILL_FLAGS)}
     if kill:
         from riftlord.formats.omd3 import meshcat
-        names = [n for n, _h in pkg.names]
         wrong = []
-        for i in by_class.get(volumes.KILL_CLASS, []):
-            shown = levelbuild._name_of(pkg, i - 1)
-            number = struct.unpack_from('<i', pkg.exports[i - 1]['meta'], levelbuild.NAME_AT + 4)[0]
-            if number:
-                shown = '%s_%d' % (shown, number - 1)
-            e = kill.get(shown)
+
+        def check_kill(sub_pkg, i, key_name):
+            """Compare export `i`'s kill switches with the plan's entry `key_name`."""
+            e = kill.get(key_name)
             if not e:
-                continue
-            data = pkg.exports[i - 1]['data']
+                return
+            names = [n for n, _h in sub_pkg.names]
+            data = sub_pkg.exports[i - 1]['data']
             top = meshcat._walk(data, names, 0, len(data))
             for key, prop in volumes.KILL_FLAGS.items():
                 have = bool(data[top[prop][1] - 2]) if prop in top else True
                 if key in e and have != e[key]:
-                    wrong.append('%s %s' % (shown, prop))
-            kill.pop(shown)
+                    wrong.append('%s %s' % (key_name, prop))
+            kill.pop(key_name)
+        for i in by_class.get(volumes.KILL_CLASS, []):
+            check_kill(pkg, i, volumes._spelled(pkg, i - 1))
+        #: a sublevel's kill volumes, '<sublevel tag>|<export index>'
+        for tag in sorted({k.split('|', 1)[0] for k in kill if '|' in k}):
+            name = leveltitle.sublevel_entry(files, tag)
+            if name is None:
+                continue
+            sub = _read(files, name).pkg
+            for i in range(1, len(sub.exports) + 1):
+                if _class_name(sub, i) == volumes.KILL_CLASS:
+                    check_kill(sub, i, volumes.sub_key(tag, i))
         out.append(('kill volume switches written', not wrong and not kill,
                     ', '.join(wrong + ['%s not found' % k for k in kill])))
     from riftlord.build.world import levelfx
