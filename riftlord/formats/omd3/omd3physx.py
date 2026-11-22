@@ -18,9 +18,10 @@ under a file lock, by a temporary file renamed into place.
 * Linux (a source build: UE links PhysX statically there): the static PhysX libraries of
   Engine/Source/ThirdParty/PhysX3/Lib/Linux (Setup.sh's dependencies), with the engine's
   own clang and libc++ when present, else the system clang++ and libstdc++.
-* Windows (UNTESTED until a Windows run): MSVC found by vswhere, linking the install's
-  PhysX import libraries (PhysX3/Lib/Win64/VS2015); pxcook.exe runs with the install's
-  PhysX DLLs on its PATH.
+* Windows: MSVC found by vswhere, linking the install's PhysX import libraries
+  (PhysX3/Lib/Win64/VS2015); pxcook.exe runs with the install's PhysX DLLs on its PATH.
+  Proven on one machine by a user report (2026-11-21): Windows 10 22H2, Visual Studio
+  2026 (MSVC 18.11) against the launcher's UE 4.27; it built, and convex and hull ran.
 `tool_status()` says whether it is ready, buildable or missing without building.
 `python3 omd3physx.py build` compiles it; `python3 omd3physx.py verify N` re-cooks N
 shipped body setups and compares bytes.
@@ -191,7 +192,11 @@ def available():
 
 
 def _command(root, comp, out_path):
-    """The compile command line (a list; Windows: one cmd.exe line through vcvars64)."""
+    """The compile command: a list, or on Windows one cmd.exe string through vcvars64.
+    The Windows command is a string because subprocess passes a string to CreateProcess
+    unchanged, while a list goes through list2cmdline, which writes the line's quotes as
+    \\" and cmd.exe does not read those (Rift Lord 1.0.4: "\\"...vcvars64.bat\\"" is not
+    recognized). /s strips only the outer pair of quotes added here."""
     inc = ['-I' + os.path.join(root, PHYSX, 'PhysX_3.4', 'Include'),
            '-I' + os.path.join(root, PHYSX, 'PxShared', 'include')]
     if comp[0] == 'msvc':
@@ -199,7 +204,7 @@ def _command(root, comp, out_path):
                 '/Fe:"%s" /link /LIBPATH:"%s" %s' % (
                     comp[1], inc[0][2:], inc[1][2:], SOURCE, out_path,
                     os.path.join(root, WIN_LIBS), ' '.join(WIN_LINK)))
-        return ['cmd.exe', '/d', '/s', '/c', line]
+        return 'cmd.exe /d /s /c "%s"' % line
     link = (['-Wl,--start-group'] + ['-l' + n for n in LINUX_LINK] + ['-Wl,--end-group'])
     cmd = [comp[1], '-O1', '-std=c++14', '-DNDEBUG', '-DPX_PHYSX_STATIC_LIB'] + inc
     if comp[0] == 'ue':

@@ -72,6 +72,7 @@
  ["laid fab grids keep their pieces", ["tests/offline/test_fabgrids.py"]],
  ["pieces snap to the lattice", ["tests/offline/test_kit_snap.py"]],
  ["cover seams", ["tests/offline/test_coverseams.py"]],
+ ["pxcook command quoting", ["tests/offline/test_pxcook_command.py"]],
  ["navvolgen selftest", ["-m", "riftlord.build.navigation.navvolgen", "--selftest"]],
  ["gate selection", ["tests/offline/test_gateselect.py"]],
  ["route names", ["tests/offline/test_route_names.py"]],
