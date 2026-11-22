@@ -5,8 +5,12 @@
 Source: github.com/GameTechDev/ISPCTextureCompressor at SOURCE_COMMIT (MIT licence,
 shipped beside the library as LICENSE-ispc_texcomp.txt). Compiler: ispc SOURCE_ISPC
 (BSD-3, a build tool only), the release for this host. Both are downloaded once into CACHE.
-Output: CACHE/out/libispc_texcomp.so on Linux (g++), ispc_texcomp.dll on Windows (clang++).
-The Linux ispc release targets only Linux, so the .dll is built on Windows.
+Output: CACHE/out/libispc_texcomp.so on Linux (g++), ispc_texcomp.dll on Windows (MSVC's
+cl, through vcvars64.bat when cl is not on PATH). The Linux ispc release targets only Linux,
+so the .dll is built on Windows. Windows uses cl rather than clang++ because MSVC's headers
+refuse a clang older than they expect (windows-latest, 2026-11: MSVC 14.52 wants clang 22,
+the runner's LLVM is 20); cl always matches its own headers. /MT links the C runtime in, as
+clang++ did, so the .dll needs no Visual C++ runtime installed.
 """
 
 import argparse
@@ -69,20 +73,48 @@ def ispc():
 
 
 def run(cmd, cwd=None):
-    print('$', ' '.join(cmd), flush=True)
+    print('$', cmd if isinstance(cmd, str) else ' '.join(cmd), flush=True)
     subprocess.check_call(cmd, cwd=cwd)
 
 
+def vcvars():
+    """The newest Visual Studio's vcvars64.bat with the C++ tools, by vswhere."""
+    where = os.path.join(os.environ.get('ProgramFiles(x86)', r'C:\Program Files (x86)'),
+                         'Microsoft Visual Studio', 'Installer', 'vswhere.exe')
+    path = ''
+    if os.path.isfile(where):
+        path = subprocess.run([where, '-latest', '-products', '*', '-requires',
+                               'Microsoft.VisualStudio.Component.VC.Tools.x86.x64',
+                               '-property', 'installationPath'],
+                              capture_output=True, text=True).stdout.strip()
+    bat = os.path.join(path, 'VC', 'Auxiliary', 'Build', 'vcvars64.bat') if path else ''
+    if not os.path.isfile(bat):
+        raise SystemExit('ispc_texcomp.dll needs MSVC: no cl on PATH and no Visual Studio '
+                         'with the C++ tools found by vswhere')
+    return bat
+
+
+def msvc(cmd):
+    """`cmd` (a cl command list) as run here: itself when cl is on PATH, else one cmd.exe
+    string through vcvars64.bat. A string, not a list: subprocess would write the line's
+    quotes as \\" and cmd.exe does not read those; /s strips only the outer pair."""
+    if shutil.which('cl'):
+        return cmd
+    return 'cmd.exe /d /s /c "call "%s" >nul && %s"' % (vcvars(), subprocess.list2cmdline(cmd))
+
+
 def kernels(src, work, target_os):
-    """Compile both kernels for TARGETS; returns the object files."""
+    """Compile both kernels for TARGETS; returns the object files (.obj on Windows, which
+    MSVC's linker takes without a warning)."""
     tc = os.path.join(src, 'ispc_texcomp')
+    ext = '.obj' if target_os == 'windows' else '.o'
     objs = []
     for name in ('kernel', 'kernel_astc'):
-        obj = os.path.join(work, name + '.o')
+        obj = os.path.join(work, name + ext)
         run([ispc(), '-O2', '--arch=x86-64', '--target=' + TARGETS, '--opt=fast-math',
              '--pic', '--target-os=' + target_os, os.path.join(tc, name + '.ispc'),
              '-o', obj, '-h', os.path.join(work, name + '_ispc.h')])
-        objs += [obj] + sorted(glob.glob(os.path.join(work, name + '_*.o')))
+        objs += [obj] + sorted(glob.glob(os.path.join(work, name + '_*' + ext)))
     return objs
 
 
@@ -100,8 +132,9 @@ def build(windows=False):
     cpp = [os.path.join(tc, 'ispc_texcomp.cpp'), os.path.join(tc, 'ispc_texcomp_astc.cpp')]
     if windows:
         out = os.path.join(OUT, 'ispc_texcomp.dll')
-        run(['clang++', '-O2', '-shared', '-I', work, '-o', out] + cpp + objs +
-            ['-Wl,/DEF:' + os.path.join(tc, 'ispc_texcomp.def')])
+        run(msvc(['cl', '/nologo', '/O2', '/EHsc', '/MT', '/LD', '/I', work] + cpp + objs +
+                 ['/Fe:' + out, '/link', '/DEF:' + os.path.join(tc, 'ispc_texcomp.def')]),
+            cwd=work)
     else:
         out = os.path.join(OUT, 'libispc_texcomp.so')
         run(['g++', '-O2', '-fPIC', '-shared', '-I', work, '-o', out] + cpp + objs)
