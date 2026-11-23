@@ -504,13 +504,13 @@ def planar(polys):
 ROUTES_CROSS_EXCLUSIONS = True
 
 
-def outside_exclusions(polys, level_name, legs=(), step=None):
+def outside_exclusions(polys, level_name, legs=(), step=None, plan=None):
     """Polygons whose centre is outside every NavPowerExclusionVolume of every package of
-    the level (navregen.exclusion_volumes), plus, with ROUTES_CROSS_EXCLUSIONS, those on
-    the walk of each route leg in `legs` ([(label, a, b)], navregen.route_legs) that the
-    floor outside the volumes does not join. `step`: the agent's step, for the edge ids the
-    walk follows."""
-    vols = navregen.exclusion_volumes(level_name)
+    the level as `plan` leaves them (navregen.exclusion_volumes), plus, with
+    ROUTES_CROSS_EXCLUSIONS, those on the walk of each route leg in `legs` ([(label, a, b)],
+    navregen.route_legs) that the floor outside the volumes does not join. `step`: the
+    agent's step, for the edge ids the walk follows."""
+    vols = navregen.exclusion_volumes(level_name, plan)
     if not vols or not polys:
         return polys
     c = np.array([np.mean(p, axis=0) for p in polys]) + np.array([0.0, 0.0, 1.0])
@@ -556,7 +556,7 @@ def graphs_for(level_name, plan=None, log=print):
         raw = run(verts, tris, walk, agent)
         if not raw:
             raise ValueError('Recast found no floor for agent %r' % (agent,))
-        polys = planar(outside_exclusions(raw, level_name, legs, agent[1]))
+        polys = planar(outside_exclusions(raw, level_name, legs, agent[1], plan))
         #: detail edge samples on a split polygon's side go into its unsplit neighbour's edge
         polys = navregen._mended(polys)
         #: one shared edge per pair of neighbours, no degenerate polygons: NavPower's

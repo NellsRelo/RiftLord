@@ -264,6 +264,25 @@ def frozen():
     return bool(getattr(sys, 'frozen', False))
 
 
+def code_stamp(*modules):
+    """Text that changes when the code of `modules` changes, for cache keys: each
+    module file's date run from source; the executable's date and size when frozen,
+    where the module files are not on disk."""
+    if frozen():
+        try:
+            st = os.stat(sys.executable)
+            return 'frozen %s %d %d' % (os.path.basename(sys.executable), st.st_mtime_ns, st.st_size)
+        except OSError:
+            return 'frozen'
+    out = []
+    for mod in modules:
+        try:
+            out.append('%s %d' % (mod.__name__, os.stat(mod.__file__).st_mtime_ns))
+        except (AttributeError, OSError, TypeError):
+            out.append('%s ?' % getattr(mod, '__name__', mod))
+    return ';'.join(out)
+
+
 #: The `riftlord` package folder (in the unpacked bundle when frozen).
 CODE_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #: The repository root (the unpacked bundle when frozen).

@@ -78,6 +78,10 @@ SYSTEM = [
      ('/usr/share/licenses/libstdc++/RUNTIME.LIBRARY.EXCEPTION', os.path.join(TEXTS, 'GCC-exception-3.1.txt'),
       os.path.join(TEXTS, 'GPL-3.0.txt'))),
     ('liblz4.so*', 'LZ4 library', 'BSD-2-Clause', os.path.join(TEXTS, 'lz4-lib-LICENSE.txt')),
+    # the Deathtrap container writer's hash (riftlord/formats/omdd/iostore_write.py), and
+    # the threading library Arch's libblake3 links
+    ('libblake3.so*', 'BLAKE3', 'CC0-1.0 OR Apache-2.0', os.path.join(TEXTS, 'Apache-2.0.txt')),
+    ('libtbb.so*', 'oneTBB', 'Apache-2.0', os.path.join(TEXTS, 'Apache-2.0.txt')),
     ('liblzma.so*', 'liblzma (XZ Utils)', '0BSD', ('/usr/share/licenses/xz/COPYING',
                                                    '/usr/share/doc/liblzma5*/copyright')),
     ('libmpdec.so*', 'mpdecimal', 'BSD-2-Clause', ('/usr/share/licenses/mpdecimal/COPYRIGHT.txt',

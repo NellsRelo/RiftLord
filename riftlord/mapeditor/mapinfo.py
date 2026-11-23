@@ -118,6 +118,13 @@ def info(level, mission=None, scratch=False):
         out['storyDialog'] = None
         out['storyError'] = '%s: %s' % (type(exc).__name__, exc)
     try:
+        from riftlord.build.world import surfaces
+        out['surfaces'] = surfaces.shown(level)
+        out['surfaceFields'] = surfaces.fields()
+    except (Exception, SystemExit) as exc:           # noqa: BLE001
+        out['surfaces'] = {}
+        out['surfacesError'] = '%s: %s' % (type(exc).__name__, exc)
+    try:
         from riftlord.build.world import levelintro
         out['intro'] = levelintro.survey(level)
     except (Exception, SystemExit) as exc:           # noqa: BLE001
@@ -204,6 +211,10 @@ def clean_world(raw):
     music = levelmusic.clean(raw.get(levelmusic.PLAN_KEY))
     if music is not None:
         out[levelmusic.PLAN_KEY] = music
+    from riftlord.build.world import surfaces
+    weather = surfaces.clean(raw.get(surfaces.PLAN_KEY))
+    if weather is not None:
+        out[surfaces.PLAN_KEY] = weather
     return out
 
 

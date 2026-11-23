@@ -201,9 +201,11 @@ BOUNDS_SIZE = 512
 PREVIEW_SIZE = 512
 PREVIEW_QUICK = 192
 #: The panel's preview reads the solid on a grid this many times coarser than its drawing
-#: (a build: SOLID_COARSE): 256 px for the 512 px preview, which samples a level in a few
-#: seconds the first time.
-PREVIEW_SOLID_COARSE = 4
+#: (a build: SOLID_COARSE). Measured against the build's drawing on the 4 Regenerate
+#: records (2026-11-22): 4 differed by a median 3.1% of floor pixels (4.2% Repaired Mine,
+#: where it lost the landing at the top of the north-west stairs), 2 by 1.6%, 1 by 1.5% at
+#: over twice the time (34 s against 14 s a first preview); the rest is the 512 px drawing.
+PREVIEW_SOLID_COARSE = 2
 #: Alpha the preview draws the plate at, so it reads on the panel.
 PREVIEW_ALPHA = 255
 #: Preview marker colours (rift, route points, doors) and radius in pixels.
@@ -1000,20 +1002,32 @@ def _piece_box(piece, matrix, cat):
             [max(p[k] for p in pts) for k in range(3)])
 
 
-def _graph_polys(level_name, plan):
+def _graph_polys(level_name, plan, regenerated=False):
     """(walkable polygons [[(x, y, z)]], their edge ids, ground chains, notes): the
-    level's graph with the corridors a build adds under the plan's ground routes."""
+    level's graph with the corridors a build adds under the plan's ground routes. With
+    `regenerated`, the graph a build rebuilds from the final geometry
+    (navregen.buffer_for) when the plan asks for one, else the level's shipped graph."""
     from riftlord.build.navigation import navsurf
     from riftlord.build.navigation import navsurfextend
     from riftlord.mapeditor import planactors
-    buf = navsurf.buffer(level_name)
+    buf, notes, whose = None, [], 'the level\'s walkable graph'
+    if regenerated:
+        from riftlord.build.navigation import navregen
+        if navregen.wanted(level_name, plan):
+            try:
+                buf = navregen.buffer_for(level_name, plan, log=lambda *_a: None)
+                whose = 'the walkable graph rebuilt from the final geometry'
+            except (Exception, SystemExit) as exc:   # noqa: BLE001
+                notes.append('the walkable graph could not be rebuilt (%s); the level\'s '
+                             'own is drawn' % exc)
+    buf = buf or navsurf.buffer(level_name)
     if not buf:
-        return [], [], [], ['%s has no walkable graph' % level_name]
+        return [], [], [], notes + ['%s has no walkable graph' % level_name]
     heads = navsurf.graphs(buf)
     secs = navsurf.sections(buf, heads[0])
     polys = [list(s['verts']) for s in secs]
     ids = [list(s['edge_ids']) for s in secs]
-    notes = ['%d polygon(s) of the level\'s walkable graph' % len(polys)]
+    notes.append('%d polygon(s) of %s' % (len(polys), whose))
     try:
         chains = planactors.ground_chains(copy.deepcopy(plan),
                                           planactors.level_actors(level_name))
@@ -1296,7 +1310,7 @@ def floor_reached(level_name, fl):
                 reached=True, anchors=fl['reached_anchors'])
 
 
-def floor(level_name, plan, level=None):
+def floor(level_name, plan, level=None, regenerated=False):
     """{polys, rects, erase, block, anchors, rifts, doors, notes}: what the minimap
     draws as floor, after the plan.
 
@@ -1306,6 +1320,7 @@ def floor(level_name, plan, level=None):
     over it. `block` are added or moved pieces standing on the floor, `anchors` the
     points (routes, rifts, player starts) whose connected floor is drawn, `rifts` the
     rifts and `doors` [(x, y, yaw degrees, width uu)] the doors after the plan.
+    `regenerated`: start from the walkable graph a build rebuilds (_graph_polys).
     """
     import numpy as np
     from riftlord.formats.omd3 import meshcat
@@ -1316,7 +1331,7 @@ def floor(level_name, plan, level=None):
     if scratch.is_scratch(plan):
         return _scratch_floor(level_name, plan)
     level = level if level is not None else leveldata.level(level_name)
-    polys, ids, chains, notes = _graph_polys(level_name, plan)
+    polys, ids, chains, notes = _graph_polys(level_name, plan, regenerated)
     every = list(polys)
     flyer_floor = _pieces_of_area(polys, ids, FLYER_FLOOR_AREA)
     area = wanted(plan).get('area')
@@ -1353,8 +1368,10 @@ def floor(level_name, plan, level=None):
     cat = meshcat.load()
     pieces = level.get('pieces') or []
     removed = {int(i) for i in plan.get('removed') or []}
-    moved = {int(e['id']): e['matrix'] for e in plan.get('edits') or []
-             if isinstance(e, dict) and 'id' in e}
+    # a Collides switch alone leaves the piece where it stands (piececollision.moving_edits)
+    from riftlord.mapeditor import piececollision
+    moved = {int(e['id']): e['matrix'] for e in piececollision.moving_edits(plan, level_name)
+             if e.get('matrix')}
     gone, kept, placed = [], [], []
     #: (lo, hi) of the removed or moved pieces outside UNDRAWN_CATEGORIES, held floor or not
     knocked = []
@@ -3741,10 +3758,11 @@ def _clear(size):
 
 # -- build and preview --------------------------------------------------------------
 
-def prepare(level_name, plan, level=None, bounds=None, solid_coarse=None):
+def prepare(level_name, plan, level=None, bounds=None, solid_coarse=None, regenerated=False):
     """{volume, reframe, painter, donor, floor, notes} for a build, or raises SystemExit.
 
-    `painter(size)` draws the texture's top mip."""
+    `painter(size)` draws the texture's top mip. `regenerated`: draw from the walkable
+    graph the build rebuilds rather than the level's shipped one (floor)."""
     want = wanted(plan).get('mode')
     if want == 'cut':
         from riftlord.build.minimap import minimapcut
@@ -3758,7 +3776,7 @@ def prepare(level_name, plan, level=None, bounds=None, solid_coarse=None):
     vols, why = sources(level_name)
     if vols is None:
         raise SystemExit('the minimap cannot be regenerated: %s' % why)
-    fl = floor(level_name, plan, level=level)
+    fl = floor(level_name, plan, level=level, regenerated=regenerated)
     if not cut_at_doors(plan):
         # all reachable floor, approaches included (Cut at Doors off, the default)
         fl = floor_reached(level_name, fl)
@@ -3832,12 +3850,14 @@ def _markers(level_name, plan, level):
     return rifts, doors, points
 
 
-#: Plan keys a preview's drawing depends on: the geometry and what cuts it. Route
-#: points, spawners, waves and the look are drawn as markers or not at all, so editing
+#: Plan keys a preview's drawing depends on: the geometry, the volumes and route points
+#: the rebuilt walkable graph is made from (navregen: exclusion and blocking volumes, the
+#: floor a route walks), and what cuts it. Waves and the look are not drawn, so editing
 #: them reuses the drawing (a build still draws from the whole plan); the flyer routes'
 #: legs, which the band follows, are keyed on their own (preview_key).
 PREVIEW_GEOMETRY = ('level', 'removed', 'edits', 'added', 'doors', 'wiring', 'minimap',
-                    'region', 'scratch', 'rifts', 'playerStarts')
+                    'region', 'scratch', 'rifts', 'playerStarts', 'volumes', 'points',
+                    'spawners')
 #: Drawings kept on disk (the oldest dropped past this many).
 PREVIEW_KEEP = 200
 #: One preview drawn at a time: a burst of edits must not start a drawing each.
@@ -3864,11 +3884,10 @@ def preview_key(level_name, plan, size):
     h = hashlib.sha1()
     h.update(('%s %d' % (level_name, size)).encode())
     h.update(json.dumps(keep, sort_keys=True, default=str).encode())
-    for mod in (sys.modules[__name__], minimapsolid, minimapstyle, minimapcut):
-        try:
-            h.update(str(os.path.getmtime(mod.__file__)).encode())
-        except OSError:
-            pass
+    from riftlord.core import gamepath
+    from riftlord.mapeditor import piececollision
+    h.update(gamepath.code_stamp(sys.modules[__name__], minimapsolid, minimapstyle,
+                                 minimapcut, piececollision).encode())
     return h.hexdigest()[:20]
 
 
@@ -4033,7 +4052,8 @@ def _draw_preview(level_name, plan, size):
             quick = size < PREVIEW_SIZE
             got = prepare(level_name, plan, level=level,
                           bounds=size if quick else BOUNDS_SIZE,
-                          solid_coarse=0 if quick else PREVIEW_SOLID_COARSE)
+                          solid_coarse=0 if quick else PREVIEW_SOLID_COARSE,
+                          regenerated=True)
         except SystemExit as exc:
             return {'error': str(exc)}
         if got.get('cut'):

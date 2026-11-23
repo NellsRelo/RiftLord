@@ -20,6 +20,7 @@ import { mount, unmount } from 'svelte'
 import MissionDetails from '../../shared/MissionDetails.svelte'
 import { sendable } from '../../shared/LoadPicture.svelte'
 import { mapSettingsHtml, wireMapSettings, newMissionWorld } from './mapsettings.js'
+import * as surfacelook from './surfacelook.js'
 import { levelFxHtml, wireLevelFx, removable, isWeatherItem } from './levelfxui.js'
 import * as scratchUi from './scratch.js'
 import { kitGrids, placeMatrix, cachedGrids, latticeDelta, footprintDelta, gridPlace,
@@ -655,11 +656,11 @@ const LAYERS = [
   ['sky', 'the sky'], ['level', 'the level'], ['foliage', 'foliage'],
   ['lights', 'lights'], ['vfx', 'effects'],
   ['wiring', 'spawners and points'], ['routes', 'routes'],
-  ['coverage', 'navigation coverage'], ['volumes', 'blocking volumes'], ['fog', 'fog'],
+  ['coverage', 'navigation coverage'], ['volumes', 'volumes'], ['fog', 'fog'],
   ['trapGrids', 'trap grids'],
 ]
 //: The layers that start hidden when a level opens: lights, effects, navigation
-//: coverage, blocking volumes and trap grids.
+//: coverage, volumes and trap grids.
 const HIDDEN_ON_OPEN = ['lights', 'vfx', 'coverage', 'volumes', 'trapGrids']
 
 //: Which streaming sublevels are shown. Each of a level's own gets a box of its own.
@@ -1082,7 +1083,10 @@ async function drawLevel (data) {
               const tint = tintColour((m.slotTints || [])[slot])
               if (tint) o.color = tint
             } else o.color = 0x8a8f99
-            return new THREE.MeshLambertMaterial(o)
+            const mat = new THREE.MeshLambertMaterial(o)
+            //: its weathering (surfacelook.js)
+            mat.userData.surfacePath = (m.slots || [])[slot] || null
+            return mat
           })
         } else {
           const o = Object.assign({}, opts)
@@ -1108,6 +1112,7 @@ async function drawLevel (data) {
             o.color = 0x8a8f99
           }
           material = new THREE.MeshLambertMaterial(o)
+          if (!liquid) material.userData.surfacePath = matName || m.material || null
         }
         //: a light beam or glow cone is light, not a solid: drawn soft and additive
         if (group.every(p => p.glow)) material = glowMaterial(material)
@@ -1158,6 +1163,7 @@ async function drawLevel (data) {
   }
   syncFlipped()
   busy('')
+  weatherScene()
 }
 
 /** Whether these placements are a liquid or energy surface. */
@@ -2525,6 +2531,8 @@ function undo () {
   drawPlan()
   showProps()
   applyMoons()
+  applySurfaces()
+  applyVertexPaint()
   // The level's own geometry has to be put back too: moving and removing map assets
   // are undoable edits like any other, and restoring only the plan left the level
   // looking however the undone edit had left it.
@@ -3277,6 +3285,7 @@ function showPickedProps () {
       .map(i => Math.round(one.matrix[i])).join(', ')}</div>` +
     planeSection(picked.length === 1 ? one : null) +
     paintSection() +
+    vertexPaintSection() +
     collisionSection() +
     fxSection(picked.length === 1 ? one : null) +
     teleportSection(picked.length === 1 ? one : null) +
@@ -3315,6 +3324,7 @@ function showPickedProps () {
         ? ev.target.value : null))
   }
   wirePaint(body)
+  wireVertexPaint(body)
   wireCollision()
   wireEventsList(body)
   wireCrystal(body, picked.length === 1 ? one : null,
@@ -5140,14 +5150,22 @@ renderer.domElement.addEventListener('click', (ev) => {
     showProps()
     return
   }
-  //: a blocking volume, while its layer shows, when nearer than the level behind it
+  //: a volume, while its layer shows, when nearer than the level behind it: of those
+  //: under the cursor the smallest, so one inside another (Scenario_Ice_02's exclusion
+  //: volumes inside the level-wide NavPowerExclusionVolume2) can be picked
   if (mode === 'none' && groups.volumes.visible) {
-    const vol = pick(ev, groups.volumes.children.filter(c => c.visible))
-    const behind = vol.length ? pick(ev, levelPickables()) : []
-    if (vol.length && (!behind.length || vol[0].distance <= behind[0].distance)) {
+    const hits = pick(ev, groups.volumes.children.filter(c => c.visible))
+    const size = (h) => {
+      const d = h.object.userData.data
+      return [0, 1, 2].reduce((p, a) =>
+        p * Math.max(d.max[a] - d.min[a], 1) * Math.abs(h.object.scale.getComponent(a)), 1)
+    }
+    const best = hits.reduce((b, h) => (!b || size(h) < size(b) ? h : b), null)
+    const behind = best ? pick(ev, levelPickables()) : []
+    if (best && (!behind.length || best.distance <= behind[0].distance)) {
       picked = []
       selected = null
-      wiringPick = vol[0].object
+      wiringPick = best.object
       refreshPicked()
       showProps()
       return
@@ -5555,6 +5573,7 @@ async function drawAdded (entry) {
     if (entry.kind === 'mesh' || entry.kind === 'kit') {
       tintAddedPart(mesh, entry, entry.kind === 'mesh' ? MESH_PART : part.component)
     }
+    if (entry.kind === 'mesh') surfacelook.paintObject(mesh, entry.vertexPaint || null)
     groups.newGeo.add(mesh)
     drewAny = true
   }
@@ -5761,6 +5780,7 @@ async function partMesh (part, shared) {
     mat = texturedMaterial({ side: meshSide(m), clippingPlanes: CUT_PLANES },
       tex && ('api/texture' + tex), tintColour(part.materialTint), tex)
     mat.userData.override = part.material
+    mat.userData.surfacePath = part.material
   } else if (multi) {
     geo.clearGroups()
     for (const sec of m.sections) geo.addGroup(sec.first, sec.tris * 3, sec.slot)
@@ -5768,9 +5788,11 @@ async function partMesh (part, shared) {
       { side: m.fab ? THREE.DoubleSide : meshSide(m), clippingPlanes: CUT_PLANES },
       t && ('api/texture' + t + (m.fab ? '?size=' + fab.FAB_TEXTURE_SIZE : '')),
       tintColour((m.slotTints || [])[slot]), t))
+    if (!m.fab) mat.forEach((x, slot) => { x.userData.surfacePath = (m.slots || [])[slot] || null })
   } else {
     mat = texturedMaterial({ side: meshSide(m), clippingPlanes: CUT_PLANES },
       m.texture && ('api/texture' + m.texture), tintColour(m.tint), m.texture)
+    mat.userData.surfacePath = m.material || null
   }
   if (shared) geoCache.set(key, { geo, mat })
   return new THREE.Mesh(geo, mat)
@@ -6510,6 +6532,29 @@ async function previewSkyFog (material) {
 
 //: /api/mapinfo for the open level: world settings, the mission's rows and Guid.
 let mapInfo = null
+
+/** The Surfaces values the viewport's weathering draws (surfacelook.js): the plan's over
+ * the level's own. */
+function applySurfaces () {
+  surfacelook.setValues(mapInfo && mapInfo.surfaceFields, mapInfo && mapInfo.surfaces,
+    plan && plan.world && plan.world.surfaces)
+}
+
+//: true while surfacelook.attach is fetching
+let weathering = false
+/** Give every drawn level and added material its weathering, once each. */
+function weatherScene () {
+  if (weathering || !level) return
+  weathering = true
+  const name = level.level
+  surfacelook.attach(world, name, !!level.scratch, json,
+    (inst, i) => (piecesByMesh.get(inst.userData.group) || [])[i])
+    .then(() => { if (name === (level && level.level)) applyVertexPaint() })
+    .catch(err => report('surfaces', err))
+    .finally(() => { weathering = false })
+}
+//: added pieces arrive one by one; their materials are weathered within this many ms
+setInterval(weatherScene, 1500)
 //: /api/guid/check's answer for `mission.guid`, or null while it is asked.
 let guidCheck = null
 
@@ -6554,6 +6599,7 @@ async function loadMapInfo () {
   if (!level || level.level !== name) return
   mapInfo = got
   takeNewMissionDefaults()
+  applySurfaces()
   applyLighting()
   applyMoons()
   if (!findObject(selected) && !wiringPick && !picked.length) showProps()
@@ -6599,6 +6645,7 @@ function showMapSettings () {
       snapshot()
       plan.world = world
       if (events) plan.events = events
+      applySurfaces()
       showProps()
       previewSkyFog((plan.look || {}).sky).catch(err => report('fog', err))
     },
@@ -7587,6 +7634,110 @@ function paintSection () {
   const values = new Set(rows.map(([t, k]) => paintOf(t, k)))
   const same = values.size === 1 ? [...values][0] : ''
   return '<h2>Material</h2>' + paintSelect('all', same)
+}
+
+// -- vertex paint (riftlord/build/world/vertexpaint.py) ------------------------------
+
+const WHITE_PAINT = [1, 1, 1, 1]
+//: the Vertex Paint fields' channel names
+const PAINT_CHANNELS = ['R', 'G', 'B', 'A']
+
+/** What a picked piece's Vertex Paint sets: {piece} for a level placement of a static mesh
+ * (not foliage), {added} for an added mesh; null when it can carry none. */
+function vertexPaintTarget (p) {
+  if (!p || p.marker || p.levelActor) return null
+  if (p.added) return p.added.kind === 'mesh' ? { added: p.added } : null
+  if (p.liquid || p.skeletal || p.foliage) return null
+  if (p.source === 'component' || (p.source === 'blueprint' && p.component)) return { piece: p }
+  return null
+}
+
+/** The paint a target has without the plan's: what it shipped with, else white. */
+function basePaint (t) {
+  return (t.piece && surfacelook.shipped(t.piece.id)) || WHITE_PAINT
+}
+
+/** The plan's paint of a target, or undefined. */
+function planPaint (t) {
+  if (t.added) return t.added.vertexPaint
+  return ((plan.look || {}).vertexPaint || {})[String(t.piece.id)]
+}
+
+/** Store a target's paint (undefined takes the plan's out). */
+function setPlanPaint (t, rgba) {
+  if (t.added) {
+    if (rgba) t.added.vertexPaint = rgba
+    else delete t.added.vertexPaint
+    return
+  }
+  plan.look = plan.look || {}
+  const all = Object.assign({}, plan.look.vertexPaint || {})
+  if (rgba) all[String(t.piece.id)] = rgba
+  else delete all[String(t.piece.id)]
+  if (Object.keys(all).length) plan.look.vertexPaint = all
+  else delete plan.look.vertexPaint
+}
+
+/** The Vertex Paint section for the picked pieces, or '' when one cannot carry it. */
+function vertexPaintSection () {
+  if (!picked.length) return ''
+  const ts = picked.map(vertexPaintTarget)
+  if (ts.some(t => !t)) return ''
+  const field = (k) => {
+    const vals = new Set(ts.map(t => (planPaint(t) || basePaint(t))[k]))
+    const now = vals.size === 1 ? [...vals][0] : ''
+    const changed = ts.some(t => planPaint(t) && planPaint(t)[k] !== basePaint(t)[k])
+    const reset = changed
+      ? `<button type="button" class="litreset" data-vpaint-reset="${k}">Reset</button>` : ''
+    return `<label class="pick"><span>${PAINT_CHANNELS[k]}${reset}</span>` +
+      `<input type="number" data-vpaint="${k}" min="0" max="1" step="0.05" value="${now}"></label>`
+  }
+  return '<h2>Vertex Paint</h2><div class="pair">' + [0, 1, 2, 3].map(field).join('') + '</div>'
+}
+
+/** Set channel `k` of every picked target to `v` (undefined: back to its own). */
+function setPickedPaint (k, v) {
+  snapshot()
+  for (const t of picked.map(vertexPaintTarget).filter(Boolean)) {
+    const base = basePaint(t)
+    const next = (planPaint(t) || base).slice()
+    next[k] = v === undefined ? base[k] : Math.min(1, Math.max(0, v))
+    setPlanPaint(t, next.every((x, i) => x === base[i]) ? undefined : next)
+  }
+  applyVertexPaint()
+  showProps()
+}
+
+/** Wire vertexPaintSection's fields. */
+function wireVertexPaint (body) {
+  for (const input of body.querySelectorAll('[data-vpaint]')) {
+    input.addEventListener('change', () => {
+      const v = parseFloat(input.value)
+      if (Number.isFinite(v)) setPickedPaint(+input.dataset.vpaint, v)
+    })
+  }
+  for (const b of body.querySelectorAll('[data-vpaint-reset]')) {
+    b.addEventListener('click', () => setPickedPaint(+b.dataset.vpaintReset, undefined))
+  }
+}
+
+/** Draw every placement's paint as the plan has it: the level's instances (their own, or
+ * the plan's) and the added meshes. */
+function applyVertexPaint () {
+  const own = (plan.look || {}).vertexPaint || {}
+  for (const [key, pieces] of piecesByMesh) {
+    const inst = instByMesh.get(key)
+    if (!inst || !inst.isInstancedMesh) continue
+    const any = inst.geometry.attributes.aPaint || pieces.some(p => own[String(p.id)])
+    if (!any) continue
+    pieces.forEach((p, i) => {
+      surfacelook.paintInstance(world, inst, i, own[String(p.id)] || surfacelook.shipped(p.id) || WHITE_PAINT)
+    })
+  }
+  for (const o of groups.newGeo.children) {
+    const e = o.userData && o.userData.addedEntry
+    if (e && e.kind === 'mesh') surfacelook.paintObject(o, e.vertexPaint || null)
+  }
 }
 
 /** [[target, slot]] for every slot of every target. */
@@ -8797,7 +8948,8 @@ window.__rl_planBits = () => JSON.parse(JSON.stringify({
   lights: plan.lights || {}, lighting: plan.lighting || {}, fxSwaps: plan.fxSwaps || {},
   moons: plan.moons || {}, addedMoons: plan.addedMoons || [],
   events: plan.events || [], added: (plan.added || []).map(a => ({ kind: a.kind, name: a.name,
-    paints: a.paints || null })), paints: (plan.look || {}).paints || {} }))
+    paints: a.paints || null })), paints: (plan.look || {}).paints || {},
+  vertexPaint: (plan.look || {}).vertexPaint || null }))
 //: Nothing picked or selected, the handles away, as Escape leaves it
 window.__rl_deselect = () => {
   picked = []
@@ -8822,6 +8974,34 @@ window.__rl_cutShares = () => {
            tops: [0.5, 0.9, 0.95, 0.98, 0.99, 0.995, 1].map(q => Math.round(quantile(tops, q))) }
 }
 window.__rl_planWorld = () => Object.assign({}, plan.world || {})
+//: The paint level piece `id` is drawn with ([r, g, b, a]), or null when unpainted
+window.__rl_piecePaint = (id) => {
+  for (const [key, pieces] of piecesByMesh) {
+    const i = pieces.findIndex(p => p.id === id)
+    if (i < 0) continue
+    const a = (instByMesh.get(key) || {}).geometry
+    const attr = a && a.attributes.aPaint
+    return attr ? [attr.getX(i), attr.getY(i), attr.getZ(i), attr.getW(i)].map(v => Math.round(v * 100) / 100) : null
+  }
+  return null
+}
+//: The view's weathering (surfacelook.js): materials drawn with it, those with vertex
+//: paint, shader programs that failed to compile, and the Snow amount drawn
+window.__rl_surfaceView = () => {
+  let weathered = 0
+  let painted = 0
+  world.traverse((o) => {
+    if (!o.isMesh) return
+    for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+      if (m && m.defines && 'SURF_SNOW_ALL' in m.defines) {
+        weathered += 1
+        if ('SURF_PAINT' in m.defines && o.geometry.attributes.aPaint) painted += 1
+      }
+    }
+  })
+  const failed = (renderer.info.programs || []).filter(pr => pr.diagnostics && !pr.diagnostics.runnable).length
+  return { weathered, painted, failed, snow: surfacelook.value('UseSnowCastle') }
+}
 //: The view's lighting (applyLighting): the sun's and sky light's strengths, the height
 //: fog drawn, the sun handle and the sun it is on
 window.__rl_lightingView = () => ({ sun: sun.intensity, fill: fill.intensity, fog: { ...fogView },

@@ -585,6 +585,15 @@ class Handler(BaseHTTPRequestHandler):
                 opts = body or {}
                 return self._send(200, bucket.update_campaign(str(opts.get('key') or ''),
                                                               opts.get('values')))
+            #: {materials: [name]}: how each weathers in the viewport, and the level's
+            #: vertex paint by piece id (riftlord/mapeditor/surfacelook.py)
+            if path.startswith('/api/surfacelook/'):
+                from riftlord.mapeditor import surfacelook
+                opts = body or {}
+                name = path.rsplit('/', 1)[-1]
+                return self._send(200, {
+                    'materials': surfacelook.materials(opts.get('materials') or []),
+                    'paint': {} if opts.get('scratch') else surfacelook.paint(name)})
             #: the minimap a build would redraw for this plan (riftlord/minimapredraw.py)
             if path.startswith('/api/minimap/'):
                 from riftlord.build.minimap import minimapredraw

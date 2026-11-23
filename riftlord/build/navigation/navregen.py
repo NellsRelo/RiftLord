@@ -726,12 +726,27 @@ def nav_volumes(level_name, classes=(EXCLUSION, BOUNDS), path=None):
     return out
 
 
-def exclusion_volumes(level_name):
-    """nav_volumes of class EXCLUSION in every package of the level: the persistent level,
-    then each sublevel (volumes.level_packages)."""
+def exclusion_volumes(level_name, plan=None):
+    """nav_volumes of class EXCLUSION in every package of the level (the persistent level,
+    then each sublevel, volumes.level_packages) as the plan's `volumes` edits leave them: a
+    removed one left out, a moved, turned or resized one under its edited transform."""
+    from riftlord.formats.omd3 import omd3level
     from riftlord.mapeditor import volumes
-    return [v for _tag, path in volumes.level_packages(level_name)
-            for v in nav_volumes(level_name, (EXCLUSION,), path)]
+    edits, _added = volumes._plan_edits(plan)
+    out = []
+    for tag, path in volumes.level_packages(level_name):
+        named = {v['index']: v for v in volumes.package_volumes(level_name, tag, path)
+                 if v['cls'] == EXCLUSION}
+        for v in nav_volumes(level_name, (EXCLUSION,), path):
+            vol = named.get(v['index'])
+            e = edits.get(vol['name']) if vol else None
+            if e and e.get('gone'):
+                continue
+            if e and (e.get('matrix') or e.get('at')):
+                m = np.array(omd3level._matrix(*volumes.edited_transform(vol, e)))
+                v = dict(v, matrix=m, inverse=np.linalg.inv(m))
+            out.append(v)
+    return out
 
 
 def _convex_elements(pkg, names, index):
@@ -1807,12 +1822,13 @@ def heightfield(level_name, plan, log=print):
     return hf
 
 
-def floors(hf, level_name, log=print):
-    """[Floor] per agent: linked, inside bounds, outside exclusions, eroded."""
+def floors(hf, level_name, log=print, plan=None):
+    """[Floor] per agent: linked, inside bounds, outside the exclusions the plan leaves,
+    eroded."""
     t = time.time()
     min_gap = min(a[2] for a in AGENTS)
     rcol, floor, ceiling, walkable = runs(hf, min_gap)
-    excl = exclusion_volumes(level_name)
+    excl = exclusion_volumes(level_name, plan)
     out = []
     for agent in AGENTS:
         fl = Floor(hf, rcol, floor, ceiling, walkable, agent)
@@ -1855,7 +1871,7 @@ def graphs_for(level_name, plan=None, log=print):
     anchors = [p for _l, a, b in legs for p in (a, b)]
     anchors += [at for _l, at in gameplay_points(level_name, plan)]
     out = []
-    for g, fl in enumerate(floors(hf, level_name, log)):
+    for g, fl in enumerate(floors(hf, level_name, log, plan)):
         t = time.time()
         polys, ids = polygons(fl, log)
         tags, flags = [None] * len(polys), [DEFAULT_FLAGS] * len(polys)
@@ -1985,13 +2001,28 @@ def gameplay_points(level_name, plan=None):
     return where
 
 
+#: The last buffers buffer_for made, by (level, generator, plan): a build asks twice, for
+#: the regenerated minimap and then for the level.
+_BUFFERS = collections.OrderedDict()
+#: How many it keeps.
+BUFFERS_KEPT = 2
+
+
 def buffer_for(level_name, plan=None, log=print):
     """A sealed surface buffer for the level's final geometry."""
+    key = (level_name, GENERATOR, json.dumps(plan or {}, sort_keys=True, default=str))
+    if key in _BUFFERS:
+        _BUFFERS.move_to_end(key)
+        return _BUFFERS[key]
     got = graphs_for(level_name, plan, log)
     items = [(polys, ids, flags, None, None, None, tags)
              for polys, ids, tags, flags in got]
     bbox = navsurfgen.bbox_of(got[0][0])
-    return navsurfgen.buffer_per_agent(items, bbox)
+    buf = navsurfgen.buffer_per_agent(items, bbox)
+    _BUFFERS[key] = buf
+    while len(_BUFFERS) > BUFFERS_KEPT:
+        _BUFFERS.popitem(last=False)
+    return buf
 
 
 def install(uasset, uexp, level_name, plan, log=print):
@@ -2035,6 +2066,12 @@ def wanted(level_name, plan):
     from riftlord.mapeditor import leveldata
     touched = {r['id'] if isinstance(r, dict) else r for r in plan.get('removed') or []}
     touched |= {e['id'] for e in plan.get('edits') or []}
+    #: a no-enemies volume the plan removes, moves, turns or resizes
+    from riftlord.mapeditor import volumes
+    edits, _added = volumes._plan_edits(plan)
+    if edits and any(v['cls'] == EXCLUSION and v['name'] in edits
+                     for v in volumes.level_volumes(level_name)):
+        return True
     if not touched:
         return False
     flags = component_flags(level_name)

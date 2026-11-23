@@ -53,7 +53,7 @@ def read_back(ua, ux, tag):
 
 # 1. read from every package
 ice = volumes.level_volumes(ICE)
-castle = [v for v in ice if v['sub'] == 'Castle']
+castle = [v for v in ice if v['sub'] == 'Castle' and v['cls'] == 'OMDTrapBlockingVolume']
 check('Repaired Mine: 16 trap blocking volumes read from its Castle sublevel',
       len(castle) == 16 and all(v['stops'] == 'traps' for v in castle), len(castle))
 check('a sublevel volume is named <sublevel>|<export> and titled by its export name',
@@ -64,13 +64,14 @@ persistent = [v for v in beset if v['sub'] == volumes.PERSISTENT]
 check('the persistent level\'s volumes come first, named by export name as before',
       beset[:len(persistent)] == persistent and persistent == volumes.package_volumes(BESET)
       and all('|' not in v['name'] and v['name'] == v['title'] for v in persistent), '')
-subs = [v for v in beset if v['sub'] != volumes.PERSISTENT]
+subs = [v for v in beset if v['sub'] != volumes.PERSISTENT and v['stops'] != 'exclusion']
 kinds = sorted(v['stops'] for v in subs)
 check('Beset: 46 sublevel volumes (30 camera, 4 kill, 12 players)',
       len(subs) == 46 and kinds.count('camera') == 30 and kinds.count('kill') == 4
       and kinds.count('players') == 12, len(subs))
 check('/api/level carries them', len([v for v in leveldata.level(ICE)['volumes']
-                                      if v['sub'] == 'Castle']) == 16, '')
+                                      if v['sub'] == 'Castle'
+                                      and v['cls'] == 'OMDTrapBlockingVolume']) == 16, '')
 check('a plan names them', volumes.clean([{'name': KILL, 'gone': True}]) ==
       [{'name': KILL, 'gone': True}], '')
 

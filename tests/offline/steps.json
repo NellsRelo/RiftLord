@@ -82,5 +82,11 @@
  ["same title and Campaign Endless", ["tests/offline/test_samename.py"]],
  ["a custom campaign is one pak", ["tests/offline/test_campaignpak.py"]],
  ["gates on a retitled build", ["tests/offline/test_retitled_gates.py"]],
- ["map volume defaults", ["tests/offline/test_mapvolume_defaults.py"]]
+ ["map volume defaults", ["tests/offline/test_mapvolume_defaults.py"]],
+ ["Deathtrap package and container writer", ["tests/offline/test_omdd_write.py"]],
+ ["Deathtrap Blueprint writer", ["tests/offline/test_omdd_blueprint.py"]],
+ ["exclusion volumes", ["tests/offline/test_exclusion_volumes.py"]],
+ ["surface weathering", ["tests/offline/test_surfaces.py"]],
+ ["minimap: a Collides switch alone", ["tests/offline/test_minimap_collides.py"]],
+ ["vertex paint and weathering preview", ["tests/offline/test_vertexpaint.py"]]
 ]

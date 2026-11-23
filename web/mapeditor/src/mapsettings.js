@@ -1,8 +1,8 @@
 // The right sidebar while nothing is selected: the open level's map settings.
 //
 // Reads /api/mapinfo (riftlord/mapinfo.py). World settings the plan changes are kept
-// in `plan.world` ({killZ, warScenario, intro, introFilter, storyDialog, riftWarning, music}
-// and the wind keys of riftlord/levelfx.py); the emitter writes them into the level. The
+// in `plan.world` ({killZ, warScenario, intro, introFilter, storyDialog, riftWarning, music,
+// surfaces} and the wind keys of riftlord/levelfx.py); the emitter writes them into the level. The
 // lighting sections are lightingui.js's (`ctx.lightingHtml`). The music change is the `music` event of `plan.events` (riftlord/hostevents.py).
 // Mission details (Hub, Guid) are in the Details dialog, not here.
 
@@ -12,8 +12,10 @@ export const WAR_SCENARIO_EDITABLE = true
 
 import { music, bindMusicButton } from '../../shared/musicpreview.js'
 
-//: Whether the Lighting section is open; kept across redraws, closed when the editor starts.
+//: Whether the Lighting and Surfaces sections are open; kept across redraws, closed when
+//: the editor starts.
 let lightingOpen = false
+let surfacesOpen = false
 
 const esc = (text) => String(text ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -181,6 +183,31 @@ export function mapSettingsHtml (ctx) {
     if (shown.some(f => f.key in set)) out.push('<button id="scenereset">Reset</button>')
   }
 
+  // surface weathering (riftlord/build/world/surfaces.py): every value the level does not
+  // work out as it plays, at the level's value, grouped by weathering
+  if (info && info.surfaceFields) {
+    const shipped = info.surfaces || {}
+    const own = set.surfaces || {}
+    const shown = info.surfaceFields.filter(f => f.key in shipped)
+    if (shown.length) {
+      const field = (f) => {
+        const now = f.key in own ? own[f.key] : shipped[f.key]
+        const reset = f.key in own ? '<button type="button" class="litreset" ' +
+          `data-surface-reset="${esc(f.key)}">Reset</button>` : ''
+        const input = f.kind === 'colour'
+          ? `<input type="color" data-surface="${esc(f.key)}" value="${toHex(now)}">`
+          : `<input type="number" data-surface="${esc(f.key)}" min="${f.min}" max="${f.max}" ` +
+            `step="${f.step}" value="${esc(now)}">`
+        return `<label class="pick"><span>${esc(f.label)}${reset}</span>${input}</label>`
+      }
+      const body = [...new Set(shown.map(f => f.group))].map(group =>
+        `<h2>${esc(group)}</h2><div class="pair">` +
+        shown.filter(f => f.group === group).map(field).join('') + '</div>').join('')
+      out.push(`<details id="surfacesbox"${surfacesOpen ? ' open' : ''}>` +
+        `<summary>Surfaces</summary>${body}</details>`)
+    }
+  }
+
   // the map's lighting (lightingui.js), drawn by the Map Editor
   if (ctx.lightingHtml) {
     out.push(`<details id="lightingbox"${lightingOpen ? ' open' : ''}><summary>Lighting</summary>` +
@@ -301,6 +328,39 @@ export function wireMapSettings (body, ctx, { onWorld }) {
     sceneReset.addEventListener('click', () => {
       for (const f of (ctx.info && ctx.info.sceneFields) || []) delete world[f.key]
       onWorld(world)
+    })
+  }
+  const surfaces = (ctx.info && ctx.info.surfaces) || {}
+  const setSurface = (key, value) => {
+    const own = Object.assign({}, world.surfaces || {})
+    if (value === undefined) delete own[key]
+    else own[key] = value
+    if (Object.keys(own).length) world.surfaces = own
+    else delete world.surfaces
+    onWorld(world)
+  }
+  const surfacesBox = body.querySelector('#surfacesbox')
+  if (surfacesBox) surfacesBox.addEventListener('toggle', () => { surfacesOpen = surfacesBox.open })
+  for (const input of body.querySelectorAll('[data-surface]')) {
+    input.addEventListener('change', () => {
+      const key = input.dataset.surface
+      const field = ((ctx.info && ctx.info.surfaceFields) || []).find(f => f.key === key)
+      if (!field) return
+      if (field.kind === 'colour') {
+        const v = fromHex(input.value, (surfaces[key] || [])[3])
+        setSurface(key, toHex(v) === toHex(surfaces[key]) ? undefined : v)
+        return
+      }
+      const v = +input.value
+      if (input.value.trim() !== '' && !Number.isFinite(v)) return
+      if (input.value.trim() === '' || v === surfaces[key]) setSurface(key, undefined)
+      else setSurface(key, Math.min(field.max, Math.max(field.min, v)))
+    })
+  }
+  for (const b of body.querySelectorAll('[data-surface-reset]')) {
+    b.addEventListener('click', (ev) => {
+      ev.preventDefault()
+      setSurface(b.dataset.surfaceReset, undefined)
     })
   }
   const intro = body.querySelector('#introfilter')

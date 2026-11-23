@@ -696,6 +696,11 @@ def _probe(args, clock, process_started):
             for row in missionscript.check_files(files, dict(rec.get('plan') or {},
                                                              _modKey=rec.get('mod'))):
                 gate(row['name'], row['ok'], row['detail'])
+        #: the surfaces actor, when the plan sets weathering the level's script does not
+        from riftlord.build.world import surfaces
+        for row in surfaces.check_files(files, dict(rec.get('plan') or {}, _modKey=rec.get('mod')),
+                                        rec.get('level') or (rec.get('plan') or {}).get('level')):
+            gate(row['name'], row['ok'], row['detail'])
         #: unstable rifts: open while the waves send through them, and sent along the real flow
         if missionevents.unstable_rifts(rec.get('plan')) and coord:
             from riftlord.mapeditor import planactors

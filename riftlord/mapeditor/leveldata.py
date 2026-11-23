@@ -1422,6 +1422,12 @@ def save_plan(name, data):
             if a.get('paints') else None
         if paints:
             item['paints'] = paints
+        #: an added mesh's vertex paint (riftlord/build/world/vertexpaint.py)
+        if item['kind'] == 'mesh':
+            from riftlord.build.world import vertexpaint
+            colour = vertexpaint.clean_colour(a.get(vertexpaint.PLAN_KEY))
+            if colour is not None:
+                item[vertexpaint.PLAN_KEY] = colour
         #: placed with collision off (riftlord/mapeditor/piececollision.py)
         from riftlord.mapeditor import piececollision
         if a.get(piececollision.KEY) is False:
@@ -1513,6 +1519,11 @@ def save_plan(name, data):
                     kept[str(int(key))] = got
             if kept:
                 look['paints'] = kept
+        #: {piece id: [r, g, b, a]} -- a level piece's vertex paint (build/world/vertexpaint.py)
+        from riftlord.build.world import vertexpaint
+        vpaint = vertexpaint.clean(data['look'].get(vertexpaint.PLAN_KEY))
+        if vpaint:
+            look[vertexpaint.PLAN_KEY] = vpaint
         #: older plans' lava falls, which the build still reads
         if isinstance(data['look'].get('lavaFalls'), list) and data['look']['lavaFalls']:
             look['lavaFalls'] = data['look']['lavaFalls']

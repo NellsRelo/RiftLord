@@ -1007,6 +1007,10 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     from riftlord.missions import missionscript
     for path, blobs in missionscript.package(level_name, mod, plan).items():
         extra_files[path] = (blobs, '.uasset')
+    #: the surfaces actor's Blueprint (riftlord/build/world/surfaces.py), on any level
+    from riftlord.build.world import surfaces
+    for path, blobs in surfaces.package(level_name, mod, plan).items():
+        extra_files[path] = (blobs, '.uasset')
     #: the mission's lava rock materials, their overlay band fitted to its rocks
     from riftlord.build.world import lavafx
     for path, blobs in lavafx.rock_materials(level_name, plan, mod).items():
@@ -1057,7 +1061,10 @@ def build(level_name, mod=None, title=None, campaign='Custom Maps', par=600.0,
     elif md_files is not None and minimapredraw.wanted(plan):
         from riftlord.core import buildstage
         buildstage.stage('Minimap')
-        redraw.update(minimapredraw.prepare(level_name, plan))
+        #: drawn from the walkable graph the level gets (write_plan_in): the rebuilt one
+        #: unless a retry keeps the shipped one
+        redraw.update(minimapredraw.prepare(level_name, plan,
+                                            regenerated=not plan.get(SHIPPED_FLOOR)))
         tex_path, tex_obj = minimapredraw.texture_ref(level_path.rsplit('/', 1)[0], level_name)
         if len(redraw.get('painters') or []) > 1:
             # Regenerate on a multi-floor level: one texture per floor drawing, each

@@ -169,6 +169,7 @@ zerovec                                  0.11.8         window   Unicode-3.0
 zerovec-derive                           0.11.6         window   Unicode-3.0
 zlib-rs                                  0.6.8          window   Zlib
 zmij                                     1.0.23         window   MIT
+BLAKE3                                   -              server   CC0-1.0 OR Apache-2.0
 Brotli                                   -              server   MIT
 bzip2                                    -              server   bzip2-1.0.6
 Expat                                    -              server   MIT
@@ -179,6 +180,7 @@ liblzma (XZ Utils)                       -              server   0BSD
 libuuid (util-linux)                     -              server   BSD-3-Clause
 LZ4 library                              -              server   BSD-2-Clause
 mpdecimal                                -              server   BSD-2-Clause
+oneTBB                                   -              server   Apache-2.0
 OpenSSL                                  -              server   Apache-2.0
 zlib                                     -              server   Zlib
 Zstandard                                -              server   BSD-3-Clause
@@ -918,6 +920,10 @@ zmij 1.0.23
 Kind: Rust. Used in: window. Licence: MIT
 Licence texts: MIT
 ------------------------------------------------------------------------------
+BLAKE3
+Kind: System library. Used in: server. Licence: CC0-1.0 OR Apache-2.0
+Licence texts: Apache-2.0
+------------------------------------------------------------------------------
 Brotli
 Kind: System library. Used in: server. Licence: MIT
 Copyright (c) 2009, 2010, 2013-2016 by the Brotli Authors.
@@ -960,6 +966,10 @@ Licence texts: T39
 mpdecimal
 Kind: System library. Used in: server. Licence: BSD-2-Clause
 Licence texts: T40
+------------------------------------------------------------------------------
+oneTBB
+Kind: System library. Used in: server. Licence: Apache-2.0
+Licence texts: Apache-2.0
 ------------------------------------------------------------------------------
 OpenSSL
 Kind: System library. Used in: server. Licence: Apache-2.0

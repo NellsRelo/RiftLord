@@ -58,7 +58,14 @@ Unversioned properties (UE 5.3):
   not the default; a property missing from the stream is the template's.
 - FVector, FRotator, FQuat are doubles (large world coordinates); a bool is one byte;
   an object reference is an i32: positive is export n - 1, negative is import map
-  entry -n - 1.
+  entry -n - 1. FGameplayTag, FBoxSphereBounds and FFrameRate are unversioned structs,
+  not native (measured: sweep_native.py in the P1 notes); FIntVector2 is native, and so is
+  FDeprecateSlateVector2D (two floats; P2 notes, sweep_widget.py).
+- `Props(raw=True)` keeps what the writer needs (unversioned_write.py): a struct is a
+  Fields dict with its schema entries in order and its header bytes, names are FName
+  (index, number), strings FStr (with their stored length), texts FText (flags, history,
+  parts); delegates, field paths, set and map removals and per-quality-level values are
+  kept whole.
 - 5,747 of 5,747 StaticMeshComponents of Level_Castle_CastlePlaza_Geo read.
 
 Levels:
@@ -408,9 +415,10 @@ class Ref:
 class Package:
     """One Zen package: names, imports, exports and their data."""
 
-    def __init__(self, game, name, container, index):
+    def __init__(self, game, name, container, index, data=None):
+        """`data` reads a package chunk held in memory (container and index None)."""
         self.game, self.name, self.container, self.index = game, name, container, index
-        b = self.data = container.read(index)
+        b = self.data = container.read(index) if data is None else bytes(data)
         (_ver, self.header, _n, _ni, _flags, self.cooked_header, hashes_at, imports_at,
          exports_at, bundles_at, dep_at, _dep2, impnames_at) = struct.unpack_from(
              '<IIIIIIiiiiiii', b, 0)
@@ -481,11 +489,11 @@ class Package:
         """The export's own unversioned properties, by name."""
         return self.props_end(i)[0]
 
-    def props_end(self, i):
+    def props_end(self, i, raw=False):
         """(the export's own unversioned properties, the offset in `data` after them)."""
         cls = self.class_name(i)
         e = self.exports[i]
-        p = Props(self, self.data, e['at'], e['at'] + e['size'])
+        p = Props(self, self.data, e['at'], e['at'] + e['size'], raw)
         return p.struct(cls), p.o
 
 
@@ -590,6 +598,16 @@ class Usmap:
         self._schemas[name] = out if name in self.structs else None
         return self._schemas[name]
 
+    def count(self, name):
+        """Number of schema indices of a class or struct, its supers included."""
+        total, s, seen = 0, name, set()
+        while s and s in self.structs and s not in seen:
+            seen.add(s)
+            sup, n, _props = self.structs[s]
+            total += n
+            s = sup
+        return total
+
     def derives(self, name, base):
         seen = set()
         while name and name not in seen:
@@ -620,12 +638,13 @@ NATIVE = {
     'Vector': '<3d', 'Vector2D': '<2d', 'Vector4': '<4d', 'Rotator': '<3d',
     'Quat': '<4d', 'Plane': '<4d', 'Matrix': '<16d', 'Vector3f': '<3f',
     'Vector2f': '<2f', 'Vector4f': '<4f', 'Rotator3f': '<3f', 'Quat4f': '<4f',
-    'Matrix44f': '<16f', 'IntPoint': '<2i', 'IntVector': '<3i', 'IntVector4': '<4i',
+    'Matrix44f': '<16f', 'IntPoint': '<2i', 'IntVector2': '<2i', 'IntVector': '<3i',
+    'IntVector4': '<4i', 'DeprecateSlateVector2D': '<2f',
     'Color': '<4B', 'LinearColor': '<4f', 'Guid': '<4I', 'DateTime': '<q',
-    'Timespan': '<q', 'FrameNumber': '<i', 'FrameRate': '<2i', 'NavAgentSelector': '<I',
+    'Timespan': '<q', 'FrameNumber': '<i', 'NavAgentSelector': '<I',
     'Box': '<6dB', 'Box2D': '<4dB', 'Box3f': '<6fB', 'Sphere': '<4d',
-    'BoxSphereBounds': '<7d', 'PerPlatformFloat': '<if', 'PerPlatformInt': '<ii',
-    'PerPlatformBool': '<ii', 'GameplayTag': '<II', 'SimpleCurveKey': '<2f',
+    'PerPlatformFloat': '<if', 'PerPlatformInt': '<ii',
+    'PerPlatformBool': '<ii', 'SimpleCurveKey': '<2f',
     'RichCurveKey': '<3B6f', 'TwoVectors': '<6d', 'Vector_NetQuantize': '<3d',
     'Vector_NetQuantize10': '<3d', 'Vector_NetQuantize100': '<3d',
     'Vector_NetQuantizeNormal': '<3d', 'SectionEvaluationDataTree': None,
@@ -635,11 +654,62 @@ SIZES = {'Byte': '<B', 'Bool': '<B', 'Int': '<i', 'Float': '<f', 'Double': '<d',
          'Int8': '<b'}
 
 
+class FName(str):
+    """A name read in raw mode: its text plus the name map index and number."""
+
+    def __new__(cls, text, index, number):
+        obj = str.__new__(cls, text)
+        obj.index, obj.number = index, number
+        return obj
+
+
+class FStr(str):
+    """An FString read in raw mode with its stored length (negative: UTF-16; an empty
+    string is stored as 0 or as a lone terminator)."""
+
+    def __new__(cls, text, length):
+        obj = str.__new__(cls, text)
+        obj.length = length
+        return obj
+
+
+class FText(str):
+    """An FText read in raw mode: its display string, flags, history type and the history's
+    parts (-1: (has string, string); 0: (namespace, key, source); 11: (table, key))."""
+
+    def __new__(cls, text, flags, history, parts):
+        obj = str.__new__(cls, text)
+        obj.flags, obj.history, obj.parts = flags, history, parts
+        return obj
+
+
+class Fields(dict):
+    """A struct read in raw mode: values by name, plus `entries`, its serialized schema
+    entries in order as (schema index, zero-masked, value), and `header`, the header bytes
+    as stored (UE writes some headers in a longer form than it needs)."""
+
+    def __init__(self, name):
+        super().__init__()
+        self.struct, self.entries, self.header = name, [], b''
+
+    def layout(self):
+        """(schema index, zero-masked) of the entries."""
+        return [(i, z) for i, z, _v in self.entries]
+
+
+class Removed(list):
+    """A set's or map's items read in raw mode, with `removed`, the keys it removes."""
+
+    def __init__(self, items, removed):
+        super().__init__(items)
+        self.removed = removed
+
+
 class Props:
     """Reads unversioned property data from one package's bytes."""
 
-    def __init__(self, pkg, b, o, end):
-        self.pkg, self.b, self.o, self.end = pkg, b, o, end
+    def __init__(self, pkg, b, o, end, raw=False):
+        self.pkg, self.b, self.o, self.end, self.raw = pkg, b, o, end, raw
         self.types = pkg.game.types
 
     def _u(self, fmt):
@@ -659,10 +729,12 @@ class Props:
             self.o += n
         if self.o > self.end or abs(n) > 1 << 20:
             raise PropError('bad string')
-        return s.rstrip('\0')
+        return FStr(s.rstrip('\0'), n) if self.raw else s.rstrip('\0')
 
     def _name(self):
         s = self.pkg.fname(self.b, self.o)
+        if self.raw:
+            s = FName(s, *struct.unpack_from('<II', self.b, self.o))
         self.o += 8
         return s
 
@@ -671,6 +743,7 @@ class Props:
         schema = self.types.schema(name)
         if schema is None:
             raise PropError('no schema for %r' % (name,))
+        start = self.o
         frags = []
         while True:
             v, = self._u('<H')
@@ -688,7 +761,9 @@ class Props:
                 words = self._u('<%dI' % ((zbits + 31) // 32))
                 for k, w in enumerate(words):
                     mask |= w << (32 * k)
-        out = {}
+        out = Fields(name) if self.raw else {}
+        if self.raw:
+            out.header = self.b[start:self.o]
         i = bit = 0
         for skip, hasz, num in frags:
             i += skip
@@ -701,7 +776,11 @@ class Props:
                 if got is None:
                     raise PropError('%s has no property %d' % (name, i))
                 out[got[0]] = self.zero(got[1]) if zero else self.value(got[1])
+                if self.raw:
+                    out.entries.append((i, zero, out[got[0]]))
                 i += 1
+        if self.raw:
+            out.read_layout = out.layout()
         return out
 
     def zero(self, t):
@@ -736,18 +815,16 @@ class Props:
         if kind == 'LazyObject':
             return self._u('<4I')
         if kind == 'Delegate':
-            self._u('<i')
-            return self._name()
+            obj = Ref(self.pkg, self._u('<i')[0])
+            return (obj, self._name()) if self.raw else self._name()
         if kind == 'MulticastDelegate':
-            for _ in range(self._u('<i')[0]):
-                self._u('<i')
-                self._name()
-            return None
+            got = [(Ref(self.pkg, self._u('<i')[0]), self._name())
+                   for _ in range(self._u('<i')[0])]
+            return got if self.raw else None
         if kind == 'FieldPath':
-            for _ in range(self._u('<i')[0]):
-                self._name()
-            self._u('<i')
-            return None
+            path = [self._name() for _ in range(self._u('<i')[0])]
+            owner = Ref(self.pkg, self._u('<i')[0])
+            return (path, owner) if self.raw else None
         if kind == 'Text':
             return self._text()
         if kind == 'Array':
@@ -756,13 +833,13 @@ class Props:
                 raise PropError('bad array length')
             return [self.value(t[1]) for _ in range(n)]
         if kind == 'Set':
-            for _ in range(self._u('<i')[0]):
-                self.value(t[1])
-            return [self.value(t[1]) for _ in range(self._u('<i')[0])]
+            removed = [self.value(t[1]) for _ in range(self._u('<i')[0])]
+            items = [self.value(t[1]) for _ in range(self._u('<i')[0])]
+            return Removed(items, removed) if self.raw else items
         if kind == 'Map':
-            for _ in range(self._u('<i')[0]):
-                self.value(t[1])
-            return [(self.value(t[1]), self.value(t[2])) for _ in range(self._u('<i')[0])]
+            removed = [self.value(t[1]) for _ in range(self._u('<i')[0])]
+            items = [(self.value(t[1]), self.value(t[2])) for _ in range(self._u('<i')[0])]
+            return Removed(items, removed) if self.raw else items
         if kind == 'OptionalProperty':
             return self.value(t[1]) if self._u('<i')[0] else None
         if kind == 'Struct':
@@ -770,20 +847,18 @@ class Props:
         raise PropError('unsupported property type %r' % (kind,))
 
     def _text(self):
-        _flags, = self._u('<I')
+        flags, = self._u('<I')
         hist, = self._u('<b')
         if hist == -1:
-            if self._u('<i')[0]:
-                return self._str()
-            return ''
-        if hist == 0:
-            self._str()
-            self._str()
-            return self._str()
-        if hist == 11:
-            self._name()
-            return self._str()
-        raise PropError('unsupported FText history %d' % hist)
+            has = self._u('<i')[0]
+            parts = (has, self._str() if has else '')
+        elif hist == 0:
+            parts = (self._str(), self._str(), self._str())
+        elif hist == 11:
+            parts = (self._name(), self._str())
+        else:
+            raise PropError('unsupported FText history %d' % hist)
+        return FText(parts[-1], flags, hist, parts) if self.raw else parts[-1]
 
     def _struct_value(self, name):
         fmt = NATIVE.get(name, '')
@@ -794,11 +869,9 @@ class Props:
         if name == 'GameplayTagContainer':
             return [self._name() for _ in range(self._u('<i')[0])]
         if name in ('PerQualityLevelInt', 'PerQualityLevelFloat'):
-            self._u('<i')
-            self._u('<i')
-            for _ in range(self._u('<i')[0]):
-                self._u('<2i')
-            return None
+            head = self._u('<2i')
+            pairs = [self._u('<2i') for _ in range(self._u('<i')[0])]
+            return (head, pairs) if self.raw else None
         if fmt is None:
             raise PropError('unsupported native struct %r' % (name,))
         return self.struct(name)

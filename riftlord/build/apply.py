@@ -491,6 +491,9 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
         #: materials painted on added meshes and kit pieces (riftlord/lavafx.py)
         from riftlord.build.world import lavafx as _paints
         _paints.paint_added(builder, added, placed, report)
+        #: vertex paint on added meshes (riftlord/build/world/vertexpaint.py)
+        from riftlord.build.world import vertexpaint as _vpaint
+        _vpaint.paint_added(builder, added, placed, report)
         #: the added light actors' own light values (riftlord.build.world.lighting)
         from riftlord.build.world import lighting as _lighting
         _lighting.write_added(builder, added, placed, report)
@@ -531,6 +534,14 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
     except Exception as exc:                         # noqa: BLE001
         report['skipped'].append(buildmessage.left_out(
             'the sky, liquid and floor colours', '%s: %s' % (type(exc).__name__, exc)))
+    #: the level's own pieces the plan vertex paints (riftlord/build/world/vertexpaint.py)
+    try:
+        from riftlord.build.world import vertexpaint
+        vertexpaint.write_all(builder, vertexpaint.level_edits(level_name, plan).get('persistent'),
+                              report)
+    except Exception as exc:                         # noqa: BLE001
+        report['skipped'].append(buildmessage.left_out(
+            'the vertex paint', '%s: %s' % (type(exc).__name__, exc)))
 
     #: the plan's world settings (kill height, War Scenario flag)
     try:
@@ -575,6 +586,13 @@ def apply_plan(uasset, uexp, level_name, level_path, object_name, plan=None):
         except Exception as exc:                     # noqa: BLE001
             report['skipped'].append(buildmessage.left_out(
                 'the %s' % label, '%s: %s' % (type(exc).__name__, exc)))
+    #: the surface weathering (riftlord.build.world.surfaces)
+    try:
+        from riftlord.build.world import surfaces
+        surfaces.apply(builder, plan, report, level=level_name)
+    except Exception as exc:                         # noqa: BLE001
+        report['skipped'].append(buildmessage.left_out(
+            'the surface settings', '%s: %s' % (type(exc).__name__, exc)))
 
     #: moved and added primitives drop out of the level's precomputed visibility
     report['visibility_reset'] = _geomedits.forget_moved_visibility(builder, visibility_snap)
@@ -663,11 +681,17 @@ def sublevel_edits(level_name, plan=None):
     #: the sublevels' own volumes the plan edits or a ground route crosses (volumes.py)
     from riftlord.mapeditor import volumes
     vol_rows = volumes.sublevel_writes(level_name, plan)
+    #: the level's own pieces the plan vertex paints (riftlord/build/world/vertexpaint.py)
+    from riftlord.build.world import vertexpaint
+    vpaint = {t: rows for t, rows in vertexpaint.level_edits(level_name, plan).items()
+              if t != 'persistent'}
     if not removed and not moved and not planes and not filter_tags and not gone_fx \
             and not shifted and not plates and not lit and not swaps and not moon_edits \
-            and not vol_rows and not (look.get('sky') or look.get('liquid')):
+            and not vol_rows and not vpaint and not (look.get('sky') or look.get('liquid')):
         return {}
     out = {}
+    for tag, rows in vpaint.items():
+        out.setdefault(tag, {'moved': [], 'parked': []})['vertexPaint'] = rows
     for tag, rows in vol_rows.items():
         out.setdefault(tag, {'moved': [], 'parked': []})['volumes'] = rows
     #: the level's own pieces whose Collides switch the plan changes (piececollision)
@@ -795,6 +819,9 @@ def apply_to_sublevel(uasset, uexp, object_name, edits):
     if edits.get('lights'):
         from riftlord.build.world import liquidlights
         liquidlights.paint(builder, edits['lights'], report)
+    if edits.get('vertexPaint'):
+        from riftlord.build.world import vertexpaint
+        vertexpaint.write_all(builder, edits['vertexPaint'], report)
     retint(builder, edits, report)
     if edits.get('volumes'):
         from riftlord.mapeditor import volumes

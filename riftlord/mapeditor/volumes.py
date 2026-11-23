@@ -22,6 +22,9 @@ CLASSES = {
     'OMDCharacterKillVolume': ('Kill volume', 'kill'),
     'OMDCameraBlockingVolume': ('Camera blocking volume', 'camera'),
     'OMDTrapBlockingVolume': ('Trap blocking volume', 'traps'),
+    #: NavPower's: the walkable-graph rebuild leaves enemies no floor inside it
+    #: (riftlord.build.navigation.navregen.exclusion_volumes); nothing in play collides with it
+    'NavPowerExclusionVolume': ('Exclusion volume', 'exclusion'),
 }
 
 #: BlockingVolume collision profile -> what it stops (DefaultEngine.ini). A profile
@@ -107,6 +110,7 @@ STOPS_TEXT = {
     'kill': 'kills characters that enter it',
     'camera': 'stops the camera',
     'traps': 'stops trap placement',
+    'exclusion': 'keeps enemies off the floor inside it',
 }
 
 #: Kinds that stand in a walking character's or its camera's way, so a ground route

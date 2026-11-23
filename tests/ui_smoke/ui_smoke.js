@@ -21,7 +21,7 @@ const CASE_TIMEOUT = { onslaught: 240, mapeditor: 600, reference: 2400, preview:
   cutaway: 600, addlook: 600, pickups: 600, crystal: 600, crystalhealth: 1200, gamemode: 600, crystallevel: 900, supportedmods: 600, modunits: 240, scramble: 300, scrambletiers: 300, unlocks: 300, header: 1200,
   fab: 300, setup: 300, appshell: 240, mapeditorui: 900, spawnerfacing: 600, multirift: 600, openwarn: 900,
   onslaughtfloors: 600, campaignindex: 300, dialogue: 1200, floorsnap: 600, samename: 300, campaignpak: 300, retint: 600, diffpauses: 240,
-  lattice: 600, lighting: 900, moons: 900, collides: 600, coverseams: 600 }
+  lattice: 600, lighting: 900, moons: 900, surfaces: 900, collides: 600, coverseams: 600 }
 //: Every case budget and page wait is multiplied by this (RL_TIMEOUT_SCALE, at least 1): the
 //: release check raises it with the machine's load.
 const SCALE = Math.max(1, Number(process.env.RL_TIMEOUT_SCALE) || 1)
@@ -5678,6 +5678,103 @@ async function lightingCase (p, urls, mission, log) {
 //: A shipped level with a moon (Scenario_06, The Lava Pits).
 const MOON_LEVEL = 'Scenario_06'
 
+//: Icebound Mine: its script sets snow and ice, and 3,981 of its placements paint.
+const SURFACE_LEVEL = 'Scenario_Ice_02'
+//: The Lava Pits: an unpainted Big_Stone_03_A, and a foliage piece
+const PAINT_ROCK = 1835
+const PAINT_FOLIAGE = 2318
+
+/** Mean brightness (0..255) of a page screenshot, measured in the page. */
+async function shotBrightness (p) {
+  const png = await p.screenshot({ encoding: 'base64' })
+  return p.evaluate(async (b64) => {
+    const img = new Image()
+    img.src = 'data:image/png;base64,' + b64
+    await img.decode()
+    const c = document.createElement('canvas')
+    c.width = img.width; c.height = img.height
+    const g = c.getContext('2d')
+    g.drawImage(img, 0, 0)
+    const d = g.getImageData(0, 0, c.width, c.height).data
+    let sum = 0
+    for (let i = 0; i < d.length; i += 4) sum += d[i] + d[i + 1] + d[i + 2]
+    return sum / (d.length / 4) / 3
+  }, png)
+}
+
+/** Surfaces in the viewport: Icebound Mine's materials draw their weathering, its painted
+ * placements carry their paint, every shader compiles, and Snow Amount 0 then Reset
+ * changes what is drawn. */
+async function surfacesCase (p, urls, mission, log) {
+  await openLevelNamed(p, urls, SURFACE_LEVEL, log)
+  await waitFor(p, 'the level drawn with its weathering',
+    () => window.__rl_surfaceView && window.__rl_surfaceView().weathered > 0,
+    { timeout: 120000, polling: 500 })
+  await sleep(3000)
+  let v = await p.evaluate(() => window.__rl_surfaceView())
+  check(v.failed === 0, `every shader program compiles (${v.failed} failed)`, log)
+  check(v.painted > 0, `painted placements draw their paint (${v.weathered} weathered, ${v.painted} painted)`, log)
+  check(v.snow === 1, `the view draws the level's Snow Amount 1 (${v.snow})`, log)
+  const sel = '[data-surface="UseSnowCastle"]'
+  await waitFor(p, 'the Surfaces fields', (s) => document.querySelector(s), { timeout: 60000, polling: 250 }, sel)
+  if (process.env.RL_SHOTS) await p.screenshot({ path: `${process.env.RL_SHOTS}/surfaces-snow.png` })
+  const snowy = await shotBrightness(p)
+  await setField(p, sel, '0')
+  await sleep(1500)
+  v = await p.evaluate(() => window.__rl_surfaceView())
+  check(v.snow === 0, `Snow Amount 0 reaches the view (${v.snow})`, log)
+  if (process.env.RL_SHOTS) await p.screenshot({ path: `${process.env.RL_SHOTS}/surfaces-nosnow.png` })
+  const bare = await shotBrightness(p)
+  check(snowy - bare > 1, `the snow is drawn: brightness ${snowy.toFixed(1)} with, ${bare.toFixed(1)} without`, log)
+  await clickIn(p, '[data-surface-reset="UseSnowCastle"]')
+  await sleep(1500)
+  v = await p.evaluate(() => window.__rl_surfaceView())
+  check(v.snow === 1 && v.failed === 0, `Reset draws the level's snow again (${v.snow})`, log)
+
+  //: a level with none: snow and ice added in the panel are drawn
+  await openLevelNamed(p, urls, MOON_LEVEL, log)
+  await waitFor(p, 'the level drawn with its weathering',
+    () => window.__rl_surfaceView && window.__rl_surfaceView().weathered > 0,
+    { timeout: 120000, polling: 500 })
+  await waitFor(p, 'the Surfaces fields', (s) => document.querySelector(s), { timeout: 60000, polling: 250 }, sel)
+  await sleep(3000)
+  const plain = await shotBrightness(p)
+  await setField(p, sel, '1')
+  await setField(p, '[data-surface="UseIceCastle"]', '1')
+  await sleep(1500)
+  v = await p.evaluate(() => window.__rl_surfaceView())
+  if (process.env.RL_SHOTS) await p.screenshot({ path: `${process.env.RL_SHOTS}/surfaces-added.png` })
+  const added = await shotBrightness(p)
+  check(v.snow === 1 && v.failed === 0, `snow added to ${MOON_LEVEL} reaches the view (${v.weathered} weathered)`, log)
+  check(added - plain > 1, `the added snow is drawn: brightness ${plain.toFixed(1)} before, ${added.toFixed(1)} after`, log)
+
+  //: Vertex Paint on a rock: B 0 is in the plan and drawn; Reset takes it out
+  await p.evaluate((id) => window.__rl_pickPiece(id), PAINT_ROCK)
+  await sleep(500)
+  const fields = await p.evaluate(() => [...document.querySelectorAll('[data-vpaint]')].map(e => e.value))
+  check(fields.join() === '1,1,1,1', `the rock shows Vertex Paint R G B A (${fields.join(', ')})`, log)
+  await setField(p, '[data-vpaint="2"]', '0')
+  await sleep(500)
+  const inPlan = await p.evaluate(() => window.__rl_planBits().vertexPaint)
+  check(JSON.stringify((inPlan || {})[PAINT_ROCK]) === '[1,1,0,1]', `B 0 is in the plan (${JSON.stringify(inPlan)})`, log)
+  const drawn = await p.evaluate((id) => window.__rl_piecePaint(id), PAINT_ROCK)
+  check(JSON.stringify(drawn) === '[1,1,0,1]', `the view draws its paint (${JSON.stringify(drawn)})`, log)
+  await p.evaluate(async () => { await window.__rl_savePlan() })
+  const saved = await p.evaluate(async () =>
+    (await (await fetch('api/plan/' + encodeURIComponent(window.__rl_levelName()))).json()).look)
+  check(JSON.stringify(((saved || {}).vertexPaint || {})[PAINT_ROCK]) === '[1,1,0,1]',
+    `the saved plan keeps it (${JSON.stringify((saved || {}).vertexPaint)})`, log)
+  await clickIn(p, '[data-vpaint-reset="2"]')
+  await sleep(500)
+  const back = await p.evaluate(() => window.__rl_planBits().vertexPaint)
+  check(back === null, `Reset takes it out (${JSON.stringify(back)})`, log)
+  await p.evaluate((id) => window.__rl_pickPiece(id), PAINT_FOLIAGE)
+  await sleep(500)
+  check(await p.evaluate(() => !document.querySelector('[data-vpaint]')), 'a foliage piece shows no Vertex Paint', log)
+  v = await p.evaluate(() => window.__rl_surfaceView())
+  check(v.failed === 0, `every shader still compiles (${v.failed} failed)`, log)
+}
+
 /** Map Settings' Moon: the level's moon shows its real direction, distance, scale and
  * material; a Pitch change stores its location and turn, Reset takes it out and the
  * shipped value stores nothing; Scale and Material; its direction handle; the view draws
@@ -5856,7 +5953,7 @@ const CASES = { onslaught, mapeditor, reference, preview, rotation, flip, gridsi
   minimapdoors, cutaway, addlook, pickups, crystal, crystalhealth, gamemode, crystallevel, supportedmods, modunits, scramble, scrambletiers, unlocks, header, fab: fabKits, setup, appshell: appShell,
   mapeditorui: mapeditorUi, spawnerfacing: spawnerFacing, multirift: multiRift, openwarn: openWarn, onslaughtfloors: onslaughtFloors,
   campaignindex: campaignIndex, dialogue, floorsnap: floorSnap, samename: sameName, campaignpak: campaignPak, retint,
-  diffpauses: diffPauses, lattice, lighting: lightingCase, moons: moonsCase, collides, coverseams: coverSeams }
+  diffpauses: diffPauses, lattice, lighting: lightingCase, moons: moonsCase, surfaces: surfacesCase, collides, coverseams: coverSeams }
 
 /** One blank page asks for a WebGL context: {ok, vendor, renderer, why}. Not ok when there
  * is no context, the GPU reads as disabled (a blocklisted or crashed GPU process), or WebGL

@@ -318,7 +318,16 @@ NoCollision); on as a colliding StaticMeshActor is (both properties removed, so 
 profile applies), or `bUseDefaultCollision` false with a BodyInstance naming BlockAll
 when the mesh's own profile is NoCollision. The walkable-graph rebuild takes switched
 pieces in or out (`navregen.placed_collides`); an edit that only switches collision is
-not a move for precomputed visibility or the light bake (`piececollision.moving_edits`).
+not a move for precomputed visibility, the light bake or the regenerated minimap
+(`piececollision.moving_edits`). Until 2026-11-22 the minimap took any edit as a move:
+switching Collides on for Repaired Mine's stone trim at the top of the north-west stairs
+(Scenario_Ice_02 piece 1448) erased the floor under the trim and drew it again as a wall,
+a line across stairs the rebuilt walkable graph crosses
+(`tests/offline/test_minimap_collides.py`). The Map Editor's minimap preview kept showing
+the old drawing after that fix: previews are kept on disk by `minimapredraw.preview_key`,
+which took the drawing code's file dates, and in the packaged app those files are not on
+disk, so an app rebuild never changed the key. The key now takes `gamepath.code_stamp`
+(the executable's date and size when frozen).
 
 The rebuild resolves every other mesh component by the same rule
 (`navregen.component_flags` takes `piececollision.level_collides`, which applies
@@ -366,6 +375,35 @@ volumes of every package (`navregen.blocking_volumes`) and leaves out those the 
 removes or the build parks for a route. The probe's kill-switch gate reads the sublevel
 copies (`controllers.gates`). A level from scratch keeps none of its host's volumes, in any
 package. Test: `tests/offline/test_sublevel_volumes.py`.
+
+## Exclusion volumes
+
+A level's `NavPowerExclusionVolume`s collide with nothing in play: NavPower's build leaves
+enemies no floor inside them, and Rift Lord's walkable-graph rebuild honours them the same
+way (`navregen.exclusion_volumes`). Measured 2026-11-22: of the 39,135 polygons of the 33
+shipped walkable graphs, none has its centre inside one. A level's playable floor sits
+between them: Scenario_Ice_02's NavPowerExclusionVolume3 is a slab under the whole level
+(up to z 150) and NavPowerExclusionVolume2 a lid over it (from z 900), so seen from above
+the level looks inside them; its shipped floor runs 178..885. Floor a plan builds above
+the lid (Repaired Mine's upper floor at 1,335, the room over the hall at 1,750) is inside
+it, and only the strip a route walks is kept (recastgen.ROUTES_CROSS_EXCLUSIONS).
+
+They are listed with the level's other volumes (label "Exclusion volume", `stops`
+`exclusion`, never in a route's way) on the one volumes layer, and moved, turned,
+resized and removed like them, in the plan's `volumes`; the rebuild leaves out a removed
+one and takes an edited one where the plan puts it, and an edit to one is enough for the
+graph to be rebuilt (`navregen.wanted`). A click picks the smallest volume under the
+cursor, so one inside the level-wide lid can be picked.
+
+Repaired Mine (2026-11-22): `NavPowerExclusionVolume10_2` (x -4335..-2985, y 1415..2965,
+z 225..875) kept enemies off the east part of the hall north of the rift; removing it puts
+that floor in the rebuilt graph at z 460. Test: `tests/offline/test_exclusion_volumes.py`.
+
+A regenerated minimap, in a build and in the Map Settings preview, is drawn from the
+rebuilt walkable graph (`minimapredraw.prepare(regenerated=True)`, made once per plan and
+kept by `navregen.buffer_for`), so floor the rebuild adds or drops shows on the map. The
+preview's drawing is keyed on the plan's volumes, route points and spawners too
+(`PREVIEW_GEOMETRY`), since the rebuilt graph depends on them.
 
 What blocks players at a shipped decor piece with collision off (2026-11-05, 33 shipped
 levels, 42,057 visible non-foliage pieces whose mesh has a collision shape): 36,269 stand
@@ -587,6 +625,95 @@ pool picks it (the marker click lets through only markers behind solid geometry)
 A level's moon is the Moon section of Map Settings (see Moons, under Lighting): a sky no
 longer brings or parks one. It stands far beyond the editor's camera range (Scenario_06's
 1,229,626 uu out, 891,226 uu up), so the view draws it on the sky around the camera.
+
+## Surfaces
+
+Snow, ice, sand, moss, rain and the stone colour on a map's surfaces come from one
+material parameter collection, `MPC_Enviro_Level` (13 scalars, 0 by default, and 3
+colours), which the shipped master materials read (`riftlord/build/world/surfaces.py`).
+Which master reads which value was taken from the base-pass pixel shaders of every
+material that imports the collection (2026-11-22, `OMD2-Converter/thirdparty/material-tools/
+dxbc`; the collection's buffer is the one bound just before the material's own):
+
+| Value | Read by | Panel |
+|---|---|---|
+| UseSnowCastle | props, structure, rock, snow trees, snow mountains, ice formations | Snow, Amount |
+| ColorSnow | props, structure, rock | Snow, Colour |
+| UseIceCastle | props, structure, rock | Ice, Amount |
+| UseSandCastle / UseSandRock | props and structure / rock | Sand, Walls and Props / Rock |
+| ColorSand | props, structure | Sand, Colour |
+| UseMossCastle / UseMossRock | props and structure / rock | Moss, Walls and Props / Rock |
+| UseRainCastle / UseRainRock | props and structure / rock | Rain, Walls and Props / Rock |
+| UseRainProp | foliage (Master_Foliage) | Rain, Foliage |
+| UseRainTrap / UseRainCharacter | the three trap masters / both character masters | Rain, Traps / Characters |
+| ColorStoneCastle, DesaturateCastleStone | structure | Walls, Colour / Desaturation |
+| UseRainFoliage | nothing | not offered |
+
+The engine's "Castle" names are misleading: snow and ice have one value each, and the rock
+master reads it. The two other weather collections in the game (`MPC_BF_Controller`,
+`MPC_RW_Controller`, winter on two foliage packs) are used by no playable level (the Abandoned
+Passage intro cinematic and one Scenario_02 mesh), so they are not offered.
+
+A level sets the values from its persistent level's script at play. Census of the 33
+shipped levels: 50 scalar calls with a constant value; 15 levels set none; the stone colour
+(10 levels) and Hidden Dock's desaturation are worked out by the script as it plays.
+Nothing else writes the collection but the main menu's level sequences.
+
+Map Settings' **Surfaces** section offers every value on every level, at the level's value
+(its script's constant, else the collection's default), each with Reset once the plan
+stores it (`plan.world.surfaces` = {name: 0..1 or [r, g, b, a] linear}). A value the level
+works out as it plays is not offered there: the script would write it again. The build
+writes a value the script sets as a constant into that constant in the copied level's
+script (same size, so no statement moves), and every other value through the mission's
+surfaces actor: a bpkit Blueprint (`/Game/Mods/<mod>/<mod>_Surfaces`) placed in the level
+copy as `RiftLordSurfaces`, which sets them at BeginPlay. A level's actors begin play on
+every machine, so co-op clients draw the same surfaces. The probe gates check the
+Blueprint is in the pak and placed with its class preloaded.
+`tests/offline/test_surfaces.py`.
+
+### How the masters blend them
+
+From the same shaders (`riftlord/mapeditor/surfacelook.py` has the formulas). The amount is
+only a multiplier; where weathering lands is the surface's facing and its **vertex paint**
+(R, G, B, A; white when a mesh has none and its placement paints none):
+
+- **Snow** = Amount x SnowOverride x (R x up + (MRA green x (1 - B)) ^ power). `up` is
+  |N.z| x min(3 x N.z, 1); snow trees and mountains use |N.z| x saturate(N.z ^ SnowBlend x
+  SnowContrast) and no paint. Power: walls 4, props 5, rock 10. So unpainted pieces take
+  snow only on upward faces; Icebound Mine's snowy rocks are painted B near 0, which lets
+  snow cover the whole rough surface, steep faces too.
+- **Sand**: as snow (walls take `up` with SandBlend/SandContrast; props use B, not 1 - B, for
+  the all-over term), toward Sand_BC x ColorSand (rock: its own SandTint).
+- **Ice** = Amount x (1 - G): toward IceTint, and a glow toward EM_InnerColor/EM_OuterColor
+  under any snow or sand. Unpainted pieces (G 1) take none.
+- **Moss**: rock = upward facing x A x MossLayerOpacity x Amount; walls and props = the
+  baked ambient occlusion squared x PrecomputedAOMask x Amount x (1 - world overlay mask).
+- **Walls**: desaturate, then an overlay blend with the stone colour, before the final
+  brightness.
+- **Rain** changes roughness and drips only.
+
+### In the viewport
+
+Every level and added material whose master reads the collection draws its weathering
+from the Surfaces values as the panel has them (`web/mapeditor/src/surfacelook.js`; the
+values are shared uniforms, so a change redraws at once). The viewport draws a texture with
+flat lighting, so: N is the geometric normal; textures the masters sample in world space
+are their mean colour; the all-over term uses the mean of MRA green ^ power; wall and prop
+moss takes no baked occlusion (as if open sky); rain is not drawn. A placement's vertex
+paint is its mean colour. UI smoke case `surfaces`.
+
+## Vertex Paint
+
+A picked level placement of a static mesh, or an added mesh, has **Vertex Paint** R, G, B, A
+(0..1, each with Reset), one colour over every vertex. Several picked pieces are set
+together; a field they differ on is blank. Foliage instances have none (an instanced
+component holds one paint for all its instances). Plan data: `look.vertexPaint` {piece id:
+[r, g, b, a]} and an added mesh's `vertexPaint`. The build writes it as the component's
+OverrideVertexColors on every LOD of its mesh, LOD 0 keeping its lightmap Guid, LOD 1 on
+with a zero Guid as Icebound Mine's are (`riftlord/build/world/vertexpaint.py`), in the
+persistent level, the sublevels it touches, and on added meshes' root components.
+`tests/offline/test_vertexpaint.py`. Untested in game: probe Snow Test B (Pier Pressure
+Noboss: snow 1, blue; its 219 remaining Big_Stone_03_A placements painted B 0).
 
 ## Lighting
 

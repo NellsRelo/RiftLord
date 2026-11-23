@@ -11,6 +11,7 @@ import * as THREE from 'three'
 //: Box colour per what a volume stops.
 export const VOLUME_COLOUR = {
   everyone: 0xff5a4f, players: 0xffb347, kill: 0xd23cff, camera: 0x6aa8ff, traps: 0x9aa0aa,
+  exclusion: 0x4fd18b,
 }
 
 //: Fill and outline opacity of a volume's box.
